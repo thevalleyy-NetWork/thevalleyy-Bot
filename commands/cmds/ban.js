@@ -41,11 +41,19 @@ module.exports = {
 
         try {
             if (arguments[1]) {
-                await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` mit dem Grund `" + reason + "` gebannt.")
+                try {
+                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` mit dem Grund `" + reason + "` gebannt.")
+                } catch (e) {
+                    message.client.channels.cache.get(botlog).send(`Error at ban: \`${e}\``)
+                }
                 member.ban({ reason: reason + ", " + message.author.tag })
                 await message.reply('Der User `' + member.user.tag + '` wurde mit dem Grund `' + reason + '` gebannt.')
             } else {
-                await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` gebannt.")
+                try {
+                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` gebannt.")
+                } catch (e) {
+                    message.client.channels.cache.get(botlog).send(`Error at ban: \`${e}\``)
+                }
                 member.ban({ reason: message.author.tag })
                 await message.reply('Der User `' + member.user.tag + '` wurde gebannt.')
             }

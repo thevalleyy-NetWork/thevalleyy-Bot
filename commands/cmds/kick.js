@@ -41,11 +41,19 @@ module.exports = {
 
         try {
             if (arguments[1]) {
-                await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` mit dem Grund `" + reason + "` gekickt.")
+                try {
+                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` mit dem Grund `" + reason + "` gekickt.")
+                } catch (e) {
+                    message.client.channels.cache.get(botlog).send(`Error at kick: \`${e}\``)
+                }
                 member.kick({ reason: reason.toString() + ", " + message.author.tag })
                 await message.reply('Der User `' + member.user.tag + '` wurde mit dem Grund `' + reason + '` gekickt.')
             } else {
-                await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` gekick.")
+                try {
+                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` gekick.")
+                } catch (e) {
+                    message.client.channels.cache.get(botlog).send(`Error at kick: \`${e}\``)
+                }
                 member.kick({ reason: message.author.tag })
                 await message.reply('Der User `' + member.user.tag + '` wurde gekickt.')
             }
