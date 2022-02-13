@@ -1,2 +1,2 @@
 # thevalleyy-Bot
-Weirder Discord-Bot
+Weird Discord-Bot

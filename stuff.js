@@ -8,14 +8,14 @@ module.exports = {
     callback: (message, arguments, text) => {
 
         const Discord = require('discord.js')
-		var iconurl = message.guild.iconURL({
+        var iconurl = message.guild.iconURL({
             dynamic: true
         })
 
 
-		// Code here
+        // Code here
 
-		client.logChannel.send()
+        client.logChannel.send()
     },
     permissions: [],
     requiredRoles: ['Mitglied']
