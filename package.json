@@ -1,0 +1,26 @@
+{
+  "name": "thevalleyy-bot",
+  "version": "1.0.69",
+  "description": "A Bot by thevalleyy",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "thevalleyy",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/voice": "^0.6.0",
+    "discord-buttons": "^2.4.1",
+    "discord-music-player": "^7.1.4",
+    "discord.js": "^13.1.0",
+    "enmap": "^5.8.7",
+    "ffmpeg-static": "^4.4.0",
+    "merge-options": "^3.0.4",
+    "minecraft-server-util": "^3.5.1",
+    "ms": "^2.1.3",
+    "node-fetch": "^2.6.1",
+    "opusscript": "^0.0.8",
+    "spotify-url-info": "^2.2.0",
+    "tweetnacl": "^1.0.3"
+  }
+}
