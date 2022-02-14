@@ -5,6 +5,7 @@ module.exports = async(client) => {
 
 
     client.on('guildMemberUpdate', async(oldMember, newMember) => {
+        if (newMember.guild.id !== '631518992342843392') return
         if (oldMember.nickname === newMember.nickname) return
         var iconurl = client.guilds.cache.get(newMember.guild.id).iconURL({
             dynamic: true
