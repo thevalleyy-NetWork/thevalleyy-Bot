@@ -17,6 +17,8 @@ module.exports = async(client) => {
         })
         const latest = fetchedLogs.entries.first()
         const executor = latest.executor
+        if (!latest) return
+
         if (newMember.nickname === null) {
             var oldname = oldMember.nickname
             var newname = newMember.user.username
