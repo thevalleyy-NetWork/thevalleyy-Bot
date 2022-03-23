@@ -33,7 +33,7 @@ module.exports = async(client) => {
 
         const embedNickLog = new Discord.MessageEmbed()
             .setTitle('LOG: Nickname geändert')
-            .addField('User:', `${newMember.user.tag}, <@!${newMember.user.id}>`)
+            .addField('User:', `\`${newMember.user.tag}\`, <@!${newMember.user.id}>`)
             .addField("Vorher: ", `\`${oldname}\``, true)
             .addField("Nachher: ", `\`${newname}\``, true)
             .addField("Ausgeführt von: ", `<@!${executor.id}>`, true)
