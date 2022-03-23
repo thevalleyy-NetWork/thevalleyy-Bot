@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const botlog = '822575095721099304'
-const fetch = require('node-fetch')
+const fetch =
+    import ('node-fetch')
 
 module.exports = {
     commands: ['skin', 'mcskin', 'minecraftskin'],

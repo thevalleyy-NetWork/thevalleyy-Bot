@@ -9,9 +9,7 @@ module.exports = (client) => {
 
     try {
         setInterval(function() {
-            util.status('node2.chaosbothosting.de', {
-                port: 25504
-            }).then(async(response) => {
+            util.status('node2.chaosbothosting.de', 25504).then(async(response) => {
                 var date = new Date()
 
                 let secFiller = ""
@@ -37,9 +35,9 @@ module.exports = (client) => {
                 const playerCount = fs.readFileSync('./data/playerrec.json', 'utf8');
                 const playerCount_ = JSON.parse(playerCount)
 
-                if (playerCount_.mostPlayers < response.onlinePlayers.toString()) {
+                if (playerCount_.mostPlayers < response.players.online.toString()) {
                     let newData = {
-                        mostPlayers: response.onlinePlayers.toString(),
+                        mostPlayers: response.players.online.toString(),
                         date: datetime,
                         lastPinged: datetime
                     }
@@ -50,7 +48,7 @@ module.exports = (client) => {
                     const embedRecord = new Discord.MessageEmbed()
                         .setColor('#14a2a3')
                         .setTitle('Neuer Spielerrekord!')
-                        .setDescription(`**${response.onlinePlayers}** Spieler online!`)
+                        .setDescription(`**${response.players.online}** Spieler online!`)
                         .setFooter(`Am: ${datetime}`, iconurl)
 
                     await client.channels.cache.get(mcc).send({
@@ -74,7 +72,7 @@ module.exports = (client) => {
                 // console.log("Aktualisiere Serverping...")
                 const stableCount = await fs.readFileSync('./data/playerrec.json', 'utf8');
                 const stableCount_ = await JSON.parse(stableCount)
-                await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk  (${response.onlinePlayers}/${response.maxPlayers})  **|**  Letzter Ping: ${datetime}  **|**  🏆: ${stableCount_.mostPlayers}`)
+                await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk  (${response.players.online}/${response.players.max})  **|**  Letzter Ping: ${datetime}  **|**  🏆: ${stableCount_.mostPlayers}`)
             })
         }, 302000)
 

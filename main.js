@@ -39,7 +39,7 @@ const client = new Discord.Client({
 })
 
 //cmd-base
-client.on('ready', async () => {
+client.on('ready', async() => {
     const baseFile = 'command-base.js'
     const commandBase = require(`./commands/${baseFile}`)
     var directoryPath = path.join(__dirname, 'content')

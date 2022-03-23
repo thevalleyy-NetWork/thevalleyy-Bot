@@ -16,7 +16,10 @@ module.exports = (client) => {
     const startEmbed = new Discord.MessageEmbed()
         .setTitle('Startup <:POGGIES:786251968841515049>')
         .addField('Der Bot ist als ' + client.user.tag + ' eingeloggt.', 'Der Bot befindet sich auf ' + client.guilds.cache.size + ' Servern!')
-        .setFooter('thevalleyy-NetWork', iconurl)
+        .setFooter({
+            text: 'thevalleyy-NetWork',
+            iconURL: iconurl
+        })
         .setTimestamp()
         .setColor('149C51')
         .setThumbnail('https://cdn.discordapp.com/attachments/727157435869036554/831785487919611935/8fc42347d4fb3d4ef7e5683d2131bb94.webp')
