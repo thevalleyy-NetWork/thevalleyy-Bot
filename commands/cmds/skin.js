@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const fetch =
     import ('node-fetch')
 
@@ -44,7 +44,7 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', message.guild.iconURL({ dynamic: true }))
                 .setTimestamp()
                 .setColor('fc036b')
-            message.client.channels.cache.get(botlog).send(({ embeds: [failEmbed] }))
+            message.client.channels.cache.get(mod - log).send(({ embeds: [failEmbed] }))
             message.reply('Es gab einen Fehler.')
         }
     },

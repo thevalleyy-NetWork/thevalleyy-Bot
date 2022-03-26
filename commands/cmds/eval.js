@@ -9,7 +9,7 @@ module.exports = {
         const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
         const util = require('util')
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const botlog = '822575095721099304'
+        const mod - log = '822575095721099304'
         const Discord = require('discord.js')
 
         if (message.author.id !== '506746108345843713') {
@@ -38,8 +38,8 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('03f8fc')
-            message.client.channels.cache.get(botlog).send({ embeds: [embedSuccess] })
-            message.client.channels.cache.get(botlog).send('```js\n' + output.substring(0, 1950) + '```')
+            message.client.channels.cache.get(mod - log).send({ embeds: [embedSuccess] })
+            message.client.channels.cache.get(mod - log).send('```js\n' + output.substring(0, 1950) + '```')
 
 
 

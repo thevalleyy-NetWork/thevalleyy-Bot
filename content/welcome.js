@@ -1,4 +1,4 @@
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const Discord = require('discord.js')
 const channelId = '786239944581840956'
 module.exports = client => {

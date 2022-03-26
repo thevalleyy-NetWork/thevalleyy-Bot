@@ -1,4 +1,4 @@
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const Discord = require('discord.js')
 var blacklistarray = ["", "", "", ""]
 module.exports = (client) => {
@@ -18,7 +18,7 @@ module.exports = (client) => {
                 if (blacklistarray.includes(user.id)) return
 
                 userObj.roles.add(regelRole)
-                client.channels.cache.get(botlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
             }
         } catch (error) {
             const embedError = new Discord.MessageEmbed()
@@ -29,7 +29,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            message.client.channels.cache.get(botlog).send({ embed: embedError })
+            message.client.channels.cache.get(mod - log).send({ embed: embedError })
         }
     })
 
@@ -47,7 +47,7 @@ module.exports = (client) => {
                 if (blacklistarray.includes(user.id)) return
 
                 userObj.roles.remove(regelRole)
-                client.channels.cache.get(botlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
             }
         } catch (error) {
             const embedError = new Discord.MessageEmbed()
@@ -58,7 +58,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            message.client.channels.cache.get(botlog).send({ embed: embedError })
+            message.client.channels.cache.get(mod - log).send({ embed: embedError })
         }
     })
 }

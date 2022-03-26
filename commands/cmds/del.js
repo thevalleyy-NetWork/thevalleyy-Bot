@@ -7,7 +7,7 @@ module.exports = {
     callback: (message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const botlog = '822575095721099304'
+        const mod - log = '822575095721099304'
         const Discord = require('discord.js')
 
         try {
@@ -23,7 +23,7 @@ module.exports = {
                     .setFooter('thevalleyy-NetWork', iconurl)
                     .setTimestamp()
                     .setColor('03f8fc')
-                message.client.channels.cache.get(botlog).send({ embeds: [embedSuccess] })
+                message.client.channels.cache.get(mod - log).send({ embeds: [embedSuccess] })
 
             } else { message.reply('`-delete` kann nur in geschlossenen Tickets ausgeführt werden.') }
 
@@ -37,7 +37,7 @@ module.exports = {
                 .setTimestamp()
                 .setColor('fc036b')
 
-            message.client.channels.cache.get(botlog).send({ embeds: [failEmbed] })
+            message.client.channels.cache.get(mod - log).send({ embeds: [failEmbed] })
         }
     },
     permissions: [],

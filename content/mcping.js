@@ -1,4 +1,4 @@
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const mcc = '786266120381399042'
 const Discord = require('discord.js')
 const util = require('minecraft-server-util')
@@ -84,7 +84,7 @@ module.exports = (client) => {
             .setFooter('thevalleyy-NetWork', iconurl)
             .setTimestamp()
             .setColor('fc036b')
-        client.channels.cache.get(botlog).send({
+        client.channels.cache.get(mod - log).send({
             embeds: [embedFail]
         })
     }

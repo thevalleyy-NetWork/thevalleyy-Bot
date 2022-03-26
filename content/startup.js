@@ -1,4 +1,4 @@
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const Discord = require('discord.js')
 module.exports = (client) => {
     var iconurl = client.guilds.cache.get("631518992342843392").iconURL({ dynamic: true })
@@ -23,5 +23,5 @@ module.exports = (client) => {
         .setTimestamp()
         .setColor('149C51')
         .setThumbnail('https://cdn.discordapp.com/attachments/727157435869036554/831785487919611935/8fc42347d4fb3d4ef7e5683d2131bb94.webp')
-        // client.channels.cache.get(botlog).send({ embeds: [startEmbed]});
+        // client.channels.cache.get(mod-log).send({ embeds: [startEmbed]});
 }

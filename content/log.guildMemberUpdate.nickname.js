@@ -1,4 +1,4 @@
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const Discord = require('discord.js')
 
 module.exports = async(client) => {
@@ -40,6 +40,6 @@ module.exports = async(client) => {
             .setFooter(newMember.guild.name, iconurl)
             .setTimestamp()
             .setColor('#24E498')
-        client.channels.cache.get(botlog).send({ embeds: [embedNickLog] })
+        client.channels.cache.get(mod - log).send({ embeds: [embedNickLog] })
     })
 }

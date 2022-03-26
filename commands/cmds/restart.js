@@ -7,7 +7,7 @@
             callback: async(message, arguments, text) => {
 
                 var iconurl = message.guild.iconURL({ dynamic: true })
-                const botlog = '822575095721099304'
+                const mod - log = '822575095721099304'
                 const Discord = require('discord.js')
 
                 const successEmbed = new Discord.MessageEmbed()
@@ -17,7 +17,7 @@
                     .setFooter('thevalleyy-NetWork', iconurl)
                     .setTimestamp()
                     .setColor('03f8fc')
-                await message.client.channels.cache.get(botlog).send({ embeds: [successEmbed] })
+                await message.client.channels.cache.get(mod - log).send({ embeds: [successEmbed] })
                 await message.reply("Neustart eingeleitet.")
                 await process.exit(42)
             },

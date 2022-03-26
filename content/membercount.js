@@ -1,4 +1,4 @@
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const Discord = require('discord.js')
 module.exports = (client) => {
     const channelId = '786239370020913162'
@@ -16,6 +16,6 @@ module.exports = (client) => {
     try {
         updateMembers(guild)
     } catch (error) {
-        message.client.cache.channels.get(botlog).send(`Fehler beim Updaten der Mitgliederanzeige (${channelID}): ${error}`)
+        message.client.cache.channels.get(mod - log).send(`Fehler beim Updaten der Mitgliederanzeige (${channelID}): ${error}`)
     }
 }

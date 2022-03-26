@@ -1,4 +1,4 @@
-const botlog = '822575095721099304'
+const mod - log = '822575095721099304'
 const Discord = require('discord.js')
 
 
@@ -44,7 +44,7 @@ module.exports = (client) => {
                     setTimeout(() => message.delete(), 3000)
                 })
 
-                client.channels.cache.get(botlog).send('`' + user.tag + ' wollte ein 2. Ticket erstellen`')
+                client.channels.cache.get(mod - log).send('`' + user.tag + ' wollte ein 2. Ticket erstellen`')
             } else {
                 reaction.users.remove(user.id)
                 server.channels.create('🎫-' + user.username).then(channel => {
@@ -120,7 +120,7 @@ module.exports = (client) => {
                         .setFooter('thevalleyy-NetWork', iconurl)
                         .setTimestamp()
                         .setColor('03f8fc')
-                    client.channels.cache.get(botlog).send({ embeds: [embedLog] })
+                    client.channels.cache.get(mod - log).send({ embeds: [embedLog] })
                 })
             }
 
@@ -132,7 +132,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            client.channels.cache.get(botlog).send({ embeds: [embedFail] })
+            client.channels.cache.get(mod - log).send({ embeds: [embedFail] })
         }
     })
 }

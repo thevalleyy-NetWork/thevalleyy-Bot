@@ -11,7 +11,7 @@ module.exports = {
     callback: async(message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const botlog = '822575095721099304'
+        const mod - log = '822575095721099304'
 
         try {
             const waitEmbed = new Discord.MessageEmbed()

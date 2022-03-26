@@ -25,7 +25,7 @@ module.exports = {
 
         const Discord = require('discord.js')
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const botlog = '822575095721099304'
+        const mod - log = '822575095721099304'
         const reason = text.split(' ').slice(1).join(' ')
         let member = getMember(message, arguments[0])
 
@@ -44,7 +44,7 @@ module.exports = {
                 try {
                     await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` mit dem Grund `" + reason + "` gebannt.")
                 } catch (e) {
-                    message.client.channels.cache.get(botlog).send(`Error at ban: \`${e}\``)
+                    message.client.channels.cache.get(mod - log).send(`Error at ban: \`${e}\``)
                 }
                 member.ban({ reason: reason + ", " + message.author.tag })
                 await message.reply('Der User `' + member.user.tag + '` wurde mit dem Grund `' + reason + '` gebannt.')
@@ -52,7 +52,7 @@ module.exports = {
                 try {
                     await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` gebannt.")
                 } catch (e) {
-                    message.client.channels.cache.get(botlog).send(`Error at ban: \`${e}\``)
+                    message.client.channels.cache.get(mod - log).send(`Error at ban: \`${e}\``)
                 }
                 member.ban({ reason: message.author.tag })
                 await message.reply('Der User `' + member.user.tag + '` wurde gebannt.')
@@ -66,7 +66,7 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            message.client.channels.cache.get(botlog).send({ embeds: [embed] })
+            message.client.channels.cache.get(mod - log).send({ embeds: [embed] })
             message.reply('Der User `' + member.user.tag + '` konnte nicht gebannt werden:\n`' + error + '`')
         }
     },
