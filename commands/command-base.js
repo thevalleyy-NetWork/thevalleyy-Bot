@@ -1,4 +1,8 @@
 const { prefix } = require('../config.json')
+const fs = require('fs')
+const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+const Discord = require('discord.js')
+
 const validatePermissions = (permissions) => {
     const validPermissions = [
         'CREATE_INSTANT_INVITE',
@@ -117,8 +121,24 @@ module.exports = (client, commandOptions) => {
                 // Handle the custom command code
                 message.guild.members.fetch()
                 callback(message, arguments, arguments.join(' '))
-                    // []
 
+                if (message.guild.id !== "631518992342843392") return
+                const executed = new Discord.MessageEmbed()
+                    .setTitle('registered a command')
+                    .setThumbnail(message.author.avatarURL({ dynamic: true }))
+                    .setDescription(`\`${message.author.tag}\`, <@${message.author.id}>`)
+                    .addField('command:', `\`${prefix}${alias}\``, true)
+                    .addField('channel:', '<#' + message.channel.id + '>', true)
+                    .addField('link:', `[▣▣▣](${message.url} "link to message on server")`, true)
+                    .addField('arguments:', `\`${arguments.join(' ').substring(0, 1000)}\`${(arguments.toString().length > 1000 ? "..." : "")}`, false)
+                    .setFooter({
+                        text: message.guild.name,
+                        iconURL: message.guild.iconURL({ dynamic: true })
+                    })
+                    .setTimestamp()
+                    .setColor(config.cmd_log_color)
+
+                message.client.channels.cache.get(config.cmd_log_channel_id).send({ embeds: [executed] })
                 return
             }
         }
