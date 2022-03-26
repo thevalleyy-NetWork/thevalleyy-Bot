@@ -130,16 +130,17 @@ module.exports = (client, commandOptions) => {
                     .addField('command:', `\`${prefix}${alias}\``, true)
                     .addField('channel:', '<#' + message.channel.id + '>', true)
                     .addField('link:', `[▣▣▣](${message.url} "link to message on server")`, true)
-                    .addField('arguments:', `\`${arguments.join(' ').substring(0, 1000)}\`${(arguments.toString().length > 1000 ? "..." : "")}`, false)
                     .setFooter({
                         text: message.guild.name,
                         iconURL: message.guild.iconURL({ dynamic: true })
                     })
                     .setTimestamp()
                     .setColor(config.cmd_log_color)
+                if (arguments.length) executed.addField('arguments:', `\`${arguments.join(' ').substring(0, 1000)}\`${(arguments.toString().length > 1000 ? "..." : "")}`, false)
 
                 message.client.channels.cache.get(config.cmd_log_channel_id).send({ embeds: [executed] })
                 return
+
             }
         }
     })
