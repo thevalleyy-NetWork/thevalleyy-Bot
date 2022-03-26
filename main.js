@@ -1,3 +1,29 @@
+function gettime() {
+    var date = new Date()
+
+    let secFiller = ""
+    let minFiller = ""
+    let hourFiller = ""
+    let dayFiller = ""
+    let monthFiller = ""
+
+    if (date.getSeconds().toString().length < 2) secFiller = "0"
+    if (date.getMinutes().toString().length < 2) minFiller = "0"
+    if (date.getHours().toString().length < 2) hourFiller = "0"
+    if (date.getDate().toString().length < 2) dayFiller = "0"
+    if (date.getMonth().toString().length < 2) monthFiller = "0"
+
+    var datetime =
+        dayFiller + date.getDate() + "." +
+        monthFiller + (date.getMonth() + 1) + ". " +
+        hourFiller + date.getHours() + ":" +
+        minFiller + date.getMinutes() + ":" +
+        secFiller + date.getSeconds()
+
+    return datetime
+}
+
+
 console.log('\n')
 console.log('\n--------------------------- \n    Starte Talis Bot...   \n--------------------------- \n')
 setTimeout(() => console.log('\n--------------------------- \n  Talis Bot ist gestartet   \n--------------------------- \n'), 4000)
@@ -5,6 +31,7 @@ setTimeout(() => console.log('\n--------------------------- \n  Talis Bot ist ge
 const Discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
+const process = require('process')
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
 const client = new Discord.Client({
@@ -44,54 +71,13 @@ client.on('ready', async() => {
     const commandBase = require(`./commands/${baseFile}`)
     var directoryPath = path.join(__dirname, 'content')
 
-    var date = new Date()
 
-    let secFiller = ""
-    let minFiller = ""
-    let hourFiller = ""
-    let dayFiller = ""
-    let monthFiller = ""
-
-    if (date.getSeconds().toString().length < 2) secFiller = "0"
-    if (date.getMinutes().toString().length < 2) minFiller = "0"
-    if (date.getHours().toString().length < 2) hourFiller = "0"
-    if (date.getDate().toString().length < 2) dayFiller = "0"
-    if (date.getMonth().toString().length < 2) monthFiller = "0"
-
-    var datetime =
-        dayFiller + date.getDate() + "." +
-        monthFiller + (date.getMonth() + 1) + ". " +
-        hourFiller + date.getHours() + ":" +
-        minFiller + date.getMinutes() + ":" +
-        secFiller + date.getSeconds()
-
-    console.log(`[${datetime}] » Registering commands`)
+    console.log(`[${gettime()}] » Registering commands`)
     const readCommands = dir => {
         const files = fs.readdirSync(path.join(__dirname, dir))
         for (const file of files) {
-            var date = new Date()
-
-            let secFiller = ""
-            let minFiller = ""
-            let hourFiller = ""
-            let dayFiller = ""
-            let monthFiller = ""
-
-            if (date.getSeconds().toString().length < 2) secFiller = "0"
-            if (date.getMinutes().toString().length < 2) minFiller = "0"
-            if (date.getHours().toString().length < 2) hourFiller = "0"
-            if (date.getDate().toString().length < 2) dayFiller = "0"
-            if (date.getMonth().toString().length < 2) monthFiller = "0"
-
-            var datetime =
-                dayFiller + date.getDate() + "." +
-                monthFiller + (date.getMonth() + 1) + ". " +
-                hourFiller + date.getHours() + ":" +
-                minFiller + date.getMinutes() + ":" +
-                secFiller + date.getSeconds()
-
             const stat = fs.lstatSync(path.join(__dirname, dir, file))
-            console.log(`[${datetime}] » Loading: ${file}`)
+            console.log(`[${gettime()}] » Loading: ${file}`)
             if (stat.isDirectory()) {
                 readCommands(path.join(dir, file))
             } else if (file !== baseFile) {
@@ -102,56 +88,16 @@ client.on('ready', async() => {
     }
     readCommands('commands')
 
+
     console.log(`[${datetime}] » Registering: content`)
     fs.readdir(directoryPath, function(err, files) {
         if (err) {
-            var date = new Date()
 
-            let secFiller = ""
-            let minFiller = ""
-            let hourFiller = ""
-            let dayFiller = ""
-            let monthFiller = ""
-
-            if (date.getSeconds().toString().length < 2) secFiller = "0"
-            if (date.getMinutes().toString().length < 2) minFiller = "0"
-            if (date.getHours().toString().length < 2) hourFiller = "0"
-            if (date.getDate().toString().length < 2) dayFiller = "0"
-            if (date.getMonth().toString().length < 2) monthFiller = "0"
-
-            var datetime =
-                dayFiller + date.getDate() + "." +
-                monthFiller + (date.getMonth() + 1) + ". " +
-                hourFiller + date.getHours() + ":" +
-                minFiller + date.getMinutes() + ":" +
-                secFiller + date.getSeconds()
-
-            return console.log('[' + datetime + '] » Error: Unable to scan directory: ' + err)
+            return console.log('[' + gettime() + '] » Error: Unable to scan directory: ' + err)
         }
         files.forEach(function(file) {
-            var date = new Date()
-
-            let secFiller = ""
-            let minFiller = ""
-            let hourFiller = ""
-            let dayFiller = ""
-            let monthFiller = ""
-
-            if (date.getSeconds().toString().length < 2) secFiller = "0"
-            if (date.getMinutes().toString().length < 2) minFiller = "0"
-            if (date.getHours().toString().length < 2) hourFiller = "0"
-            if (date.getDate().toString().length < 2) dayFiller = "0"
-            if (date.getMonth().toString().length < 2) monthFiller = "0"
-
-            var datetime =
-                dayFiller + date.getDate() + "." +
-                monthFiller + (date.getMonth() + 1) + ". " +
-                hourFiller + date.getHours() + ":" +
-                minFiller + date.getMinutes() + ":" +
-                secFiller + date.getSeconds()
-
             require('./content/' + file)(client)
-            console.log(`[${datetime}] » Loading: ${file}`)
+            console.log(`[${gettime()}] » Loading: ${file}`)
         })
     })
 })
@@ -160,3 +106,23 @@ client.on('ready', async() => {
 // require('./content/startup.js')(client)
 client.logChannel = client.channels.cache.get('724098984100958208')
 client.login(config.token)
+
+process.on('uncaughtException', function(error, source) {
+    const embedfail = new Discord.MessageEmbed()
+        .setTitle('Es gab einen Fehler!')
+        .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
+        .setFooter({
+            text: `${source}`,
+            iconURL: client.user.avatarURL({ format: 'png', dynamic: true })
+        })
+        .setTimestamp()
+        .setColor(config.mod_log_color_error)
+        .addField('Exakte Zeit:', `\`${gettime()}\``, true)
+    if (error.toString().length < 1000) { embedfail.addField('Fehler:', `\`${error}\``, false) } else {
+        embedfail.addField('Fehler:', "Der Fehler ist zu lang, um hier dargestellt zu werden.", true)
+
+        const attachment = new Discord.MessageAttachment(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
+        client.channels.cache.get(config.mod_log_channel_id).send({ files: [attachment] })
+    }
+    client.channels.cache.get(config.mod_log_channel_id).send({ embeds: [embedfail] })
+});
