@@ -89,10 +89,9 @@ client.on('ready', async() => {
     readCommands('commands')
 
 
-    console.log(`[${datetime}] » Registering: content`)
+    console.log(`[${gettime()}] » Registering: content`)
     fs.readdir(directoryPath, function(err, files) {
         if (err) {
-
             return console.log('[' + gettime() + '] » Error: Unable to scan directory: ' + err)
         }
         files.forEach(function(file) {
@@ -107,22 +106,22 @@ client.on('ready', async() => {
 client.logChannel = client.channels.cache.get('724098984100958208')
 client.login(config.token)
 
-process.on('uncaughtException', function(error, source) {
-    const embedfail = new Discord.MessageEmbed()
-        .setTitle('Es gab einen Fehler!')
-        .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
-        .setFooter({
-            text: `${source}`,
-            iconURL: client.user.avatarURL({ format: 'png', dynamic: true })
-        })
-        .setTimestamp()
-        .setColor(config.mod_log_color_error)
-        .addField('Exakte Zeit:', `\`${gettime()}\``, true)
-    if (error.toString().length < 1000) { embedfail.addField('Fehler:', `\`${error}\``, false) } else {
-        embedfail.addField('Fehler:', "Der Fehler ist zu lang, um hier dargestellt zu werden.", true)
+// process.on('uncaughtException', function(error, source) {
+//     const embedfail = new Discord.MessageEmbed()
+//         .setTitle('Es gab einen Fehler!')
+//         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
+//         .setFooter({
+//             text: `${source}`,
+//             iconURL: client.user.avatarURL({ format: 'png', dynamic: true })
+//         })
+//         .setTimestamp()
+//         .setColor(config.mod_log_color_error)
+//         .addField('Exakte Zeit:', `\`${gettime()}\``, true)
+//     if (error.toString().length < 1000) { embedfail.addField('Fehler:', `\`${error}\``, false) } else {
+//         embedfail.addField('Fehler:', "Der Fehler ist zu lang, um hier dargestellt zu werden.", true)
 
-        const attachment = new Discord.MessageAttachment(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
-        client.channels.cache.get(config.mod_log_channel_id).send({ files: [attachment] })
-    }
-    client.channels.cache.get(config.mod_log_channel_id).send({ embeds: [embedfail] })
-});
+//         const attachment = new Discord.MessageAttachment(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
+//         client.channels.cache.get(config.mod_log_channel_id).send({ files: [attachment] })
+//     }
+//     client.channels.cache.get(config.mod_log_channel_id).send({ embeds: [embedfail] })
+// })
