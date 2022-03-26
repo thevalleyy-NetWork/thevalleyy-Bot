@@ -1,4 +1,4 @@
-const mod - log = '822575095721099304'
+const modlog = '822575095721099304'
 const Discord = require('discord.js')
 
 module.exports = async(client) => {
@@ -27,7 +27,7 @@ module.exports = async(client) => {
                 .setTimestamp()
                 .setColor('#24E498')
 
-            client.channels.cache.get(mod - log).send({ embeds: [embedVoiceLog] })
+            client.channels.cache.get(modlog).send({ embeds: [embedVoiceLog] })
         } else if (newState.channelId === null) {
             const embedVoiceLog = new Discord.MessageEmbed()
                 .setTitle('LOG: Kanal verlassen')
@@ -44,7 +44,7 @@ module.exports = async(client) => {
                 .setTimestamp()
                 .setColor('#24E498')
 
-            client.channels.cache.get(mod - log).send({ embeds: [embedVoiceLog] })
+            client.channels.cache.get(modlog).send({ embeds: [embedVoiceLog] })
         } else if (newState.channel.id !== oldState.channel.id) {
             const embedVoiceLog = new Discord.MessageEmbed()
                 .setTitle('LOG: Kanal gewechselt')
@@ -62,7 +62,7 @@ module.exports = async(client) => {
                 .setTimestamp()
                 .setColor('#24E498')
 
-            client.channels.cache.get(mod - log).send({ embeds: [embedVoiceLog] })
+            client.channels.cache.get(modlog).send({ embeds: [embedVoiceLog] })
         } else {
             console.log("changed mute, stream or sth like that. this needs definitly to be logged, especially the executor, but since it's not that easy, i'll leave it for now")
         }

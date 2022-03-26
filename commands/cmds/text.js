@@ -7,7 +7,7 @@ module.exports = {
     callback: (message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const mod - log = '822575095721099304'
+        const modlog = '822575095721099304'
         const Discord = require('discord.js')
 
         const textthatishouldsay = text
@@ -28,7 +28,7 @@ module.exports = {
             .setFooter('thevalleyy-NetWork', iconurl)
             .setTimestamp()
             .setColor('03f8fc')
-        message.client.channels.cache.get(mod - log).send({ embeds: [successEmbed] })
+        message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
     },
     permissions: [],
     requiredRoles: ['Nice One']

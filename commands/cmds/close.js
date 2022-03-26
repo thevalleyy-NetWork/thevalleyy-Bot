@@ -7,7 +7,7 @@ module.exports = {
     callback: (message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const mod - log = '822575095721099304'
+        const modlog = '822575095721099304'
         const Discord = require('discord.js')
 
 
@@ -70,7 +70,7 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('03f8fc')
-            message.client.channels.cache.get(mod - log).send({ embeds: [embedSuccess2] })
+            message.client.channels.cache.get(modlog).send({ embeds: [embedSuccess2] })
         } catch (error) {
             const failEmbed = new Discord.MessageEmbed()
                 .setTitle('Es gab einen Fehler bei -closee')
@@ -80,7 +80,7 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            message.client.channels.cache.get(mod - log).send({ embeds: [failEmbed] })
+            message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
         }
     },
     permissions: [],

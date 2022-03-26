@@ -20,6 +20,6 @@ module.exports = async(client) => {
             .setFooter('thevalleyy-NetWork', iconurl)
             .setTimestamp()
             .setColor('fc036b')
-        client.channels.cache.get(mod - log).send({ embeds: [embedError] })
+        client.channels.cache.get(modlog).send({ embeds: [embedError] })
     }
 }

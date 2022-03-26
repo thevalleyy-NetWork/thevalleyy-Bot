@@ -1,4 +1,4 @@
-const mod - log = '822575095721099304'
+const modlog = '822575095721099304'
 const Discord = require('discord.js')
 
 module.exports = (client) => {
@@ -39,7 +39,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', message.guild.iconURL())
                 .setTimestamp()
                 .setColor('fc036b')
-            client.channels.cache.get(mod - log).send({ embeds: [embedFail] })
+            client.channels.cache.get(modlog).send({ embeds: [embedFail] })
             return
         }
     })

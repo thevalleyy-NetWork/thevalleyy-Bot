@@ -14,7 +14,7 @@ module.exports = {
         const Discord = require('discord.js')
         const playerCount = fs.readFileSync("./data/playerrec.json", 'utf8');
         const playerCount_ = JSON.parse(playerCount)
-        const mod - log = '822575095721099304'
+        const modlog = '822575095721099304'
 
 
         try {
@@ -41,7 +41,7 @@ module.exports = {
                         .setFooter('thevalleyy-NetWork', iconurl)
                         .setTimestamp()
                         .setColor('03f8fc')
-                        // await message.client.channels.cache.get(mod-log).send({ embeds: [embedLog] })
+                        // await message.client.channels.cache.get(modlog).send({ embeds: [embedLog] })
                 })
         } catch (error) {
             const failEmbed = new Discord.MessageEmbed()
@@ -52,7 +52,7 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            message.client.channels.cache.get(mod - log).send({ embed: failEmbed })
+            message.client.channels.cache.get(modlog).send({ embed: failEmbed })
             message.reply("Es gab einen Fehler...")
 
         }

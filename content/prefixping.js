@@ -1,4 +1,4 @@
-const mod - log = '822575095721099304'
+const modlog = '822575095721099304'
 const Discord = require('discord.js')
 module.exports = (client) => {
     client.on("messageCreate", message => {

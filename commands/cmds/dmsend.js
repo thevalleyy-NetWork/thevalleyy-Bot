@@ -24,7 +24,7 @@ module.exports = {
     callback: async(message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const mod - log = '822575095721099304'
+        const modlog = '822575095721099304'
         const Discord = require('discord.js')
 
         getMember(message)
@@ -55,7 +55,7 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('03f8fc')
-            message.client.channels.cache.get(mod - log).send({ embeds: [successEmbed] })
+            message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
         } catch (error) {
             message.reply('Die Nachricht konnte nicht an `' + user.user.tag + '` versendet werden.')
 
@@ -67,7 +67,7 @@ module.exports = {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            message.client.channels.cache.get(mod - log).send({ embeds: [failEmbed] })
+            message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
             return
         }
     },

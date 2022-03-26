@@ -1,4 +1,4 @@
-const mod - log = '822575095721099304'
+const modlog = '822575095721099304'
 const Discord = require('discord.js')
 module.exports = (client) => {
 
@@ -31,7 +31,7 @@ module.exports = (client) => {
                     .addField("message.author", `<@!${message.author.id}>`, true)
                     .setFooter(message.guild.name, iconurl)
                     .setTimestamp()
-                client.channels.cache.get(mod - log).send({ embeds: [embed] })
+                client.channels.cache.get(modlog).send({ embeds: [embed] })
             }
         } catch (error) {
             const embedSUS = new Discord.MessageEmbed()
@@ -42,7 +42,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            client.channels.cache.get(mod - log).send({ embeds: [embedSUS] })
+            client.channels.cache.get(modlog).send({ embeds: [embedSUS] })
         }
     })
 }

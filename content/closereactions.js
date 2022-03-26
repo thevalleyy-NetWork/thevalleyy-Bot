@@ -1,4 +1,4 @@
-const mod - log = '822575095721099304'
+const modlog = '822575095721099304'
 const Discord = require('discord.js')
 
 
@@ -36,7 +36,7 @@ module.exports = (client) => {
                             .setFooter('thevalleyy-NetWork', iconurl)
                             .setTimestamp()
                             .setColor('03f8fc')
-                        client.channels.cache.get(mod - log).send({ embeds: [embedSuccess] })
+                        client.channels.cache.get(modlog).send({ embeds: [embedSuccess] })
                     }
 
                     if (reaction.emoji.id === '843826737535647745') {
@@ -51,7 +51,7 @@ module.exports = (client) => {
                             .setFooter('thevalleyy-NetWork', iconurl)
                             .setTimestamp()
                             .setColor('03f8fc')
-                        client.channels.cache.get(mod - log).send({ embeds: [embedSuccess2] })
+                        client.channels.cache.get(modlog).send({ embeds: [embedSuccess2] })
                     }
 
                 } else { reaction.message.channel.send('Sorry ' + user.tag + ', diese Aktion kann nur von Mods / Admins ausgeführt werden.') }
@@ -66,7 +66,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            client.channels.cache.get(mod - log).send({ embeds: [failEmbed] })
+            client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
 
         }
     })

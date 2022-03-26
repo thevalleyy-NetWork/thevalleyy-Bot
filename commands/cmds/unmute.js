@@ -25,7 +25,7 @@ module.exports = {
     callback: (message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const mod - log = '822575095721099304'
+        const modlog = '822575095721099304'
         const Discord = require('discord.js')
 
         getMember(message)
@@ -50,17 +50,17 @@ module.exports = {
                     .setFooter('thevalleyy-NetWork', iconurl)
                     .setTimestamp()
                     .setColor('03f8fc')
-                message.client.channels.cache.get(mod - log).send({ embeds: [successEmbed] })
+                message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
 
                 if (!arguments[1]) {
                     message.reply('`' + muteUser.user.tag + '` kann nun wieder schreiben.')
                     muteUser.user.send('Du wurdest von `' + message.author.tag + '` auf dem Server `' + message.guild.name + '` entmuted.')
-                        .catch(error => message.client.channels.cache.get(mod - log).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
+                        .catch(error => message.client.channels.cache.get(modlog).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
 
                 } else {
                     message.reply('`' + muteUser.user.tag + '` kann nun wieder schreiben.')
                     muteUser.user.send('Du wurdest von `' + message.author.tag + '` auf dem Server `' + message.guild.name + '` entmuted.\nGrund: `' + text.substring(0, 300).split(' ').slice(1).join(' ') + '`')
-                        .catch(error => message.client.channels.cache.get(mod - log).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
+                        .catch(error => message.client.channels.cache.get(modlog).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
                 }
             } catch (error) {
                 const failEmbed = new Discord.MessageEmbed()
@@ -71,7 +71,7 @@ module.exports = {
                     .setFooter('thevalleyy-NetWork', iconurl)
                     .setTimestamp()
                     .setColor('fc036b')
-                message.client.channels.cache.get(mod - log).send({ embeds: [failEmbed] })
+                message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
 
                 message.reply('Es gab einen Fehler.')
             }

@@ -1,4 +1,4 @@
-const mod - log = '822575095721099304'
+const modlog = '822575095721099304'
 const Discord = require('discord.js')
 var blacklistarray = ["", "", "", ""]
 module.exports = (client) => {
@@ -19,20 +19,20 @@ module.exports = (client) => {
 
             if (reaction.emoji.id === '800645521277452298') {
                 userObj.roles.add(botRole)
-                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die BotNews <:BotNews:800645521277452298> Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die BotNews <:BotNews:800645521277452298> Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
                 return
             }
 
 
             if (reaction.emoji.id === '800643239241711638') {
                 userObj.roles.add(newsRole)
-                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die News <:News:800643239241711638> Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die News <:News:800643239241711638> Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
                 return
             }
 
             if (reaction.emoji.id === '844909801297018891') {
                 userObj.roles.add(mcRole)
-                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die Minecraft <:Minecraft:844909801297018891> Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Minecraft <:Minecraft:844909801297018891> Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
             }
         } catch (error) {
             const embedFail = new Discord.MessageEmbed()
@@ -43,7 +43,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            client.channels.cache.get(mod - log).send({ embeds: [embedFail] })
+            client.channels.cache.get(modlog).send({ embeds: [embedFail] })
         }
 
     })
@@ -63,20 +63,20 @@ module.exports = (client) => {
 
             if (reaction.emoji.id === '800645521277452298') {
                 userObj.roles.remove(botRole)
-                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die BotNews <:BotNews:800645521277452298> Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die BotNews <:BotNews:800645521277452298> Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
                 return
             }
 
 
             if (reaction.emoji.id === '800643239241711638') {
                 userObj.roles.remove(newsRole)
-                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die News <:News:800643239241711638> Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die News <:News:800643239241711638> Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
                 return
             }
 
             if (reaction.emoji.id === '844909801297018891') {
                 userObj.roles.remove(mcRole)
-                client.channels.cache.get(mod - log).send('<@' + user.id + '> hat nun die Minecraft <:Minecraft:844909801297018891> Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Minecraft <:Minecraft:844909801297018891> Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
             }
         } catch (error) {
             const embedFail2 = new Discord.MessageEmbed()
@@ -87,7 +87,7 @@ module.exports = (client) => {
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
-            client.channels.cache.get(mod - log).send({ embeds: [embedFail2] })
+            client.channels.cache.get(modlog).send({ embeds: [embedFail2] })
         }
 
     })

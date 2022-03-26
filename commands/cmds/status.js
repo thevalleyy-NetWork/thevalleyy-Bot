@@ -6,7 +6,7 @@ module.exports = {
     maxArgs: null,
     callback: (message, arguments, text) => {
 
-        const mod - log = '822575095721099304'
+        const modlog = '822575095721099304'
         var iconurl = message.guild.iconURL({ dynamic: true })
         const Discord = require('discord.js')
         const supRole = message.member.guild.roles.cache.find(role => role.name === 'Supporter').id
@@ -29,7 +29,7 @@ module.exports = {
                         .setFooter('thevalleyy-NetWork', iconurl)
                         .setTimestamp()
                         .setColor('fc036b')
-                    message.client.channels.cache.get(mod - log).send({ embeds: [embedfail] })
+                    message.client.channels.cache.get(modlog).send({ embeds: [embedfail] })
                 }
 
 
@@ -52,7 +52,7 @@ module.exports = {
                         .setFooter('thevalleyy-NetWork', iconurl)
                         .setTimestamp()
                         .setColor('fc036b')
-                    message.client.channels.cache.get(mod - log).send({ embeds: [embedfail] })
+                    message.client.channels.cache.get(modlog).send({ embeds: [embedfail] })
                 }
             }
         } else {
