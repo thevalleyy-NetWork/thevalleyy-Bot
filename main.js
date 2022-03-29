@@ -93,7 +93,7 @@ client.on('ready', async() => {
     readCommands('commands')
 
 
-    console.log(`[${gettime()}] » Registering: content`)
+    console.log(`[${gettime()}] » Registering: events`)
     fs.readdir(directoryPath, function(err, files) {
         if (err) {
             return console.log('[' + gettime() + '] » Error: Unable to scan directory: ' + err)
@@ -103,7 +103,7 @@ client.on('ready', async() => {
                 console.log(`[${gettime()}] » Skipping file ${file}`)
                 return
             }
-            require('./content/' + file)(client)
+            require('./events/' + file)(client)
             console.log(`[${gettime()}] » Loading: ${file}`)
         })
     })
