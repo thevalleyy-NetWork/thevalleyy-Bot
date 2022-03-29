@@ -34,14 +34,6 @@ module.exports = {
 
                     await message.reply({ embeds: [embedSuccess] })
 
-                    const embedLog = new Discord.MessageEmbed()
-                        .setTitle('-mc ausgeführt')
-                        .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                        .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                        .setFooter('thevalleyy-NetWork', iconurl)
-                        .setTimestamp()
-                        .setColor('03f8fc')
-                        // await message.client.channels.cache.get(modlog).send({ embeds: [embedLog] })
                 })
         } catch (error) {
             const failEmbed = new Discord.MessageEmbed()

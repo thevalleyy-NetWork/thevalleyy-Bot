@@ -27,14 +27,6 @@ module.exports = {
                 message.channel.send('Es wurden `' + clearmsg + '` Nachrichten gelöscht. \nAusgeführt durch: ' + message.author.tag)
             } else message.channel.send("Du kannste keine " + clearmsg + " Nachrichten löschen, " + message.author.username)
 
-            const embedsuccess = new Discord.MessageEmbed()
-                .setTitle('Es wurden `' + clearmsg + '` Nachrichten gelöscht.')
-                .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                .setFooter('thevalleyy-NetWork', iconurl)
-                .setTimestamp()
-                .setColor('03f8fc')
-            message.client.channels.cache.get(modlog).send({ embeds: [embedsuccess] });
         } catch (error) {
             const embedfail = new Discord.MessageEmbed()
                 .setTitle('Es gab einen Fehler beim Löschen von Nachrichten')

@@ -50,29 +50,11 @@ module.exports = {
                 user.roles.remove(Role)
                 message.reply('`' + user.user.tag + '` wurde `Nice One` entzogen.')
 
-                const successEmbed1 = new Discord.MessageEmbed()
-                    .setTitle('-niceone ausgeführt')
-                    .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                    .setDescription('`' + user.user.tag + '`')
-                    .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                    .setFooter('thevalleyy-NetWork', iconurl)
-                    .setTimestamp()
-                    .setColor('03f8fc')
-                message.client.channels.cache.get(modlog).send({ embeds: [successEmbed1] })
 
             } else {
                 user.roles.add(Role)
                 message.reply('`' + user.user.tag + '` wurde `Nice One` hinzugefügt.')
 
-                const successEmbed2 = new Discord.MessageEmbed()
-                    .setTitle('-mute ausgeführt')
-                    .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                    .setDescription('`' + user.user.tag + '` wurde Nice One hinzugefügt.')
-                    .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                    .setFooter('thevalleyy-NetWork', iconurl)
-                    .setTimestamp()
-                    .setColor('03f8fc')
-                message.client.channels.cache.get(modlog).send({ embeds: [successEmbed2] })
             }
         } catch (error) {
             const failEmbed = new Discord.MessageEmbed()

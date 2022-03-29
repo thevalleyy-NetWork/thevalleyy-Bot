@@ -10,14 +10,6 @@
                 const modlog = '822575095721099304'
                 const Discord = require('discord.js')
 
-                const successEmbed = new Discord.MessageEmbed()
-                    .setTitle('-restart ausgeführt')
-                    .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                    .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                    .setFooter('thevalleyy-NetWork', iconurl)
-                    .setTimestamp()
-                    .setColor('03f8fc')
-                await message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
                 await message.reply("Neustart eingeleitet.")
                 await process.exit(42)
             },

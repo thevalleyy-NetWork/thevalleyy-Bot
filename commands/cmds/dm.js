@@ -35,7 +35,7 @@ module.exports = {
             return
         }
         if (user.id === '506746108345843713' || user.id === '785166173548445726') {
-            message.reply('Dms an `' + user.user.username + '` sind nicht erlaubt.')
+            message.reply('DMs an `' + user.user.username + '` sind nicht erlaubt.')
             return
         }
         if (user.id == message.author.id) {
@@ -47,15 +47,6 @@ module.exports = {
             await user.user.send(text.split(' ').slice(1).join(' ').substring(0, 2000))
             message.reply('Die Nachricht wurde an `' + user.user.tag + '` versandt.')
 
-            const successEmbed = new Discord.MessageEmbed()
-                .setTitle('-dm ausgeführt')
-                .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                .setDescription('Text: `' + text.split(' ').slice(1).join(' ').substring(0, 35) + '`')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                .setFooter('thevalleyy-NetWork', iconurl)
-                .setTimestamp()
-                .setColor('03f8fc')
-            message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
         } catch (error) {
             message.reply('Die Nachricht konnte nicht an `' + user.user.tag + '` versendet werden.')
 

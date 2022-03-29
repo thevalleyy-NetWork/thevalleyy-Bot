@@ -63,14 +63,6 @@ module.exports = {
                 embedmsg.react('<:crosss:843826737535647745>')
             })
 
-            const embedSuccess2 = new Discord.MessageEmbed()
-                .setTitle('Ein Ticket wurde geschlossen')
-                .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                .addField(message.author.tag, ' in <#' + message.channel.name + '>')
-                .setFooter('thevalleyy-NetWork', iconurl)
-                .setTimestamp()
-                .setColor('03f8fc')
-            message.client.channels.cache.get(modlog).send({ embeds: [embedSuccess2] })
         } catch (error) {
             const failEmbed = new Discord.MessageEmbed()
                 .setTitle('Es gab einen Fehler bei -closee')

@@ -41,16 +41,6 @@ module.exports = {
         } else {
             try {
                 muteUser.roles.remove(muteRole)
-                const successEmbed = new Discord.MessageEmbed()
-                    .setTitle('-unmute ausgeführt')
-                    .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                    .setDescription('`' + muteUser.user.tag + '` wurde ge-un-muted')
-                    .addField('Grund:', "` " + text.substring(0, 300).split(' ').slice(1).join(' ') + "`")
-                    .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                    .setFooter('thevalleyy-NetWork', iconurl)
-                    .setTimestamp()
-                    .setColor('03f8fc')
-                message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
 
                 if (!arguments[1]) {
                     message.reply('`' + muteUser.user.tag + '` kann nun wieder schreiben.')

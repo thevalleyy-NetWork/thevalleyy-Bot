@@ -37,16 +37,6 @@ module.exports = {
             .substring(0, 300)
         message.channel.send(hackertext2)
 
-
-        const successEmbed = new Discord.MessageEmbed()
-            .setTitle('-hackerman ausgeführt')
-            .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-            .setDescription('Text: `' + hackertext1.substring(0, 400) + '`')
-            .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-            .setFooter('thevalleyy-NetWork', iconurl)
-            .setTimestamp()
-            .setColor('03f8fc')
-        message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
     },
     permissions: [],
     requiredRoles: ['Nice One']

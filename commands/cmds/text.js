@@ -20,15 +20,6 @@ module.exports = {
         message.channel.send(textthatishouldsay.substring(0, 300))
 
 
-        const successEmbed = new Discord.MessageEmbed()
-            .setTitle('-text ausgeführt')
-            .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-            .setDescription('Text: `' + textthatishouldsay.substring(0, 35) + '`')
-            .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-            .setFooter('thevalleyy-NetWork', iconurl)
-            .setTimestamp()
-            .setColor('03f8fc')
-        message.client.channels.cache.get(modlog).send({ embeds: [successEmbed] })
     },
     permissions: [],
     requiredRoles: ['Nice One']

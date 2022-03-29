@@ -30,16 +30,8 @@ module.exports = {
                 output = util.inspect(result)
             }
 
-            const embedSuccess = new Discord.MessageEmbed()
-                .setTitle('-eval ausgeführt')
-                .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                .addField('Code:', '`' + evalcode.substring(0, 690) + '`')
-                .setFooter('thevalleyy-NetWork', iconurl)
-                .setTimestamp()
-                .setColor('03f8fc')
-            message.client.channels.cache.get(modlog).send({ embeds: [embedSuccess] })
-            message.client.channels.cache.get(modlog).send('```js\n' + output.substring(0, 1950) + '```')
+
+            message.reply('```js\n' + output.substring(0, 1950) + '```')
 
 
 

@@ -16,15 +16,6 @@ module.exports = {
                 reaction.message.channel.send('Das Ticket wird innerhalb `60 Sekunden` gelöscht, angefordert von: **' + message.author.tag + '**').then
                 setTimeout(() => reaction.message.channel.delete(), 60000)
 
-                const embedSuccess = new Discord.MessageEmbed()
-                    .setTitle('Ein Ticket wurde per Command gelöscht')
-                    .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                    .addField(message.author.tag, ' in <#' + message.channel.name + '>')
-                    .setFooter('thevalleyy-NetWork', iconurl)
-                    .setTimestamp()
-                    .setColor('03f8fc')
-                message.client.channels.cache.get(modlog).send({ embeds: [embedSuccess] })
-
             } else { message.reply('`-delete` kann nur in geschlossenen Tickets ausgeführt werden.') }
 
         } catch (error) {
