@@ -22,6 +22,7 @@
     "opusscript": "^0.0.8",
     "pm2": "^5.2.0",
     "spotify-url-info": "^3.0.0",
+    "string-progressbar": "^1.0.4",
     "tweetnacl": "^1.0.3"
   }
 }

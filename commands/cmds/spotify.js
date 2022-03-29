@@ -1,3 +1,4 @@
+// function to find the given member
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
     let target = message.guild.members.cache.get(toFind)
@@ -15,6 +16,29 @@ function getMember(message, toFind = '') {
     return target
 }
 
+// function to calculate the duration of a song in hh:mm:ss format
+function getDuration(start, end) {
+    const date = new Date(end - start)
+
+    let secFiller = ""
+    let minFiller = ""
+    let hourFiller = ""
+
+    if (date.getSeconds().toString().length < 2) secFiller = "0"
+    if (date.getMinutes().toString().length < 2) minFiller = "0"
+    if (date.getHours().toString().length - 1 < 2) hourFiller = "0"
+
+    var dura = `${hourFiller}${date.getHours() + date.getTimezoneOffset() / 60}:${minFiller}${date.getMinutes()}:${secFiller}${date.getSeconds()}`
+
+    return dura
+}
+
+// get config
+const config = require('./../../config.json')
+    // later used, it's self explaning
+const progressbar = require('string-progressbar')
+
+// create the command
 module.exports = {
     commands: ['spotify'],
     expectedArgs: '[user]',
@@ -24,18 +48,104 @@ module.exports = {
     callback: async(message, arguments, text) => {
         const Discord = require('discord.js')
 
+        // second argument?
         if (!arguments[0]) {
-            message.client.users.fetch(message.author.id, false)
-                // await message.reply(message.author.presence.game.details)
-            await console.log(message.author.presence)
-        } else {
-            getMember(message)
-            let avatarkek = getMember(message, arguments[0])
-            if (!avatarkek) {
-                message.reply('kein user gefunden')
+            // no xd, fetch the user
+            await message.client.users.fetch(message.author.id, false)
+
+            // search for spotify presence
+            var result
+            const acts = await message.member.presence.activities
+            await acts.forEach(Activity => {
+                    if (Activity.name.toLowerCase() === "spotify") {
+                        result = Activity
+                    }
+                })
+                // there was no spotify presence
+            if (!result) {
+                message.reply(`Du hörst gerade nichts auf Spotify.`)
                 return
             }
-            message.reply(avatarkek.user.username)
+
+            // calculate the progressbar
+            const songlenght = new Date(await result.timestamps.end.toString()).getTime() - new Date(await result.timestamps.start.toString()).getTime()
+            const lenghtInSeconds = (new Date(songlenght).getSeconds() + new Date(songlenght).getMinutes() * 60 + (new Date(songlenght).getHours() + new Date(songlenght).getTimezoneOffset() / 60) * 3600)
+            const currentSeconds = Date.now().toString().slice(0, -3) - result.createdTimestamp.toString().slice(0, -3)
+            const values = progressbar.filledBar(lenghtInSeconds, currentSeconds)
+
+            // create the embed
+            const embed = new Discord.MessageEmbed()
+                .setColor(config.standard_color)
+                .setDescription("Du hörst gerade auf Spotify:")
+                .addField("Titel:", `\`${result.details}\``, true)
+                .addField("Album:", `\`${result.assets.largeText}\``, true)
+                .addField("Dauer:", `\`${await getDuration(new Date(result.timestamps.start.toString()).getTime(), new Date(result.timestamps.end.toString()).getTime())}\``, true)
+            if (result.state.includes(';')) { // artist or artists
+                embed.addField("Interpreten:", `\`${result.state.replaceAll(';', ',')}\``, true)
+            } else { embed.addField("Interpret:", `\`${result.state.replaceAll(';', ',')}\``, true) }
+            embed.addField('Link:', `[${result.details}](https://open.spotify.com/track/${result.syncId} "${result.details} in Spotify öffnen")`, false)
+                .addField(`${values[0]}`, `​`, true)
+                .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
+                .setTimestamp()
+                .setFooter({
+                    text: message.guild.name,
+                    iconURL: message.guild.iconURL({ dynamic: true })
+                })
+
+
+            // send the embed
+            message.reply({ embeds: [embed] })
+
+        } else {
+            // the same as above, but with a user as the second argument
+            getMember(message)
+            let user = getMember(message, arguments[0])
+                // iS iT a UsEr?
+            if (!user) {
+                message.reply(`\`${arguments[0].substring(0, 50)}\` ist kein gültiger Nutzer!`)
+                return
+            }
+            await message.client.users.fetch(user.id, false)
+
+            var result
+            const acts = await user.presence.activities
+            await acts.forEach(Activity => {
+                if (Activity.name.toLowerCase() === "spotify") {
+                    result = Activity
+                }
+            })
+            if (!result) {
+                message.reply(`\`${user.user.username}\` hört gerade nichts auf Spotify.`)
+                return
+            }
+
+            const songlenght = new Date(await result.timestamps.end.toString()).getTime() - new Date(await result.timestamps.start.toString()).getTime()
+            const lenghtInSeconds = (new Date(songlenght).getSeconds() + new Date(songlenght).getMinutes() * 60 + (new Date(songlenght).getHours() + new Date(songlenght).getTimezoneOffset() / 60) * 3600)
+            const currentSeconds = Date.now().toString().slice(0, -3) - result.createdTimestamp.toString().slice(0, -3)
+            const values = progressbar.filledBar(lenghtInSeconds, currentSeconds)
+
+
+            const embed = new Discord.MessageEmbed()
+                .setColor(config.standard_color)
+                .setDescription(user.user.username + " hört gerade auf Spotify:")
+                .addField("Titel:", `\`${result.details}\``, true)
+                .addField("Album:", `\`${result.assets.largeText}\``, true)
+                .addField("Dauer:", `\`${await getDuration(new Date(result.timestamps.start.toString()).getTime(), new Date(result.timestamps.end.toString()).getTime())}\``, true)
+            if (result.state.includes(';')) {
+                embed.addField("Interpreten:", `\`${result.state.replaceAll(';', ',')}\``, true)
+            } else { embed.addField("Interpret:", `\`${result.state.replaceAll(';', ',')}\``, true) }
+            embed.addField('Link:', `[${result.details}](https://open.spotify.com/track/${result.syncId} "${result.details} in Spotify öffnen")`, false)
+                .addField(`${values[0]}`, `​`, true)
+                .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
+                .setTimestamp()
+                .setFooter({
+                    text: message.guild.name,
+                    iconURL: message.guild.iconURL({ dynamic: true })
+                })
+
+
+
+            message.reply({ embeds: [embed] })
         }
 
     },

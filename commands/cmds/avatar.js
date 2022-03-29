@@ -30,7 +30,7 @@ module.exports = {
             getMember(message)
             let avatarkek = getMember(message, arguments[0])
             if (!avatarkek) {
-                message.reply('Der User `' + arguments[0].substring(0, 50) + '` konnte nicht gefunden werden.')
+                message.reply(message.reply(`\`${arguments[0].substring(0, 50)}\` ist kein gültiger Nutzer!`))
                 return
             }
             message.reply(avatarkek.user.avatarURL({ dynamic: true, size: 128 })).catch((error) => {

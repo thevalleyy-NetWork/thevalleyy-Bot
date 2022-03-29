@@ -129,7 +129,7 @@ module.exports = (client, commandOptions) => {
                     .setDescription(`\`${message.author.tag}\`, <@${message.author.id}>`)
                     .addField('command:', `\`${prefix}${alias}\``, true)
                     .addField('channel:', '<#' + message.channel.id + '>', true)
-                    .addField('link:', `[▣▣▣](${message.url} "link to message on server")`, true)
+                    .addField('link:', `[▣▣▣](${message.url} "link to ${message.author.username}'s message")`, true)
                     .setFooter({
                         text: message.guild.name,
                         iconURL: message.guild.iconURL({ dynamic: true })
