@@ -9,8 +9,7 @@ module.exports = (client) => {
         if (message.webhookId) return
 
         if (message.content === '<@!785166173548445726>') {
-            const fs = require('fs')
-            const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+            const config = require('./../config.json')
             message.reply(`Hallo ${message.author.username}, mit **${config.prefix}** höre ich auf dich! <:POGGIES:786251968841515049>`)
         }
     })

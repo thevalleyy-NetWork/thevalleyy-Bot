@@ -5,8 +5,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     callback: async(message, arguments, text) => {
-        const fs = require('fs')
-        const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+        const config = require('./../../config.json')
         const util = require('util')
         var iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'

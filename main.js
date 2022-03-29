@@ -33,7 +33,7 @@ const path = require('path')
 const fs = require('fs')
 const process = require('process')
 
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+const config = require('./config.json')
 const client = new Discord.Client({
     partials: [
         "MESSAGE",

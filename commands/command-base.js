@@ -1,6 +1,5 @@
 const { prefix } = require('../config.json')
-const fs = require('fs')
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+const config = require('./../config.json')
 const Discord = require('discord.js')
 
 const validatePermissions = (permissions) => {
