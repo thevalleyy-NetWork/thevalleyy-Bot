@@ -1,9 +1,11 @@
 module.exports = {
     commands: ['servers', 'serverlist'],
     expectedArgs: '',
-    permissionError: 'joa joa joa',
+    permissionError: 'ja ja ja',
     minArgs: 0,
     maxArgs: null,
+    cooldown: 10000,
+    description: "this description is weird",
     callback: (message, arguments, text) => {
 
 

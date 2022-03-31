@@ -69,7 +69,7 @@ const client = new Discord.Client({
 client.on('ready', async() => {
     const baseFile = 'command-base.js'
     const commandBase = require(`./commands/${baseFile}`)
-    var directoryPath = path.join(__dirname, 'content')
+    var directoryPath = path.join(__dirname, 'events')
 
 
     console.log(`[${gettime()}] » Registering commands`)
@@ -110,7 +110,7 @@ client.on('ready', async() => {
 })
 
 
-// require('./content/startup.js')(client)
+// require('./events/startup.js')(client)
 client.logChannel = client.channels.cache.get('724098984100958208')
 client.login(config.token)
 

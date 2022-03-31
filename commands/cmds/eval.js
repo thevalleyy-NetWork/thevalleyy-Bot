@@ -4,6 +4,8 @@ module.exports = {
     permissionError: 'Unzureichende Rechte.',
     minArgs: 1,
     maxArgs: null,
+    cooldown: null,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
         const config = require('./../../config.json')
         const util = require('util')

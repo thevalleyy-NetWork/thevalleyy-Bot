@@ -4,6 +4,8 @@ module.exports = {
     permissionError: '',
     minArgs: 0,
     maxArgs: 2,
+    cooldown: 30000,
+    description: "this description is weird",
     callback: (message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({

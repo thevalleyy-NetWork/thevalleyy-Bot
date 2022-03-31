@@ -4,6 +4,8 @@ module.exports = {
     permissionError: 'Diese Nachricht sollte es nie geben',
     minArgs: 0,
     maxArgs: null,
+    cooldown: null,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
         var rusasarray = ['ruuuuuuuuusas',
             'raaaaaaaaasus',

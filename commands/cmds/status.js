@@ -4,6 +4,8 @@ module.exports = {
     permissionError: 'Neeeeeeeeeeeeeee',
     minArgs: 1,
     maxArgs: null,
+    cooldown: 10000,
+    description: "this description is weird",
     callback: (message, arguments, text) => {
 
         const modlog = '822575095721099304'

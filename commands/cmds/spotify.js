@@ -45,6 +45,8 @@ module.exports = {
     permissionError: 'Diese Nachricht sollte es nie geben',
     minArgs: 0,
     maxArgs: 1,
+    cooldown: 60000,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
         const Discord = require('discord.js')
 
@@ -71,7 +73,7 @@ module.exports = {
             const songlenght = new Date(await result.timestamps.end.toString()).getTime() - new Date(await result.timestamps.start.toString()).getTime()
             const lenghtInSeconds = (new Date(songlenght).getSeconds() + new Date(songlenght).getMinutes() * 60 + (new Date(songlenght).getHours() + new Date(songlenght).getTimezoneOffset() / 60) * 3600)
             const currentSeconds = Date.now().toString().slice(0, -3) - result.createdTimestamp.toString().slice(0, -3)
-            const values = progressbar.filledBar(lenghtInSeconds, currentSeconds)
+            const values = progressbar.filledBar(lenghtInSeconds, currentSeconds, [size = 38])
 
             // create the embed
             const embed = new Discord.MessageEmbed()

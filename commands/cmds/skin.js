@@ -9,6 +9,8 @@ module.exports = {
     permissionError: 'Du bist nicht berechtigt, diesen Befehl zu nutzen.',
     minArgs: 1,
     maxArgs: 1,
+    cooldown: 10000,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
 
         const mcreq = arguments[0].substring(0, 20)

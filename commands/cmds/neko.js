@@ -4,6 +4,8 @@ module.exports = {
     permissionError: 'Diese Nachricht sollte es nie geben',
     minArgs: 0,
     maxArgs: 0,
+    cooldown: 10000,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })

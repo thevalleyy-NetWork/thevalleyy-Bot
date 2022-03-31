@@ -1,6 +1,6 @@
-const { prefix } = require('../config.json')
 const config = require('./../config.json')
 const Discord = require('discord.js')
+const cooldownSet = new Set()
 
 const validatePermissions = (permissions) => {
     const validPermissions = [
@@ -50,6 +50,8 @@ module.exports = (client, commandOptions) => {
         permissionError = 'Unzureichende Berechtigungen',
         minArgs = 0,
         maxArgs = null,
+        cooldown = null,
+        description = 'Well, this is a description... What did you expect?',
         permissions = [],
         requiredRoles = [],
         callback
@@ -71,7 +73,7 @@ module.exports = (client, commandOptions) => {
     }
 
     // Listen for messages
-    client.on('messageCreate', message => {
+    client.on('messageCreate', async message => {
         const { member, content, guild } = message
 
         // Ensure this message is sent by a user on a server
@@ -82,9 +84,63 @@ module.exports = (client, commandOptions) => {
         if (message.webhookId) return
 
         for (const alias of commands) {
-            if (content.toLowerCase() === (`${prefix}${alias.toLowerCase()}`) || content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()} `)) {
+            if (content.toLowerCase() === (`${config.prefix}${alias.toLowerCase()}`) || content.toLowerCase().startsWith(`${config.prefix}${alias.toLowerCase()} `)) {
 
                 // A command has been ran
+
+                if (message.author.id != config.owner) {
+                    // Check if the command has a custom cooldown
+                    if (cooldown === null) {
+
+                        // No custom cooldown, use the default
+
+                        // react and remove the message
+                        if (cooldownSet.has(message.author.id)) {
+                            message.react('⏳')
+                            setTimeout(() => {
+                                message.delete()
+                            }, 5000)
+                            return
+                        }
+
+                        // add the user to the cooldown set
+                        cooldownSet.add(message.author.id)
+                        setTimeout(() => {
+                            cooldownSet.delete(message.author.id)
+                        }, config.cooldown_standard)
+
+                    } else {
+                        // the same as above, but with a custom cooldown
+                        // calculate the cooldown
+                        d = Number(cooldown / 1000);
+                        var h = Math.floor(d / 3600);
+                        var m = Math.floor(d % 3600 / 60);
+                        var s = Math.floor(d % 3600 % 60);
+
+                        var hDisplay = h > 0 ? (h == 1 ? m > 0 ? `einer Stunde, ` : h == 1 ? `einer Stunde` : `${h} Stunden` : `${h} Stunden, `) : ``;
+                        var mDisplay = m > 0 ? (m == 1 ? s > 0 ? `einer Minute, ` : m == 1 ? `einer Minute` : `${m} Minuten` : `${m} Minuten, `) : ``;
+                        var sDisplay = s > 0 ? (s == 1 ? `einer Sekunde` : ` Sekunden`) : ``;
+
+                        // do the magic
+                        if (cooldownSet.has(message.author.id + commands[0])) {
+                            let msg = await message.reply(`\`${config.prefix + alias}\` hat einen Cooldown von \`${hDisplay + mDisplay + sDisplay}\``)
+                            setTimeout(() => {
+                                msg.delete()
+                            }, 3000)
+                            setTimeout(() => {
+                                message.delete()
+                            }, 5000)
+                            return
+                        }
+                        cooldownSet.add(message.author.id + commands[0])
+                        setTimeout(() => {
+                            cooldownSet.delete(message.author.id + commands[0])
+                        }, cooldown)
+                    }
+
+                }
+
+
 
                 // Ensure the user has the required permissions
                 for (const permission of permissions) {
@@ -112,7 +168,7 @@ module.exports = (client, commandOptions) => {
 
                 // Ensure we have the correct number of arguments
                 if (arguments.length < minArgs | (maxArgs !== null && arguments.length > maxArgs)) {
-                    message.reply('Falsche Syntax! Benutze: ``' + `${prefix}${alias} ${expectedArgs}` + '``')
+                    message.reply('Falsche Syntax! Benutze: ``' + `${config.prefix}${alias} ${expectedArgs}` + '``')
                     return
                 }
 
@@ -126,7 +182,7 @@ module.exports = (client, commandOptions) => {
                     .setTitle('registered a command')
                     .setThumbnail(message.author.avatarURL({ dynamic: true }))
                     .setDescription(`\`${message.author.tag}\`, <@${message.author.id}>`)
-                    .addField('command:', `\`${prefix}${alias}\``, true)
+                    .addField('command:', `\`${config.prefix}${alias}\``, true)
                     .addField('channel:', '<#' + message.channel.id + '>', true)
                     .addField('link:', `[▣▣▣](${message.url} "link to ${message.author.username}'s message")`, true)
                     .setFooter({

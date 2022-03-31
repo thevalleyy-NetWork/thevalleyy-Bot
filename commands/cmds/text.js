@@ -4,6 +4,8 @@ module.exports = {
     permissionError: 'Hm.. Irgendwas ist schief gelaufen',
     minArgs: 1,
     maxArgs: null,
+    cooldown: null,
+    description: "this description is weird",
     callback: (message, arguments, text) => {
 
         var iconurl = message.guild.iconURL({ dynamic: true })

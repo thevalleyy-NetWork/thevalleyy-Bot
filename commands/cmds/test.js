@@ -1,14 +1,15 @@
 module.exports = {
-    commands: ['test'],
+    commands: ['test', 'test2'],
     expectedArgs: '',
     permissionError: 'Diese Nachricht sollte es nie geben',
     minArgs: 0,
     maxArgs: 0,
+    cooldown: 0,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
         const Discord = require('discord.js')
-        const Enmap = require('enmap')
-        let Role = message.member.guild.roles.cache.find(role => role.name === 'Nice One').id
-        return
+
+        message.reply("Test erfolgreich!")
 
     },
     permissions: [],

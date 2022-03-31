@@ -22,6 +22,8 @@ module.exports = {
     permissionError: 'ne',
     minArgs: 0,
     maxArgs: null,
+    cooldown: null,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
 
         if (!arguments[0]) {

@@ -4,6 +4,8 @@ module.exports = {
     permissionError: 'Unzureichende Rechte',
     minArgs: 1,
     maxArgs: 1,
+    cooldown: 10000,
+    description: "this description is weird",
     callback: async(message, arguments, text) => {
 
         let clearmsg = +arguments[0]
