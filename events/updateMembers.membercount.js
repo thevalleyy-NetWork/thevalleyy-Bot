@@ -3,9 +3,10 @@ const Discord = require('discord.js')
 module.exports = (client) => {
     const channelId = '786239370020913162'
 
-    const updateMembers = (guild) => {
+    const updateMembers = async(guild) => {
+        var memberCount = await guild.members.cache.filter(member => !member.user.bot).size;
         const channel = guild.channels.cache.get(channelId)
-        channel.setName(`Mitglieder: ${guild.memberCount.toLocaleString()}`, 'updating membercount')
+        channel.setName(`Mitglieder: ${memberCount.toLocaleString()}`, 'updating membercount')
     }
 
     client.on('guildMemberAdd', (member) => updateMembers(member.guild), )
