@@ -25,12 +25,24 @@ module.exports = {
     callback: async(message, arguments, text) => {
 
 
-        if (await db(`SELECT dcid FROM discord WHERE dcid = ${message.author.id}`).then(res => res[0])) {
-            message.reply("Du bist registriert!")
-        } else {
-            message.reply("Du bist nicht registriert!")
-        }
 
+
+
+        // const res = await db(`SELECT dctag FROM discord WHERE id = 32`)
+        // await message.reply(decodeURI(res[0].dctag))
+
+
+        // const members = message.guild.members.cache
+        // members.forEach(async member => {
+        //     await db(`INSERT INTO discord (dcid, dctag, joindate, oldestjoindate) VALUES (${member.id}, '${await encodeURI(member.user.tag.replaceAll("'", " "))}', ${Date.now()}, ${Date.now()})`)
+        //     console.log(`Registering: ${member.user.tag}`)
+        // });
+
+        // if (await db(`SELECT dcid FROM discord WHERE dcid = ${message.author.id}`).then(res => res[0])) {
+        //     message.reply("Du bist registriert!")
+        // } else {
+        //     message.reply("Du bist nicht registriert!")
+        // }
 
 
         // connection.getConnection(function(err, connection) {

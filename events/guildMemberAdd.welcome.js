@@ -36,8 +36,8 @@ module.exports = client => {
                         member.roles.add(vcmuterole)
                         member.user.send("Denkste")
                     }
-                    if (user.dctag !== member.user.tag) {
-                        await db(`UPDATE discord SET dctag = '${member.user.tag}' WHERE dcid = ${member.id}`)
+                    if (await decodeURI(user.dctag) !== member.user.tag) {
+                        await db(`UPDATE discord SET dctag = '${member.user.tag.replaceAll("'", " ")}' WHERE dcid = ${member.id}`)
                     }
                     await db(`UPDATE discord SET joindate = ${Date.now()} WHERE dcid = ${member.id}`)
                 } catch (e) {
@@ -52,7 +52,7 @@ module.exports = client => {
 
                 // insert into db
                 try {
-                    await db(`INSERT INTO discord (dcid, dctag, joindate, oldestjoindate) VALUES (${member.id}, '${member.user.tag}', ${Date.now()}, ${Date.now()})`)
+                    await db(`INSERT INTO discord (dcid, dctag, joindate, oldestjoindate) VALUES (${member.id}, '${member.user.tag.replaceAll("'", " ")}', ${Date.now()}, ${Date.now()})`)
                 } catch (e) { member.guild.channels.cache.get(modlog).send(`Fehler beim Eintragen von ${member.user.tag} in die Datenbank: ${e}`) }
 
             }
