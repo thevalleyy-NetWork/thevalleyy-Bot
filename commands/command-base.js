@@ -1,6 +1,19 @@
 const config = require('./../config.json')
 const Discord = require('discord.js')
 const cooldownSet = new Set()
+const mysql = require('mysql')
+const util = require('util')
+
+var connection = mysql.createPool({
+    multipleStatements: true,
+    connectionLimit: 10,
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
+})
+
+var db = util.promisify(connection.query).bind(connection)
 
 const validatePermissions = (permissions) => {
     const validPermissions = [
@@ -74,6 +87,7 @@ module.exports = (client, commandOptions) => {
 
     // Listen for messages
     client.on('messageCreate', async message => {
+
         const { member, content, guild } = message
 
         // Ensure this message is sent by a user on a server
@@ -89,6 +103,11 @@ module.exports = (client, commandOptions) => {
                 // A command has been ran
 
                 if (message.author.id != config.owner) {
+                    //Check if the user is blacklisted
+                    if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${message.author.id}`).then(res => res[0])) {
+                        return
+                    }
+
                     // Check if the command has a custom cooldown
                     if (cooldown === null) {
 
