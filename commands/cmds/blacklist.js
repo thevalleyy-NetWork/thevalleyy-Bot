@@ -43,7 +43,10 @@ module.exports = {
 
 
         if (!arguments[0]) {
-            const res = await db(`SELECT dcid FROM discord WHERE blacklisted = 1`)
+            try { const res = await db(`SELECT dcid FROM discord WHERE blacklisted = 1`) } catch (err) {
+                message.reply("Es gab einen Fehler:\n" + err.toString().substring(0, 500))
+                return
+            }
             if (res.length == 0) {
                 message.reply("Es sind keine Nutzer auf der Blacklist.")
                 return
@@ -72,13 +75,13 @@ module.exports = {
             if (res[0]) {
                 if (res[0].blacklisted === 1) {
                     try { await db(`UPDATE discord SET blacklisted = 0 WHERE dcid = ${user.user.id}`) } catch (err) {
-                        message.reply("Es gab einen Fehler:\n" + err.substring(0, 500))
+                        message.reply("Es gab einen Fehler:\n" + err.toString().substring(0, 500))
                         return
                     }
                     message.reply(`\`${user.user.tag}\` wurde von der Blacklist entfernt.`)
                 } else {
                     try { await db(`UPDATE discord SET blacklisted = 1 WHERE dcid = ${user.user.id}`) } catch (err) {
-                        message.reply("Es gab einen Fehler:\n" + err.substring(0, 500))
+                        message.reply("Es gab einen Fehler:\n" + err.toString().substring(0, 500))
                         return
                     }
                     message.reply(`\`${user.user.tag}\` wurde zur Blacklist hinzugefügt.`)
@@ -86,8 +89,9 @@ module.exports = {
             } else {
                 message.reply(`\`${user.user.tag}\` konnte nicht in der Datenbank gefunden werden.`)
             }
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            message.reply("Es gab einen Fehler:\n" + err.toString().substring(0, 500))
+            return
         }
 
 

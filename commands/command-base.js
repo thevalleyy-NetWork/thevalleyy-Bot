@@ -104,8 +104,12 @@ module.exports = (client, commandOptions) => {
 
                 if (message.author.id != config.owner) {
                     //Check if the user is blacklisted
-                    if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${message.author.id}`).then(res => res[0])) {
-                        return
+                    try {
+                        if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${message.author.id}`).then(res => res[0])) {
+                            return
+                        }
+                    } catch (e) {
+                        message.guild.channels.cache.get(config.mod_log_channel_id).send(`Die Blacklist konnte nicht erfolgreich abgefragt werden:\n${e}`)
                     }
 
                     // Check if the command has a custom cooldown
