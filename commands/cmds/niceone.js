@@ -15,6 +15,20 @@ function getMember(message, toFind = '') {
     return target
 }
 
+const config = require('../../config.json')
+const mysql = require('mysql')
+const util = require('util')
+
+const connection = mysql.createPool({
+    multipleStatements: true,
+    connectionLimit: 10,
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
+})
+
+const db = util.promisify(connection.query).bind(connection)
 
 module.exports = {
     commands: ['niceone', 'no'],
@@ -50,11 +64,14 @@ module.exports = {
         try {
             if (user.roles.cache.has(Role)) {
                 user.roles.remove(Role)
+                db(`UPDATE discord set niceone = 0 WHERE dcid = ${user.id}`)
+
                 message.reply('`' + user.user.tag + '` wurde `Nice One` entzogen.')
 
 
             } else {
                 user.roles.add(Role)
+                db(`UPDATE discord set niceone = 1 WHERE dcid = ${user.id}`)
                 message.reply('`' + user.user.tag + '` wurde `Nice One` hinzugefügt.')
 
             }

@@ -15,6 +15,20 @@ function getMember(message, toFind = '') {
     return target
 }
 
+const mysql = require('mysql')
+const util = require('util')
+const config = require('../../config.json')
+
+const connection = mysql.createPool({
+    multipleStatements: true,
+    connectionLimit: 10,
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
+})
+
+const db = util.promisify(connection.query).bind(connection)
 
 module.exports = {
     commands: ['mute'],
@@ -52,7 +66,7 @@ module.exports = {
         } else {
             try {
                 muteUser.roles.add(muteRole)
-
+                db(`UPDATE discord set muted = 1 WHERE dcid = ${muteUser.id}`)
 
                 if (!arguments[1]) {
                     message.reply('`' + muteUser.user.tag + '` kann nun nichtmehr schreiben.')

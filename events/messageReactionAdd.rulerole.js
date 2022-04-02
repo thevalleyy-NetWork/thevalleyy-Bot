@@ -18,7 +18,7 @@ module.exports = (client) => {
                 if (blacklistarray.includes(user.id)) return
 
                 userObj.roles.add(regelRole)
-                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle bekommen. \n Seine ID: `' + user.id + '`')
             }
         } catch (error) {
             const embedError = new Discord.MessageEmbed()
@@ -47,7 +47,7 @@ module.exports = (client) => {
                 if (blacklistarray.includes(user.id)) return
 
                 userObj.roles.remove(regelRole)
-                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
+                client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`')
             }
         } catch (error) {
             const embedError = new Discord.MessageEmbed()
