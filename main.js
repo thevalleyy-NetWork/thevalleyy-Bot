@@ -31,20 +31,8 @@ const Discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
 const process = require('process')
-const mysql = require('mysql')
-const util = require('util')
 const config = require('./config.json')
 
-var connection = mysql.createPool({
-    multipleStatements: true,
-    connectionLimit: 10,
-    host: config.mysql.host,
-    user: config.mysql.user,
-    password: config.mysql.password,
-    database: config.mysql.database
-})
-
-var db = util.promisify(connection.query).bind(connection)
 
 const client = new Discord.Client({
     partials: [

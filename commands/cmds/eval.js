@@ -1,3 +1,20 @@
+const config = require('./../../config.json')
+const util = require('util')
+const modlog = '822575095721099304'
+const Discord = require('discord.js')
+const mysql = require('mysql')
+
+var connection = mysql.createPool({
+    multipleStatements: true,
+    connectionLimit: 10,
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
+})
+
+var db = util.promisify(connection.query).bind(connection)
+
 module.exports = {
     commands: ['eval'],
     expectedArgs: '<code>',
@@ -7,11 +24,7 @@ module.exports = {
     cooldown: null,
     description: "this description is weird",
     callback: async(message, arguments, text) => {
-        const config = require('./../../config.json')
-        const util = require('util')
         var iconurl = message.guild.iconURL({ dynamic: true })
-        const modlog = '822575095721099304'
-        const Discord = require('discord.js')
 
         if (message.author.id !== '506746108345843713') {
             message.react('<:hm:907936051300012072>')
