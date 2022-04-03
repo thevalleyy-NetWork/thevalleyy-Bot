@@ -43,26 +43,29 @@ module.exports = {
 
 
         if (!arguments[0]) {
-            try { const res = await db(`SELECT dcid FROM discord WHERE blacklisted = 1`) } catch (err) {
+            try {
+                const res = await db(`SELECT dcid FROM discord WHERE blacklisted = 1`)
+                if (res.length == 0) {
+                    message.reply("Es sind keine Nutzer auf der Blacklist.")
+                    return
+                }
+                const embed = new Discord.MessageEmbed()
+                    .setTitle("Blacklist")
+                    .setDescription(res.map(r => `<@${r.dcid}>, \`${r.dcid}\``).join("\n"))
+                    .setColor(config.standard_color)
+                    .setTimestamp()
+                    .setFooter({
+                        text: message.guild.name,
+                        iconURL: message.guild.iconURL({ dynamic: true })
+                    })
+                message.reply({ embeds: [embed] })
+                return
+            } catch (err) {
                 message.reply("Es gab einen Fehler:\n" + err.toString().substring(0, 500))
                 return
             }
-            if (res.length == 0) {
-                message.reply("Es sind keine Nutzer auf der Blacklist.")
-                return
-            }
-            const embed = new Discord.MessageEmbed()
-                .setTitle("Blacklist")
-                .setDescription(res.map(r => `<@${r.dcid}>, \`${r.dcid}\``).join("\n"))
-                .setColor(config.standard_color)
-                .setTimestamp()
-                .setFooter({
-                    text: message.guild.name,
-                    iconURL: message.guild.iconURL({ dynamic: true })
-                })
-            message.reply({ embeds: [embed] })
-            return
         }
+
 
         const user = getMember(message, arguments[0])
         if (!user) {
