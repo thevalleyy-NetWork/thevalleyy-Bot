@@ -1,7 +1,5 @@
 const Discord = require('discord.js')
 const modlog = '822575095721099304'
-const fetch =
-    import ('node-fetch')
 
 module.exports = {
     commands: ['skin', 'mcskin', 'minecraftskin'],
@@ -12,6 +10,8 @@ module.exports = {
     cooldown: 10000,
     description: "this description is weird",
     callback: async(message, arguments, text) => {
+
+		const fetch = (await import ('node-fetch')).default
 
         const mcreq = arguments[0].substring(0, 20)
         try {

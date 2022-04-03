@@ -1,5 +1,3 @@
-const fetch =
-    import ('node-fetch')
 const Discord = require('discord.js')
 
 module.exports = {
@@ -16,6 +14,8 @@ module.exports = {
         const modlog = '822575095721099304'
 
         try {
+            const fetch = (await
+                import ('node-fetch')).default
             const waitEmbed = new Discord.MessageEmbed()
                 .setColor('0099ff')
                 .setDescription("Suche nach: `" + text.substring(0, 50) + "`...")
@@ -28,7 +28,7 @@ module.exports = {
                         .setColor('#ff0000')
                         .setTitle('Es gab einen Fehler...')
                         .setDescription("`" + error + "`")
-                        .setFooter(message.guild.name, iconurl)
+                        .setFooter({ text: message.guild.name, iconURL: iconurl })
                         .setTimestamp()
                     msg.edit({ embeds: [errorEmbed] })
                     return
@@ -37,11 +37,14 @@ module.exports = {
 
 
                 const songEmbed = new Discord.MessageEmbed()
-                    .setAuthor(`${author} (${title})`, "", links.genius)
+                    .setAuthor({ name: `${author} (${title})`, iconURL: "", url: links.genius })
                     .setThumbnail(thumbnail.genius)
                     .setDescription(lyrics.substring(0, 4096))
                     .setColor('0099ff')
-                    .setFooter(message.guild.name, iconurl)
+                    .setFooter({
+                        text: message.guild.name,
+                        iconURL: iconurl
+                    })
                     .setTimestamp()
 
                 await msg.edit({ embeds: [songEmbed] })

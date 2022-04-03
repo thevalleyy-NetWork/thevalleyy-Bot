@@ -12,7 +12,7 @@ module.exports = {
         const modlog = '822575095721099304'
         const Discord = require('discord.js')
         const nekochannel = '799728881228709928'
-        const fetch = require('node-fetch')
+		const fetch = (await import ('node-fetch')).default
 
         if (message.channel.id !== nekochannel) {
             message.reply(`${message.author.username}, ${message.guild.channels.cache
