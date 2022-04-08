@@ -21,7 +21,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "Access the database associated with the bot via a command",
     callback: async(message, arguments, text) => {
 
         // -db "SELECT * FROM discord WHERE blacklisted = 1"

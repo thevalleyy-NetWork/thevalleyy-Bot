@@ -3,6 +3,8 @@ const Discord = require('discord.js')
 const cooldownSet = new Set()
 const mysql = require('mysql')
 const util = require('util')
+const fs = require('fs')
+const path = require('path')
 
 var connection = mysql.createPool({
     multipleStatements: true,
@@ -14,6 +16,19 @@ var connection = mysql.createPool({
 })
 
 var db = util.promisify(connection.query).bind(connection)
+
+//delete files in directory
+const directory = './data/cmdinfo/';
+
+fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+
+    for (const file of files) {
+        fs.unlink(path.join(directory, file), err => {
+            if (err) throw err;
+        });
+    }
+});
 
 const validatePermissions = (permissions) => {
     const validPermissions = [
@@ -69,6 +84,19 @@ module.exports = (client, commandOptions) => {
         requiredRoles = [],
         callback
     } = commandOptions
+
+    //const cmdpattern = `{\n"commands": ${[commands]},\n"cooldown": ${(cooldown)},\n"description": "${description.toString()}",\n"expectedArgs": "${expectedArgs.toString()}",\n"maxArgs": ${(maxArgs)},\n"minArgs": ${(minArgs)},\n"permissionError": "${permissionError.toString()}",\n"permissions": ${[permissions]},\n"requiredRoles": ${requiredRoles.toString()}\n},\n`
+    const cmdpattern = `${JSON.stringify(commandOptions, null, 2)}`
+
+
+    //create a file for every new command
+    setTimeout(() => {
+        fs.writeFile(`./data/cmdinfo/@${commands.toString()}.json`, cmdpattern, function(err) {
+            if (err) console.log(err)
+        });
+
+    }, 1000)
+
 
     // Ensure the command and aliases are in an array
     if (typeof commands === 'string') {
@@ -142,7 +170,7 @@ module.exports = (client, commandOptions) => {
 
                         var hDisplay = h > 0 ? (h == 1 ? m > 0 ? `einer Stunde, ` : h == 1 ? `einer Stunde` : `${h} Stunden` : `${h} Stunden, `) : ``;
                         var mDisplay = m > 0 ? (m == 1 ? s > 0 ? `einer Minute, ` : m == 1 ? `einer Minute` : `${m} Minuten` : `${m} Minuten, `) : ``;
-                        var sDisplay = s > 0 ? (s == 1 ? `einer Sekunde` : ` Sekunden`) : ``;
+                        var sDisplay = s > 0 ? (s == 1 ? `einer Sekunde` : `${s} Sekunden`) : ``;
 
                         // do the magic
                         if (cooldownSet.has(message.author.id + commands[0])) {

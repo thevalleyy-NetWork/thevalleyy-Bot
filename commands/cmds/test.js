@@ -43,23 +43,7 @@ module.exports = {
         // } else {
         //     message.reply("Du bist nicht registriert!")
         // }
-
-
-        // connection.getConnection(function(err, connection) {
-
-        //     // Use the connection
-        //     connection.query('SELECT * FROM discord', function(error, results, fields) {
-        //         console.log(results)
-        //             // When done with the connection, release it.
-        //         connection.release();
-
-        //         // Handle error after the release.
-        //         if (error) console.log(error);
-
-        //         // Don't use the connection here, it has been returned to the pool.
-        //     });
-        // });
     },
     permissions: [],
-    requiredRoles: ['thevalleyy']
+    requiredRoles: ['thevalleyy', 'Moderator', 'Admin']
 }
