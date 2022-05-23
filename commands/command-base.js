@@ -91,7 +91,7 @@ module.exports = (client, commandOptions) => {
 
     //create a file for every new command
     setTimeout(() => {
-        fs.writeFile(`./data/cmdinfo/@${commands.toString()}.json`, cmdpattern, function(err) {
+        fs.writeFile(`./data/cmdinfo/@${commands.toString().replaceAll(",",";")}.json`, cmdpattern, function(err) {
             if (err) console.log(err)
         });
 
@@ -235,6 +235,8 @@ module.exports = (client, commandOptions) => {
                     .setDescription(`\`${message.author.tag}\`, <@${message.author.id}>`)
                     .addField('command:', `\`${config.prefix}${alias}\``, true)
                     .addField('channel:', '<#' + message.channel.id + '>', true)
+                    .addField('guild.id:', `\`${message.guild.id}\``, true)
+                    .addField('guild.name:', `\`${message.guild.name}\``, true)
                     .addField('link:', `[▣▣▣](${message.url} "link to ${message.author.username}'s message")`, true)
                     .setFooter({
                         text: message.guild.name,

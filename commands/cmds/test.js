@@ -24,8 +24,35 @@ module.exports = {
     description: "this description is weird",
     callback: async(message, arguments, text) => {
 
+        // 		// import node-fetch
+        // const fetch = require('node-fetch');
+        // // set url as constant
+        // const URL = 'https://jsonplaceholder.typicode.com/todos';
 
+        // fetch(URL)
+        //   .then(response => response.json())
+        //   .then(json => console.log(json))
+        //   .catch(err => console.error(err));
 
+        // 		const https = require('https');
+        // 		const options = {
+        // 		  hostname: 'jsonplaceholder.typicode.com',
+        // 		  port: 443,
+        // 		  path: '/todos',
+        // 		  method: 'GET',
+        // 		};
+
+        // 		const req = https.request(options, res => {
+        // 		  console.log(`statusCode: ${res.statusCode}`);
+
+        // 		  res.on('data', d => {
+        // 			process.stdout.write(d);
+        // 		  });
+        // 		});
+
+        // 		req.on('error', error => {
+        // 		  console.error(error);
+        // 		});
 
 
         // const res = await db(`SELECT dctag FROM discord WHERE id = 32`)
