@@ -2,8 +2,7 @@ const fs = require('fs')
 const config = require('./../../config.json')
 const util = require('minecraft-server-util')
 const Discord = require('discord.js')
-const playerCount = fs.readFileSync("./data/playerrec.json", 'utf8');
-const playerCount_ = JSON.parse(playerCount)
+const json = JSON.parse(fs.readFileSync("./data/playerrec.json", 'utf8'))
 const modlog = '822575095721099304'
 
 module.exports = {
@@ -18,7 +17,7 @@ module.exports = {
 
         if (!arguments[0] && !arguments[1]) {
             arguments[0] = "thevalleyy.tk"
-            arguments[1] = "25504"
+            arguments[1] = ""
         }
         if (!arguments[1]) {
             arguments[1] = "25565"
@@ -53,10 +52,11 @@ module.exports = {
 
 
             if (arguments[0] == "thevalleyy.tk") {
-                embed.addField("Spielerrekord:", playerCount_.mostPlayers, true)
-                embed.addField("Erreicht am:", playerCount_.date, true)
-                embed.addField("Letzter Ping:", playerCount_.lastPinged, true)
+                embed.addField("Spielerrekord:", json.mostPlayers.toString(), true)
+                embed.addField("Erreicht am:", `<t:${json.date}:R>`, true)
+                embed.addField("Letzter Ping:", `<t:${json.lastPinged}:R>`, true)
             }
+            embed.addField("​", `[${arguments[0]} auf NameMC](https://namemc.com/server/${arguments[0]}:${arguments[1]})`, false)
 
             await message.reply({ embeds: [embed] })
 

@@ -5,41 +5,49 @@ const util = require('minecraft-server-util')
 const fs = require('fs');
 
 module.exports = (client) => {
-    var iconurl = client.guilds.cache.get("631518992342843392").iconURL()
-
     try {
         setInterval(function() {
-            util.status('node2.chaosbothosting.de', 25504).then(async(response) => {
-                var date = new Date()
+            util.status('node2.chaosbothosting.de', 25504).catch(error => {
+                const failEmbed = new Discord.MessageEmbed()
+                    .setTitle('Es gab einen Fehler bei mcping.js')
+                    .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
+                    .setDescription('Fehler: `' + error + '`')
+                    .setTimestamp()
+                    .setColor('fc036b')
 
-                let secFiller = ""
-                let minFiller = ""
-                let hourFiller = ""
-                let dayFiller = ""
-                let monthFiller = ""
+                message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
+            }).then(async(response) => {
+                if (!response) return
 
-                if (date.getSeconds().toString().length < 2) secFiller = "0"
-                if (date.getMinutes().toString().length < 2) minFiller = "0"
-                if (date.getHours().toString().length < 2) hourFiller = "0"
-                if (date.getDate().toString().length < 2) dayFiller = "0"
-                if (date.getMonth().toString().length < 2) monthFiller = "0"
+                // var date = new Date()
 
-                var datetime =
-                    dayFiller + date.getDate() + ". " +
-                    monthFiller + (date.getMonth() + 1) + ". " +
-                    date.getFullYear() + ", " +
-                    hourFiller + date.getHours() + ":" +
-                    minFiller + date.getMinutes() + ":" +
-                    secFiller + date.getSeconds()
+                // let secFiller = ""
+                // let minFiller = ""
+                // let hourFiller = ""
+                // let dayFiller = ""
+                // let monthFiller = ""
 
-                const playerCount = fs.readFileSync('./data/playerrec.json', 'utf8');
-                const playerCount_ = JSON.parse(playerCount)
+                // if (date.getSeconds().toString().length < 2) secFiller = "0"
+                // if (date.getMinutes().toString().length < 2) minFiller = "0"
+                // if (date.getHours().toString().length < 2) hourFiller = "0"
+                // if (date.getDate().toString().length < 2) dayFiller = "0"
+                // if (date.getMonth().toString().length < 2) monthFiller = "0"
 
-                if (playerCount_.mostPlayers < response.players.online.toString()) {
+                // var datetime =
+                //     dayFiller + date.getDate() + ". " +
+                //     monthFiller + (date.getMonth() + 1) + ". " +
+                //     date.getFullYear() + ", " +
+                //     hourFiller + date.getHours() + ":" +
+                //     minFiller + date.getMinutes() + ":" +
+                //     secFiller + date.getSeconds()
+
+                const json = JSON.parse(fs.readFileSync('./data/playerrec.json', 'utf8'))
+
+                if (json.mostPlayers < response.players.online.toString()) {
                     let newData = {
                         mostPlayers: response.players.online.toString(),
-                        date: datetime,
-                        lastPinged: datetime
+                        date: Math.round(new Date().getTime() / 1000),
+                        lastPinged: Math.round(new Date().getTime() / 1000)
                     }
 
                     const newData_ = JSON.stringify(newData, null, 4)
@@ -49,20 +57,17 @@ module.exports = (client) => {
                         .setColor('#14a2a3')
                         .setTitle('Neuer Spielerrekord!')
                         .setDescription(`**${response.players.online}** Spieler online!`)
-                        .setFooter(`Am: ${datetime}`, iconurl)
+                        .setTimestamp()
 
-                    await client.channels.cache.get(mcc).send({
-                        embeds: [embedRecord]
-                    })
+                    await client.channels.cache.get(mcc).send({ embeds: [embedRecord] })
 
                 } else {
-                    const playerCount1 = fs.readFileSync('./data/playerrec.json', 'utf8');
-                    const playerCount1_ = JSON.parse(playerCount1)
+                    const playerCount = JSON.parse(fs.readFileSync('./data/playerrec.json', 'utf8'))
 
                     let newData__ = {
-                        mostPlayers: playerCount1_.mostPlayers.toString(),
-                        date: playerCount1_.date.toString(),
-                        lastPinged: datetime
+                        mostPlayers: playerCount.mostPlayers.toString(),
+                        date: playerCount.date.toString(),
+                        lastPinged: Math.round(new Date().getTime() / 1000)
                     }
 
                     const newData____ = JSON.stringify(newData__, null, 4)
@@ -72,7 +77,7 @@ module.exports = (client) => {
                 // console.log("Aktualisiere Serverping...")
                 const stableCount = await fs.readFileSync('./data/playerrec.json', 'utf8');
                 const stableCount_ = await JSON.parse(stableCount)
-                await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk  (${response.players.online}/${response.players.max})  **|**  Letzter Ping: ${datetime}  **|**  🏆: ${stableCount_.mostPlayers}`)
+                await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk  (${response.players.online}/${response.players.max})  **|**  Letzter Ping: <t:${Math.round(new Date().getTime()/1000)}:R>  **|**  🏆: ${stableCount_.mostPlayers}`)
             })
         }, 302000)
 
@@ -81,7 +86,7 @@ module.exports = (client) => {
             .setTitle('Es gab einen Fehler beim Pingen eines Minecraft-Servers')
             .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
             .setDescription('Fehler: `' + error + '`')
-            .setFooter('thevalleyy-NetWork', iconurl)
+            .setFooter({ text: 'thevalleyy-NetWork', iconURL: iconurl })
             .setTimestamp()
             .setColor('fc036b')
         client.channels.cache.get(modlog).send({
