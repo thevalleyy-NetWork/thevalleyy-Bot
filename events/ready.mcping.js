@@ -77,7 +77,7 @@ module.exports = (client) => {
                 // console.log("Aktualisiere Serverping...")
                 const stableCount = await fs.readFileSync('./data/playerrec.json', 'utf8');
                 const stableCount_ = await JSON.parse(stableCount)
-                await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk  (${response.players.online}/${response.players.max})  **|**  Letzter Ping: <t:${Math.round(new Date().getTime()/1000)}:R>  **|**  🏆: ${stableCount_.mostPlayers}`)
+                if (response.version.name.toString().toLowerCase().includes("wartungen")) { await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk **|** <:warning:981932931343855636> Wartungen  **|**  Letzter Ping: <t:${Math.round(new Date().getTime()/1000)}:R>`) } else await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk  (${response.players.online}/${response.players.max})  **|**  Letzter Ping: <t:${Math.round(new Date().getTime()/1000)}:R>  **|**  🏆: ${stableCount_.mostPlayers}`)
             })
         }, 302000)
 
