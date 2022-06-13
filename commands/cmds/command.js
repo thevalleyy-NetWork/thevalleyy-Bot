@@ -28,7 +28,7 @@ module.exports = {
             if (!arguments[0]) {
                 const embed = new Discord.MessageEmbed()
                     .setColor(config.standard_color)
-                    .setTitle("Alle Commands")
+                    .setTitle("Alle " + allFiles.length + " Commands")
                     .setTimestamp()
                     .setFooter({
                         text: message.guild.name,
@@ -40,11 +40,28 @@ module.exports = {
                 return
             }
 
-            if (!allFiles.includes(`${cmd}`)) return message.reply(`Hm.. Es konnte kein Command gefunden werden.\nMit \`${message.content.split(" ")[0]}\` kannst du alle Commands sehen.`)
-            for (const cmdname of allFiles) {
+            let allCommands = []
+
+            for (let i = 0; i < allFiles.length; i++) {
+                const string = allFiles[i]
+
+                if (string.includes(";")) {
+                    // trennen und einzeln pushen
+                    const split = string.split(";")
+                    for (let i = 0; i < split.length; i++) {
+                        allCommands.push(split[i])
+                    }
+
+                } else {
+                    allCommands.push(string)
+                }
+            }
+
+            if (!allCommands.includes(`${cmd}`)) return message.reply(`Hm.. Es konnte kein Command gefunden werden.\nMit \`${message.content.split(" ")[0]}\` kannst du alle Commands sehen.`)
+            for (const cmdname of allCommands) {
                 if (cmdname === cmd) {
                     files.forEach(async file => {
-                        if (file.includes(`@${cmd},`) || file.includes(`,${cmd}.json`) || file.includes(`,${cmd},`) || file.includes(`@${cmd}.json`)) {
+                        if (file.includes(`@${cmd};`) || file.includes(`;${cmd}.json`) || file.includes(`;${cmd};`) || file.includes(`@${cmd}.json`)) {
 
                             const cmdjson = JSON.parse(fs.readFileSync(directory + file))
 
