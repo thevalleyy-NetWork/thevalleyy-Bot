@@ -5,6 +5,8 @@ module.exports = {
     permissionError: '',
     minArgs: 0,
     maxArgs: 0,
+    cooldown: null,
+    description: "this description is weird",
     callback: (message, arguments, text) => {
 
         const Discord = require('discord.js')
