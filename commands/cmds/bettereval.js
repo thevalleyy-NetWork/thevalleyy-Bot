@@ -50,14 +50,14 @@ module.exports = {
                 return d += t.toString()
             }
 
-            if (signal || code) {
-                if (signal) {
-                    exited = push(signal)
-                } else {
-                    exited = push(code)
-                }
+            if (signal == null) {
+                exited = push(code)
+                update()
+            } else {
+                exited = push(signal)
                 update()
             }
+
         })
 
 
