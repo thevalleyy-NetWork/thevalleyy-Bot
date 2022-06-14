@@ -29,7 +29,7 @@ module.exports = {
         try {
             await db(`${text}`).then(async res => {
                 if (await !res[0]) return message.reply("[]")
-                message.reply(`\`\`\`json\n${JSON.stringify(res, null, 4)}\`\`\``)
+                message.reply(`\`\`\`json\n${JSON.stringify(res, null, 4).substring(0, 1980)}${(JSON.stringify(res, null, 4).length > 1980) ? "\n..." : ""}\`\`\``)
             })
         } catch (e) {
             message.reply("Fehler beim Ausführen des Statements:\n`" + e + "`")
