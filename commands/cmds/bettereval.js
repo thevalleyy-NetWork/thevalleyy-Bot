@@ -11,7 +11,7 @@ module.exports = {
             dynamic: true
         })
 
-
+        var kill = []
         var m
         let exited
         const getLines = d => d.split(/(\r?\n)+/).join("")
@@ -23,8 +23,9 @@ module.exports = {
 
         const update = () => {
             const text = arguments.join(" ") + "\n\n" + getLines(data.join("")) + "\n" + (exited ? exited : "")
-            if (message.user) message.editReply("```xl\n" + text.substring(0, 1980).trim() + (text.length > 1979 ? "\n..." : "") + "\n```")
-            else m.edit("```xl\n" + text.substring(0, 1980).trim() + (text.length > 1979 ? "\n..." : "") + "\n```")
+            if (message.user) message.editReply("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n" + (exited ? exited : "") + "```")
+            else m.edit("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n" + (exited ? exited : "") + "```")
+            if (text.length > 2000) kill.push(true)
         }
 
         const { spawn } = require("child_process")
@@ -35,6 +36,10 @@ module.exports = {
         const handler = (d) => {
             data.push(d.toString())
             update()
+
+            if (kill[0] == true) {
+                child.kill("SIGKILL")
+            }
         }
 
         child.stdout.on("data", handler)
