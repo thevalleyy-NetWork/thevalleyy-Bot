@@ -44,6 +44,10 @@ module.exports = {
                 output = util.inspect(result)
             }
 
+            if (output.toLowerCase().includes(message.client.token.toLowerCase())) {
+                message.react('<:hm:907936051300012072>')
+                return
+            }
 
             message.reply('```js\n' + output.substring(0, 1950) + '```')
 
