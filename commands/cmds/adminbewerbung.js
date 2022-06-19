@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+const config = require('./../../config.json')
 module.exports = {
     commands: ['adminbewerbung'],
     expectedArgs: '',
@@ -8,7 +10,12 @@ module.exports = {
     description: "this description is weird",
     callback: (message, arguments, text) => {
 
-        message.reply('Hier ist der Link zur Adminbewerbung: \n**http://btly.xyz/r/Jerns9D**')
+        const embed = new Discord.MessageEmbed()
+            .setTitle("Admin-Bewerbung")
+            .setColor(config.standard_color)
+            .setDescription("[Bitte sende hier deine Bewerbung ein und wir werden sie schnellstmöglich bearbeiten.](https://tinyurl.com/bdz4kpd5)")
+
+        message.reply({embeds: [embed]})
 
     },
     permissions: [],
