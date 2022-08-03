@@ -1,13 +1,25 @@
 const modlog = '822575095721099304'
 const Discord = require('discord.js')
 const config = require('./../config.json')
+const package = require('./../package.json').dependencies
 const fs = require('fs')
 
 module.exports = (client) => {
     var iconurl = client.guilds.cache.get("631518992342843392").iconURL({ dynamic: true })
 
-    // startup presence
-    client.user.setPresence({ activities: [{ name: 'mit discordjs v13' }] });
+    // startup presence (now random)
+    function setRandomPackageStatus() {
+        const randomPackage = [Math.floor(Math.random() * (Object.keys(package).length))]
+        const potd = Object.keys(package)[randomPackage].toString()
+        const votd = Object.values(package)[randomPackage].toString().replace("^", "")
+
+        client.user.setPresence({ activities: [{ name: `mit ${potd} v${votd}` }] });
+    }
+    setRandomPackageStatus()
+    setInterval(function() {
+        setRandomPackageStatus()
+    }, 1200000)
+    
 
     // fetch some reaction messages (soom replaced with buttons)
     client.channels.cache.get("843054827910201384").messages.fetch("843060299288412190") //ticketmessage
