@@ -1,5 +1,6 @@
 const config = require('./../config.json')
 const Discord = require('discord.js')
+const { ChannelType } = require('discord.js')
 const cooldownSet = new Set()
 const mysql = require('mysql')
 const util = require('util')
@@ -32,37 +33,47 @@ fs.readdir(directory, (err, files) => {
 
 const validatePermissions = (permissions) => {
     const validPermissions = [
-        'CREATE_INSTANT_INVITE',
-        'KICK_MEMBERS',
-        'BAN_MEMBERS',
-        'ADMINISTRATOR',
-        'MANAGE_CHANNELS',
-        'MANAGE_GUILD',
-        'ADD_REACTIONS',
-        'VIEW_AUDIT_LOG',
-        'PRIORITY_SPEAKER',
-        'STREAM',
-        'VIEW_CHANNEL',
-        'SEND_MESSAGES',
-        'SEND_TTS_MESSAGES',
-        'MANAGE_MESSAGES',
-        'EMBED_LINKS',
-        'ATTACH_FILES',
-        'READ_MESSAGE_HISTORY',
-        'MENTION_EVERYONE',
-        'USE_EXTERNAL_EMOJIS',
-        'VIEW_GUILD_INSIGHTS',
-        'CONNECT',
-        'SPEAK',
-        'MUTE_MEMBERS',
-        'DEAFEN_MEMBERS',
-        'MOVE_MEMBERS',
-        'USE_VAD',
-        'CHANGE_NICKNAME',
-        'MANAGE_NICKNAMES',
-        'MANAGE_ROLES',
-        'MANAGE_WEBHOOKS',
-        'MANAGE_EMOJIS_AND_STICKERS',
+        "AddReactions",
+        "Administrator",
+        "AttachFiles",
+        "BanMembers",
+        "ChangeNickname",
+        "Connect",
+        "CreateInstantInvite",
+        "CreatePrivateThreads",
+        "CreatePublicThreads",
+        "DeafenMembers",
+        "EmbedLinks",
+        "KickMembers",
+        "ManageChannels",
+        "ManageEmojisAndStickers",
+        "ManageEvents",
+        "ManageGuild",
+        "ManageMessages",
+        "ManageNicknames",
+        "ManageRoles",
+        "ManageThreads",
+        "ManageWebhooks",
+        "MentionEveryone",
+        "ModerateMembers",
+        "MoveMembers",
+        "MuteMembers",
+        "PrioritySpeaker",
+        "ReadMessageHistory",
+        "RequestToSpeak",
+        "SendMessages",
+        "SendMessagesInThreads",
+        "SendTTSMessages",
+        "Speak",
+        "Stream",
+        "UseApplicationCommands",
+        "UseEmbeddedActivities",
+        "UseExternalEmojis",
+        "UseExternalStickers",
+        "UseVAD",
+        "ViewAuditLog",
+        "ViewChannel",
+        "ViewGuildInsights"
     ]
 
     for (const permission of permissions) {
@@ -75,7 +86,7 @@ module.exports = (client, commandOptions) => {
     let {
         commands,
         expectedArgs = '',
-        permissionError = 'Unzureichende Berechtigungen',
+//        permissionError = '',
         minArgs = 0,
         maxArgs = null,
         cooldown = null,
@@ -122,7 +133,7 @@ module.exports = (client, commandOptions) => {
         if (message.guild === null) return
         if (message.author.bot) return
         if (!message.guild.available) return
-        if (message.channel.type == "DM") return
+        if (message.channel.type == ChannelType.DM) return
         if (message.webhookId) return
 
         for (const alias of commands) {
@@ -149,7 +160,7 @@ module.exports = (client, commandOptions) => {
                         if (cooldownSet.has(message.author.id)) {
                             message.react('⏳')
                             setTimeout(() => {
-                                message.delete()
+                                message.delete().catch(err => {})
                             }, 5000)
                             return
                         }
@@ -176,10 +187,10 @@ module.exports = (client, commandOptions) => {
                         if (cooldownSet.has(message.author.id + commands[0])) {
                             let msg = await message.reply(`\`${config.prefix + alias}\` hat einen Cooldown von \`${hDisplay + mDisplay + sDisplay}\``)
                             setTimeout(() => {
-                                msg.delete()
+                                msg.delete().catch(err => {})
                             }, 3000)
                             setTimeout(() => {
-                                message.delete()
+                                message.delete().catch(err => {})
                             }, 5000)
                             return
                         }
@@ -196,7 +207,7 @@ module.exports = (client, commandOptions) => {
                 // Ensure the user has the required permissions
                 for (const permission of permissions) {
                     if (!member.permissions.has(permission)) {
-                        message.reply(permissionError + ', ' + message.author.username)
+                        message.reply(`Für \`${alias}\` benötigst du die Berechtigungen: \`${permissions.join(', ')}\``)
                         return
                     }
                 }
@@ -229,26 +240,28 @@ module.exports = (client, commandOptions) => {
                 callback(message, arguments, arguments.join(' '))
 
                 if (message.guild.id !== "631518992342843392") return
-                const executed = new Discord.MessageEmbed()
+                const executed = new Discord.EmbedBuilder()
                     .setTitle('registered a command')
                     .setThumbnail(message.author.avatarURL({ dynamic: true }))
                     .setDescription(`\`${message.author.tag}\`, <@${message.author.id}>`)
-                    .addField('command:', `\`${config.prefix}${alias}\``, true)
-                    .addField('channel:', '<#' + message.channel.id + '>', true)
-                    .addField('guild.id:', `\`${message.guild.id}\``, true)
-                    .addField('guild.name:', `\`${message.guild.name}\``, true)
-                    .addField('link:', `[▣▣▣](${message.url} "link to ${message.author.username}'s message")`, true)
+                    .addFields([
+                        { name: "command:", value: `\`${config.prefix}${alias}\``, inline: true},
+                        { name: "channel:", value: '<#' + message.channel.id + '>', inline: true},
+                        { name: "guild.id:", value: `\`${message.guild.id}\``, inline: true},
+                        { name: "guild.name:", value: `\`${message.guild.name}\``, inline: true},
+                        { name: "link:", value: `[${message.url}](${message.url} "link to ${message.author.username}'s message")`, inline: true}
+                    ])
                     .setFooter({
                         text: message.guild.name,
                         iconURL: message.guild.iconURL({ dynamic: true })
                     })
                     .setTimestamp()
                     .setColor(config.cmd_log_color)
-                if (arguments.length) executed.addField('arguments:', `\`${arguments.join(' ').substring(0, 1000)}\`${(arguments.toString().length > 1000 ? "..." : "")}`, false)
-
+                if (arguments.length) executed.addFields([{ name: 'arguments:', value: `\`${arguments.join(' ').substring(0, 1000)}\`${(arguments.toString().length > 1000 ? "..." : "")}`, inline: false}])
+            
                 message.client.channels.cache.get(config.cmd_log_channel_id).send({ embeds: [executed] })
                 return
-
+                    // TODO: button für "lyrics: song" und interpreten + album klickbar
             }
         }
     })

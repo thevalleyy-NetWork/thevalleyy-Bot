@@ -1,7 +1,6 @@
 const modlog = '822575095721099304'
 const Discord = require('discord.js')
 
-
 module.exports = (client) => {
     var iconurl = client.guilds.cache.get("631518992342843392").iconURL()
 
@@ -113,10 +112,10 @@ module.exports = (client) => {
                         message.pin()
                     })
 
-                    const embedLog = new Discord.MessageEmbed()
+                    const embedLog = new Discord.EmbedBuilder()
                         .setTitle('Ein Ticket wurde erstellt')
                         .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                        .addField(user.tag, ' in <#' + channel.id + '>')
+                        .addFields([{ name: user.tag, value: ' in <#' + channel.id + '>'}])
                         .setFooter('thevalleyy-NetWork', iconurl)
                         .setTimestamp()
                         .setColor('03f8fc')
@@ -125,7 +124,7 @@ module.exports = (client) => {
             }
 
         } catch (error) {
-            const embedFail = new Discord.MessageEmbed()
+            const embedFail = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei einem Ticket')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')

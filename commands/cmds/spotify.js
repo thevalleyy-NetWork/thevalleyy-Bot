@@ -76,17 +76,20 @@ module.exports = {
             const values = progressbar.filledBar(lenghtInSeconds, currentSeconds, [size = 38])
 
             // create the embed
-            const embed = new Discord.MessageEmbed()
+            const embed = new Discord.EmbedBuilder()
                 .setColor(config.standard_color)
                 .setDescription("Du hörst gerade auf Spotify:")
-                .addField("Titel:", `\`${result.details}\``, true)
-                .addField("Album:", `\`${result.assets.largeText}\``, true)
-                .addField("Dauer:", `\`${await getDuration(new Date(result.timestamps.start.toString()).getTime(), new Date(result.timestamps.end.toString()).getTime())}\``, true)
+                .addFields([
+                     { name: "Titel:", value: `\`${result.details}\``, inline: true },
+                     { name: "Album:", value: `\`${result.assets.largeText}\``, inline: true },
+                     { name: "Dauer:", value: `\`${await getDuration(new Date(result.timestamps.start.toString()).getTime(), new Date(result.timestamps.end.toString()).getTime())}\``, inline: true}
+                ])
+
             if (result.state.includes(';')) { // artist or artists
-                embed.addField("Interpreten:", `\`${result.state.replaceAll(';', ',')}\``, true)
-            } else { embed.addField("Interpret:", `\`${result.state.replaceAll(';', ',')}\``, true) }
-            embed.addField('Link:', `[${result.details}](https://open.spotify.com/track/${result.syncId} "${result.details} in Spotify öffnen")`, false)
-                .addField(`${values[0]}`, `​`, true)
+                embed.addFields([{ name: "Interpreten:", value: `\`${result.state.replaceAll(';', ',')}\``, inline: true}])
+            } else { embed.addFields([{ name: "Interpret:", value: `\`${result.state.replaceAll(';', ',')}\``, inline: true}]) }
+            embed.addFields([{ name: 'Link:', value: `[${result.details}](https://open.spotify.com/track/${result.syncId} "${result.details} in Spotify öffnen")`, inline: false}])
+                .addFields([{ name: `${values[0]}`, value: `​`, inline: true}])
                 .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
                 .setTimestamp()
                 .setFooter({
@@ -127,17 +130,20 @@ module.exports = {
             const values = progressbar.filledBar(lenghtInSeconds, currentSeconds)
 
 
-            const embed = new Discord.MessageEmbed()
+            const embed = new Discord.EmbedBuilder()
                 .setColor(config.standard_color)
                 .setDescription(user.user.username + " hört gerade auf Spotify:")
-                .addField("Titel:", `\`${result.details}\``, true)
-                .addField("Album:", `\`${result.assets.largeText}\``, true)
-                .addField("Dauer:", `\`${await getDuration(new Date(result.timestamps.start.toString()).getTime(), new Date(result.timestamps.end.toString()).getTime())}\``, true)
+                .addFields([
+                    { name: "Titel:", value: `\`${result.details}\``, inline: true },
+                    { name: "Album:", value: `\`${result.assets.largeText}\``, inline: true },
+                    { name: "Dauer:", value: `\`${await getDuration(new Date(result.timestamps.start.toString()).getTime(), new Date(result.timestamps.end.toString()).getTime())}\``, inline: true}
+                ])
+
             if (result.state.includes(';')) {
-                embed.addField("Interpreten:", `\`${result.state.replaceAll(';', ',')}\``, true)
-            } else { embed.addField("Interpret:", `\`${result.state.replaceAll(';', ',')}\``, true) }
-            embed.addField('Link:', `[${result.details}](https://open.spotify.com/track/${result.syncId} "${result.details} in Spotify öffnen")`, false)
-                .addField(`${values[0]}`, `​`, true)
+                embed.addFields([{ name: "Interpreten:", value: `\`${result.state.replaceAll(';', ',')}\``, inline: true}])
+            } else { embed.addFields([{ name: "Interpret:", value: `\`${result.state.replaceAll(';', ',')}\``, inline: true}]) }
+            embed.addFields([{ name: 'Link:', value: `[${result.details}](https://open.spotify.com/track/${result.syncId} "${result.details} in Spotify öffnen")`, inline: false}])
+                .addFields([{ name: `${values[0]}`, value: `​`, inline: true}])
                 .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
                 .setTimestamp()
                 .setFooter({

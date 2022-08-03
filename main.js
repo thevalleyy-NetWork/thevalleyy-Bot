@@ -1,3 +1,4 @@
+// this function gets the current date and time ss:mm:hh:dd:MM:yyyy
 function gettime() {
     var date = new Date()
 
@@ -23,10 +24,10 @@ function gettime() {
     return datetime
 }
 
+// start message, used for pterodactyl
+console.log('\n\n--------------------------- \n    Starte Talis Bot...   \n--------------------------- \n')
 
-console.log('\n')
-console.log('\n--------------------------- \n    Starte Talis Bot...   \n--------------------------- \n')
-
+// create a new client
 const Discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
@@ -36,36 +37,40 @@ const config = require('./config.json')
 
 const client = new Discord.Client({
     partials: [
-        "MESSAGE",
-        // "REACTION",
-        // "GUILD_MEMBER",
-        "USER",
-        "CHANNEL"
+        Discord.Partials.Message,
+        Discord.Partials.User,
+        Discord.Partials.Channel
+        // Discord.Partials.Reaction,
+        // Discord.Partials.GuildMember,
+        // Discord.Partials.GuildScheduledEvent
+        // Discord.Partials.ThreadMember
     ],
     allowedMentions: {
         repliedUser: false
     },
     intents: [
-        Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MEMBERS,
-        Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.GUILD_BANS,
-        Discord.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-        Discord.Intents.FLAGS.GUILD_INTEGRATIONS,
-        Discord.Intents.FLAGS.GUILD_WEBHOOKS,
-        Discord.Intents.FLAGS.GUILD_INVITES,
-        Discord.Intents.FLAGS.GUILD_VOICE_STATES,
-        Discord.Intents.FLAGS.GUILD_PRESENCES,
-        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING,
-        Discord.Intents.FLAGS.DIRECT_MESSAGES,
-        Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-        Discord.Intents.FLAGS.DIRECT_MESSAGE_TYPING
+        Discord.GatewayIntentBits.MessageContent,
+        Discord.GatewayIntentBits.Guilds,
+        Discord.GatewayIntentBits.GuildMembers,
+        Discord.GatewayIntentBits.GuildMessages,
+        Discord.GatewayIntentBits.GuildBans,
+        Discord.GatewayIntentBits.GuildEmojisAndStickers,
+        Discord.GatewayIntentBits.GuildIntegrations,
+        Discord.GatewayIntentBits.GuildWebhooks,
+        Discord.GatewayIntentBits.GuildInvites,
+        Discord.GatewayIntentBits.GuildVoiceStates,
+        Discord.GatewayIntentBits.GuildPresences,
+        Discord.GatewayIntentBits.GuildMessageReactions,
+        Discord.GatewayIntentBits.GuildMessageTyping,
+        Discord.GatewayIntentBits.DirectMessages,
+        Discord.GatewayIntentBits.DirectMessageReactions,
+        Discord.GatewayIntentBits.DirectMessageTyping
 
     ]
 })
 
-//cmd-base
+// start the command handler
+// cmd-base
 client.on('ready', async() => {
     const baseFile = 'command-base.js'
     const commandBase = require(`./commands/${baseFile}`)
@@ -92,7 +97,7 @@ client.on('ready', async() => {
     }
     readCommands('commands')
 
-
+// load every event file
     console.log(`[${gettime()}] » Registering: events`)
     fs.readdir(directoryPath, function(err, files) {
         if (err) {
@@ -110,12 +115,13 @@ client.on('ready', async() => {
 })
 
 
-// require('./events/startup.js')(client)
+// login and configuring the logchannel
 client.logChannel = client.channels.cache.get('724098984100958208')
 client.login(config.token)
 
+// uncaught error handling
 // process.on('uncaughtException', function(error, source) {
-//     const embedfail = new Discord.MessageEmbed()
+//     const embedfail = new Discord.EmbedBuilder()
 //         .setTitle('Es gab einen Fehler!')
 //         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
 //         .setFooter({
@@ -124,11 +130,19 @@ client.login(config.token)
 //         })
 //         .setTimestamp()
 //         .setColor(config.mod_log_color_error)
-//         .addField('Exakte Zeit:', `\`${gettime()}\``, true)
-//     if (error.toString().length < 1000) { embedfail.addField('Fehler:', `\`${error}\``, false) } else {
-//         embedfail.addField('Fehler:', "Der Fehler ist zu lang, um hier dargestellt zu werden.", true)
+//         .addFields([
+//             { name: "Exakte Zeit:", value: `\`${gettime()}\``, inline: true },
+//         ])
+//     if (error.toString().length < 1000) { 
+//         embedfail.addFields([
+//             { name: "Fehler:", value: `\`${error}\``, inline: false}
+//         ])
+//         } else {
+//         embedfail.addFields([
+//             { name: "Fehler:", value: "Der Fehler ist zu lang, um hier dargestellt zu werden.", inline: true}
+//         ])
 
-//         const attachment = new Discord.MessageAttachment(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
+//         const attachment = new Discord.AttachmentBuilder(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
 //         client.channels.cache.get(config.mod_log_channel_id).send({ files: [attachment] })
 //     }
 //     client.channels.cache.get(config.mod_log_channel_id).send({ embeds: [embedfail] })

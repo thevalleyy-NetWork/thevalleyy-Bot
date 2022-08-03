@@ -7,7 +7,8 @@ module.exports = {
     cooldown: null,
     description: "this description is weird",
     callback: async(message, arguments, text) => {
-        var rusasarray = ['ruuuuuuuuusas',
+        var rusasarray = [
+            'ruuuuuuuuusas',
             'raaaaaaaaasus',
             'RUSSUS',
             'RUAS',
@@ -20,23 +21,17 @@ module.exports = {
         ]
 
         var rusasarray2 = rusasarray[Math.floor(Math.random() * rusasarray.length)]
-
-
         message.delete()
+
+
         if (message.reference) {
             const reaktionsmsg = await message.fetchReference()
 
-            if (reaktionsmsg === undefined) {
-                message.channel.send(rusasarray2)
-            }
-            if (!reaktionsmsg.content) {
-                message.channel.send(rusasarray2)
-            } else {
-                await reaktionsmsg.reply(rusasarray2)
-            }
-        } else {
-            message.channel.send(rusasarray2)
-        }
+            if (reaktionsmsg === undefined) return message.channel.send(rusasarray2)
+
+            await reaktionsmsg.reply(rusasarray2)
+            
+        } else message.channel.send(rusasarray2)
 
     },
     permissions: [],

@@ -12,7 +12,7 @@ module.exports = async(client) => {
     connection.subscribe(player);
 
     const guild = client.guilds.cache.get("631518992342843392");
-    guild.me.voice.setMute(true, "startup mute state");
+    guild.members.me.voice.setMute(true, "startup mute state");
 
 
     function musikAn(stream, guildId, channelId) {
@@ -28,7 +28,7 @@ module.exports = async(client) => {
             player.play(resource);
 
             const guild = client.guilds.cache.get(guildId);
-            guild.me.voice.setMute(false, "somebody joined");
+            guild.members.me.voice.setMute(false, "somebody joined");
         } catch (error) {
             console.log(error)
         }
@@ -40,7 +40,7 @@ module.exports = async(client) => {
             player.stop()
             if (muteState == false) return
             const guild = client.guilds.cache.get(guildId);
-            guild.me.voice.setMute(true, "empty radio channel")
+            guild.members.me.voice.setMute(true, "empty radio channel")
         } catch (error) {
             console.log(error)
         }
@@ -57,11 +57,13 @@ module.exports = async(client) => {
 
         if (oldState.channelId === null) {
 
-            const embedVoiceLog = new Discord.MessageEmbed()
+            const embedVoiceLog = new Discord.EmbedBuilder()
                 .setTitle('LOG: Kanal betreten')
-                .addField('User:', `\`${oldState.member.user.tag}\`, <@!${oldState.member.user.id}>`)
-                .addField("Kanal:", `<#${newState.channelId}>`, true)
-                .addField("Session ID:", `||\`${newState.sessionId}\`||`, true)
+                .addFields([
+                    { name: 'User', value: `\`${oldState.member.user.tag}\`, <@!${oldState.member.user.id}>` },
+                    { name: "Kanal: ", value: `<#${newState.channelId}>`, inline: true },
+                    { name: "Session-ID:", value: `||\`${newState.sessionId}\`||`, inline: true}
+                ])
                 .setFooter({ text: newState.guild.name, iconURL: iconurl })
                 .setTimestamp()
                 .setColor('#24E498')
@@ -71,14 +73,16 @@ module.exports = async(client) => {
             if (newState.channelId == 786272345689161758) {
                 musikAn("https://streams.ilovemusic.de/iloveradio5.mp3", "631518992342843392", "786272345689161758")
             }
-
+// TODO: Musik geht warum auch immer noch nicht
 
         } else if (newState.channelId === null) {
-            const embedVoiceLog = new Discord.MessageEmbed()
+            const embedVoiceLog = new Discord.EmbedBuilder()
                 .setTitle('LOG: Kanal verlassen')
-                .addField('User:', `\`${oldState.member.user.tag}\`, <@!${oldState.member.user.id}>`)
-                .addField("Kanal:", `<#${oldState.channelId}>`, true)
-                .addField("Session ID:", `||\`${oldState.sessionId}\`||`, true)
+                .addFields([
+                    { name: 'User', value: `\`${oldState.member.user.tag}\`, <@!${oldState.member.user.id}>` },
+                    { name: "Kanal: ", value: `<#${oldState.channelId}>` },
+                    { name: "Session-ID:", value: `||\`${oldState.sessionId}\`||`, inline: true}
+                ])
                 .setFooter({ text: oldState.guild.name, iconURL: iconurl })
                 .setTimestamp()
                 .setColor('#24E498')
@@ -91,12 +95,14 @@ module.exports = async(client) => {
 
 
         } else if (newState.channel.id !== oldState.channel.id) {
-            const embedVoiceLog = new Discord.MessageEmbed()
+            const embedVoiceLog = new Discord.EmbedBuilder()
                 .setTitle('LOG: Kanal gewechselt')
-                .addField('User:', `\`${newState.member.user.tag}\`, <@!${newState.member.user.id}>`)
-                .addField("Kanal verlassen:", `<#${oldState.channelId}>`, true)
-                .addField("Kanal beigetreten:", `<#${newState.channelId}>`, true)
-                .addField("Session ID:", `||\`${newState.sessionId}\`||`, true)
+                .addFields([
+                    { name: 'User', value: `\`${newState.member.user.tag}\`, <@!${newState.member.user.id}>` },
+                    { name: "Kanal verlassen:", value: `<#${oldState.channelId}>`, inline: true },
+                    { name: "Kanal betreten:", value: `<#${newState.channelId}>`, inline: true},
+                    { name: "Session-ID:", value: `||\`${newState.sessionId}\`||`, inline: true}
+                ])    
                 .setFooter({ text: newState.guild.name, iconURL: iconurl })
                 .setTimestamp()
                 .setColor('#24E498')

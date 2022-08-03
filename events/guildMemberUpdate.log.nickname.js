@@ -31,12 +31,15 @@ module.exports = async(client) => {
         }
 
 
-        const embedNickLog = new Discord.MessageEmbed()
+        const embedNickLog = new Discord.EmbedBuilder()
             .setTitle('LOG: Nickname geändert')
-            .addField('User:', `\`${newMember.user.tag}\`, <@!${newMember.user.id}>`)
-            .addField("Vorher: ", `\`${oldname}\``, true)
-            .addField("Nachher: ", `\`${newname}\``, true)
-            .addField("Ausgeführt von: ", `<@!${executor.id}>`, true)
+            .addFields([
+                { name: 'User', value:  `\`${newMember.user.tag}\`, <@!${newMember.user.id}>` },
+                { name: "Vorher: ", value: `\`${oldname}\`` },
+                { name: "Nachher: ", value: `\`${newname}\`` },
+                { name: "Ausgeführt von:", value: `<@!${executor.id}>`}
+            ])
+
             .setFooter(newMember.guild.name, iconurl)
             .setTimestamp()
             .setColor('#24E498')

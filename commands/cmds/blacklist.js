@@ -49,7 +49,7 @@ module.exports = {
                     message.reply("Es sind keine Nutzer auf der Blacklist.")
                     return
                 }
-                const embed = new Discord.MessageEmbed()
+                const embed = new Discord.EmbedBuilder()
                     .setTitle("Blacklist")
                     .setDescription(res.map(r => `<@${r.dcid}>, \`${r.dcid}\``).join("\n"))
                     .setColor(config.standard_color)

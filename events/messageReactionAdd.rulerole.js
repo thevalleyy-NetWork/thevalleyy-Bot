@@ -21,11 +21,11 @@ module.exports = (client) => {
                 client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle bekommen. \n Seine ID: `' + user.id + '`')
             }
         } catch (error) {
-            const embedError = new Discord.MessageEmbed()
+            const embedError = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei ReactionRoles (+Mitglied)')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(user.tag, 'in <#' + reaction.message.channel.id + '>')
+                .addFields([{ name: user.tag, value: 'in <#' + reaction.message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
@@ -50,11 +50,11 @@ module.exports = (client) => {
                 client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Mitglied `📕` Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`')
             }
         } catch (error) {
-            const embedError = new Discord.MessageEmbed()
+            const embedError = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei ReactionRoles (-Mitglied)')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(user.tag, 'in <#' + reaction.message.channel.id + '>')
+                .addFields([{ name: user.tag, value: 'in <#' + reaction.message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')

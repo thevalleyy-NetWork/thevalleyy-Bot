@@ -20,7 +20,7 @@ module.exports = {
     permissionError: 'Du hast keine Berechtigung, diesen Befehl auszuführen',
     minArgs: 1,
     maxArgs: null,
-    cooldown: 10000,
+    cooldown: null,
     description: "Access the database associated with the bot via a command",
     callback: async(message, arguments, text) => {
 

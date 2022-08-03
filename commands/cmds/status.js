@@ -23,11 +23,11 @@ module.exports = {
                 } else message.reply("Versuche, den Status zu `" + arguments[0].toLowerCase() + "` zu ändern.")
 
                 try { message.client.user.setPresence({ activities: [{ name: '' }], status: arguments[0].toLowerCase() }) } catch (error) {
-                    const embedfail = new Discord.MessageEmbed()
+                    const embedfail = new Discord.EmbedBuilder()
                         .setTitle('Es gab einen Fehler bei -status')
                         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                         .setDescription('Fehler: `' + error + '`')
-                        .addField(message.author.tag, 'in <#' + message.channel.id + '>')
+                        .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
                         .setFooter('thevalleyy-NetWork', iconurl)
                         .setTimestamp()
                         .setColor('fc036b')
@@ -46,11 +46,11 @@ module.exports = {
 
                 message.reply("Versuche, den Status zu `" + arguments[0].toLowerCase() + "`, `" + stext + "` zu ändern.")
                 try { message.client.user.setPresence({ activities: [{ name: stext }], status: arguments[0].toLowerCase() }) } catch (error) {
-                    const embedfail = new Discord.MessageEmbed()
+                    const embedfail = new Discord.EmbedBuilder()
                         .setTitle('Es gab einen Fehler bei -status')
                         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                         .setDescription('Fehler: `' + error + '`')
-                        .addField(message.author.tag, 'in <#' + message.channel.id + '>')
+                        .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
                         .setFooter('thevalleyy-NetWork', iconurl)
                         .setTimestamp()
                         .setColor('fc036b')

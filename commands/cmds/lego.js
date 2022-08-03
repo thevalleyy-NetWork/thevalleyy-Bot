@@ -5,7 +5,7 @@ const he = require('he')
 const config = require('./../../config.json')
 const bricksetData = require('./../../data/brickset.json')
 const paginationEmbed = require('discordjs-button-pagination')
-const { MessageEmbed, MessageButton } = require('discord.js')
+const { EmbedBuilder, ButtonBuilder} = require('discord.js')
 
 function validData() {
     if (bricksetData.apikey.status == "error") return bricksetData.apikey.message
@@ -20,14 +20,14 @@ function cooldown(message) {
         message.react('⏳')
         setTimeout(() => {
             message.delete()
-        }, 5000)
+        }, 10000)
         return true
     }
 
     cooldownSet.add(message.author.id)
     setTimeout(() => {
         cooldownSet.delete(message.author.id)
-    }, 120000)
+    }, 20000)
 }
 
 module.exports = {
@@ -36,7 +36,7 @@ module.exports = {
     permissionError: 'awkward error',
     minArgs: 0,
     maxArgs: null,
-    cooldown: 30000,
+    cooldown: 0,
     description: "this description is weird",
     callback: async(message, arguments, text) => {
         const fetch = (await
@@ -49,15 +49,15 @@ module.exports = {
         const fullstar = "<:fullstar:977964060891054161>"
         const emptystar = "<:emptystar:977964082554630194>"
 
-        const button1 = new MessageButton()
+        const button1 = new ButtonBuilder()
             .setCustomId('previousbtn')
             .setLabel('◀️')
-            .setStyle('DANGER');
+            .setStyle("Danger");
 
-        const button2 = new MessageButton()
+        const button2 = new ButtonBuilder()
             .setCustomId('nextbtn')
             .setLabel('▶️')
-            .setStyle('SUCCESS');
+            .setStyle("Success");
 
         //create an array of buttons
 
@@ -98,55 +98,55 @@ module.exports = {
                 for (let i = 0; i < json.sets.length; i++) {
 
                     const set = json.sets[i]
-                    const embed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                     embed.setColor(config.standard_color)
                     embed.setTitle(set.name)
                     embed.setImage(set.image.imageURL)
-                    embed.addField("Setnummer:", `\`${set.number}\``, true)
+                    embed.addFields([{ name: "Setnummer:", value: `\`${set.number}\``, inline: true}])
 
                     if (set.released == true) {
-                        embed.addField("Veröffentlicht:", `Ja: \`${set.year}\``, true)
+                        embed.addFields([{ name: "Veröffentlicht:", value: `Ja: \`${set.year}\``, inline: true}])
                     } else {
-                        embed.addField("Veröffentlicht:", `Nein, geplant: \`${set.year}\``, true)
+                        embed.addFields([{ name: "Veröffentlicht:", value: `Nein, geplant: \`${set.year}\``, inline: true}])
                     }
                     if (set.LEGOCom.DE.dateFirstAvailable && set.LEGOCom.DE.dateLastAvailable) {
-                        embed.addField("Verfügbar:", `<t:${Math.round(new Date(set.LEGOCom.DE.dateFirstAvailable).getTime() / 1000)}:d> - <t:${Math.round(new Date(set.LEGOCom.DE.dateLastAvailable).getTime() / 1000)}:d> (${set.availability})`, true)
+                        embed.addFields([{ name: "Verfügbar:", value: `<t:${Math.round(new Date(set.LEGOCom.DE.dateFirstAvailable).getTime() / 1000)}:d> - <t:${Math.round(new Date(set.LEGOCom.DE.dateLastAvailable).getTime() / 1000)}:d> (${set.availability})`, inline: true}])
                     }
                     if (set.minifigs) {
-                        embed.addField("Stückanzahl:", `\`${set.pieces}\` ⊇ \`${set.minifigs}\` Minifiguren`, true)
+                        embed.addFields([{ name: "Stückanzahl:", value: `\`${set.pieces}\` ⊇ \`${set.minifigs}\` Minifiguren`, inline: true}])
                     } else {
-                        embed.addField("Stückanzahl:", `\`${set.pieces}\``, true)
+                        embed.addFields([{ name: "Stückanzahl:", value: `\`${set.pieces}\``, inline: true}])
                     }
                     if (set.LEGOCom.DE.retailPrice) {
-                        embed.addField("Preis (DE):", `${set.LEGOCom.DE.retailPrice}€`, true)
+                        embed.addFields([{ name: "Preis (DE):", value: `${set.LEGOCom.DE.retailPrice}€`, inline: true}])
                     }
                     if (!set.ageRange.min || !set.ageRange.max) {} else {
-                        embed.addField("Altersempfehlung:", `\`${set.ageRange.min}\` - \`${set.ageRange.max}\``, true)
+                        embed.addFields([{ name: "Altersempfehlung:", value: `\`${set.ageRange.min}\` - \`${set.ageRange.max}\``, inline: true}])
                     }
                     if (set.dimensions.weight) {
-                        embed.addField("Dimensionen:", `\`${Math.round(set.dimensions.depth)}\`×\`${Math.round(set.dimensions.width)}\`×\`${Math.round(set.dimensions.height)}\` cm, \`${Math.round(set.dimensions.weight * 1000)}\` g (${set.packagingType})`, true)
+                        embed.addFields([{ name: "Dimensionen:", value: `\`${Math.round(set.dimensions.depth)}\`×\`${Math.round(set.dimensions.width)}\`×\`${Math.round(set.dimensions.height)}\` cm, \`${Math.round(set.dimensions.weight * 1000)}\` g (${set.packagingType})`, inline: true}])
                     } else {
                         if (set.dimensions.depth) {
-                            embed.addField("Dimensionen:", `\`${Math.round(set.dimensions.depth)}\`×\`${Math.round(set.dimensions.width)}\`×\`${Math.round(set.dimensions.height)}\` cm (${set.packagingType})`, true)
+                            embed.addFields([{ name: "Dimensionen:", value: `\`${Math.round(set.dimensions.depth)}\`×\`${Math.round(set.dimensions.width)}\`×\`${Math.round(set.dimensions.height)}\` cm (${set.packagingType})`, inline: true}])
                         }
                     }
                     if (set.barcode.EAN && set.barcode.UPC) {
-                        embed.addField("Barcodes:", `EAN: \`${set.barcode.EAN}\`, UPC: \`${set.barcode.UPC}\``, true)
+                        embed.addFields([{ name: "Barcodes:", value: `EAN: \`${set.barcode.EAN}\`, UPC: \`${set.barcode.UPC}\``, inline: true}])
                     } else if (set.barcode.EAN) {
-                        embed.addField("Barcode:", `EAN: \`${set.barcode.EAN}\``, true)
+                        embed.addFields([{ name: "Barcode:", value: `EAN: \`${set.barcode.EAN}\``, inline: true}])
                     } else if (set.barcode.UPC) {
-                        embed.addField("Barcode:", `UPC: \`${set.barcode.UPC}\``, true)
+                        embed.addFields([{ name: "Barcode:", value: `UPC: \`${set.barcode.UPC}\``, inline: true}])
                     }
-                    if (set.rating) embed.addField("Bewertung:", `${fullstar.repeat(Math.round(set.rating)) + emptystar.repeat(5 - Math.round(set.rating))}`, true)
-                    embed.addField("Zuletzt aktualisiert:", `<t:${Math.round(new Date(set.lastUpdated).getTime() / 1000)}:R>`, true)
+                    if (set.rating) embed.addFields([{ name: "Bewertung:", value: `${fullstar.repeat(Math.round(set.rating)) + emptystar.repeat(5 - Math.round(set.rating))}`, inline: true}])
+                    embed.addFields([{ name: "Zuletzt aktualisiert:", value: `<t:${Math.round(new Date(set.lastUpdated).getTime() / 1000)}:R>`, inline: true}])
                     if (set.subtheme) {
-                        embed.addField("Theme:", `\`${set.themeGroup}\` ➝ \`${set.theme}\` ➝ \`${set.subtheme}\``, false)
+                        embed.addFields([{ name: "Theme:", value: `\`${set.themeGroup}\` ➝ \`${set.theme}\` ➝ \`${set.subtheme}\``, inline: false}])
                     } else if (set.theme) {
-                        embed.addField("Theme:", `\`${set.themeGroup}\` ➝ \`${set.theme}\``, false)
+                        embed.addFields([{ name: "Theme:", value: `\`${set.themeGroup}\` ➝ \`${set.theme}\``, inline: false}])
                     } else {
-                        embed.addField("Theme:", `\`${set.themeGroup}\``, false)
+                        embed.addFields([{ name: "Theme:", value: `\`${set.themeGroup}\``, inline: false}])
                     }
-                    embed.addField("​", `[Zu ${set.name} auf Brickset](${set.bricksetURL})`, false)
+                    embed.addFields([{ name: "​", value: `[Zu ${set.name} auf Brickset](${set.bricksetURL})`, inline: false}])
 
                     sets.push(embed)
                 }
@@ -172,7 +172,7 @@ module.exports = {
 
                 let dataarray = json.apiKeyUsage.slice(0, 24)
 
-                const embed = new Discord.MessageEmbed()
+                const embed = new Discord.EmbedBuilder()
                     .setColor(config.standard_color)
                     .setAuthor({
                         name: "Brickset-API",
@@ -187,13 +187,13 @@ module.exports = {
                     })
                 dataarray.forEach(data => {
                     if (data.count == 1) {
-                        embed.addField(`${new Date(data.dateStamp).toLocaleDateString().replaceAll(".",". ")}:`, `\`\`${data.count}\`\` Request`, true)
+                        embed.addFields([{ name: `${new Date(data.dateStamp).toLocaleDateString().replaceAll(".",". ")}:`, value: `\`\`${data.count}\`\` Request`, inline: true}])
                     } else {
-                        embed.addField(`${new Date(data.dateStamp).toLocaleDateString().replaceAll(".",". ")}:`, `\`\`${data.count}\`\` Requests`, true)
+                        embed.addFields([{ name: `${new Date(data.dateStamp).toLocaleDateString().replaceAll(".",". ")}:`, value: `\`\`${data.count}\`\` Requests`, inline: true}])
                     }
 
                 });
-                embed.addField("​", "[Zu Brickset](https://brickset.com/)", false)
+                embed.addFields([{ name: "​", value: "[Zu Brickset](https://brickset.com/)", inline: false}])
                 message.reply({ embeds: [embed] })
             })
             return
@@ -216,9 +216,9 @@ module.exports = {
                     // search for specific theme
                     let foundarr = []
                     json.themes.forEach(theme => {
-                        if (theme.theme.toLowerCase().replaceAll(" ", "") == text.toLowerCase().replace("themes", "").replaceAll(" ", "")) {
+                        if (theme.theme.toLowerCase().replaceAll(" ", "") == text.toLowerCase().replace("themes", "").replace("theme", "").replaceAll(" ", "")) {
                             foundarr.push("yes")
-                            const embed = new Discord.MessageEmbed()
+                            const embed = new Discord.EmbedBuilder()
                                 .setColor(config.standard_color)
                                 .setTitle(theme.theme)
                                 .setTimestamp()
@@ -226,13 +226,16 @@ module.exports = {
                                     text: message.guild.name,
                                     iconURL: message.guild.iconURL({ dynamic: true })
                                 })
-                                .addField("Theme:", `\`${theme.theme}\``, true)
-                                .addField("Sets zum Theme:", `\`${theme.setCount}\``, true)
-                                .addField("Unterthemen:", `\`${theme.subthemeCount}\``, true)
-                                .addField("Ersterscheinung:", `\`${theme.yearFrom}\``, true)
-                                .addField("Letzterscheinung: ", `\`${theme.yearTo}\``, true)
-                                .addField("⌀ Sets pro Jahr:", `\`${Math.round(theme.setCount / (theme.yearTo-theme.yearFrom + 1))}\``, true)
-                                .addField("​", `[Alle ${theme.theme}-Sets](https://brickset.com/sets/theme-${theme.theme.replaceAll(" ", "-")})`, false)
+                                .addFields([
+                                    { name: "Theme:", value: `\`${theme.theme}\``, inline: true},
+                                    { name: "Sets zum Theme:", value: `\`${theme.setCount}\``, inline: true},
+                                    { name: "Unterthemen:", value: `\`${theme.subthemeCount}\``, inline: true},
+                                    { name: "Ersterscheinung:", value: `\`${theme.yearFrom}\``, inline: true},
+                                    { name: "Letzterscheinung: ", value: `\`${theme.yearTo}\``, inline: true},
+                                    { name: "⌀ Sets pro Jahr:", value: `\`${Math.round(theme.setCount / (theme.yearTo-theme.yearFrom + 1))}\``, inline: true},
+                                    { name: "​", value: `[Alle ${theme.theme}-Sets](https://brickset.com/sets/theme-${theme.theme.replaceAll(" ", "-")})`, inline: false}
+
+                                ])
                             message.reply({ embeds: [embed] })
                         }
                     })
@@ -248,7 +251,7 @@ module.exports = {
                     dataarray.push(theme.theme)
                 });
 
-                const embed = new Discord.MessageEmbed()
+                const embed = new Discord.EmbedBuilder()
                 embed.setColor(config.standard_color)
                     .setTitle(`Alle ${json.matches} Lego Themes`)
                     .setTimestamp()
@@ -257,7 +260,7 @@ module.exports = {
                         iconURL: message.guild.iconURL({ dynamic: true })
                     })
                 embed.setDescription(`\`\`\`${dataarray.join(', ')}\`\`\``)
-                embed.addField("​", `Du möchtest mehr über ein einzelnes Theme wissen?\nMit \`${message.content.split(" ")[0]} Themes <Name>\` bekommst du mehr Informationen.`, false)
+                embed.addFields([{ name: "​", value: `Du möchtest mehr über ein einzelnes Theme wissen?\nMit \`${message.content.split(" ")[0]} Themes <Name>\` bekommst du mehr Informationen.`, inline: false}])
                 message.reply({ embeds: [embed] })
 
 
@@ -290,7 +293,8 @@ module.exports = {
                 // is the given theme valid?
                 let foundarr = []
                 json_.themes.forEach(theme => {
-                    if (theme.theme.toLowerCase().replaceAll(" ", "") == text.toLowerCase().replace("subthemes", "").replaceAll(" ", "")) {
+                    console.log(theme.theme.toLowerCase().replaceAll(" ", ""), text.toLowerCase().replace("subthemes", "").replace("subtheme", "").replaceAll(" ", ""))
+                    if (theme.theme.toLowerCase().replaceAll(" ", "") == text.toLowerCase().replace("subthemes", "").replace("subtheme", "").replaceAll(" ", "")) {
                         foundarr.push(theme)
                     }
                 })
@@ -322,24 +326,28 @@ module.exports = {
                         const stheme = json.subthemes[i];
 
                         // define all embeds
-                        const embed = new Discord.MessageEmbed()
+                        const embed = new Discord.EmbedBuilder()
                             .setColor(config.standard_color)
                         if (stheme.subtheme.toLowerCase() == "{none}") {
-                            embed.setTitle(foundarr[0].theme + " - ohne Subtheme")
-                            embed.addField("Sets ohne Subtheme:", `\`${stheme.setCount} / ${foundarr[0].setCount}\``, true)
-                            embed.addField("Sets mit Subtheme:", `\`${foundarr[0].setCount - stheme.setCount} / ${foundarr[0].setCount}\``, true)
-                            embed.addField("Sets zum Theme " + foundarr[0].theme, `\`${foundarr[0].setCount}\``, true)
-                            embed.addField("Erstveröffentlichung:", `\`${foundarr[0].yearFrom}\``, true)
-                            embed.addField("Letztveröffentlichung:", `\`${foundarr[0].yearTo}\``, true)
-                            embed.addField("​", `[Alle ${foundarr[0].theme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")})`, false)
-                        } else {
+                            embed.setTitle(foundarr[0].theme + " - Oberthema")
+                            embed.addFields([
+                                { name: "Sets ohne Subtheme:", value: `\`${stheme.setCount} / ${foundarr[0].setCount}\``, inline: true},
+                                { name: "Sets mit Subtheme:", value: `\`${foundarr[0].setCount - stheme.setCount} / ${foundarr[0].setCount}\``, inline: true},
+                                { name: "Sets zum Theme " + foundarr[0].theme + ":", value: `\`${foundarr[0].setCount}\``, inline: true},
+                                { name: "Erstveröffentlichung:", value: `\`${foundarr[0].yearFrom}\``, inline: true},
+                                { name: "Letztveröffentlichung:", value: "Letztveröffentlichung:", inline: true},
+                                { name: "​", value: `[Alle ${foundarr[0].theme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")})`, inline: false}
+                            ])
+                        } else { 
                             embed.setTitle(foundarr[0].theme + " - " + stheme.subtheme)
-                            embed.addField("Name des Unterthemas:", `\`${stheme.subtheme}\``, true)
-                            embed.addField("Anzahl aller Sets:", `\`${stheme.setCount}\``, true)
-                            embed.addField("⌀ Sets pro Jahr:", `\`${Math.round(stheme.setCount / (stheme.yearTo-stheme.yearFrom + 1))}\``, true)
-                            embed.addField("Erstveröffentlichung:", `\`${stheme.yearFrom}\``, true)
-                            embed.addField("Letztveröffentlichung:", `\`${stheme.yearTo}\``, true)
-                            embed.addField("​", `[Alle ${stheme.subtheme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")}/subtheme-${stheme.subtheme.replaceAll(" ", "-")})`, false)
+                            embed.addFields([
+                                { name: "Name des Unterthemas:", value: `\`${stheme.subtheme}\``, inline: true},
+                                { name: "Anzahl aller Sets:", value: `\`${stheme.setCount}\``, inline: true},
+                                { name: "⌀ Sets pro Jahr:", value: `\`${Math.round(stheme.setCount / (stheme.yearTo-stheme.yearFrom + 1))}\``, inline: true},
+                                { name: "Erstveröffentlichung:", value: `\`${stheme.yearFrom}\``, inline: true},
+                                { name: "Letztveröffentlichung:", value: `\`${stheme.yearTo}\``, inline: true},
+                                { name: "​", value: `[Alle ${stheme.subtheme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")}/subtheme-${stheme.subtheme.replaceAll(" ", "-")})`, inline: false}
+                            ])
                         }
                         dataarray.push(embed)
 
@@ -378,7 +386,7 @@ module.exports = {
                 // is the given theme valid?
                 let foundarr = []
                 json_.themes.forEach(theme => {
-                    if (theme.theme.toLowerCase().replaceAll(" ", "") == text.toLowerCase().replace("jahre", "").replaceAll(" ", "")) {
+                    if (theme.theme.toLowerCase().replaceAll(" ", "") == text.toLowerCase().replace("jahre", "").replace("jahr", "").replaceAll(" ", "")) {
                         foundarr.push(theme)
                     }
                 })
@@ -394,26 +402,30 @@ module.exports = {
 
                     const embedarray = []
 
-                    const embed = new Discord.MessageEmbed()
+                    const embed = new Discord.EmbedBuilder()
                         .setColor(config.standard_color)
                         .setTitle("Quick Facts")
-                        .addField("Theme:", `\`${foundarr[0].theme}\``, true)
-                        .addField("Sets:", `\`${foundarr[0].setCount}\``, true)
-                        .addField("⌀ Sets pro Jahr:", `\`${Math.round(foundarr[0].setCount / (json.matches))}\``, true)
-                        .addField("Erstveröffentlichung:", `\`${foundarr[0].yearFrom}\``, true)
-                        .addField("Letztveröffentlichung:", `\`${foundarr[0].yearTo}\``, true)
-                        .addField("​", `[Alle ${foundarr[0].theme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")})`, false)
+                        .addFields([
+                            { name: "Theme:", value: `\`${foundarr[0].theme}\``, inline: true},
+                            { name: "Sets:", value: `\`${foundarr[0].setCount}\``, inline: true},
+                            { name: "⌀ Sets pro Jahr:", value: `\`${Math.round(foundarr[0].setCount / (json.matches))}\``, inline: true},
+                            { name: "Erstveröffentlichung:", value: `\`${foundarr[0].yearFrom}\``, inline: true},
+                            { name: "Letztveröffentlichung:", value: `\`${foundarr[0].yearTo}\``, inline: true},
+                            { name: "​", value: `[Alle ${foundarr[0].theme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")})`, inline: false}
+                        ])
 
                     embedarray.push(embed)
 
                     json.years.forEach(yr => {
-                        const embed = new Discord.MessageEmbed()
+                        const embed = new Discord.EmbedBuilder()
                             .setColor(config.standard_color)
-                            .addField("Theme:", `\`${foundarr[0].theme}\``, true)
-                            .addField("Jahr:", `\`${yr.year}\``, true)
-                            .addField("Sets:", `\`${yr.setCount}\``, true)
-                            .addField("​", `[Alle ${foundarr[0].theme}-Sets (${yr.year})](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")}/year-${yr.year})`, false)
-
+                            .setTitle(`${foundarr[0].theme} - ${yr.year}`)
+                            .addFields([
+                                { name: "Sets:", value: `\`${yr.setCount}\``, inline: true},
+                                { name: "Theme:", value: `\`${foundarr[0].theme}\``, inline: true},
+                                { name: "Jahr:", value: `\`${yr.year}\``, inline: true},
+                                { name: "​", value: `[Alle ${foundarr[0].theme}-Sets (${yr.year})](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")}/year-${yr.year})`, inline: false}
+                            ])
 
                         embedarray.push(embed)
                     });
@@ -423,7 +435,9 @@ module.exports = {
             return
 
         } else if (arguments[0].toLowerCase() == "reviews" || arguments[0].toLowerCase() == "review") {
+
             if (!arguments[1]) return message.reply("Du musst eine Setnummer angeben.")
+
             if (validData() !== true) {
                 message.reply(validData())
                 return
@@ -433,7 +447,7 @@ module.exports = {
 
             const userhash = bricksetData.userkey.hash
 
-            fetch(`https://brickset.com/api/v3.asmx/getSets?apikey=${config.keys.brickset}&userHash=${userhash}&params={"query":"${arguments[1]}"}`).then(async response =>
+            fetch(`https://brickset.com/api/v3.asmx/getSets?apikey=${config.keys.brickset}&userHash=${userhash}&params={"query":"${text.substring(text.indexOf(" ") + 1)}"}`).then(async response =>
                 response.json()).then(json => {
                 if (json.status == "error") {
                     message.reply("Es gab einen Fehler:" + json.message)
@@ -452,22 +466,24 @@ module.exports = {
                     for (let i = 0; i < json.reviews.length; i++) {
                         const rev = json.reviews[i];
 
-                        const embed = new Discord.MessageEmbed()
+                        const embed = new Discord.EmbedBuilder()
                             .setColor(config.standard_color)
                             .setTitle(rev.title)
-                            .setAuthor(rev.author)
+                            .setAuthor({name: rev.author})
                             .setTimestamp(new Date(rev.datePosted).getTime())
                         if (rev.review.length > 4096) {
                             embed.setDescription(he.decode(rev.review.replaceAll(/<\/?p>/g, "").replaceAll(/<\/?h3>/g, "**").substring(0, 4090)) + "...")
                         } else {
                             embed.setDescription(he.decode(rev.review.replaceAll(/<\/?p>/g, "").replaceAll(/<\/?h3>/g, "**")))
                         }
-                        embed.addField("​", "**Bewertungen**:", false)
-                        embed.addField("Generell:", `${fullstar.repeat(Math.round(rev.rating.overall)) + emptystar.repeat(5 - Math.round(rev.rating.overall))}`, false)
-                        embed.addField("Teile:", `${fullstar.repeat(Math.round(rev.rating.parts)) + emptystar.repeat(5 - Math.round(rev.rating.parts))}`, true)
-                        embed.addField("Bauerlebnis:", `${fullstar.repeat(Math.round(rev.rating.buildingExperience)) + emptystar.repeat(5 - Math.round(rev.rating.buildingExperience))}`, true)
-                        embed.addField("Spielerlebnis:", `${fullstar.repeat(Math.round(rev.rating.playability)) + emptystar.repeat(5 - Math.round(rev.rating.playability))}`, true)
-                        embed.addField("Preiswertigkeit:", `${fullstar.repeat(Math.round(rev.rating.valueForMoney)) + emptystar.repeat(5 - Math.round(rev.rating.valueForMoney))}`, true)
+                        embed.addFields([
+                            { name: "​", value: "**Bewertungen**:", inline: false},
+                            { name: "Generell:", value: `${fullstar.repeat(Math.round(rev.rating.overall)) + emptystar.repeat(5 - Math.round(rev.rating.overall))}`, inline: false},
+                            { name: "Teile:", value: `${fullstar.repeat(Math.round(rev.rating.parts)) + emptystar.repeat(5 - Math.round(rev.rating.parts))}`, inline: true},
+                            { name: "Bauerlebnis:", value: `${fullstar.repeat(Math.round(rev.rating.buildingExperience)) + emptystar.repeat(5 - Math.round(rev.rating.buildingExperience))}`, inline: true},
+                            { name: "Spielerlebnis:", value: `${fullstar.repeat(Math.round(rev.rating.playability)) + emptystar.repeat(5 - Math.round(rev.rating.playability))}`, inline: true},
+                            { name: "Preiswertigkeit:", value: `${fullstar.repeat(Math.round(rev.rating.valueForMoney)) + emptystar.repeat(5 - Math.round(rev.rating.valueForMoney))}`, inline: true}
+                        ])
 
                         revlist.push(embed)
                     }
@@ -499,7 +515,6 @@ module.exports = {
                     return
                 }
 
-                console.log(json)
 
                 if (json.instructions.length == 0) {
                     message.reply("Es wurde keine Anleitung gefunden.")
@@ -510,11 +525,11 @@ module.exports = {
                 for (let i = 0; i < json.instructions.length; i++) {
                     const inst = json.instructions[i];
 
-                    const embed = new Discord.MessageEmbed()
+                    const embed = new Discord.EmbedBuilder()
                         .setColor(config.standard_color)
                         .setTitle(`Anleitung ${i+1}`)
                         .setDescription(inst.description)
-                        .addField("​", `[Zu diesser Anleitung](${encodeURI(inst.URL)})`, false)
+                        .addFields([{ name: "​", value: `[Zu diesser Anleitung](${encodeURI(inst.URL)})`, inline: false}])
                         .setTimestamp()
 
                     insts.push(embed)
@@ -524,7 +539,9 @@ module.exports = {
             })
             return
         } else if (arguments[0].toLowerCase() == "bilder" || arguments[0].toLowerCase() == "bild") {
+
             if (!arguments[1]) return message.reply("Du musst eine Setnummer angeben.")
+
             if (validData() !== true) {
                 message.reply(validData())
                 return
@@ -534,7 +551,7 @@ module.exports = {
 
             const userhash = bricksetData.userkey.hash
 
-            fetch(`https://brickset.com/api/v3.asmx/getSets?apikey=${config.keys.brickset}&userHash=${userhash}&params={"query":"${arguments[1]}"}`).then(async response =>
+            fetch(`https://brickset.com/api/v3.asmx/getSets?apikey=${config.keys.brickset}&userHash=${userhash}&params={"query":"${text.substring(text.indexOf(" ") + 1)}"}`).then(async response =>
                 response.json()).then(json => {
                 if (json.status == "error") {
                     message.reply("Es gab einen Fehler:" + json.message)
@@ -549,15 +566,14 @@ module.exports = {
                     if (json.status == "error") {
                         message.reply("Es gab einen Fehler:" + json.message)
                     }
-
-                    if (json.images.length == 0) {
+                    
+                    if (json.additionalImages.length == 0) return  message.reply("Es wurden keine Bilder für `" + setname + "` gefunden.")
                         message.reply("Es wurden keine Bilder für `" + setname + "` gefunden.")
-                        console.log(json)
                         const imglist = []
                         for (let i = 0; i < json.additionalImages.length; i++) {
                             const img = json.additionalImages[i];
 
-                            const embed = new Discord.MessageEmbed()
+                            const embed = new Discord.EmbedBuilder()
                                 .setColor(config.standard_color)
                                 .setTimestamp()
                                 .setTitle(`${setname} - Bild ${i+1}`)
@@ -567,7 +583,6 @@ module.exports = {
                         }
 
                         paginationEmbed(message, imglist, buttonList, 120000);
-                    }
                 })
             })
 

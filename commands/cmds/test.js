@@ -2,6 +2,7 @@ const config = require('../../config.json');
 const Discord = require('discord.js')
 const mysql = require('mysql')
 const util = require('util')
+const { PermissionsBitField } = require('discord.js')
 
 var connection = mysql.createPool({
     multipleStatements: true,
@@ -17,12 +18,16 @@ var db = util.promisify(connection.query).bind(connection)
 module.exports = {
     commands: ['test', 'test2'],
     expectedArgs: '',
-    permissionError: 'Diese Nachricht sollte es nie geben',
+    permissionError: '',
     minArgs: 0,
     maxArgs: 0,
     cooldown: 0,
     description: "this description is weird",
     callback: async(message, arguments, text) => {
+
+
+        message.reply("test")
+
 
         // 		// import node-fetch
         // const fetch = require('node-fetch');
@@ -71,6 +76,6 @@ module.exports = {
         //     message.reply("Du bist nicht registriert!")
         // }
     },
-    permissions: [],
-    requiredRoles: ['thevalleyy', 'Moderator', 'Admin']
+    permissions: "BanMembers",
+    requiredRoles: ['thevalleyy']
 }

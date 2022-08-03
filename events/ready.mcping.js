@@ -8,12 +8,12 @@ module.exports = (client) => {
     try {
         setInterval(function() {
             util.status('node2.chaosbothosting.de', 25504).catch(error => {
-                const failEmbed = new Discord.MessageEmbed()
+                const failEmbed = new Discord.EmbedBuilder()
                     .setTitle('Es gab einen Fehler bei mcping.js')
                     .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                     .setDescription('Fehler: `' + error + '`')
                     .setTimestamp()
-                    .setColor('fc036b')
+                    .setColor('#fc036b')
 
                 message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
             }).then(async(response) => {
@@ -53,7 +53,7 @@ module.exports = (client) => {
                     const newData_ = JSON.stringify(newData, null, 4)
                     fs.writeFileSync('./data/playerrec.json', newData_, 'utf8')
 
-                    const embedRecord = new Discord.MessageEmbed()
+                    const embedRecord = new Discord.EmbedBuilder()
                         .setColor('#14a2a3')
                         .setTitle('Neuer Spielerrekord!')
                         .setDescription(`**${response.players.online}** Spieler online!`)
@@ -82,7 +82,7 @@ module.exports = (client) => {
         }, 302000)
 
     } catch (error) {
-        const embedFail = new Discord.MessageEmbed()
+        const embedFail = new Discord.EmbedBuilder()
             .setTitle('Es gab einen Fehler beim Pingen eines Minecraft-Servers')
             .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
             .setDescription('Fehler: `' + error + '`')

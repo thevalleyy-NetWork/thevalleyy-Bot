@@ -10,7 +10,7 @@ module.exports = {
     description: "this description is weird",
     callback: (message, arguments, text) => {
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new Discord.EmbedBuilder()
             .setTitle("Admin-Bewerbung")
             .setColor(config.standard_color)
             .setDescription("[Bitte sende hier deine Bewerbung ein und wir werden sie schnellstmöglich bearbeiten.](https://tinyurl.com/bdz4kpd5)")

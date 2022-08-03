@@ -1,3 +1,5 @@
+const Discord = require('discord.js')
+const { PermissionsBitField } = require('discord.js')
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
     let target = message.guild.members.cache.get(toFind)
@@ -25,7 +27,6 @@ module.exports = {
     description: "this description is weird",
     callback: async(message, arguments, text) => {
 
-        const Discord = require('discord.js')
         var iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
         const reason = text.split(' ').slice(1).join(' ')
@@ -60,11 +61,11 @@ module.exports = {
                 await message.reply('Der User `' + member.user.tag + '` wurde gekickt.')
             }
         } catch (error) {
-            const embed = new Discord.MessageEmbed()
+            const embed = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -kick')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
+                .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
@@ -72,6 +73,6 @@ module.exports = {
             message.reply('Der User `' + member.user.tag + '` konnte nicht gekickt werden:\n`' + error + '`')
         }
     },
-    permissions: ['KICK_MEMBERS'],
+    permissions: [],
     requiredRoles: ['Supporter']
 }

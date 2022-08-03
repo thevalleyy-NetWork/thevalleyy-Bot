@@ -52,12 +52,12 @@ module.exports = {
         } catch (error) {
             message.reply('Die Nachricht konnte nicht an `' + user.user.tag + '` versendet werden.')
 
-            const failEmbed = new Discord.MessageEmbed()
+            const failEmbed = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -dm')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
-                .setFooter('thevalleyy-NetWork', iconurl)
+                .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
+                .setFooter({ name: message.guild.name, iconURL: iconurl})
                 .setTimestamp()
                 .setColor('fc036b')
             message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })

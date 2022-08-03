@@ -27,15 +27,11 @@ module.exports = {
     callback: async(message, arguments, text) => {
 
         if (!arguments[0]) {
-            message.reply(message.author.avatarURL({ dynamic: true, size: 128 }))
+            message.reply(message.author.avatarURL({ dynamic: true, size: 4096 }))
         } else {
-            getMember(message)
-            let avatarkek = getMember(message, arguments[0])
-            if (!avatarkek) {
-                message.reply(message.reply(`\`${arguments[0].substring(0, 50)}\` ist kein gültiger Nutzer!`))
-                return
-            }
-            message.reply(avatarkek.user.avatarURL({ dynamic: true, size: 128 })).catch((error) => {
+                let avatarkek = getMember(message, arguments[0])
+                if (!avatarkek) return message.reply(`\`${arguments[0].substring(0, 50)}\` ist kein gültiger Nutzer!`)
+            message.reply(avatarkek.user.avatarURL({ dynamic: true, size: 4096 })).catch((error) => {
                 message.reply('Es gab einen Fehler: `' + error.substring(0, 500) + '`')
             })
         }

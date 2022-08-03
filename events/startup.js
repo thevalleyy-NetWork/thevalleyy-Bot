@@ -20,9 +20,9 @@ module.exports = (client) => {
     })
 
     // maybe send a startup embed
-    const startEmbed = new Discord.MessageEmbed()
+    const startEmbed = new Discord.EmbedBuilder()
         .setTitle('Startup <:POGGIES:786251968841515049>')
-        .addField('Der Bot ist als ' + client.user.tag + ' eingeloggt.', 'Der Bot befindet sich auf ' + client.guilds.cache.size + ' Servern!')
+        .addFields([{ name: 'Der Bot ist als ' + client.user.tag + ' eingeloggt.', value: 'Der Bot befindet sich auf ' + client.guilds.cache.size + ' Servern!'}])
         .setFooter({
             text: 'thevalleyy-NetWork',
             iconURL: iconurl

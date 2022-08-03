@@ -11,9 +11,9 @@ module.exports = {
         var iconurl = message.guild.iconURL({ dynamic: true })
         const Discord = require('discord.js')
 
-
+        //TODO: automatisieren, help crasht
         if (message.member.permissions.has('MANAGE_NICKNAMES')) {
-            const adminEmbed = new Discord.MessageEmbed()
+            const adminEmbed = new Discord.EmbedBuilder()
                 .setTitle('Abgerufen von: ' + message.author.username)
                 .setThumbnail(message.author.displayAvatarURL())
                 .setDescription('Admin-Commands:')
@@ -23,7 +23,7 @@ module.exports = {
                 .setColor('149C51')
             message.reply({ embeds: [adminEmbed] })
         } else {
-            const userEmbed = new Discord.MessageEmbed()
+            const userEmbed = new Discord.EmbedBuilder()
                 .setTitle('Abgerufen von: ' + message.author.username)
                 .setThumbnail(message.author.displayAvatarURL())
                 .setDescription('Hier die Commands für User:')

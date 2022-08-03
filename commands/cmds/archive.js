@@ -23,11 +23,11 @@ module.exports = {
             } else { message.reply('`-archive` kann nur in geschlossenen Tickets ausgeführt werden.') }
 
         } catch (error) {
-            const failEmbed = new Discord.MessageEmbed()
+            const failEmbed = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -archive')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
+                .addFields([{name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
@@ -38,3 +38,4 @@ module.exports = {
     permissions: [],
     requiredRoles: ['Moderator']
 }
+// TODO: Tickets komplett überarbeiten

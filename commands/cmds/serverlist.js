@@ -11,7 +11,7 @@ module.exports = {
 
         message.delete()
         message.client.guilds.cache.forEach((guild) => {
-            message.channel.send("Server: `" + `${guild.name}` + "`, Accounts: `" + `${guild.memberCount}`)
+            message.channel.send("Server: `" + `${guild.name}` + "`, Accounts: `" + `${guild.memberCount}` + "`")
         })
 
     },

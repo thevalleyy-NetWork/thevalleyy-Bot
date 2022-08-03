@@ -8,7 +8,7 @@ module.exports = {
     permissionError: 'Hm.. Irgendwas ist schief gelaufen',
     minArgs: 0,
     maxArgs: 1,
-    cooldown: 10000,
+    cooldown: null,
     description: "this description is weird",
     callback: (message, arguments, text) => {
         var iconurl = message.guild.iconURL({ dynamic: true })
@@ -26,7 +26,7 @@ module.exports = {
             const allFiles = files.toString().replaceAll('.json', '').replaceAll('@', '').split(",")
 
             if (!arguments[0]) {
-                const embed = new Discord.MessageEmbed()
+                const embed = new Discord.EmbedBuilder()
                     .setColor(config.standard_color)
                     .setTitle("Alle " + allFiles.length + " Commands")
                     .setTimestamp()
@@ -65,22 +65,22 @@ module.exports = {
 
                             const cmdjson = JSON.parse(fs.readFileSync(directory + file))
 
-                            const embed = new Discord.MessageEmbed()
+                            const embed = new Discord.EmbedBuilder()
                                 .setTitle(`${config.prefix}${cmd}`)
                                 .setColor(config.standard_color)
                             if (cmdjson.commands.length > 1) {
-                                embed.addField("Aliase:", `​\`\`${cmdjson.commands.toString().replace(/,/g, ", ")}\`\``, true)
-                            } else { embed.addField("Alias:", `​\`\`${cmdjson.commands.toString().replace(/,/g, ", ")}\`\``, true) }
+                                embed.addFields([{ name: "Aliase:", value: `​\`\`${cmdjson.commands.toString().replace(/,/g, ", ")}\`\``, inline: true}])
+                            } else { embed.addFields([{ name: "Alias:", value: `​\`\`${cmdjson.commands.toString().replace(/,/g, ", ")}\`\``, inline: true}])}
 
                             if (cmdjson.expectedArgs.replaceAll(" ", "").length == 0) {
-                                embed.addField("Erwartetes Argument:", `​\`\`Keins\`\``, true)
+                                embed.addFields([{ name: "Erwartetes Argument:", value: `​\`\`Keins\`\``, inline: true}])
                             } else if (cmdjson.expectedArgs.replaceAll(/<.*?>/gm, "").replaceAll(/\[.*?\]/gm, "").length == 0) {
-                                embed.addField("Erwartetes Argument:", `​\`\`${cmdjson.expectedArgs.toString()}\`\``, true)
-                            } else { embed.addField("Erwartete Argumente:", `​\`\`${cmdjson.expectedArgs.toString()}\`\``, true) }
+                                embed.addFields([{ name: "Erwartetes Argument:", value: `​\`\`${cmdjson.expectedArgs.toString()}\`\``, inline: true}])
+                            } else { embed.addFields([{ name: "Erwartete Argumente:", value: `​\`\`${cmdjson.expectedArgs.toString()}\`\``, inline: true}])}
 
                             if (cmdjson.description.replaceAll(" ", "").length == 0) {
-                                embed.addField("Beschreibung:", `​\`\`Keine\`\``, true)
-                            } else { embed.addField("Beschreibung:", `​\`\`${cmdjson.description.toString()}\`\``, true) }
+                                embed.addFields([{ name: "Beschreibung:", value: `​\`\`Keine\`\``, inline: true}])
+                            } else { embed.addFields([{ name: "Beschreibung:", value: `​\`\`${cmdjson.description.toString()}\`\``, inline: true}])}
 
                             if (!cmdjson.minArgs) {
                                 var minarg = "∞"
@@ -89,14 +89,14 @@ module.exports = {
                                 var maxarg = "∞"
                             } else { var maxarg = cmdjson.maxArgs }
 
-                            embed.addField("Min. & Max. Argumente:", `​\`\`${minarg} | ${maxarg}\`\``, true)
+                            embed.addFields([{ name: "Min. & Max. Argumente:", value: `​\`\`${minarg} | ${maxarg}\`\``, inline: true}])
 
                             if (cmdjson.permissions.length < 1) {
-                                embed.addField("Berechtigung benötigt:", `​\`\`Keine\`\``, true)
+                                embed.addFields([{ name: "Berechtigung benötigt:", value: `​\`\`Keine\`\``, inline: true}])
                             } else if (cmdjson.permissions.length >= 2) {
-                                embed.addField("Berechtigungen benötigt:", `​\`\`${cmdjson.permissions.toString().replace(/,/g, ", ")}\`\``, true)
+                                embed.addFields([{ name: "Berechtigungen benötigt:", value: `​\`\`${cmdjson.permissions.toString().replace(/,/g, ", ")}\`\``, inline: true}])
                             } else {
-                                embed.addField("Berechtigung benötigt:", `​\`\`${cmdjson.permissions.toString()}\`\``, true)
+                                embed.addFields([{ name: "Berechtigung benötigt:", value: `​\`\`${cmdjson.permissions.toString()}\`\``, inline: true}])
                             }
 
                             if (!cmdjson.cooldown) {
@@ -112,10 +112,10 @@ module.exports = {
                             var mDisplay = m > 0 ? (m == 1 ? s > 0 ? `eine Minute, ` : m == 1 ? `eine Minute` : `${m} Minuten` : `${m} Minuten, `) : ``;
                             var sDisplay = s > 0 ? (s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
 
-                            embed.addField("Cooldown:", `​\`\`${hDisplay + mDisplay + sDisplay}\`\``, true)
+                            embed.addFields([{ name: "Cooldown:", value: `​\`\`${hDisplay + mDisplay + sDisplay}\`\``, inline: true}])
 
                             if (cmdjson.requiredRoles.length < 1) {
-                                embed.addField("Rolle benötigt:", `​\`\`Keine\`\``, true)
+                                embed.addFields([{ name: "Rolle benötigt:", value: `​\`\`Keine\`\``, inline: true}])
                             } else {
                                 const rollenids = []
                                 cmdjson.requiredRoles.forEach(async role => {
@@ -127,9 +127,9 @@ module.exports = {
                                 });
 
                                 if (cmdjson.requiredRoles.length >= 2) {
-                                    embed.addField("Rollen benötigt:", `​${rollenids.toString().replace(/,/g, ", ")}`, true)
+                                    embed.addFields([{ name: "Rollen benötigt:", value: `​${rollenids.toString().replace(/,/g, ", ")}`, inline: true}])
                                 } else {
-                                    embed.addField("Rolle benötigt:", `​${rollenids.toString().replace(/,/g, ", ")}`, true)
+                                    embed.addFields([{ name: "Rolle benötigt:", value: `​${rollenids.toString().replace(/,/g, ", ")}`, inline: true}])
                                 }
                             }
 

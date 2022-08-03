@@ -29,17 +29,20 @@ module.exports = {
         })
 
 
-        const prePingEmbed = new Discord.MessageEmbed()
+        const prePingEmbed = new Discord.EmbedBuilder()
             .setTitle("...")
             .setColor("#36393f")
         message.reply({ embeds: [prePingEmbed] }).then(m => {
-            const pingEmbed = new Discord.MessageEmbed()
+            const pingEmbed = new Discord.EmbedBuilder()
                 .setTitle('Bot-Info')
-                .addField('Bot:', `\`${m.createdTimestamp - message.createdTimestamp}\`ms`, true)
-                .addField("API: ", `\`${Math.round(message.client.ws.ping)}\`ms`, true)
-                .addField("TPS: ", `\`${tps}\``, true)
-                .addField("Uptime: ", `${uptime}`, true)
-                .setFooter(message.guild.name, iconurl)
+                .addFields([
+                    { name: "Bot:", value: `\`${m.createdTimestamp - message.createdTimestamp}\`ms`, inline: true },
+                    { name: "API:", value: `\`${Math.round(message.client.ws.ping)}\`ms`, inline: true },
+                    { name: "TPS:", value: `\`${tps}\``, inline: true },
+                    { name: "Uptime:", value: `${uptime}`, inline: true },
+                ])
+
+                .setFooter({ text: message.guild.name, iconURL: iconurl})
                 .setTimestamp()
                 .setColor('#36393f')
             m.edit({ embeds: [pingEmbed] })

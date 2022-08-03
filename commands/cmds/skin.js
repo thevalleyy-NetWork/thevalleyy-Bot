@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const paginationEmbed = require('discordjs-button-pagination')
-const { MessageEmbed, MessageButton } = require('discord.js')
+const { EmbedBuilder, ButtonBuilder } = require('discord.js')
 const modlog = '822575095721099304'
 const config = require('./../../config.json')
 
@@ -35,7 +35,7 @@ module.exports = {
                     if (response.status == 204) {
                         message.reply("Der angegebene Spieler existiert nicht.")
                     } else {
-                        const error = new Discord.MessageEmbed()
+                        const error = new Discord.EmbedBuilder()
                             .setColor('#ff0000')
                             .setTitle('Es gab einen Fehler...')
                             .setDescription("`" + response.statusText + "`\nAPI: " + response.url + "\nStatus: " + response.status)
@@ -58,7 +58,7 @@ module.exports = {
                 if (response.status == 204 || response.status == 400) {
                     message.reply("Die angegebene UUID existiert nicht.")
                 } else {
-                    const error = new Discord.MessageEmbed()
+                    const error = new Discord.EmbedBuilder()
                         .setColor('#ff0000')
                         .setTitle('Es gab einen Fehler...')
                         .setDescription("`" + response.statusText + "`\nAPI: " + response.url + "\nStatus: " + response.status)
@@ -71,82 +71,85 @@ module.exports = {
 
         let embeds = []
 
-        const embed0 = new Discord.MessageEmbed()
+        const embed0 = new Discord.EmbedBuilder()
             .setColor(config.standard_color)
             .setTimestamp()
             .setTitle("Skin von " + name[0])
             .setDescription("Gesicht (2D)")
             .setImage("https://visage.surgeplay.com/face/" + uuid[0])
 
-        const embed1 = new Discord.MessageEmbed()
+        const embed1 = new Discord.EmbedBuilder()
             .setColor(config.standard_color)
             .setTimestamp()
             .setTitle("Skin von " + name[0])
             .setDescription("Oberkörper (2D)")
             .setImage("https://visage.surgeplay.com/front/" + uuid[0])
 
-        const embed2 = new Discord.MessageEmbed()
+        const embed2 = new Discord.EmbedBuilder()
             .setColor(config.standard_color)
             .setTimestamp()
             .setTitle("Skin von " + name[0])
             .setDescription("Körper (2D)")
             .setImage("https://visage.surgeplay.com/frontfull/" + uuid[0])
 
-        const embed3 = new Discord.MessageEmbed()
+        const embed3 = new Discord.EmbedBuilder()
             .setColor(config.standard_color)
             .setTimestamp()
             .setTitle("Skin von " + name[0])
             .setDescription("Kopf (3D)")
             .setImage("https://visage.surgeplay.com/head/" + uuid[0])
 
-        const embed4 = new Discord.MessageEmbed()
+        const embed4 = new Discord.EmbedBuilder()
             .setColor(config.standard_color)
             .setTimestamp()
             .setTitle("Skin von " + name[0])
             .setDescription("Oberkörper (3D)")
             .setImage("https://visage.surgeplay.com/bust/" + uuid[0])
 
-        const embed5 = new Discord.MessageEmbed()
+        const embed5 = new Discord.EmbedBuilder()
             .setColor(config.standard_color)
             .setTimestamp()
             .setTitle("Skin von " + name[0])
             .setDescription("Körper (3D)")
             .setImage("https://visage.surgeplay.com/full/" + uuid[0])
 
-        const embed6 = new Discord.MessageEmbed()
+        const embed6 = new Discord.EmbedBuilder()
             .setColor(config.standard_color)
             .setTimestamp()
             .setTitle("Skin von " + name[0])
             .setDescription("Infos & Links")
             .setThumbnail("https://visage.surgeplay.com/head/" + uuid[0])
-            .addField("​", "**Infos**:", false)
-            .addField("​", "• [Skin-API](https://visage.surgeplay.com/index.html)", true)
-            .addField("​", `• [Username API](https://api.mojang.com/users/profiles/minecraft/${name[0]})`, true)
-            .addField("​", `• [uuid API](https://sessionserver.mojang.com/session/minecraft/profile/${uuid[0].slice()})`, true)
-            .addField("​", "**Links**:", false)
-            .addField("​", `• [Skin](https://visage.surgeplay.com/skin/${uuid[0]})`, true)
-            .addField("​", `• [NameMC](https://de.namemc.com/profile/${name[0]})`, true)
+            .addFields([
+                { name: "​", value: "**Infos**:", inline: false },
+                { name: "​", value: "• [Skin-API](https://visage.surgeplay.com/index.html)", inline: true },
+                { name: "​", value: `• [Username API](https://api.mojang.com/users/profiles/minecraft/${name[0]})`, inline: true },
+                { name: "​", value: `• [uuid API](https://sessionserver.mojang.com/session/minecraft/profile/${uuid[0].slice()})`, inline: true },
+                { name: "​", value: "**Links**:", inline: false },
+                { name: "​", value: `• [Skin](https://visage.surgeplay.com/skin/${uuid[0]})`, inline: true },
+                { name: "​", value: `• [NameMC](https://de.namemc.com/profile/${name[0]})`, inline: true },
+            ])
+
         if (uuid[0].includes("-")) {
-            embed6.addField("​", `• [MCProfile](https://mcprofile.net/profile/${uuid[0]})`, true)
+            embed6.addFields([{ name: "​", value: `• [MCProfile](https://mcprofile.net/profile/${uuid[0]})`, inline: true}])
         } else {
-            embed6.addField("​", `• [MCProfile](https://mcprofile.net/profile/${uuid[0].slice(0, 8)}-${uuid[0].slice(8, 12)}-${uuid[0].slice(12, 16)}-${uuid[0].slice(16, 20)}-${uuid[0].slice(20)})`, true)
+            embed6.addFields([{ name: "​", value: `• [MCProfile](https://mcprofile.net/profile/${uuid[0].slice(0, 8)}-${uuid[0].slice(8, 12)}-${uuid[0].slice(12, 16)}-${uuid[0].slice(16, 20)}-${uuid[0].slice(20)})`, inline: true}])
         }
-        embed6.addField("Player-Name", `\`${name[0]}\``, true)
+        embed6.addFields([{ name: "Player-Name", value: `\`${name[0]}\``, inline: true}])
         if (uuid[0].includes("-")) {
-            embed6.addField("uuid", `\`${uuid[0]}\``, true)
+            embed6.addFields([{ name: "uuid", value: `\`${uuid[0]}\``, inline: true}])
         } else {
-            embed6.addField("uuid", `\`${uuid[0].slice(0, 8)}-${uuid[0].slice(8, 12)}-${uuid[0].slice(12, 16)}-${uuid[0].slice(16, 20)}-${uuid[0].slice(20)}\``, true)
+            embed6.addFields([{ name: "uuid", value: `\`${uuid[0].slice(0, 8)}-${uuid[0].slice(8, 12)}-${uuid[0].slice(12, 16)}-${uuid[0].slice(16, 20)}-${uuid[0].slice(20)}\``, inline: true}])
         }
 
-        const button1 = new MessageButton()
+        const button1 = new ButtonBuilder()
             .setCustomId('previousbtn')
             .setLabel('◀️')
-            .setStyle('DANGER');
+            .setStyle("Danger");
 
-        const button2 = new MessageButton()
+        const button2 = new ButtonBuilder()
             .setCustomId('nextbtn')
             .setLabel('▶️')
-            .setStyle('SUCCESS');
+            .setStyle("Success");
 
         buttonList = [
             button1,

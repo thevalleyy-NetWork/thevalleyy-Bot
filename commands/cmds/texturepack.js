@@ -12,16 +12,18 @@ module.exports = {
         const Discord = require('discord.js')
 
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new Discord.EmbedBuilder()
             .setTitle('Abgerufen von: ' + message.author.username)
             .setDescription('Texturen für Minecraft. Von thevalleyy')
-            .addField('Version:', 'Minecraft Java 1.17 | Version der TexturePacks: Beta_0.3')
-            .addField('Download', 'https://drive.google.com/file/d/1qmDFRpdOqF4HecllwdYI2kWZ--1FU46w/view?usp=sharing')
+            .addFields([
+                { name: 'Version:', value: 'Minecraft Java 1.17 | Version der TexturePacks: Beta_0.3'},
+                { name: 'Download', value: 'https://drive.google.com/file/d/1qmDFRpdOqF4HecllwdYI2kWZ--1FU46w/view?usp=sharing'}
+            ])
             .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-            .setFooter(message.guild.name, iconurl)
+            .setFooter({ text: message.guild.name, iconURL: iconurl})
             .setTimestamp()
-            .setAuthor('Infos zum TexturePack von thevalleyy')
-            .setColor('11dd9d')
+            .setAuthor({ name: 'Infos zum TexturePack von thevalleyy' })
+            .setColor('#11dd9d')
         message.reply({ embeds: [embed] })
 
 

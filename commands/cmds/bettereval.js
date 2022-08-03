@@ -4,6 +4,8 @@ module.exports = {
     permissionError: '',
     minArgs: 1,
     maxArgs: null,
+    cooldown: null,
+    description: "access commandline in seconds",
     callback: async(message, arguments, text) => {
 
         const Discord = require('discord.js')
@@ -11,8 +13,8 @@ module.exports = {
             dynamic: true
         })
 
-        var kill = []
-        var m
+        let kill = []
+        let m
         let exited
         const getLines = d => d.split(/(\r?\n)+/).join("")
 
@@ -23,8 +25,8 @@ module.exports = {
 
         const update = () => {
             const text = arguments.join(" ") + "\n\n" + getLines(data.join("")) + "\n" + (exited ? exited : "")
-            if (message.user) message.editReply("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n" + (exited ? exited : "") + "```")
-            else m.edit("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n" + (exited ? exited : "") + "```")
+            if (message.user) message.editReply("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n"  + "```").catch(() => {})
+            else m.edit("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n"  + "```").catch(() => {})
             if (text.length > 2000) kill.push(true)
         }
 
@@ -51,15 +53,15 @@ module.exports = {
         child.on("exit", (code, signal) => {
             let d = "Beendet mit Code "
 
-            function push(t) {
+            function string(t) {
                 return d += t.toString()
             }
 
             if (signal == null) {
-                exited = push(code)
+                exited = string(code)
                 update()
             } else {
-                exited = push(signal)
+                exited = string(signal)
                 update()
             }
 

@@ -27,14 +27,14 @@ module.exports = (client) => {
             let welcomeRole = member.guild.roles.cache.find(role => role.name === 'Nice One').id
             setTimeout(() => member.roles.add(welcomeRole), 4000)
         } catch (error) {
-            const embedError = new Discord.MessageEmbed()
+            const embedError = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler beim Vergeben einer der Nice One Rolle')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(member.user.tag, "Nice One")
+                .addFields([{ name: member.user.tag, value: "Nice One"}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
-                .setColor('fc036b')
+                .setColor('#fc036b')
             client.channels.cache.get(modlog).send({ embeds: [embedError] })
         }
 

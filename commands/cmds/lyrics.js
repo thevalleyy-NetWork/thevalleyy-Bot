@@ -16,7 +16,7 @@ module.exports = {
         try {
             const fetch = (await
                 import ('node-fetch')).default
-            const waitEmbed = new Discord.MessageEmbed()
+            const waitEmbed = new Discord.EmbedBuilder()
                 .setColor('0099ff')
                 .setDescription("Suche nach: `" + text.substring(0, 50) + "`...")
 
@@ -24,7 +24,7 @@ module.exports = {
                 const { title, author, lyrics, thumbnail, links, error } = await fetch(`https://some-random-api.ml/lyrics?title=${text.toLowerCase().replaceAll('ä', 'ae').replaceAll('ü', 'ue').replaceAll('ö', 'oe').replaceAll('ß', 'ss')}`).then(response => response.json())
 
                 if (error) {
-                    const errorEmbed = new Discord.MessageEmbed()
+                    const errorEmbed = new Discord.EmbedBuilder()
                         .setColor('#ff0000')
                         .setTitle('Es gab einen Fehler...')
                         .setDescription("`" + error + "`")
@@ -36,8 +36,8 @@ module.exports = {
 
 
 
-                const songEmbed = new Discord.MessageEmbed()
-                    .setAuthor({ name: `${author} (${title})`, iconURL: "", url: links.genius })
+                const songEmbed = new Discord.EmbedBuilder()
+                    .setAuthor({ name: `${author} (${title})`, iconURL: message.author.avatarURL({ dynamic: true }), url: links.genius })
                     .setThumbnail(thumbnail.genius)
                     .setDescription(lyrics.substring(0, 4096))
                     .setColor('0099ff')
@@ -48,7 +48,8 @@ module.exports = {
                     .setTimestamp()
 
                 await msg.edit({ embeds: [songEmbed] })
-            }).catch(err => {
+            })
+            .catch(err => {
                 message.channel.send("Fehler: `" + err + "`")
             })
         } catch (err) {

@@ -27,11 +27,11 @@ module.exports = {
             const { image } = await fetch('http://api.nekos.fun:8080/api/' + randomType).then(response => response.json())
             message.reply(image)
         } catch (error) {
-            const failEmbed = new Discord.MessageEmbed()
+            const failEmbed = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -neko')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
+                .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')

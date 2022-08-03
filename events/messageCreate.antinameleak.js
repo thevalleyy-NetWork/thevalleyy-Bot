@@ -1,12 +1,13 @@
 const modlog = '822575095721099304'
 const Discord = require('discord.js')
+const { ChannelType } = require('discord.js')
 module.exports = (client) => {
 
     client.on("messageCreate", (message) => {
         if (message.guild === null) return
         if (message.author.bot) return
         if (!message.guild.available) return
-        if (message.channel.type == "DM") return
+        if (message.channel.type == ChannelType.DM) return
         if (message.webhookId) return
         if (message.channel.id == "908417486951694356") return
 
@@ -21,24 +22,26 @@ module.exports = (client) => {
                 if (message.guild.members.cache.get(message.author.id).roles.cache.has("726146482314674197")) return
 
                 message.delete()
-                const embed = new Discord.MessageEmbed()
+                const embed = new Discord.EmbedBuilder()
                     .setTitle("Anti-Nameleak")
                     .setColor(0xFF0000)
-                    .setAuthor(message.author.tag, message.author.avatarURL())
+                    .setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL()})
                     .setDescription(message.author.username + " wollte folgenden Text senden:")
-                    .addField("message.content:", "`" + message.content.substring(0, 1000) + "`", true)
-                    .addField("message.channel:", `${message.channel}`, true)
-                    .addField("message.author", `<@!${message.author.id}>`, true)
+                    .addFields([
+                        { name: "message.content:", value: "`" + message.content.substring(0, 1000) + "`", inline: true },
+                        { name: "message.channel:", value: `${message.channel}`, inline: true },
+                        { name: "message.author", value: `<@!${message.author.id}>`, inline: true },
+                    ])
                     .setFooter(message.guild.name, iconurl)
                     .setTimestamp()
                 client.channels.cache.get(modlog).send({ embeds: [embed] })
             }
         } catch (error) {
-            const embedSUS = new Discord.MessageEmbed()
+            const embedSUS = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler (Anti-Nameleak)')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(message.author.tag, 'in <#' + message.channel.id + '>')
+                .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')

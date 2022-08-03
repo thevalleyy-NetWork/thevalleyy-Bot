@@ -26,7 +26,7 @@ module.exports = {
     callback: async(message, arguments, text) => {
         var iconurl = message.guild.iconURL({ dynamic: true })
 
-        if (message.author.id !== '506746108345843713') {
+        if (message.author.id !== config.owner) {
             message.react('<:hm:907936051300012072>')
             return
         }

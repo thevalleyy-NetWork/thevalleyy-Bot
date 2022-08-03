@@ -19,57 +19,59 @@ module.exports = {
         })
 
         const {
-            MessageActionRow,
             Message,
-            MessageEmbed,
-            MessageButton,
+            EmbedBuilder,
+            ButtonBuilder,
+            ButtonStyle,
+            ActionRowBuilder
         } = require("discord.js");
 
         const idStart = "SKY_"
-        const buttonUp = new MessageButton()
+        const buttonUp = new ButtonBuilder()
             .setCustomId('SKY_btnUp')
             .setLabel('           🔼           ')
-            .setStyle('SECONDARY');
+            .setStyle("Secondary");
 
-        const buttonDown = new MessageButton()
+        const buttonDown = new ButtonBuilder()
             .setCustomId('SKY_btnDown')
             .setLabel('           🔽           ')
-            .setStyle('SECONDARY');
+            .setStyle("Secondary");
 
-        const buttonRight = new MessageButton()
+        const buttonRight = new ButtonBuilder()
             .setCustomId('SKY_btnRight')
             .setLabel('▶️')
-            .setStyle('SECONDARY');
+            .setStyle("Secondary");
 
-        const buttonReset = new MessageButton()
+        const buttonReset = new ButtonBuilder()
             .setCustomId('SKY_btnReset')
             .setLabel('🔄')
-            .setStyle('SECONDARY')
+            .setStyle("Secondary")
             .setDisabled(true);
 
-        const buttonLeft = new MessageButton()
+        const buttonLeft = new ButtonBuilder()
             .setCustomId('SKY_btnLeft')
             .setLabel('◀️')
-            .setStyle('SECONDARY');
+            .setStyle("Secondary");
 
 
-        const startEmbed = new MessageEmbed()
+        const startEmbed = new EmbedBuilder()
             .setTitle('Allsky')
             .setColor(config.standard_color)
             .setTimestamp(now)
             .setFooter({ text: message.guild.name, iconURL: iconurl })
             .setImage("https://archive.allsky.tv/AMS52/LATEST/010314.jpg")
-            .addField("Ort:", "Sonneberg, Thüringen", true)
-            .addField("Bilder von:", "https://allsky7.net/", true)
+            .addFields([
+                { name: "Ort:", value: "Sonneberg, Thüringen", inline: true },
+                { name: "Bilder von:", value: "https://allsky7.net/", inline: true}])
 
 
         let buttonListUp = [buttonUp]
         let buttonListMiddle = [buttonLeft, buttonReset, buttonRight]
         let buttonListDown = [buttonDown]
 
-        const rowUp = new MessageActionRow().addComponents(buttonListUp);
-        const rowMiddle = new MessageActionRow().addComponents(buttonListMiddle);
-        const rowDown = new MessageActionRow().addComponents(buttonListDown);
+        const rowUp = new ActionRowBuilder().addComponents(buttonListUp);
+        const rowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);
+        const rowDown = new ActionRowBuilder().addComponents(buttonListDown);
 
         message.reply({
             components: [rowUp, rowMiddle, rowDown],
@@ -118,7 +120,7 @@ module.exports = {
                     buttonReset.setDisabled(false)
                 }
 
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setTitle(`Allsky ||X = ${x}; Y = ${y}||`)
                     .setColor(config.standard_color)
                     .setFooter({ text: message.guild.name, iconURL: iconurl })
@@ -135,9 +137,9 @@ module.exports = {
                 let buttonListMiddle = [buttonLeft, buttonReset, buttonRight]
                 let buttonListDown = [buttonDown]
 
-                const rowUp = new MessageActionRow().addComponents(buttonListUp);
-                const rowMiddle = new MessageActionRow().addComponents(buttonListMiddle);
-                const rowDown = new MessageActionRow().addComponents(buttonListDown);
+                const rowUp = new ActionRowBuilder().addComponents(buttonListUp);
+                const rowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);
+                const rowDown = new ActionRowBuilder().addComponents(buttonListDown);
 
                 i.editReply({
                     components: [rowUp, rowMiddle, rowDown],
@@ -171,9 +173,9 @@ module.exports = {
                     }
 
 
-                    const disabledRowUp = new MessageActionRow().addComponents(buttonListUp);
-                    const disabledRowMiddle = new MessageActionRow().addComponents(buttonListMiddle);
-                    const disabledRowDown = new MessageActionRow().addComponents(buttonListDown);
+                    const disabledRowUp = new ActionRowBuilder().addComponents(buttonListUp);
+                    const disabledRowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);
+                    const disabledRowDown = new ActionRowBuilder().addComponents(buttonListDown);
 
                     msg.edit({
                         components: [disabledRowUp, disabledRowMiddle, disabledRowDown],

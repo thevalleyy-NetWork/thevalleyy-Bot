@@ -5,7 +5,7 @@ let json = require("./../data/stats.json")
 const {
     MessageActionRow,
     Message,
-    MessageEmbed,
+    EmbedBuilder,
     MessageButton,
 } = require("discord.js");
 

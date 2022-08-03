@@ -35,11 +35,11 @@ module.exports = (client) => {
                 client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Minecraft <:Minecraft:844909801297018891> Rolle bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
             }
         } catch (error) {
-            const embedFail = new Discord.MessageEmbed()
+            const embedFail = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei +ReactionRoles')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(user.tag, 'in <#' + reaction.message.channel.id + '>')
+                .addFields([{ name: user.tag, value: 'in <#' + reaction.message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')
@@ -79,11 +79,11 @@ module.exports = (client) => {
                 client.channels.cache.get(modlog).send('<@' + user.id + '> hat nun die Minecraft <:Minecraft:844909801297018891> Rolle entfernt bekommen. \n Seine ID: `' + user.id + '`, `' + user.createdAt.toLocaleString() + '`')
             }
         } catch (error) {
-            const embedFail2 = new Discord.MessageEmbed()
+            const embedFail2 = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -ReactionRoles')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
-                .addField(user.tag, 'in <#' + reaction.message.channel.id + '>')
+                .addFields([{ name: user.tag, value: 'in <#' + reaction.message.channel.id + '>'}])
                 .setFooter('thevalleyy-NetWork', iconurl)
                 .setTimestamp()
                 .setColor('fc036b')

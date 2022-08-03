@@ -14,6 +14,7 @@
 
                 await message.reply("Neustart eingeleitet.")
                 await process.exit(42)
+                // TODO: richtiger restart, nicht nur den process exitten
             },
             permissions: [],
             requiredRoles: ['Moderator']

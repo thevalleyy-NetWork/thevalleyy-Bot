@@ -1,5 +1,6 @@
 const modlog = '822575095721099304'
 const Discord = require('discord.js')
+const { ChannelType } = require('discord.js')
 
 
 module.exports = (client) => {
@@ -12,7 +13,7 @@ module.exports = (client) => {
         if (reaction.emoji.id === null) return
         if (reaction.message.guild === null) return
         if (!reaction.message.guild.available) return
-        if (reaction.message.channel.type == "DM") return
+        if (reaction.message.channel.type == ChannelType.DM) return
         if (reaction.message.webhookId) return
 
         try {
@@ -29,10 +30,10 @@ module.exports = (client) => {
                                 setTimeout(() => message.channel.setName(reaction.message.channel.name.replace('🔒', '📑')), 900000)
                             })
 
-                        const embedSuccess = new Discord.MessageEmbed()
+                        const embedSuccess = new Discord.EmbedBuilder()
                             .setTitle('Ein Ticket wurde per Reaktion archiviert')
                             .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                            .addField(user.tag, ' in <#' + reaction.message.channel.name + '>')
+                            .addFields([{ name: user.tag, value: ' in <#' + reaction.message.channel.name + '>'}])
                             .setFooter('thevalleyy-NetWork', iconurl)
                             .setTimestamp()
                             .setColor('03f8fc')
@@ -44,10 +45,10 @@ module.exports = (client) => {
                         reaction.message.channel.send('Das Ticket wird innerhalb `60 Sekunden` gelöscht, angefordert von: **' + user.tag + '**').then
                         setTimeout(() => reaction.message.channel.delete(), 60000)
 
-                        const embedSuccess2 = new Discord.MessageEmbed()
+                        const embedSuccess2 = new Discord.EmbedBuilder()
                             .setTitle('Ein Ticket wurde per Reaktion gelöscht')
                             .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27')
-                            .addField(user.tag, ' in <#' + reaction.message.channel.name + '>')
+                            .addFields([{ name: user.tag, value: ' in <#' + reaction.message.channel.name + '>'}])
                             .setFooter('thevalleyy-NetWork', iconurl)
                             .setTimestamp()
                             .setColor('03f8fc')
@@ -59,7 +60,7 @@ module.exports = (client) => {
                 return
             }
         } catch (error) {
-            const failEmbed = new Discord.MessageEmbed()
+            const failEmbed = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -close')
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
