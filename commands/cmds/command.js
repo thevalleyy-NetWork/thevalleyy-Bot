@@ -153,5 +153,5 @@ module.exports = {
 
     },
     permissions: [],
-    requiredRoles: []
+    requiredRoles: ["Nice One"]
 }
