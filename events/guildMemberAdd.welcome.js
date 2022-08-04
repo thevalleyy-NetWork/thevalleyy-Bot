@@ -52,10 +52,9 @@ module.exports = client => {
 
             const message = `Herzlich Willkommen, <@${member.id}> auf dem **thevalleyy-NetWork**. \nLese dir noch das <#786239847554875402> durch, dann kannst du loslegen! :D`
             const channel = member.guild.channels.cache.get(channelId)
-            // channel.send(message).then(message => {
-            //     setTimeout(() => message.react('a:PeepoHey:844822512495755264'), 50)
-            // }) 
-            // TODO: wieder uncommenten
+            channel.send(message).then(message => {
+                setTimeout(() => message.react('a:PeepoHey:844822512495755264'), 50)
+            }) 
 
         } catch (err) {
             member.guild.channels.cache.get(modlog).send(`Fehler beim Abfragen von ${member.user.tag} in der Datenbank: ${err}`)
