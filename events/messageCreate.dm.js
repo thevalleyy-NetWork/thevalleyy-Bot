@@ -47,16 +47,7 @@ module.exports = (client) => {
                 message.react('<:check:840154786568339497>')
             })
         } catch (error) {
-            const embedFail = new Discord.EmbedBuilder()
-                .setTitle('Es gab einen Fehler beim Verarbeiten einer DM')
-                .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
-                .setDescription('Fehler: `' + error + '`')
-                .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
-                .setFooter('thevalleyy-NetWork', message.guild.iconURL())
-                .setTimestamp()
-                .setColor('#fc036b')
-            client.channels.cache.get(modlog).send({ embeds: [embedFail] })
-            return
+            throw(error)
         }
     })
 }

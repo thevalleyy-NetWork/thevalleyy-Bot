@@ -1,5 +1,3 @@
-const modlog = '822575095721099304'
-const Discord = require('discord.js')
 const { ChannelType } = require('discord.js')
 module.exports = (client) => {
 
@@ -10,20 +8,8 @@ module.exports = (client) => {
         if (message.channel.type == ChannelType.DM) return
         if (message.webhookId) return
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
-
         if (message.content.toLowerCase().includes('tali') || message.content.toLowerCase().includes('valley')) {
-            message.react('<:POGGIES:786251968841515049>').catch((error) => {
-                const embedSUS = new Discord.EmbedBuilder()
-                    .setTitle('Es gab einen Fehler beim reagieren auf eine tali Message.')
-                    .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
-                    .setDescription('Fehler: `' + error + '`')
-                    .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
-                    .setFooter('thevalleyy-NetWork', iconurl)
-                    .setTimestamp()
-                    .setColor('#fc036b')
-                client.channels.cache.get(modlog).send({ embeds: [embedSUS] })
-            })
+            message.react('<:POGGIES:786251968841515049>').catch()
         }
     })
 }

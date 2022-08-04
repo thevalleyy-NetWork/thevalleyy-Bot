@@ -13,7 +13,7 @@ module.exports = async(client) => {
 
         const fetchedLogs = await newMember.guild.fetchAuditLogs({
             limit: 1,
-            type: 'MEMBER_UPDATE'
+            type: 24 // MemberUpdate = 24
         })
         const latest = fetchedLogs.entries.first()
         const executor = latest.executor
@@ -40,7 +40,7 @@ module.exports = async(client) => {
                 { name: "Ausgeführt von:", value: `<@!${executor.id}>`}
             ])
 
-            .setFooter(newMember.guild.name, iconurl)
+            .setFooter({ text: newMember.guild.name, iconURL: iconurl})
             .setTimestamp()
             .setColor('#24E498')
         client.channels.cache.get(modlog).send({ embeds: [embedNickLog] })

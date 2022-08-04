@@ -9,7 +9,6 @@ module.exports = (client) => {
         if (!message.guild.available) return
         if (message.channel.type == ChannelType.DM) return
         if (message.webhookId) return
-        if (message.channel.id == "908417486951694356") return
 
         var iconurl = message.guild.iconURL({ dynamic: true })
 
@@ -17,11 +16,13 @@ module.exports = (client) => {
             const regex = /[ ⠀​     👨🏻‍🚀    ]/g
             const msg = message.content.replace(regex, "")
 
-            if (msg.includes("johannes", "johanes", "johanis", "johannis")) {
+            if (false) {
                 if (message.guild.members.cache.get(message.author.id).roles.cache.has("631521181752885268")) return
                 if (message.guild.members.cache.get(message.author.id).roles.cache.has("726146482314674197")) return
 
                 message.delete()
+
+
                 const embed = new Discord.EmbedBuilder()
                     .setTitle("Anti-Nameleak")
                     .setColor(0xFF0000)
@@ -37,15 +38,8 @@ module.exports = (client) => {
                 client.channels.cache.get(modlog).send({ embeds: [embed] })
             }
         } catch (error) {
-            const embedSUS = new Discord.EmbedBuilder()
-                .setTitle('Es gab einen Fehler (Anti-Nameleak)')
-                .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
-                .setDescription('Fehler: `' + error + '`')
-                .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
-                .setFooter('thevalleyy-NetWork', iconurl)
-                .setTimestamp()
-                .setColor('fc036b')
-            client.channels.cache.get(modlog).send({ embeds: [embedSUS] })
-        }
-    })
+            throw(error)
+    }
+    }
+)
 }

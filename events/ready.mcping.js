@@ -19,27 +19,6 @@ module.exports = (client) => {
             }).then(async(response) => {
                 if (!response) return
 
-                // var date = new Date()
-
-                // let secFiller = ""
-                // let minFiller = ""
-                // let hourFiller = ""
-                // let dayFiller = ""
-                // let monthFiller = ""
-
-                // if (date.getSeconds().toString().length < 2) secFiller = "0"
-                // if (date.getMinutes().toString().length < 2) minFiller = "0"
-                // if (date.getHours().toString().length < 2) hourFiller = "0"
-                // if (date.getDate().toString().length < 2) dayFiller = "0"
-                // if (date.getMonth().toString().length < 2) monthFiller = "0"
-
-                // var datetime =
-                //     dayFiller + date.getDate() + ". " +
-                //     monthFiller + (date.getMonth() + 1) + ". " +
-                //     date.getFullYear() + ", " +
-                //     hourFiller + date.getHours() + ":" +
-                //     minFiller + date.getMinutes() + ":" +
-                //     secFiller + date.getSeconds()
 
                 const json = JSON.parse(fs.readFileSync('./data/playerrec.json', 'utf8'))
 
@@ -82,15 +61,6 @@ module.exports = (client) => {
         }, 302000)
 
     } catch (error) {
-        const embedFail = new Discord.EmbedBuilder()
-            .setTitle('Es gab einen Fehler beim Pingen eines Minecraft-Servers')
-            .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
-            .setDescription('Fehler: `' + error + '`')
-            .setFooter({ text: 'thevalleyy-NetWork', iconURL: iconurl })
-            .setTimestamp()
-            .setColor('fc036b')
-        client.channels.cache.get(modlog).send({
-            embeds: [embedFail]
-        })
+        client.channels.cache.get(modlog).send("Error at mcping.js: " + error)
     }
 }

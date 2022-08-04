@@ -9,9 +9,8 @@ module.exports = (client) => {
         channel.setName(`Mitglieder: ${memberCount.toLocaleString()}`, 'updating membercount')
     }
 
-    client.on('guildMemberAdd', (member) => updateMembers(member.guild), )
-
-    client.on('guildMemberRemove', (member) => updateMembers(member.guild), )
+    client.on('guildMemberAdd', (member) => updateMembers(member.guild))
+    client.on('guildMemberRemove', (member) => updateMembers(member.guild))
 
     const guild = client.guilds.cache.get('631518992342843392')
     try {

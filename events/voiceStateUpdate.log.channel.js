@@ -73,7 +73,6 @@ module.exports = async(client) => {
             if (newState.channelId == 786272345689161758) {
                 musikAn("https://streams.ilovemusic.de/iloveradio5.mp3", "631518992342843392", "786272345689161758")
             }
-// TODO: Musik geht warum auch immer noch nicht
 
         } else if (newState.channelId === null) {
             const embedVoiceLog = new Discord.EmbedBuilder()

@@ -28,13 +28,13 @@ module.exports = client => {
                 try {
                     const res = await db(`SELECT * FROM discord WHERE dcid = ${member.id}`)
                     const user = res[0]
+
                     if (user.muted == 1) {
                         member.roles.add(muterole)
                         member.user.send("Denkste")
                     }
                     if (user.voicemuted == 1) {
                         member.roles.add(vcmuterole)
-                        member.user.send("Denkste")
                     }
                     if (await decodeURI(user.dctag) !== member.user.tag) {
                         await db(`UPDATE discord SET dctag = '${member.user.tag.replaceAll("'", " ")}' WHERE dcid = ${member.id}`)
@@ -44,18 +44,19 @@ module.exports = client => {
                     member.guild.channels.cache.get(modlog).send(`Fehler beim Abfragen von ${member.user.tag} in der Datenbank: ${e}`)
                 }
             } else {
-                const message = `Herzlich Willkommen, <@${member.id}> auf dem **thevalleyy-NetWork**. \nLese dir noch das <#786239847554875402> durch, dann kannst du loslegen! :D`
-                const channel = member.guild.channels.cache.get(channelId)
-                channel.send(message).then(message => {
-                    setTimeout(() => message.react('a:PeepoHey:844822512495755264'), 50)
-                })
-
                 // insert into db
                 try {
                     await db(`INSERT INTO discord (dcid, dctag, joindate, oldestjoindate) VALUES (${member.id}, '${member.user.tag.replaceAll("'", " ")}', ${Date.now()}, ${Date.now()})`)
                 } catch (e) { member.guild.channels.cache.get(modlog).send(`Fehler beim Eintragen von ${member.user.tag} in die Datenbank: ${e}`) }
-
             }
+
+            const message = `Herzlich Willkommen, <@${member.id}> auf dem **thevalleyy-NetWork**. \nLese dir noch das <#786239847554875402> durch, dann kannst du loslegen! :D`
+            const channel = member.guild.channels.cache.get(channelId)
+            // channel.send(message).then(message => {
+            //     setTimeout(() => message.react('a:PeepoHey:844822512495755264'), 50)
+            // }) 
+            // TODO: wieder uncommenten
+
         } catch (err) {
             member.guild.channels.cache.get(modlog).send(`Fehler beim Abfragen von ${member.user.tag} in der Datenbank: ${err}`)
         }

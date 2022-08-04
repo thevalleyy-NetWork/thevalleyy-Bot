@@ -40,7 +40,7 @@ module.exports = {
     description: "this description is weird",
     callback: (message, arguments, text) => {
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
         const Discord = require('discord.js')
 
@@ -84,11 +84,11 @@ module.exports = {
                     .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                     .setDescription('Fehler: `' + error + '`')
                     .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>'}])
-                    .setFooter('thevalleyy-NetWork', iconurl)
+                    .setFooter({ text: message.guild.name, iconURL: iconurl})
                     .setTimestamp()
-                    .setColor('fc036b')
+                    .setColor('#fc036b')
                 message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
-
+                // TODO: Grund bei Mute im Audio Log hinzufügen
                 message.reply('Es gab einen Fehler.')
             }
         }

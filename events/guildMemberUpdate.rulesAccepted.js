@@ -17,7 +17,8 @@ const connection = mysql.createPool({
 const db = util.promisify(connection.query).bind(connection)
 
 module.exports = (client) => {
-    var iconurl = client.guilds.cache.get("631518992342843392").iconURL()
+    const iconurl = client.guilds.cache.get("631518992342843392").iconURL()
+
     client.on("guildMemberAdd", async(member) => {
         try {
             const res = await db(`SELECT * FROM discord WHERE dcid = ${member.id}`)
