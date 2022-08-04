@@ -1,5 +1,5 @@
 module.exports = {
-    commands: ['delete', 'del'],
+    commands: ['del', 'delete'],
     expectedArgs: '',
     permissionError: 'Diese Nachricht sollte es nie geben',
     minArgs: 0,

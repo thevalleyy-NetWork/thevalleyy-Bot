@@ -1,5 +1,5 @@
 module.exports = {
-    commands: ['servers', 'serverlist'],
+    commands: ['serverlist', 'servers'],
     expectedArgs: '',
     permissionError: 'ja ja ja',
     minArgs: 0,

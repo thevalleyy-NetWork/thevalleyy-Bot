@@ -15,7 +15,7 @@ var connection = mysql.createPool({
 var db = util.promisify(connection.query).bind(connection)
 
 module.exports = {
-    commands: ['database', 'db'],
+    commands: ['db', 'database'],
     expectedArgs: '<sql statement>',
     permissionError: 'Du hast keine Berechtigung, diesen Befehl auszuführen',
     minArgs: 1,

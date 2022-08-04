@@ -10,7 +10,7 @@ module.exports = {
     maxArgs: 1,
     cooldown: null,
     description: "this description is weird",
-    callback: (message, arguments, text) => {
+    callback: async (message, arguments, text) => {
         var iconurl = message.guild.iconURL({ dynamic: true })
 
 
@@ -131,11 +131,27 @@ module.exports = {
                                 } else {
                                     embed.addFields([{ name: "Rolle benötigt:", value: `​${rollenids.toString().replace(/,/g, ", ")}`, inline: true}])
                                 }
+
+                                const fileInCmdDir = file.replace(/;([\s\S]*)$/, "").replace("@", "").replace(".json", "") + ".js";
+
+                             fs.stat(fileInCmdDir, async (err, stats) => {
+                                    if (err) {
+                                        await embed.addFields([{ name: "Filesize:", value: `​\`\`n/a\`\``, inline: true}])
+                                    } else {
+                                        await embed.addFields([{ name: "Filesize:", value: `​\`\`${await stats.size}\`\` bytes`, inline: true}])
+                                    }
+
+                                    
+
+                                    // i dont fucking now why i have to add the code here, it just works
+                                    embed.setFooter({ text: message.guild.name, iconURL: iconurl })
+                                    .setTimestamp()
+                                    
+                                 message.reply({ embeds: [embed] })
+                                })
                             }
 
-                            embed.setFooter({ text: message.guild.name, iconURL: iconurl })
-                                .setTimestamp()
-                            message.reply({ embeds: [embed] })
+
                         }
                     });
 

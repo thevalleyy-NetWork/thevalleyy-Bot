@@ -1,5 +1,5 @@
 module.exports = {
-    commands: ['rusas', 'russus', 'rasus', 'ruas'],
+    commands: ['rasus', 'russus', 'rusas', 'ruas'],
     expectedArgs: '',
     permissionError: 'Diese Nachricht sollte es nie geben',
     minArgs: 0,
