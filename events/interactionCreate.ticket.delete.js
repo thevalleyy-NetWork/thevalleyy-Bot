@@ -9,11 +9,12 @@
             if (interaction.user.bot) return
 
             try{
+                if (!interaction.channel.name.startsWith('🔒-')) return
             const modrole = interaction.guild.roles.cache.find(role => role.name === 'Moderator')
 
             if (interaction.member.roles.cache.has(modrole.id)) {
                 interaction.channel.delete().catch(err => {
-                    interaction.reply('Es gab einen Fehler beim Löschen des Tickets.')
+                    interaction.reply('Es gab einen Fehler beim Löschen eines Tickets: ' + err)
                 })
             } else {
                 interaction.reply({ content: `Nur Nutzer mit der Rolle <@&${modrole.id}> können Tickets löschen.`, ephemeral: true })
