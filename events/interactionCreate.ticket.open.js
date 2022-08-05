@@ -41,7 +41,7 @@ module.exports = (client) => {
         try{
             const firstTicket = server.channels.cache.find(c => c.name.toLowerCase() === ticketName)
         if (firstTicket) return interaction.reply({ content: "Du hast bereits ein offenes Ticket, <#" + firstTicket.id + ">", ephemeral: true })
-        interaction.deferUpdate()
+
 
         const suprole = interaction.guild.roles.cache.find(role => role.name === 'Supporter')
         const modrole = interaction.guild.roles.cache.find(role => role.name === 'Moderator')
@@ -86,6 +86,9 @@ module.exports = (client) => {
                         UseExternalEmojis: true,
                         AddReactions: true
                     })
+
+
+                    interaction.reply({ content: "Dein Ticket wurde in <#" + channel.id + "> erstellt!", ephemeral: true })
 
                     const embed = new Discord.EmbedBuilder()
                     .setTitle("Heyho, " + interaction.user.username + ", \nHerzlich Willkommen im Support")

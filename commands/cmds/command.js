@@ -108,9 +108,9 @@ module.exports = {
                             var m = Math.floor(d % 3600 / 60);
                             var s = Math.floor(d % 3600 % 60);
 
-                            var hDisplay = h > 0 ? (h == 1 ? m > 0 ? `eine Stunde, ` : h == 1 ? `eine Stunde` : `${h} Stunden` : `${h} Stunden, `) : ``;
-                            var mDisplay = m > 0 ? (m == 1 ? s > 0 ? `eine Minute, ` : m == 1 ? `eine Minute` : `${m} Minuten` : `${m} Minuten, `) : ``;
-                            var sDisplay = s > 0 ? (s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
+                            var hDisplay = +h > 0 ? (+h == 1 ? +m > 0 ? `eine Stunde, ` : +h == 1 ? `eine Stunde` : `${h} Stunden` : +m > 0 ? `${h} Stunden, ` :`${h} Stunden`) : ``;
+                            var mDisplay = +m > 0 ? (+m == 1 ? +s > 0 ? `eine Minute, ` : +m == 1 ? `eine Minute` : `${m} Minuten` : +s > 0 ? `${m} Minuten, ` : `${m} Minuten`) : ``;
+                            var sDisplay = +s > 0 ? (+s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
 
                             embed.addFields([{ name: "Cooldown:", value: `​\`\`${hDisplay + mDisplay + sDisplay}\`\``, inline: true}])
 
@@ -134,8 +134,9 @@ module.exports = {
 
                                 const fileInCmdDir = file.replace(/;([\s\S]*)$/, "").replace("@", "").replace(".json", "") + ".js";
 
-                             fs.stat(fileInCmdDir, async (err, stats) => {
+                             fs.stat("./commands/cmds/" + fileInCmdDir, async (err, stats) => {
                                     if (err) {
+                                        console.log(err)
                                         await embed.addFields([{ name: "Filesize:", value: `​\`\`n/a\`\``, inline: true}])
                                     } else {
                                         await embed.addFields([{ name: "Filesize:", value: `​\`\`${await stats.size}\`\` bytes`, inline: true}])

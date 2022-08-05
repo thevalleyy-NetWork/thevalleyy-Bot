@@ -26,11 +26,6 @@ module.exports = (client) => {
     client.channels.cache.get("844908200628584448").messages.fetch("844912109154598912") //reactionrolesmessage
     client.channels.cache.get("786239847554875402").messages.fetch("819541946434715660") //regelwerkmessage
 
-    // send message to deleted ticket (also soon replaced with better system)
-    client.channels.cache.forEach(async channel => {
-        if (channel.name.startsWith('🔒-')) channel.send('Dieses Ticket kann nun nurnoch mit `-archive` und `-del` archiviert/gelöscht werden.').catch(console.error)
-    })
-
     // maybe send a startup embed
     const startEmbed = new Discord.EmbedBuilder()
         .setTitle('Startup <:POGGIES:786251968841515049>')
