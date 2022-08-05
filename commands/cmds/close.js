@@ -12,10 +12,16 @@ module.exports = {
         const modlog = '822575095721099304'
         const Discord = require('discord.js')
 
+        const suprole = message.guild.roles.cache.find(role => role.name === 'Supporter')
+        const modrole = message.guild.roles.cache.find(role => role.name === 'Moderator')
         const ticketId = message.channel.topic.replace('(', '').replace(')', '').split(' ').slice(9).join(' ')
+
+        
         if (!message.channel.name.startsWith('🎫-')) return message.reply("Dieser Kanal ist kein geöffnetes Ticket.")
-        if (ticketId != message.author.id) return message.reply("Du kannst nur dein eigenes Ticket schließen.")
-        // permission für mods, sups und admins
+        if (ticketId == message.author.id || message.member.roles.cache.has(suprole.id) || message.member.roles.cache.has(modrole.id)) {
+
+            
+        const category = message.guild.channels.cache.find(c => c.name === 'Tickets')
 
         try {
             message.channel.permissionOverwrites.edit(ticketId, {
@@ -27,7 +33,7 @@ module.exports = {
             })
 
             message.channel.setName(message.channel.name.replace('🎫', '🔒'))
-            message.channel.setPosition(0)
+            message.channel.setPosition(category.children.cache.size - 1)
 
 
             const embed = new Discord.EmbedBuilder()
@@ -58,10 +64,12 @@ module.exports = {
             message.channel.send({ embeds: [embed], components: [ticketButtons] }).then(msg => {
                 msg.pin
             })
-
         } catch (err) {
             message.client.channels.cache.get(modlog).send("Gab nen Fehler bei -close: " + err)
         }
+    } else {
+        return message.reply("Du kannst nur dein eigenes Ticket schließen.")
+    }
     },
     permissions: [],
     requiredRoles: ['Mitglied']
