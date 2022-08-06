@@ -16,9 +16,7 @@ const connection = mysql.createPool({
 
 const db = util.promisify(connection.query).bind(connection)
 
-module.exports = (client) => {
-    client.on("guildMemberUpdate", async(oldMember, newMember) => {
-
+module.exports = async (client, oldMember, newMember) => {
         const iconurl = client.guilds.cache.get(newMember.guild.id).iconURL()
         try {    
             if (oldMember.pending === newMember.pending) return
@@ -40,6 +38,4 @@ module.exports = (client) => {
         } catch (error) {
             client.channels.cache.get(modlog).send("cringe error" + error)
         }
-    }
-    )
 }

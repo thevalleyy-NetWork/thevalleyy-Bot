@@ -17,8 +17,7 @@ fs.writeFile("./data/stats.json", JSON.stringify(jsonRecover, null, 4), (err) =>
 //     ButtonBuilder,
 // } = require("discord.js");
 
-module.exports = (client) => {
-    client.on('interactionCreate', async interaction => {
+module.exports = (client, interaction) => {
         if (!interaction.isButton()) return;
         if (interaction.user.bot) return;
 
@@ -30,5 +29,4 @@ module.exports = (client) => {
         fs.writeFile("./data/stats.json", JSON.stringify(json, null, 4), (err) => {
             if (err) throw(err)
         })
-    });
 }

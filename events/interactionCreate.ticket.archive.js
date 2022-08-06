@@ -6,13 +6,11 @@ const modlog = '822575095721099304'
 const Discord = require('discord.js')
 const config = require('./../config.json')
 
-module.exports = (client) => {
-    client.on('interactionCreate', async interaction => {
-
+module.exports = async (client, interaction) => {
         if (interaction.customId !== "TICKET_archive") return;
         if (interaction.user.bot) return
 
-        try{
+        try {
             if (!interaction.channel.name.startsWith('🔒-')) return
 
             const modrole = interaction.guild.roles.cache.find(role => role.name === 'Moderator')
@@ -32,6 +30,4 @@ module.exports = (client) => {
         interaction.channel.send('Es gab einen Fehler beim Archivieren eines Tickets: ' + err)
         console.log(err)
     }
-
-})
 }

@@ -1,9 +1,7 @@
 const modlog = '822575095721099304'
 const Discord = require('discord.js')
 const { ChannelType } = require('discord.js')
-module.exports = (client) => {
-
-    client.on("messageCreate", (message) => {
+module.exports = (client, message) => {
         if (message.guild === null) return
         if (message.author.bot) return
         if (!message.guild.available) return
@@ -40,6 +38,4 @@ module.exports = (client) => {
         } catch (error) {
             throw(error)
     }
-    }
-)
 }

@@ -2,7 +2,6 @@ const fs = require('fs')
 const config = require('./../../config.json')
 const util = require('minecraft-server-util')
 const Discord = require('discord.js')
-const json = JSON.parse(fs.readFileSync("./data/playerrec.json", 'utf8'))
 const modlog = '822575095721099304'
 
 module.exports = {
@@ -39,6 +38,7 @@ module.exports = {
 
             if (!response) return message.reply("Der Server ist nicht erreichbar.")
 
+            const json = JSON.parse(fs.readFileSync("./data/playerrec.json", 'utf8'))
             const embed = new Discord.EmbedBuilder()
                 .setTitle(arguments[0] + ":" + arguments[1])
                 .setTimestamp()

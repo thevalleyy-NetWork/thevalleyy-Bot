@@ -28,9 +28,7 @@ const modlog = '822575095721099304'
 const Discord = require('discord.js')
 const config = require('./../config.json')
 
-module.exports = (client) => {
-    client.on('interactionCreate', async interaction => {
-
+module.exports = (client, interaction) => {
         if (interaction.customId !== "TICKET_create") return;
         if (interaction.user.bot) return
 
@@ -119,6 +117,4 @@ module.exports = (client) => {
     } catch (err) {
         console.log(err)
     }
-
-})
 }

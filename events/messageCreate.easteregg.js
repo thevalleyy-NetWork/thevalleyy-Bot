@@ -1,7 +1,5 @@
 const { ChannelType } = require('discord.js')
-module.exports = (client) => {
-
-    client.on("messageCreate", (message) => {
+module.exports = (client, message) => {
         if (message.guild === null) return
         if (message.author.bot) return
         if (!message.guild.available) return
@@ -11,5 +9,4 @@ module.exports = (client) => {
         if (message.content.toLowerCase().includes('tali') || message.content.toLowerCase().includes('valley')) {
             message.react('<:POGGIES:786251968841515049>').catch()
         }
-    })
 }

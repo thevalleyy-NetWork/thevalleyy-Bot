@@ -18,19 +18,13 @@ database: config.mysql.database
 const  db = util.promisify(connection.query).bind(connection)
 
 
-module.exports = (client) => {
-
-    client.on('messageCreate', async message => {
+module.exports = async (client, message) => {
         if (message.channel.type !== ChannelType.DM) return
         if (message.author.id == '506746108345843713') return
         if (message.author.bot) return
 
-        let blacklist = new Discord.EmbedBuilder()
-            .setColor('#e31212')
-            .setDescription("Fehler: Du bist blacklisted.")
-
         try {
-            if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${message.author.id}`).then(res => res[0])) return
+            if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${message.author.id}`).then(res => res[0]).catch(err => {})) return
 
 
             message.client.users.fetch('506746108345843713', false).then((user) => {
@@ -44,10 +38,9 @@ module.exports = (client) => {
                     .setColor('#b51cbd')
 
                 user.send({ embeds: [embedDM] })
-                message.react('<:check:840154786568339497>')
+                message.react('<:checkmarkEmbed:1005146896278503597> ')
             })
         } catch (error) {
             throw(error)
         }
-    })
 }

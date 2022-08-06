@@ -2,9 +2,7 @@
     const Discord = require('discord.js')
     const config = require('./../config.json')
     
-    module.exports = (client) => {
-        client.on('interactionCreate', async interaction => {
-    
+    module.exports = (client, interaction) => {
             if (interaction.customId !== "TICKET_delete") return;
             if (interaction.user.bot) return
 
@@ -22,6 +20,4 @@
         } catch (err) {
             console.log(err)
         }
-    
-    })
     }

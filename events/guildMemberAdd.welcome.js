@@ -18,8 +18,7 @@ const connection = mysql.createPool({
 
 const db = util.promisify(connection.query).bind(connection)
 
-module.exports = client => {
-    client.on('guildMemberAdd', async(member) => {
+module.exports = async (client, member) => {
         if (member.guild.id != '631518992342843392') return
 
         // was the user here before?
@@ -59,5 +58,4 @@ module.exports = client => {
         } catch (err) {
             member.guild.channels.cache.get(modlog).send(`Fehler beim Abfragen von ${member.user.tag} in der Datenbank: ${err}`)
         }
-    })
 }

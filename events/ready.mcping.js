@@ -15,18 +15,16 @@ module.exports = (client) => {
                     .setTimestamp()
                     .setColor('#fc036b')
 
-                message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
+                client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
             }).then(async(response) => {
                 if (!response) return
-
-
                 const json = JSON.parse(fs.readFileSync('./data/playerrec.json', 'utf8'))
 
                 if (json.mostPlayers < response.players.online.toString()) {
                     let newData = {
                         mostPlayers: response.players.online.toString(),
-                        date: Math.round(new Date().getTime() / 1000),
-                        lastPinged: Math.round(new Date().getTime() / 1000)
+                        date: Math.round(new Date().getTime() / 1000).toString(),
+                        lastPinged: Math.round(new Date().getTime() / 1000).toString()
                     }
 
                     const newData_ = JSON.stringify(newData, null, 4)
@@ -46,7 +44,7 @@ module.exports = (client) => {
                     let newData__ = {
                         mostPlayers: playerCount.mostPlayers.toString(),
                         date: playerCount.date.toString(),
-                        lastPinged: Math.round(new Date().getTime() / 1000)
+                        lastPinged: Math.round(new Date().getTime() / 1000).toString()
                     }
 
                     const newData____ = JSON.stringify(newData__, null, 4)

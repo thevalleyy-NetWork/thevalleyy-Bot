@@ -1,3 +1,74 @@
+function isJson(item) {
+    item = typeof item !== "string"
+        ? JSON.stringify(item)
+        : item;
+
+    try {
+        item = JSON.parse(item);
+    } catch (e) {
+        return false;
+    }
+
+    if (typeof item === "object" && item !== null) {
+        return true;
+    }
+
+    return false;
+}
+
+
+function log(text, style = "reset", background = "reset", showTime = true) {
+    if (isJson(text)) return console.log(text)
+    const styles = {
+        "text": {
+        "reset": "\x1b[0m",
+        "bold": "\x1b[1m",
+        "dim": "\x1b[2m",
+        "underscore": "\x1b[4m",
+        "blink": "\x1b[5m",
+        "reverse": "\x1b[7m",
+        "hidden": "\x1b[8m",
+        "black": "\x1b[30m",
+        "red": "\x1b[31m",
+        "green": "\x1b[32m",
+        "yellow": "\x1b[33m",
+        "blue": "\x1b[34m",
+        "magenta": "\x1b[35m",
+        "cyan": "\x1b[36m",
+        "white": "\x1b[37m",
+        "crimson": "\x1b[38m"
+        },
+        "background": {
+        "reset": "\x1b[0m",
+        "black": "\x1b[40m",
+        "red": "\x1b[41m",
+        "green": "\x1b[42m",
+        "yellow": "\x1b[43m",
+        "blue": "\x1b[44m",
+        "magenta": "\x1b[45m",
+        "cyan": "\x1b[46m",
+        "white": "\x1b[47m",
+        "crimson": "\x1b[48m"
+    }
+    }
+
+    if (styles.text[style.toLowerCase()]) {
+        var fgColor = styles.text[style]
+    } else {
+        throw("Invalid text style")
+    }
+
+    if (styles.background[background.toLowerCase()]) {
+        var bgColor = styles.background[background]
+    } else {
+        throw("Invalid background style")
+    }
+
+    console.log(`${bgColor}${showTime == true ? `[${gettime()}] » ` : ""}${fgColor}${text}${styles.text.reset}`)
+}
+
+
+
 // this function gets the current date and time ss:mm:hh:dd:MM:yyyy
 function gettime() {
     var date = new Date()
@@ -25,7 +96,7 @@ function gettime() {
 }
 
 // start message, used for pterodactyl
-console.log('\n\n--------------------------- \n    Starte Talis Bot...   \n--------------------------- \n')
+log('\n\n--------------------------- \n    Starte Talis Bot...   \n--------------------------- \n', "yellow", "reset", false)
 
 // create a new client
 const Discord = require('discord.js')
@@ -72,12 +143,13 @@ const client = new Discord.Client({
 // start the command handler
 // cmd-base
 client.on('ready', async() => {
+    let eventJson = {"event": {}}
     const baseFile = 'command-base.js'
     const commandBase = require(`./commands/${baseFile}`)
     var directoryPath = path.join(__dirname, 'events')
 
 
-    console.log(`[${gettime()}] » Registering commands`)
+    log("Registering commands", "yellow", "reset", false)
     const readCommands = dir => {
         const files = fs.readdirSync(path.join(__dirname, dir))
         for (const file of files) {
@@ -86,10 +158,10 @@ client.on('ready', async() => {
                 readCommands(path.join(dir, file))
             } else if (file !== baseFile) {
                 if (!file.endsWith('.js')) {
-                    console.log(`[${gettime()}] » Skipping file ${file}`)
+                    log(`Skipping ${file}:`, "cyan", "reset", true)
                     return
                 }
-                console.log(`[${gettime()}] » Loading: ${file}`)
+                log(`Loading: ${file}`, "cyan", "reset", true)
                 const option = require(path.join(__dirname, dir, file))
                 commandBase(client, option)
             }
@@ -98,19 +170,54 @@ client.on('ready', async() => {
     readCommands('commands')
 
 // load every event file
-    console.log(`[${gettime()}] » Registering: events`)
+    log("Grouping: events", "yellow", "reset", false)
     fs.readdir(directoryPath, function(err, files) {
         if (err) {
-            return console.log('[' + gettime() + '] » Error: Unable to scan directory: ' + err)
+            return log('[' + gettime() + '] » Error: Unable to scan directory: ' + err, "red", "reset", true)
         }
         files.forEach(function(file) {
             if (!file.endsWith('.js')) {
-                console.log(`[${gettime()}] » Skipping file ${file}`)
+                log(`Skipping file ${file}`, "cyan", "reset", true)
                 return
             }
-            require('./events/' + file)(client)
-            console.log(`[${gettime()}] » Loading: ${file}`)
+
+            const eventName = file.split(".")[0]
+            if (!eventJson.event[eventName]) {
+                eventJson.event[eventName] = []
+                log(`Grouped: ${eventName}`, "blue", "reset", true)
+            }
+            eventJson.event[eventName].push(file)
+
+            log(`Scanned: ${file}`, "cyan", "reset", true)        
         })
+    
+    // hier coden
+    log("Registering: events", "yellow", "reset", false)
+
+        Object.keys(eventJson.event).forEach(event => {
+            log("Listening: " + event, "blue", "reset", true)
+            if (event == "ready") {
+                eventJson.event[event].forEach(file => {
+                const readyEventFile = require(`./events/${file}`)
+                readyEventFile(client)
+                })
+                return
+            }
+
+            client.on(event, (...args) => {
+                // log("Incoming Event: " + event, "blue", "reset", true)
+                eventJson.event[event].forEach(file => {
+                    const eventFile = require(`./events/${file}`)
+                    eventFile(client, ...args)
+                })
+            })
+        })
+
+        // client.on(eventName, (...args) => {
+        //     console.log(eventName)
+        //     const event = require("./events/" + file)
+        //     event(client, ...args)
+        // })
     })
 })
 
