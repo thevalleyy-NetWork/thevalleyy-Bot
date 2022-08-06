@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const config = require('../config.json')
 const Discord = require('discord.js')
 const mysql = require('mysql')
 const util = require('util')
@@ -16,7 +16,7 @@ var connection = mysql.createPool({
 var db = util.promisify(connection.query).bind(connection)
 
 module.exports = {
-    commands: ['test', 'test2'],
+    commands: ["test", "test2"],
     expectedArgs: '',
     permissionError: '',
     minArgs: 0,
@@ -76,6 +76,6 @@ module.exports = {
         //     message.reply("Du bist nicht registriert!")
         // }
     },
-    permissions: "BanMembers",
+    permissions: "",
     requiredRoles: ['thevalleyy']
 }

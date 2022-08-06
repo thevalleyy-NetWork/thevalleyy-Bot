@@ -2,8 +2,8 @@ const modlog = '822575095721099304'
 const Discord = require('discord.js')
 const cooldownSet = new Set()
 const he = require('he')
-const config = require('./../../config.json')
-const bricksetData = require('./../../data/brickset.json')
+const config = require('../config.json')
+const bricksetData = require('../data/brickset.json')
 const paginationEmbed = require('discordjs-button-pagination')
 const { EmbedBuilder, ButtonBuilder} = require('discord.js')
 
@@ -293,7 +293,6 @@ module.exports = {
                 // is the given theme valid?
                 let foundarr = []
                 json_.themes.forEach(theme => {
-                    console.log(theme.theme.toLowerCase().replaceAll(" ", ""), text.toLowerCase().replace("subthemes", "").replace("subtheme", "").replaceAll(" ", ""))
                     if (theme.theme.toLowerCase().replaceAll(" ", "") == text.toLowerCase().replace("subthemes", "").replace("subtheme", "").replaceAll(" ", "")) {
                         foundarr.push(theme)
                     }

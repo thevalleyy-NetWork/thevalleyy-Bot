@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const paginationEmbed = require('discordjs-button-pagination')
 const { EmbedBuilder, ButtonBuilder } = require('discord.js')
 const modlog = '822575095721099304'
-const config = require('./../../config.json')
+const config = require('../config.json')
 
 module.exports = {
     commands: ['skin', 'mcskin', 'minecraftskin'],

@@ -1,5 +1,4 @@
 const Discord = require('discord.js')
-const { PermissionsBitField } = require('discord.js')
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
     let target = message.guild.members.cache.get(toFind)

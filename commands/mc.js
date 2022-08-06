@@ -1,5 +1,5 @@
 const fs = require('fs')
-const config = require('./../../config.json')
+const config = require('../config.json')
 const util = require('minecraft-server-util')
 const Discord = require('discord.js')
 const modlog = '822575095721099304'

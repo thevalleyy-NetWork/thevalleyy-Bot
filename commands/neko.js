@@ -1,3 +1,5 @@
+const config = require('../config.json')
+
 module.exports = {
     commands: ['neko'],
     expectedArgs: '',
@@ -14,7 +16,7 @@ module.exports = {
         const nekochannel = '799728881228709928'
 		const fetch = (await import ('node-fetch')).default
 
-        if (message.channel.id !== nekochannel) {
+        if (message.channel.id !== nekochannel && message.author.id !== config.owner) {
             message.reply(`${message.author.username}, ${message.guild.channels.cache
         .get(nekochannel)
         .toString()} ist der richtige Kanal.`)

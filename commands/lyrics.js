@@ -10,6 +10,7 @@ module.exports = {
     description: "this description is weird",
     callback: async(message, arguments, text) => {
 
+        // TODO: button für "lyrics: song" und interpreten + album klickbar
         var iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
 

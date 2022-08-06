@@ -1,4 +1,4 @@
-const config = require('./../../config.json')
+const config = require('../config.json')
 const util = require('util')
 const modlog = '822575095721099304'
 const Discord = require('discord.js')

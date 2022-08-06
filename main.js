@@ -143,41 +143,55 @@ const client = new Discord.Client({
 // start the command handler
 // cmd-base
 client.on('ready', async() => {
-    let eventJson = {"event": {}}
-    const baseFile = 'command-base.js'
-    const commandBase = require(`./commands/${baseFile}`)
-    var directoryPath = path.join(__dirname, 'events')
-
-
+    let cmdJson = {"cmds":  {}}
     log("Registering commands", "yellow", "reset", false)
+
+
     const readCommands = dir => {
+        // read the commands directory
         const files = fs.readdirSync(path.join(__dirname, dir))
+
+        // loop through the files
         for (const file of files) {
+
+            // check if the object is a directory 
             const stat = fs.lstatSync(path.join(__dirname, dir, file))
             if (stat.isDirectory()) {
+                // at this point we know it is a directory, so we can call the function again
                 readCommands(path.join(dir, file))
-            } else if (file !== baseFile) {
-                if (!file.endsWith('.js')) {
-                    log(`Skipping ${file}:`, "cyan", "reset", true)
-                    return
-                }
+            } else 
+                if (!file.endsWith('.js')) { // make sure its a js file
+                    log(`Skipping ${file}:`, "green", "reset", true)
+                    return}
+                // at this point we know it is a file, so we can require it
                 log(`Loading: ${file}`, "cyan", "reset", true)
+                // define option as require the file
                 const option = require(path.join(__dirname, dir, file))
-                commandBase(client, option)
-            }
+                cmdJson.cmds[file] = option
+
+
+                // require the base file and pass the client and the option
+                // commandBase(client, option)
         }
+        fs.writeFileSync('./data/CMDoptions.json', JSON.stringify(cmdJson, null, 4))
     }
+    // execute the defined function with dir commands
     readCommands('commands')
 
+
+
+
 // load every event file
-    log("Grouping: events", "yellow", "reset", false)
-    fs.readdir(directoryPath, function(err, files) {
+    log("Grouping: events", "yellow", "reset", false)    
+    let eventJson = {"event": {}}
+
+    fs.readdir(path.join(__dirname, 'events'), function(err, files) {
         if (err) {
             return log('[' + gettime() + '] » Error: Unable to scan directory: ' + err, "red", "reset", true)
         }
         files.forEach(function(file) {
             if (!file.endsWith('.js')) {
-                log(`Skipping file ${file}`, "cyan", "reset", true)
+                log(`Skipping file ${file}`, "green", "reset", true)
                 return
             }
 

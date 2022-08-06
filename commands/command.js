@@ -1,6 +1,6 @@
 const fs = require('fs')
 const Discord = require('discord.js')
-const config = require('./../../config.json')
+const config = require('../config.json')
 
 module.exports = {
     commands: ['command', 'cmd'],
@@ -134,7 +134,7 @@ module.exports = {
 
                                 const fileInCmdDir = file.replace(/;([\s\S]*)$/, "").replace("@", "").replace(".json", "") + ".js";
 
-                             fs.stat("./commands/cmds/" + fileInCmdDir, async (err, stats) => {
+                             fs.stat("./commands/" + fileInCmdDir, async (err, stats) => {
                                     if (err) {
                                         console.log(err)
                                         await embed.addFields([{ name: "Filesize:", value: `​\`\`n/a\`\``, inline: true}])

@@ -34,7 +34,7 @@ function getDuration(start, end) {
 }
 
 // get config
-const config = require('./../../config.json')
+const config = require('../config.json')
     // later used, it's self explaning
 const progressbar = require('string-progressbar')
 
