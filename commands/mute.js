@@ -65,15 +65,17 @@ module.exports = {
             message.reply('`' + muteUser.user.tag + '` ist schon gestummt.')
         } else {
             try {
-                muteUser.roles.add(muteRole)
+                
                 db(`UPDATE discord set muted = 1 WHERE dcid = ${muteUser.id}`)
 
                 if (!arguments[1]) {
+                    muteUser.roles.add(muteRole, `Mute von: ${message.author.tag}`)
                     message.reply('`' + muteUser.user.tag + '` kann nun nichtmehr schreiben.')
                     muteUser.user.send('Du wurdest von `' + message.author.tag + '` auf dem Server `' + message.guild.name + '` gemuted.')
                         .catch(error => message.client.channels.cache.get(modlog).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
 
                 } else {
+                    muteUser.roles.add(muteRole, `Mute von: ${message.author.tag}, Grund: ${text.substring(0, 300).split(' ').slice(1).join(' ')}`)
                     message.reply('`' + muteUser.user.tag + '` kann nun nichtmehr schreiben.')
                     muteUser.user.send('Du wurdest von `' + message.author.tag + '` auf dem Server `' + message.guild.name + '` gemuted.\nGrund: `' + text.substring(0, 300).split(' ').slice(1).join(' ') + '`')
                         .catch(error => message.client.channels.cache.get(modlog).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
@@ -88,7 +90,6 @@ module.exports = {
                     .setTimestamp()
                     .setColor('#fc036b')
                 message.client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
-                // TODO: Grund bei Mute im Audio Log hinzufügen
                 message.reply('Es gab einen Fehler.')
             }
         }

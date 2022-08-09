@@ -56,15 +56,16 @@ module.exports = {
             message.reply('`' + muteUser.user.tag + '` ist nicht gestummt.')
         } else {
             try {
-                muteUser.roles.remove(muteRole)
                 db(`UPDATE discord set muted = 0 WHERE dcid = ${muteUser.id}`)
 
                 if (!arguments[1]) {
+                    muteUser.roles.remove(muteRole, `Mute von: ${message.author.tag}`)
                     message.reply('`' + muteUser.user.tag + '` kann nun wieder schreiben.')
                     muteUser.user.send('Du wurdest von `' + message.author.tag + '` auf dem Server `' + message.guild.name + '` entmuted.')
                         .catch(error => message.client.channels.cache.get(modlog).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
 
                 } else {
+                    muteUser.roles.remove(muteRole, `Mute von: ${message.author.tag}, Grund: ${text.substring(0, 300).split(' ').slice(1).join(' ')}`)
                     message.reply('`' + muteUser.user.tag + '` kann nun wieder schreiben.')
                     muteUser.user.send('Du wurdest von `' + message.author.tag + '` auf dem Server `' + message.guild.name + '` entmuted.\nGrund: `' + text.substring(0, 300).split(' ').slice(1).join(' ') + '`')
                         .catch(error => message.client.channels.cache.get(modlog).send('Fehler beim Senden der Nachricht an `' + muteUser.user.tag + '`:\n`' + error + '`'))
