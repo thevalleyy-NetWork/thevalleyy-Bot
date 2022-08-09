@@ -20,10 +20,7 @@ module.exports = (client) => {
         setRandomPackageStatus()
     }, 1200000)
     
-
-    // fetch some reaction messages (soon replaced with buttons)
-    client.channels.cache.get("844908200628584448").messages.fetch("844912109154598912") //reactionrolesmessage
-
+    
     // maybe send a startup embed
     const startEmbed = new Discord.EmbedBuilder()
         .setTitle('Startup <:POGGIES:786251968841515049>')
