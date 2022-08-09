@@ -21,10 +21,8 @@ module.exports = (client) => {
     }, 1200000)
     
 
-    // fetch some reaction messages (soom replaced with buttons)
-    client.channels.cache.get("843054827910201384").messages.fetch("843060299288412190") //ticketmessage
+    // fetch some reaction messages (soon replaced with buttons)
     client.channels.cache.get("844908200628584448").messages.fetch("844912109154598912") //reactionrolesmessage
-    client.channels.cache.get("786239847554875402").messages.fetch("819541946434715660") //regelwerkmessage
 
     // maybe send a startup embed
     const startEmbed = new Discord.EmbedBuilder()
@@ -60,4 +58,14 @@ module.exports = (client) => {
             });
         })
     })
+
+    // repair the sometimes broken stats json
+    try {let json = require("./../data/stats.json")}
+    catch {
+    let jsonRecover = {"discord": {"buttonKlicks": 0}}
+    
+    fs.writeFile("./data/stats.json", JSON.stringify(jsonRecover, null, 4), (err) => {
+        if (err) throw(err)
+    })
+}
 }

@@ -96,7 +96,7 @@ function gettime() {
 }
 
 // start message, used for pterodactyl
-log('\n\n--------------------------- \n    Starte Talis Bot...   \n--------------------------- \n', "yellow", "reset", false)
+log("Loading: Bot", "red", "reset", false)
 
 // create a new client
 const Discord = require('discord.js')
@@ -226,12 +226,7 @@ client.on('ready', async() => {
                 })
             })
         })
-
-        // client.on(eventName, (...args) => {
-        //     console.log(eventName)
-        //     const event = require("./events/" + file)
-        //     event(client, ...args)
-        // })
+        log("Started: Bot", "red", "reset", false)
     })
 })
 

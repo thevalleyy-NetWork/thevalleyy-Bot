@@ -10,7 +10,7 @@ module.exports = {
     description: "this description is weird",
     callback: async(message, arguments, text) => {
 
-        // TODO: button für "lyrics: song" und interpreten + album klickbar
+        // TODO: button für "lyrics: song"
         var iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
 
@@ -36,7 +36,6 @@ module.exports = {
                 }
 
 
-
                 const songEmbed = new Discord.EmbedBuilder()
                     .setAuthor({ name: `${author} (${title})`, iconURL: message.author.avatarURL({ dynamic: true }), url: links.genius })
                     .setThumbnail(thumbnail.genius)
@@ -46,7 +45,7 @@ module.exports = {
                         text: message.guild.name,
                         iconURL: iconurl
                     })
-                    .setTimestamp()
+                    .setTimestamp()   
 
                 await msg.edit({ embeds: [songEmbed] })
             })

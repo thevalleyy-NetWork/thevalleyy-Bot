@@ -98,8 +98,16 @@ module.exports = {
                 })
 
 
+                const lyricsButton = new Discord.ButtonBuilder()
+                .setCustomId('SPOTIFY_lyrics')
+                .setLabel('Lyrics')
+                .setStyle('Primary') 
+
+                const button = new Discord.ActionRowBuilder().addComponents(lyricsButton)
+
+
             // send the embed
-            message.reply({ embeds: [embed] })
+            message.reply({ embeds: [embed], components: [button] })
 
         } else {
             // the same as above, but with a user as the second argument
@@ -152,7 +160,7 @@ module.exports = {
                 })
 
 
-
+            // require("../commands/" + commandFile).callback(message, arguments, arguments.join(' '))
             message.reply({ embeds: [embed] })
         }
 
