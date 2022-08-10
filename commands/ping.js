@@ -1,13 +1,13 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    commands: ['ping', 'info'],
+    commands: ['ping'],
     expectedArgs: '',
     permissionError: 'Diese Nachricht sollte es nie geben',
     minArgs: 0,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Client-Ping, API-Ping, TPS, Uptime, etc.",
     callback: async(message, arguments, text) => {
 
         let tps = 0
@@ -24,7 +24,7 @@ module.exports = {
         let seconds = Math.floor(totalSeconds % 60);
         let uptime = `\`${days}\` Tage, \`${hours}\` Stunden, \`${minutes}\` Minuten und \`${seconds}\` Sekunden`;
 
-        var iconurl = message.guild.iconURL({
+        const iconurl = message.guild.iconURL({
             dynamic: true
         })
 

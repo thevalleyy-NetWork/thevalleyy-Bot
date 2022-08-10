@@ -37,7 +37,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Mutet einen User",
     callback: (message, arguments, text) => {
 
         const iconurl = message.guild.iconURL({ dynamic: true })

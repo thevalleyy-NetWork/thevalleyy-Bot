@@ -5,7 +5,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "RASUS!",
     callback: async(message, arguments, text) => {
         var rusasarray = [
             'ruuuuuuuuusas',

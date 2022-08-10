@@ -5,11 +5,11 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "Setzt den Status des Bots",
     callback: (message, arguments, text) => {
 
         const modlog = '822575095721099304'
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const Discord = require('discord.js')
         const supRole = message.member.guild.roles.cache.find(role => role.name === 'Supporter').id
 

@@ -4,7 +4,7 @@ const modlog = '822575095721099304'
 const Discord = require('discord.js')
 const mysql = require('mysql')
 
-var connection = mysql.createPool({
+const connection = mysql.createPool({
     multipleStatements: true,
     connectionLimit: 10,
     host: config.mysql.host,
@@ -22,9 +22,9 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Führt Code aus",
     callback: async(message, arguments, text) => {
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
 
         if (message.author.id !== config.owner) {
             message.react('<:hm:907936051300012072>')

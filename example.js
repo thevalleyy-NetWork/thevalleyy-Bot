@@ -1,4 +1,4 @@
-// template
+// cmd template
 module.exports = {
     commands: [''],
     expectedArgs: '',
@@ -6,18 +6,15 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     cooldown: null,
-    description: "this description is weird",
+    description: "This is a template for a command",
     callback: (message, arguments, text) => {
 
         const Discord = require('discord.js')
-        var iconurl = message.guild.iconURL({
-            dynamic: true
-        })
+        const iconurl = message.guild.iconURL({dynamic: true})
 
 
         // Code here
 
-        client.logChannel.send()
     },
     permissions: [],
     requiredRoles: ['Mitglied']
@@ -39,4 +36,9 @@ function getMember(message, toFind = '') {
 
     if (!target) return
     return target
+}
+
+// event template (in this case MessageCreate)
+module.exports = (client, message) => {
+    // code here
 }

@@ -24,7 +24,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Kickt den angegebenen Nutzer",
     callback: async(message, arguments, text) => {
 
         const iconurl = message.guild.iconURL({ dynamic: true })

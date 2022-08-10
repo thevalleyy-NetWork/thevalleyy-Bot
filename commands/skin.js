@@ -11,7 +11,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "Infos über einen Minecraft-Skin",
     callback: async(message, arguments, text) => {
 
         const fetch = (await
@@ -144,12 +144,12 @@ module.exports = {
         const button1 = new ButtonBuilder()
             .setCustomId('previousbtn')
             .setLabel('◀️')
-            .setStyle("Danger");
+            .setStyle("Secondary");
 
         const button2 = new ButtonBuilder()
             .setCustomId('nextbtn')
             .setLabel('▶️')
-            .setStyle("Success");
+            .setStyle("Secondary");
 
         buttonList = [
             button1,

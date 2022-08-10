@@ -5,7 +5,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: ":sunglasses:",
     callback: (message, arguments, text) => {
         const hackertext1 = text
 

@@ -6,7 +6,7 @@ module.exports = (client, reaction, user) => {
         if (user.bot) return
         if (reaction.message.id !== '844912109154598912') return
 
-        var iconurl = client.guilds.cache.get("631518992342843392").iconURL()
+        const iconurl = client.guilds.cache.get("631518992342843392").iconURL()
 
         try {
             let botRole = reaction.message.member.guild.roles.cache.find(role => role.name === 'BotNews').id

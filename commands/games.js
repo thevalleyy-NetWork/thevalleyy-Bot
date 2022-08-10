@@ -5,7 +5,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Gibts noch nicht, aber bald",
     callback: (message, arguments, text) => {
 
         message.reply('soon:tm:')

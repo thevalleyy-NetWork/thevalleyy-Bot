@@ -7,10 +7,10 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "<:hm:907936051300012072>",
     callback: async(message, arguments, text) => {
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
         const Discord = require('discord.js')
         const nekochannel = '799728881228709928'

@@ -5,7 +5,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Hilfe zu allen Commands",
     callback: (message, arguments, text) => {
         message.reply("Sorry, aber tali ist einfach zu faul mal ne hilfe zu adden")
 

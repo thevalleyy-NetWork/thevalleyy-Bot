@@ -9,7 +9,7 @@ module.exports = {
     callback: async(message, arguments, text) => {
 
         const Discord = require('discord.js')
-        var iconurl = message.guild.iconURL({
+        const iconurl = message.guild.iconURL({
             dynamic: true
         })
 

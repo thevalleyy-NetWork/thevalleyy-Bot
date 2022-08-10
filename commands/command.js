@@ -9,9 +9,9 @@ module.exports = {
     minArgs: 0,
     maxArgs: 1,
     cooldown: null,
-    description: "this description is weird",
+    description: "Zeigt dir Infos über einen Befehl an.",
     callback: async (message, arguments, text) => {
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
 
 
         const cmd = arguments[0]

@@ -8,7 +8,7 @@ module.exports = (client, message) => {
         if (message.channel.type == ChannelType.DM) return
         if (message.webhookId) return
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
 
         try {
             const regex = /[ ⠀​     👨🏻‍🚀    ]/g

@@ -5,7 +5,7 @@ const package = require('./../package.json').dependencies
 const fs = require('fs')
 
 module.exports = (client) => {
-    var iconurl = client.guilds.cache.get("631518992342843392").iconURL({ dynamic: true })
+    const iconurl = client.guilds.cache.get("631518992342843392").iconURL({ dynamic: true })
 
     // startup presence (now random)
     function setRandomPackageStatus() {

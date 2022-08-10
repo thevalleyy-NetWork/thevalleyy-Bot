@@ -5,7 +5,7 @@ module.exports = {
     minArgs: 2,
     maxArgs: 2,
     cooldown: null,
-    description: "this description is weird",
+    description: "Addiert zwei Zahlen",
     callback: (message, arguments, text) => {
         const num1 = +arguments[0].substring(0, 200)
         const num2 = +arguments[1].substring(0, 200)

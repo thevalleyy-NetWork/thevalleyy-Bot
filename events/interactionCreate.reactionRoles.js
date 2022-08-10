@@ -5,7 +5,7 @@ module.exports = async (client, interaction) => {
         if (interaction.user.bot) return
         if (!interaction.customId.startsWith('REACTIONROLE')) return
 
-        var iconurl = client.guilds.cache.get("631518992342843392").iconURL()
+        const iconurl = client.guilds.cache.get("631518992342843392").iconURL()
 
         try {
 

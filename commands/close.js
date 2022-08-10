@@ -5,7 +5,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     cooldown: 300000,
-    description: "Schließt dein offenes Ticket",
+    description: "Schließt (d)ein offenes Ticket",
     callback: (message, arguments, text) => {
 
         const iconurl = message.guild.iconURL({ dynamic: true })

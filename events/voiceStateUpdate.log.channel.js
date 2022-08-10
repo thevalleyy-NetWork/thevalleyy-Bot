@@ -6,7 +6,7 @@ module.exports = async(client, oldState, newState) => {
         
         if (oldState.member.user.bot) return
         if (oldState.guild.id != '631518992342843392') return
-        var iconurl = client.guilds.cache.get(oldState.guild.id).iconURL({
+        const iconurl = client.guilds.cache.get(oldState.guild.id).iconURL({
             dynamic: true
         })
 

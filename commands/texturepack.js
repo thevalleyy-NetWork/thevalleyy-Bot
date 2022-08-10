@@ -5,10 +5,10 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Infos zu nem Texturepack",
     callback: (message, arguments, text) => {
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const Discord = require('discord.js')
 
 

@@ -22,10 +22,10 @@ module.exports = {
     minArgs: 2,
     maxArgs: null,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "Schreibt einen Nutzer eine PN",
     callback: async(message, arguments, text) => {
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
         const Discord = require('discord.js')
 

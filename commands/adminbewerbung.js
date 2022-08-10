@@ -7,7 +7,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Du willst auch so ne coole rote Rolle? Hier kannst du dich bewerben!",
     callback: (message, arguments, text) => {
 
         const embed = new Discord.EmbedBuilder()

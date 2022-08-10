@@ -5,10 +5,10 @@
             minArgs: 0,
             maxArgs: 0,
             cooldown: null,
-            description: "this description is weird",
+            description: "Lädt den Bot neu",
             callback: async(message, arguments, text) => {
 
-                var iconurl = message.guild.iconURL({ dynamic: true })
+                const iconurl = message.guild.iconURL({ dynamic: true })
                 const modlog = '822575095721099304'
                 const Discord = require('discord.js')
 

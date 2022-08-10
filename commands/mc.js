@@ -11,7 +11,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: 2,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "Pingt einen Minecraft Server",
     callback: (message, arguments, text) => {
 
         if (!arguments[0] && !arguments[1]) {

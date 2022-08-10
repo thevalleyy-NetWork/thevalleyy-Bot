@@ -7,10 +7,10 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: 30000,
-    description: "this description is weird",
+    description: "Falls du den Namen eines Songs kennst, nicht aber den Text, kannst du ihn hier finden",
     callback: async(message, arguments, text) => {
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
 
         try {

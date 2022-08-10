@@ -5,11 +5,11 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "Löscht die angegebene Anzahl an Nachrichten",
     callback: async(message, arguments, text) => {
 
         let clearmsg = Math.round(+arguments[0])
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
         const Discord = require('discord.js')
 

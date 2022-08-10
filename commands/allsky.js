@@ -7,14 +7,14 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     cooldown: 60000,
-    description: "this description is weird",
+    description: "Aktuelle Bilder, aufgenommen von einer AllSky7-Kamera in Sonneberg.",
     callback: async(message, arguments, text) => {
 
         let x = 0
         let y = 0
         let now = Date.now()
 
-        var iconurl = message.guild.iconURL({
+        const iconurl = message.guild.iconURL({
             dynamic: true
         })
 

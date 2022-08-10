@@ -37,7 +37,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: 0,
-    description: "this description is weird",
+    description: "Alle möglichen Infos über Lego-Sets",
     callback: async(message, arguments, text) => {
         const fetch = (await
             import ('node-fetch')).default
@@ -52,12 +52,12 @@ module.exports = {
         const button1 = new ButtonBuilder()
             .setCustomId('previousbtn')
             .setLabel('◀️')
-            .setStyle("Danger");
+            .setStyle("Secondary");
 
         const button2 = new ButtonBuilder()
             .setCustomId('nextbtn')
             .setLabel('▶️')
-            .setStyle("Success");
+            .setStyle("Secondary");
 
         //create an array of buttons
 

@@ -4,7 +4,7 @@ const mysql = require('mysql')
 const util = require('util')
 const { PermissionsBitField } = require('discord.js')
 
-var connection = mysql.createPool({
+const connection = mysql.createPool({
     multipleStatements: true,
     connectionLimit: 10,
     host: config.mysql.host,
@@ -22,7 +22,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     cooldown: 0,
-    description: "this description is weird",
+    description: "Test-Command",
     callback: async(message, arguments, text) => {
 
 

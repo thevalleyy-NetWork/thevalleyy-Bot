@@ -46,7 +46,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: 1,
     cooldown: 60000,
-    description: "this description is weird",
+    description: "Zeigt dir entweder dein oder ein anderes Lied, das der angegebene Nutzer gerade auf Spotify hört.",
     callback: async(message, arguments, text) => {
         const Discord = require('discord.js')
 
@@ -160,8 +160,14 @@ module.exports = {
                 })
 
 
-            // require("../commands/" + commandFile).callback(message, arguments, arguments.join(' '))
-            message.reply({ embeds: [embed] })
+                const lyricsButton = new Discord.ButtonBuilder()
+                .setCustomId('SPOTIFY_lyrics')
+                .setLabel('Lyrics')
+                .setStyle('Primary') 
+
+                const button = new Discord.ActionRowBuilder().addComponents(lyricsButton)
+
+            message.reply({ embeds: [embed], components: [button] })
         }
 
     },

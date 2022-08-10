@@ -23,7 +23,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Zeigt dir entweder dein oder ein anderes Profilbild",
     callback: async(message, arguments, text) => {
 
         if (!arguments[0]) {

@@ -37,10 +37,10 @@ module.exports = {
     minArgs: 1,
     maxArgs: null,
     cooldown: null,
-    description: "this description is weird",
+    description: "Unmutet den angegebenen Nutzer",
     callback: (message, arguments, text) => {
 
-        var iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL({ dynamic: true })
         const modlog = '822575095721099304'
         const Discord = require('discord.js')
 

@@ -5,7 +5,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     cooldown: 10000,
-    description: "this description is weird",
+    description: "Listet alle Server auf, auf denen der Bot ist",
     callback: (message, arguments, text) => {
 
 

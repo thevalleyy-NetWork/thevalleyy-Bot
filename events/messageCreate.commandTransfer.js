@@ -1,4 +1,4 @@
-const cmdJson = require("../data/cmdOptions.json")
+const cmdJson = require("../data/CMDoptions.json")
 const config = require("../config.json")
 const Discord = require('discord.js')
 
@@ -6,7 +6,7 @@ const cooldownSet = new Set()
 const mysql = require('mysql')
 const util = require('util')
 
-var connection = mysql.createPool({
+const connection = mysql.createPool({
     multipleStatements: true,
     connectionLimit: 10,
     host: config.mysql.host,
