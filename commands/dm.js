@@ -1,3 +1,6 @@
+const modlog = '822575095721099304'
+const Discord = require('discord.js')
+
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
     let target = message.guild.members.cache.get(toFind)
@@ -25,11 +28,8 @@ module.exports = {
     description: "Schreibt einen Nutzer eine PN",
     callback: async(message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const modlog = '822575095721099304'
-        const Discord = require('discord.js')
-
-        getMember(message)
+        const iconurl = message.guild.iconURL()
+      
         let user = getMember(message, arguments[0])
 
         if (!user) {

@@ -1,14 +1,9 @@
 const modlog = '822575095721099304'
 const Discord = require('discord.js')
-const { ChannelType } = require('discord.js')
 module.exports = (client, message) => {
-        if (message.guild === null) return
-        if (message.author.bot) return
-        if (!message.guild.available) return
-        if (message.channel.type == ChannelType.DM) return
-        if (message.webhookId) return
+        if (message.author.bot || message.guild === null || message.channel.type == Discord.ChannelType.DM) return
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL()
 
         try {
             const regex = /[ ⠀​     👨🏻‍🚀    ]/g

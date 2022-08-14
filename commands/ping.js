@@ -24,9 +24,7 @@ module.exports = {
         let seconds = Math.floor(totalSeconds % 60);
         let uptime = `\`${days}\` Tage, \`${hours}\` Stunden, \`${minutes}\` Minuten und \`${seconds}\` Sekunden`;
 
-        const iconurl = message.guild.iconURL({
-            dynamic: true
-        })
+        const iconurl = message.guild.iconURL()
 
 
         const prePingEmbed = new Discord.EmbedBuilder()

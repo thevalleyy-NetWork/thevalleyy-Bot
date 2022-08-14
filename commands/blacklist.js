@@ -56,7 +56,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({
                         text: message.guild.name,
-                        iconURL: message.guild.iconURL({ dynamic: true })
+                        iconURL: message.guild.iconURL()
                     })
                 message.reply({ embeds: [embed] })
                 return

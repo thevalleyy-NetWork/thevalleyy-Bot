@@ -10,7 +10,7 @@ module.exports = {
     description: "Falls du den Namen eines Songs kennst, nicht aber den Text, kannst du ihn hier finden",
     callback: async(message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL()
         const modlog = '822575095721099304'
 
         try {
@@ -36,7 +36,7 @@ module.exports = {
 
 
                 const songEmbed = new Discord.EmbedBuilder()
-                    .setAuthor({ name: `${author} (${title})`, iconURL: message.author.avatarURL({ dynamic: true }), url: links.genius })
+                    .setAuthor({ name: `${author} (${title})`, iconURL: message.author.avatarURL(), url: links.genius })
                     .setThumbnail(thumbnail.genius)
                     .setDescription(lyrics.substring(0, 4096))
                     .setColor('0099ff')

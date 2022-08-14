@@ -11,8 +11,7 @@ module.exports = {
     cooldown: null,
     description: "Zeigt dir Infos über einen Befehl an.",
     callback: async (message, arguments, text) => {
-        const iconurl = message.guild.iconURL({ dynamic: true })
-
+        const iconurl = message.guild.iconURL()
 
         const cmd = arguments[0]
         const directory = './data/cmdinfo/';
@@ -32,7 +31,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({
                         text: message.guild.name,
-                        iconURL: message.guild.iconURL({ dynamic: true })
+                        iconURL: message.guild.iconURL()
                     })
                     .setDescription(`\`\`\`${allFiles.join(', ').replaceAll(", ", ",\n")}\`\`\``)
                 message.reply({ embeds: [embed] })

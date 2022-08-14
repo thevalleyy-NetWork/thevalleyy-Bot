@@ -24,7 +24,7 @@ module.exports = {
     cooldown: null,
     description: "Führt Code aus",
     callback: async(message, arguments, text) => {
-        const iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL()
 
         if (message.author.id !== config.owner) {
             message.react('<:hm:907936051300012072>')
@@ -50,6 +50,7 @@ module.exports = {
             }
 
             message.reply('```js\n' + output.substring(0, 1950) + '```')
+            console.log("\n-----EVAL BEGIN-----\n" + output + "\n-----EVAL END-----\n")
 
 
 

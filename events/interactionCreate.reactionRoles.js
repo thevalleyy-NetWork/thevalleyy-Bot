@@ -2,7 +2,6 @@ module.exports = async (client, interaction) => {
 
     const modlog = '822575095721099304'
 
-        if (interaction.user.bot) return
         if (!interaction.customId.startsWith('REACTIONROLE')) return
 
         const iconurl = client.guilds.cache.get("631518992342843392").iconURL()

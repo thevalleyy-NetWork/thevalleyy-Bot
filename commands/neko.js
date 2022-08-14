@@ -1,4 +1,7 @@
 const config = require('../config.json')
+const modlog = '822575095721099304'
+const Discord = require('discord.js')
+const nekochannel = '799728881228709928'
 
 module.exports = {
     commands: ['neko'],
@@ -9,12 +12,9 @@ module.exports = {
     cooldown: 10000,
     description: "<:hm:907936051300012072>",
     callback: async(message, arguments, text) => {
-
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const modlog = '822575095721099304'
-        const Discord = require('discord.js')
-        const nekochannel = '799728881228709928'
-		const fetch = (await import ('node-fetch')).default
+        
+        const fetch = (await import ('node-fetch')).default
+        const iconurl = message.guild.iconURL()
 
         if (message.channel.id !== nekochannel && message.author.id !== config.owner) {
             message.reply(`${message.author.username}, ${message.guild.channels.cache

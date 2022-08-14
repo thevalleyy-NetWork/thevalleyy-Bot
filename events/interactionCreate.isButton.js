@@ -12,7 +12,6 @@ let json = require("./../data/stats.json")
 
 module.exports = (client, interaction) => {
         if (!interaction.isButton()) return;
-        if (interaction.user.bot) return;
 
 
         let json = require("./../data/stats.json")

@@ -183,7 +183,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({
                         text: message.guild.name,
-                        iconURL: message.guild.iconURL({ dynamic: true })
+                        iconURL: message.guild.iconURL()
                     })
                 dataarray.forEach(data => {
                     if (data.count == 1) {
@@ -224,7 +224,7 @@ module.exports = {
                                 .setTimestamp()
                                 .setFooter({
                                     text: message.guild.name,
-                                    iconURL: message.guild.iconURL({ dynamic: true })
+                                    iconURL: message.guild.iconURL()
                                 })
                                 .addFields([
                                     { name: "Theme:", value: `\`${theme.theme}\``, inline: true},
@@ -257,7 +257,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({
                         text: message.guild.name,
-                        iconURL: message.guild.iconURL({ dynamic: true })
+                        iconURL: message.guild.iconURL()
                     })
                 embed.setDescription(`\`\`\`${dataarray.join(', ')}\`\`\``)
                 embed.addFields([{ name: "​", value: `Du möchtest mehr über ein einzelnes Theme wissen?\nMit \`${message.content.split(" ")[0]} Themes <Name>\` bekommst du mehr Informationen.`, inline: false}])

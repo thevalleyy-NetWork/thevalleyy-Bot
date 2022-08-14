@@ -1,3 +1,9 @@
+// get config
+const config = require('../config.json')
+// later used, it's self explaning
+const progressbar = require('string-progressbar')
+const Discord = require('discord.js')
+
 // function to find the given member
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
@@ -33,10 +39,6 @@ function getDuration(start, end) {
     return dura
 }
 
-// get config
-const config = require('../config.json')
-    // later used, it's self explaning
-const progressbar = require('string-progressbar')
 
 // create the command
 module.exports = {
@@ -48,8 +50,6 @@ module.exports = {
     cooldown: 60000,
     description: "Zeigt dir entweder dein oder ein anderes Lied, das der angegebene Nutzer gerade auf Spotify hört.",
     callback: async(message, arguments, text) => {
-        const Discord = require('discord.js')
-
         // second argument?
         if (!arguments[0]) {
             // no xd, fetch the user
@@ -94,7 +94,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({
                     text: message.guild.name,
-                    iconURL: message.guild.iconURL({ dynamic: true })
+                    iconURL: message.guild.iconURL()
                 })
 
 
@@ -111,7 +111,7 @@ module.exports = {
 
         } else {
             // the same as above, but with a user as the second argument
-            getMember(message)
+            
             let user = getMember(message, arguments[0])
                 // iS iT a UsEr?
             if (!user) {
@@ -156,7 +156,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({
                     text: message.guild.name,
-                    iconURL: message.guild.iconURL({ dynamic: true })
+                    iconURL: message.guild.iconURL()
                 })
 
 

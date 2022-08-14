@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const { PermissionsBitField } = require('discord.js')
+
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
     let target = message.guild.members.cache.get(toFind)
@@ -27,39 +27,27 @@ module.exports = {
     description: "Kickt den angegebenen Nutzer",
     callback: async(message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL()
         const modlog = '822575095721099304'
         const reason = text.split(' ').slice(1).join(' ')
+
         let member = getMember(message, arguments[0])
 
-        if (!member) {
-            message.reply('Der User `' + arguments[0].substring(0, 100) + '` konnte nicht gefunden werden.')
-            return
-        }
+        if (!member) return message.reply('Der User `' + arguments[0].substring(0, 100) + '` konnte nicht gefunden werden.')
 
-        if (member.id === message.author.id) {
-            message.reply('Du kannst dich nicht selbst kicken, ' + message.author.username)
-            return
-        }
+        if (member.id === message.author.id) return message.reply('Du kannst dich nicht selbst kicken, ' + message.author.username)
 
+        try{
+        
         try {
-            if (arguments[1]) {
-                try {
-                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` mit dem Grund `" + reason + "` von `" + message.author.tag + "`gekickt.")
-                } catch (e) {
-                    message.client.channels.cache.get(modlog).send(`Error at kick: \`${e}\``)
-                }
-                member.kick(reason.toString() + ", Kick von: " + message.author.tag)
-                await message.reply('Der User `' + member.user.tag + '` wurde mit dem Grund `' + reason + '` gekickt.')
-            } else {
-                try {
-                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` von `" + message.author.tag + "` gekickt.")
-                } catch (e) {
-                    message.client.channels.cache.get(modlog).send(`Error at kick: \`${e}\``)
-                }
-                member.kick("Kick von: " + message.author.tag)
-                await message.reply('Der User `' + member.user.tag + '` wurde gekickt.')
-            }
+            await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "`" + (arguments[1] ? " mit dem Grund `" + reason + "` " : " ") + "von `" + message.author.tag + "` gekickt.") 
+        } catch (e) {
+            message.client.channels.cache.get(modlog).send(`Error at kick: \`${e}\``)
+        }
+
+        member.kick((arguments[1] ? reason + ", ": "") + "Kick von: " + message.author.tag )
+        await message.reply('Der User `' + member.user.tag + '` wurde' + (arguments[1] ? " mit dem Grund `" + reason + "` gekickt." : " gekickt."))
+
         } catch (error) {
             const embed = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -kick')

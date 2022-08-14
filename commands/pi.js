@@ -8,11 +8,6 @@ module.exports = {
     description: "returns π to the specified number of digits. If no number of digits is specified, returns π to 16 digits. Max digits in base 10 are 100000000000000, in base 16 are 83048202372185. https://pi.delivery/",
     callback: (message, arguments, text) => {
 
-        const Discord = require('discord.js')
-        const iconurl = message.guild.iconURL({
-            dynamic: true
-        })
-
         if (arguments[1] == true.toString()) {
             base = 16
         } else {

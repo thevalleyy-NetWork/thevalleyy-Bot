@@ -1,3 +1,9 @@
+const config = require('../config.json')
+const mysql = require('mysql')
+const util = require('util')
+const modlog = '822575095721099304'
+const Discord = require('discord.js')
+
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
     let target = message.guild.members.cache.get(toFind)
@@ -15,10 +21,6 @@ function getMember(message, toFind = '') {
     return target
 }
 
-const config = require('../config.json')
-const mysql = require('mysql')
-const util = require('util')
-
 const connection = mysql.createPool({
     multipleStatements: true,
     connectionLimit: 10,
@@ -30,6 +32,7 @@ const connection = mysql.createPool({
 
 const db = util.promisify(connection.query).bind(connection)
 
+
 module.exports = {
     commands: ['niceone', 'no'],
     expectedArgs: '<user>',
@@ -40,11 +43,10 @@ module.exports = {
     description: "Entzieht oder gibt dem angegebenen User Nice One",
     callback: (message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const modlog = '822575095721099304'
-        const Discord = require('discord.js')
+        const iconurl = message.guild.iconURL()
 
-        getMember(message)
+
+        
         let user = getMember(message, arguments[0])
         let Role = message.member.guild.roles.cache.find(role => role.name === 'Nice One').id
 

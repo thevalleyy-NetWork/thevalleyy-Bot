@@ -20,18 +20,14 @@ module.exports = {
             'susar!'
         ]
 
-        var rusasarray2 = rusasarray[Math.floor(Math.random() * rusasarray.length)]
+        const rusas = rusasarray[Math.floor(Math.random() * rusasarray.length)]
         message.delete()
 
 
         if (message.reference) {
             const reaktionsmsg = await message.fetchReference()
-
-            if (reaktionsmsg === undefined) return message.channel.send(rusasarray2)
-
-            await reaktionsmsg.reply(rusasarray2)
-            
-        } else message.channel.send(rusasarray2)
+            await reaktionsmsg.reply({ content: rusas, failIfNotExists: false })
+        } else message.channel.send(rusas)
 
     },
     permissions: [],

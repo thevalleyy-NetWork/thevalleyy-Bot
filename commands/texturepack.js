@@ -1,3 +1,5 @@
+const Discord = require('discord.js')
+
 module.exports = {
     commands: ['texturepack', 'tp'],
     expectedArgs: '',
@@ -8,9 +10,7 @@ module.exports = {
     description: "Infos zu nem Texturepack",
     callback: (message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const Discord = require('discord.js')
-
+        const iconurl = message.guild.iconURL()
 
         const embed = new Discord.EmbedBuilder()
             .setTitle('Abgerufen von: ' + message.author.username)
@@ -19,7 +19,7 @@ module.exports = {
                 { name: 'Version:', value: 'Minecraft Java 1.17 | Version der TexturePacks: Beta_0.3'},
                 { name: 'Download', value: 'https://drive.google.com/file/d/1qmDFRpdOqF4HecllwdYI2kWZ--1FU46w/view?usp=sharing'}
             ])
-            .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(message.author.displayAvatarURL())
             .setFooter({ text: message.guild.name, iconURL: iconurl})
             .setTimestamp()
             .setAuthor({ name: 'Infos zum TexturePack von thevalleyy' })

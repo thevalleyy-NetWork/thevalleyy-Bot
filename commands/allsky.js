@@ -14,9 +14,7 @@ module.exports = {
         let y = 0
         let now = Date.now()
 
-        const iconurl = message.guild.iconURL({
-            dynamic: true
-        })
+        const iconurl = message.guild.iconURL()
 
         const {
             Message,

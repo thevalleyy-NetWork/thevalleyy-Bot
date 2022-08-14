@@ -30,7 +30,6 @@ const config = require('./../config.json')
 
 module.exports = (client, interaction) => {
         if (interaction.customId !== "TICKET_create") return;
-        if (interaction.user.bot) return
 
         // user wants to open a ticket
         const server = interaction.guild

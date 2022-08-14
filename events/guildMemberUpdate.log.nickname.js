@@ -4,9 +4,7 @@ const Discord = require('discord.js')
 module.exports = async(client, oldMember, newMember) => {
         if (newMember.guild.id != '631518992342843392') return
         if (oldMember.nickname === newMember.nickname) return
-        const iconurl = client.guilds.cache.get(newMember.guild.id).iconURL({
-            dynamic: true
-        })
+        const iconurl = newMember.guild.iconURL()
 
         const fetchedLogs = await newMember.guild.fetchAuditLogs({
             limit: 1,

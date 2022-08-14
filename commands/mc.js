@@ -29,7 +29,7 @@ module.exports = {
                 .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
                 .setDescription('Fehler: `' + error + '`')
                 .addFields([{ name: message.author.tag, value: 'in <#' + message.channel.id + '>' }])
-                .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL({ dynamic: true }) })
+                .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
                 .setTimestamp()
                 .setColor('fc036b')
 
@@ -38,12 +38,11 @@ module.exports = {
 
             if (!response) return message.reply("Der Server ist nicht erreichbar.")
 
-            const json = JSON.parse(fs.readFileSync("./data/playerrec.json", 'utf8'))
             const embed = new Discord.EmbedBuilder()
                 .setTitle(arguments[0] + ":" + arguments[1])
                 .setTimestamp()
                 .setColor(config.standard_color)
-                .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL({ dynamic: true }) })
+                .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
                 .addFields([
                     { name: "Spieler:", value: `(${response.players.online}/${response.players.max})`, inline: true},
                     { name: "Version:", value: `${response.version.name} (${response.version.protocol})`, inline: true},
@@ -55,6 +54,8 @@ module.exports = {
 
 
             if (arguments[0] == "thevalleyy.tk") {
+                const json = JSON.parse(fs.readFileSync("./data/playerrec.json", 'utf8'))
+                
                 embed.addFields([
                     { name: "Spielerrekord:", value: json.mostPlayers.toString(), inline: true},
                     { name: "Erreicht am:", value: `<t:${json.date}:R>`, inline: true},

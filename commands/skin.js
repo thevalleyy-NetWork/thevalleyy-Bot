@@ -39,7 +39,7 @@ module.exports = {
                             .setColor('#ff0000')
                             .setTitle('Es gab einen Fehler...')
                             .setDescription("`" + response.statusText + "`\nAPI: " + response.url + "\nStatus: " + response.status)
-                            .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL({ dynamic: true }) })
+                            .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
                         message.reply({ embeds: [error] })
                     }
                 }
@@ -62,7 +62,7 @@ module.exports = {
                         .setColor('#ff0000')
                         .setTitle('Es gab einen Fehler...')
                         .setDescription("`" + response.statusText + "`\nAPI: " + response.url + "\nStatus: " + response.status)
-                        .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL({ dynamic: true }) })
+                        .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
                     message.reply({ embeds: [error] })
                 }
             }

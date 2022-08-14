@@ -1,4 +1,6 @@
 // cmd template
+const Discord = require('discord.js')
+
 module.exports = {
     commands: [''],
     expectedArgs: '',
@@ -9,8 +11,7 @@ module.exports = {
     description: "This is a template for a command",
     callback: (message, arguments, text) => {
 
-        const Discord = require('discord.js')
-        const iconurl = message.guild.iconURL({dynamic: true})
+        const iconurl = message.guild.iconURL()
 
 
         // Code here

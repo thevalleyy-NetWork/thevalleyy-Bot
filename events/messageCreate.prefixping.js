@@ -1,10 +1,6 @@
-const { ChannelType } = require('discord.js')
+const Discord= require('discord.js')
 module.exports = (client, message) => {
-        if (message.guild === null) return
-        if (message.author.bot) return
-        if (!message.guild.available) return
-        if (message.channel.type == ChannelType.DM) return
-        if (message.webhookId) return
+    if (message.author.bot || message.guild === null || message.channel.type == Discord.ChannelType.DM) return
 
         if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
             const config = require('./../config.json')

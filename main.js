@@ -242,7 +242,7 @@ client.login(config.token)
 //         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
 //         .setFooter({
 //             text: `${source}`,
-//             iconURL: client.user.avatarURL({ format: 'png', dynamic: true })
+//             iconURL: client.user.avatarURL({ format: 'png' })
 //         })
 //         .setTimestamp()
 //         .setColor(config.mod_log_color_error)

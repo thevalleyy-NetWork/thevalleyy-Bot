@@ -1,3 +1,5 @@
+const Discord = require('discord.js')
+
 module.exports = {
     commands: ['bettereval', 'beval'],
     expectedArgs: '<code>',
@@ -8,10 +10,7 @@ module.exports = {
     description: "access commandline in seconds",
     callback: async(message, arguments, text) => {
 
-        const Discord = require('discord.js')
-        const iconurl = message.guild.iconURL({
-            dynamic: true
-        })
+        const iconurl = message.guild.iconURL()
 
         let kill = []
         let m

@@ -1,3 +1,6 @@
+const modlog = '822575095721099304'
+const Discord = require('discord.js')
+
 function getMember(message, toFind = '') {
     toFind = toFind.toLowerCase()
     let target = message.guild.members.cache.get(toFind)
@@ -40,11 +43,9 @@ module.exports = {
     description: "Mutet einen User",
     callback: (message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const modlog = '822575095721099304'
-        const Discord = require('discord.js')
+        const iconurl = message.guild.iconURL()
 
-        getMember(message)
+        
         let muteUser = getMember(message, arguments[0])
         let muteRole = message.member.guild.roles.cache.find(role => role.name === 'Muted Chat').id
 

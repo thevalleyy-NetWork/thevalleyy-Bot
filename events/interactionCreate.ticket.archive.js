@@ -8,7 +8,6 @@ const config = require('./../config.json')
 
 module.exports = async (client, interaction) => {
         if (interaction.customId !== "TICKET_archive") return;
-        if (interaction.user.bot) return
 
         try {
             if (!interaction.channel.name.startsWith('🔒-')) return

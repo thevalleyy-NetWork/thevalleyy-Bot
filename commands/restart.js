@@ -8,9 +8,9 @@
             description: "Lädt den Bot neu",
             callback: async(message, arguments, text) => {
 
-                const iconurl = message.guild.iconURL({ dynamic: true })
-                const modlog = '822575095721099304'
-                const Discord = require('discord.js')
+                // const iconurl = message.guild.iconURL()
+                // const modlog = '822575095721099304'
+                // const Discord = require('discord.js')
 
                 await message.reply("Neustart eingeleitet.")
                 await process.exit(42)

@@ -1,3 +1,6 @@
+const Discord = require('discord.js')
+const modlog = '822575095721099304'
+
 module.exports = {
     commands: ['close'],
     expectedArgs: '',
@@ -8,10 +11,8 @@ module.exports = {
     description: "Schließt (d)ein offenes Ticket",
     callback: (message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const modlog = '822575095721099304'
-        const Discord = require('discord.js')
-
+        const iconurl = message.guild.iconURL()
+        
         const suprole = message.guild.roles.cache.find(role => role.name === 'Supporter')
         const modrole = message.guild.roles.cache.find(role => role.name === 'Moderator')
         const ticketId = message.channel.topic.replace('(', '').replace(')', '').split(' ').slice(9).join(' ')
@@ -42,7 +43,7 @@ module.exports = {
             .setColor("#8319e6")
             .setFooter({ text: message.guild.name, iconURL: iconurl })
             .setThumbnail("https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png")
-            .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL({ dynamic: true }) })
+            .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() })
             .addFields([
                 { name: "Ticket archivieren?", value: "<@&631521181752885268> oder <@&726146482314674197>", inline: true },
                 { name: "<:checkmarkEmbed:1005146896278503597> - Ja  |  <:crossEmbed:1005146898451140749> - Nein", value: "Drücke einen der Buttons", inline: true}
@@ -61,9 +62,7 @@ module.exports = {
             const ticketButtons = new Discord.ActionRowBuilder().addComponents(buttonArchive, buttonDelete)
 
 
-            message.channel.send({ embeds: [embed], components: [ticketButtons] }).then(msg => {
-                msg.pin
-            })
+            message.channel.send({ embeds: [embed], components: [ticketButtons] })
         } catch (err) {
             message.client.channels.cache.get(modlog).send("Gab nen Fehler bei -close: " + err)
         }

@@ -13,7 +13,7 @@ module.exports = {
     description: "Dieser Befehl sucht eine __Fotographie__ aus einer Bilddatenbank.",
     callback: (message, arguments, text) => {
     
-        const iconurl = message.guild.iconURL({dynamic: true})
+        const iconurl = message.guild.iconURL()
         //  "\nColor: 'red', 'orange', 'yellow', 'green', 'turquoise', 'blue', 'violet', 'pink', 'brown', 'black', 'gray' \nOrientation: 'landscape', 'portrait', 'square' \nSize: 'small', 'medium', 'large',"
 
         const pexels = createClient(config.keys.pexels);

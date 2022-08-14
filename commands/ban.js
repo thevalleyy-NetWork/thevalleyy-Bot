@@ -26,44 +26,28 @@ module.exports = {
     description: "Bannt den angegebenen User",
     callback: async(message, arguments, text) => {
         
-        const iconurl = message.guild.iconURL({ dynamic: true })
+        const iconurl = message.guild.iconURL()
         const modlog = '822575095721099304'
         const reason = text.split(' ').slice(2).join(' ')
         let member = getMember(message, arguments[0])
 
-        if (!member) {
-            message.reply('Der User `' + arguments[0].substring(0, 100) + '` konnte nicht gefunden werden.')
-            return
-        }
+        if (!member) return message.reply('Der User `' + arguments[0].substring(0, 100) + '` konnte nicht gefunden werden.')
 
-        if (member.id === message.author.id) {
-            message.reply('Du kannst dich nicht selbst bannen, ' + message.author.username)
-            return
-        }
+        if (member.id === message.author.id) return message.reply('Du kannst dich nicht selbst bannen, ' + message.author.username)
+        
 
         try {
-            if (isNaN((arguments[1])) || arguments[1] < 0 || arguments[1] > 7) {
-                message.reply('Das 2. Argument bestimmt die Anzahl der Tage, in denen Nachrichten von dem gebannten User gelöscht werden.\nBitte gib eine Zahl zwischen 0 und 7 an.')
-                return
-            }
+            if (isNaN((arguments[1])) || arguments[1] < 0 || arguments[1] > 7) return message.reply('Das 2. Argument bestimmt die Anzahl der Tage, in denen Nachrichten von dem gebannten User gelöscht werden.\nBitte gib eine Zahl zwischen 0 und 7 an.')
 
-            if (arguments[2]) {
                 try {
-                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` mit dem Grund `" + reason + "` von `" + message.author.tag + "` gebannt.")
+                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "`" + (arguments[2] ? " mit dem Grund `" + reason + "` " : " ") + "von `" + message.author.tag + "` gebannt.") 
                 } catch (e) {
                     message.client.channels.cache.get(modlog).send(`Error at ban: \`${e}\``)
                 }
-                member.ban({ deleteMessageDays: Math.round(arguments[1]), reason: reason + ", Ban von: " + message.author.tag + " (DMDs: " + arguments[1] + ")"})
-                await message.reply('Der User `' + member.user.tag + '` wurde mit dem Grund `' + reason + '` gebannt.')
-            } else {
-                try {
-                    await member.user.send("Du wurdest auf dem Server `" + message.guild.name + "` von `" + message.author.tag + "` gebannt.")
-                } catch (e) {
-                    message.client.channels.cache.get(modlog).send(`Error at ban: \`${e}\``)
-                }
-                member.ban({ deleteMessageDays: Math.round(arguments[1]), reason: "Ban von: " + message.author.tag + " (DMDs: " + arguments[1] + ")"})
-                await message.reply('Der User `' + member.user.tag + '` wurde gebannt.')
-            }
+
+                member.ban({ deleteMessageDays: Math.round(arguments[1]), reason: (arguments[2] ? reason + ", ": "") + "Ban von: " + message.author.tag + " (DMDs: " + arguments[1] + ")"})
+                await message.reply('Der User `' + member.user.tag + '` wurde' + (arguments[2] ? " mit dem Grund `" + reason + "` gebannt." : " gebannt."))
+
         } catch (error) {
             const embed = new Discord.EmbedBuilder()
                 .setTitle('Es gab einen Fehler bei -ban')

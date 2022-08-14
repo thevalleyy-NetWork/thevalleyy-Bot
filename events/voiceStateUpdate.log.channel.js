@@ -6,9 +6,7 @@ module.exports = async(client, oldState, newState) => {
         
         if (oldState.member.user.bot) return
         if (oldState.guild.id != '631518992342843392') return
-        const iconurl = client.guilds.cache.get(oldState.guild.id).iconURL({
-            dynamic: true
-        })
+        const iconurl = client.guilds.cache.get(oldState.guild.id).iconURL()
 
 
         if (oldState.channelId === null) {
@@ -52,6 +50,6 @@ module.exports = async(client, oldState, newState) => {
 
             client.channels.cache.get(modlog).send({ embeds: [embedVoiceLog] })
         } else {
-            // changed mute, stream or sth like that. this needs definitly to be logged, especially the executor, but since it's not that easy, i'll leave it for now
+            //TODO: changed mute, stream or sth like that. this needs definitly to be logged, especially the executor, but since it's not that easy, i'll leave it for now
         }
 }

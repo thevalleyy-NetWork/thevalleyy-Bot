@@ -4,7 +4,6 @@
     
     module.exports = (client, interaction) => {
             if (interaction.customId !== "TICKET_delete") return;
-            if (interaction.user.bot) return
 
             try{
                 if (!interaction.channel.name.startsWith('🔒-')) return

@@ -1,3 +1,6 @@
+const modlog = '822575095721099304'
+const Discord = require('discord.js')
+
 module.exports = {
     commands: ['clear', 'purge', 'cls'],
     expectedArgs: '<amount>',
@@ -9,9 +12,8 @@ module.exports = {
     callback: async(message, arguments, text) => {
 
         let clearmsg = Math.round(+arguments[0])
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const modlog = '822575095721099304'
-        const Discord = require('discord.js')
+        const iconurl = message.guild.iconURL()
+        
 
 
         if (Number.isNaN(clearmsg)) {

@@ -12,7 +12,7 @@ module.exports = {
     description: "Zeigt dir alle installierten npmjs-Packages.",
     callback: (message, arguments, text) => {
 
-        const iconurl = message.guild.iconURL({dynamic: true})
+        const iconurl = message.guild.iconURL()
         let array = []
 
         for (let i = 0; i < Object.keys(package.dependencies).length; i++) {
@@ -24,7 +24,7 @@ module.exports = {
         .setColor(config.standard_color)
         .setTitle(package.name + ' v' + package.version)
         .setDescription("Packages:\n" + `\`\`\`${array.join(', ').replaceAll(", ", ",\n")}\`\`\``)
-        .setThumbnail(message.client.user.avatarURL( {dynamic: true} ))
+        .setThumbnail(message.client.user.avatarURL(  ))
         .addFields([
             { name: 'Start-Datei', value: "`" + package.main + "`", inline: true },
             { name: "Description", value: "`" + package.description + "`", inline: true }

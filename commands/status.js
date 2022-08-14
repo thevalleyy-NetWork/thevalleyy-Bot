@@ -1,3 +1,6 @@
+const modlog = '822575095721099304'
+const Discord = require('discord.js')
+
 module.exports = {
     commands: ['status'],
     expectedArgs: '[type] <text>',
@@ -8,9 +11,8 @@ module.exports = {
     description: "Setzt den Status des Bots",
     callback: (message, arguments, text) => {
 
-        const modlog = '822575095721099304'
-        const iconurl = message.guild.iconURL({ dynamic: true })
-        const Discord = require('discord.js')
+        
+        const iconurl = message.guild.iconURL()
         const supRole = message.member.guild.roles.cache.find(role => role.name === 'Supporter').id
 
         if (message.author.id == '428487848304574466' || message.guild.members.cache.get(message.author.id).roles.cache.has(supRole)) {

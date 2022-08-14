@@ -73,11 +73,7 @@ module.exports = async (client, message) => {
     const { member, content, guild } = message
 
     // Ensure this message is sent by a user on a server
-    if (message.guild === null) return
-    if (message.author.bot) return
-    if (!message.guild.available) return
-    if (message.channel.type == Discord.ChannelType.DM) return
-    if (message.webhookId) return
+    if (message.author.bot || message.guild === null || message.channel.type == Discord.ChannelType.DM) return
     
     // a message has been sent by a user
     Object.keys(cmdJson.cmds).forEach(commandFile => {
@@ -208,7 +204,7 @@ module.exports = async (client, message) => {
 
                 const executed = new Discord.EmbedBuilder()
                     .setTitle('registered a command')
-                    .setThumbnail(message.author.avatarURL({ dynamic: true }))
+                    .setThumbnail(message.author.avatarURL())
                     .setDescription(`\`${message.author.tag}\`, <@${message.author.id}>`)
                     .addFields([
                         { name: "command:", value: `\`${config.prefix}${alias}\``, inline: true},
@@ -219,7 +215,7 @@ module.exports = async (client, message) => {
                     ])
                     .setFooter({
                         text: message.guild.name,
-                        iconURL: message.guild.iconURL({ dynamic: true })
+                        iconURL: message.guild.iconURL()
                     })
                     .setTimestamp()
                     .setColor(config.cmd_log_color)
