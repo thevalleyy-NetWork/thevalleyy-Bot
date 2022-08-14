@@ -262,4 +262,4 @@ client.login(config.token)
 //         client.channels.cache.get(config.mod_log_channel_id).send({ files: [attachment] })
 //     }
 //     client.channels.cache.get(config.mod_log_channel_id).send({ embeds: [embedfail] })
-// }) 
+// })
