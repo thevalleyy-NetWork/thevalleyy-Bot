@@ -1,6 +1,6 @@
 const config = require('../config.json')
 const Discord = require('discord.js')
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const util = require('util')
 
 const connection = mysql.createPool({

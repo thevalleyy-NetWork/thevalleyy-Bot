@@ -3,7 +3,7 @@ const { ChannelType } = require('discord.js')
 const Discord = require('discord.js')
 const config = require('../config.json')
 
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const util = require('util')
 
 const connection = mysql.createPool({

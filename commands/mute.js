@@ -18,7 +18,7 @@ function getMember(message, toFind = '') {
     return target
 }
 
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const util = require('util')
 const config = require('../config.json')
 

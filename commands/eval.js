@@ -2,7 +2,7 @@ const config = require('../config.json')
 const util = require('util')
 const modlog = '822575095721099304'
 const Discord = require('discord.js')
-const mysql = require('mysql')
+const mysql = require('mysql2')
 
 const connection = mysql.createPool({
     multipleStatements: true,
@@ -50,7 +50,7 @@ module.exports = {
             }
 
             message.reply('```js\n' + output.substring(0, 1950) + '```')
-            console.log("\n-----EVAL BEGIN-----\n" + output + "\n-----EVAL END-----\n")
+            console.log("\n-----EVAL BEGIN-----\n" + output + "\n------EVAL END------\n")
 
 
 
