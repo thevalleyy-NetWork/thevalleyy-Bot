@@ -161,7 +161,7 @@ client.on('ready', async() => {
                 readCommands(path.join(dir, file))
             } else 
                 if (!file.endsWith('.js')) { // make sure its a js file
-                    log(`Skipping ${file}:`, "green", "reset", true)
+                    log(`Skipping ${file}`, "green", "reset", true)
                     return}
                 // at this point we know it is a file, so we can require it
                 log(`Loading: ${file}`, "cyan", "reset", true)
