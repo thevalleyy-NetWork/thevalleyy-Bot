@@ -13,7 +13,6 @@
         "discord-buttons": "^2.4.1",
         "discord-music-player": "^9.0.2",
         "discord.js": "^14.1.2",
-        "discordjs-button-pagination": "^1.0.7",
         "ffmpeg-static": "^5.0.2",
         "he": "^1.2.0",
         "merge-options": "^3.0.4",

@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const config = require('../config.json')
 const { createClient } = require("pexels")
-const paginationEmbed = require('discordjs-button-pagination')
+const paginationEmbed = require("../functions/pagination.js")
 
 module.exports = {
     commands: ['photo', 'photograph', 'Foto'],

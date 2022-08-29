@@ -4,7 +4,7 @@ const cooldownSet = new Set()
 const he = require('he')
 const config = require('../config.json')
 const bricksetData = require('../data/brickset.json')
-const paginationEmbed = require('discordjs-button-pagination')
+const paginationEmbed = require("../functions/pagination.js")
 const { EmbedBuilder, ButtonBuilder} = require('discord.js')
 
 function validData() {

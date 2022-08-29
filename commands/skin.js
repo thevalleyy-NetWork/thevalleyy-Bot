@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const paginationEmbed = require('discordjs-button-pagination')
+const paginationEmbed = require("../functions/pagination.js")
 const { EmbedBuilder, ButtonBuilder } = require('discord.js')
 const modlog = '822575095721099304'
 const config = require('../config.json')
