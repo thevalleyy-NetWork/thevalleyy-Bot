@@ -279,7 +279,73 @@ function events() {
                 return
             }
 
-            client.on(event, (...args) => {
+            client.on(event, async (...args) => {
+
+                // blacklist
+                if (event == "messageCreate") {
+                    try {
+                        if (args[0].author.bot) return
+                        const maintenance = await JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8'));
+                        if (maintenance.maintenance == true && args[0].author.id != config.owner) return
+
+                        if (args[0].author.id != config.owner) {
+                        if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].author.id}`).then(res => res[0])) return
+                        }
+                    } catch (e) {
+                        //ERROR
+                        console.log(e)
+                    }
+                }
+
+                if (event == "guildMemberAdd" || event == "guildMemberRemove") {
+                    try {
+                        if (args[0].user.id != config.owner) {
+                        if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].user.id}`).then(res => res[0])) return
+                        }
+                    } catch (e) {
+                        //ERROR
+                        console.log(e)
+                    }
+                }
+                
+                if (event == "guildMemberUpdate") {
+                    try {
+                        if (args[0].user.id != config.owner) {
+                        if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].user.id}`).then(res => res[0])) return
+                        }
+                    } catch (e) {
+                        //ERROR
+                        console.log(e)
+                    }
+                }
+
+                if (event == "interactionCreate") {
+                    try {
+                        if (args[0].user.bot) return
+                        const maintenance = await JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8'));
+                        if (maintenance.maintenance == true && args[0].user.id != config.owner) return args[0].reply({content: await "🛑 Der Bot ist aktuell gesperrt. \n Grund: \`" + maintenance.reason + "\`", ephemeral: true})
+
+                        if (args[0].user.id != config.owner) {
+                        if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].user.id}`).then(res => res[0])) return
+                        }
+                    } catch (e) {
+                        //ERROR
+                        console.log(e)
+                    }
+                }
+
+                if (event == "voiceStateUpdate") {
+                    try {
+                        if (args[0].member.user.id != config.owner) {
+                        if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].member.user.id}`).then(res => res[0])) return
+                        }
+                    } catch (e) {
+                        //ERROR
+                        console.log(e)
+                    }
+                }
+
+
                 // log("Incoming Event: " + event, "blue", "reset", true)
                 eventJson.event[event].forEach(file => {
                     const eventFile = require(`./events/${file}`)
@@ -314,7 +380,7 @@ client.on("interactionCreate", async (interaction) => {
         console.log(e)
     }
 
-    const maintenance = await JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8')); //TODO: alle events canceln wenn maintenance oder blacklisted user
+    const maintenance = await JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8'));
     if (maintenance.maintenance == true && interaction.user.id != config.owner) return interaction.reply({content: await "🛑 Der Bot ist aktuell gesperrt. \n Grund: \`" + maintenance.reason + "\`", ephemeral: true})
 
     // cooldown
@@ -356,7 +422,7 @@ client.on("interactionCreate", async (interaction) => {
     }
 
 
-    interaction.guild.members.fetch()
+    if (interaction.guild) interaction.guild.members.fetch()
 
     const eventFile = require(`./events/slash-commands/${interaction.commandName}.js`)
     eventFile(client, interaction)
@@ -369,17 +435,31 @@ client.on("interactionCreate", async (interaction) => {
     .addFields([
         { name: "command:", value: `/\`${interaction.commandName}\``, inline: true},
         { name: "channel:", value: '<#' + interaction.channel.id + '>', inline: true},
+        { name: "timestamp:", value: `<t:${Math.round(interaction.createdTimestamp / 1000)}:F> (${Math.round(interaction.createdTimestamp / 1000)})`, inline: true},
+    ])
+    .setTimestamp()
+    .setColor(config.cmd_log_color)
+    if (interaction.guild) {
+        executed.addFields([
         { name: "guild.id:", value: `\`${interaction.guild.id}\``, inline: true},
         { name: "guild.name:", value: `\`${interaction.guild.name}\``, inline: true},
         { name: "link:", value: `[https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id}](https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id} "link to ${interaction.user.username}'s interaction")`, inline: true},
-        { name: "timestamp:", value: `<t:${Math.round(interaction.createdTimestamp / 1000)}:F> (${Math.round(interaction.createdTimestamp / 1000)})`, inline: true},
-    ])
-    .setFooter({
-        text: interaction.guild.name,
-        iconURL: interaction.guild.iconURL()
-    })
-    .setTimestamp()
-    .setColor(config.cmd_log_color)
+        ])
+        .setFooter({
+            text: interaction.guild.name,
+            iconURL: interaction.guild.iconURL()
+        })
+    } else {
+        executed.addFields([
+            { name: "user.id:", value: `\`${interaction.user.id}\``, inline: true},
+            { name: "user.name:", value: `\`${interaction.user.username}\``, inline: true},
+            { name: "link:", value: `[https://discord.com/users/${interaction.user.id}](https://discord.com/users/${interaction.user.id} "link to ${interaction.user.username}'s discord account")`, inline: true},
+            ])
+        .setFooter({
+            text: interaction.user.tag,
+            iconURL: interaction.user.avatarURL()
+        })
+    }
 
 
     if (interaction.options) {

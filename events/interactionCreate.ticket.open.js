@@ -96,7 +96,7 @@ module.exports = (client, interaction) => {
                     .setThumbnail("https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png")
                     .setAuthor({name: "Support-Ticket", iconURL: interaction.user.avatarURL()})
                     .addFields([
-                        {name: "Bitte halte dich an die Regeln und akzeptiere Entscheidungen des Teams.", value: `**Mit \`\`${config.prefix}close\`\` kannst du das Ticket schließen.**`}
+                        {name: "Bitte halte dich an die Regeln und akzeptiere Entscheidungen des Teams.", value: `**Mit \`\`/close\`\` kannst du das Ticket schließen.**`}
                     ])
 
                     channel.send({ embeds: [embed] }).then(message => {

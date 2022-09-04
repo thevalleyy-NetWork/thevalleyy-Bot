@@ -24,9 +24,6 @@ module.exports = async (client, message) => {
         if (message.author.bot) return
 
         try {
-            if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${message.author.id}`).then(res => res[0]).catch(err => {})) return
-
-
             message.client.users.fetch('506746108345843713', false).then((user) => {
 
                 const embedDM = new Discord.EmbedBuilder()

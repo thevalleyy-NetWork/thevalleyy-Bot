@@ -25,15 +25,16 @@ module.exports = (client, interaction) => {
 
         if (muteUser.id == config.owner || muteUser.id == client.user.id) return interaction.reply('<:FeelsSusMan:870034696396996630>')
         if (muteUser.id == interaction.user.id) return interaction.reply('Sure, ~~Jan~~ ' + interaction.user.username)
-        if (!muteUser.member.roles.cache.has(muteRole)) return interaction.reply('`' + muteUser.user.tag + '` ist nicht gemuted.')
+        if (!muteUser.member.roles.cache.has(muteRole) && Date.now() >= muteUser.member.communicationDisabledUntilTimestamp) return interaction.reply('`' + muteUser.user.tag + '` ist nicht gemuted.')
 
         try {
-                db(`UPDATE discord set muted = 0 WHERE dcid = ${muteUser.user.id}`)
+                muteUser.member.timeout(null, `Unmute von: ${interaction.user.tag}, Grund: ${reason}`)
 
+                db(`UPDATE discord set muted = 0 WHERE dcid = ${muteUser.user.id}`)
                 muteUser.member.roles.remove(muteRole, `Unmute von: ${interaction.user.tag}, Grund: ${reason}`)
                 interaction.reply('`' + muteUser.user.tag + '` kann nun wieder schreiben.')
                 muteUser.user.send('Du hast von `' + interaction.user.tag + '` auf dem Server `' + interaction.guild.name + '` wieder Schreibrechte erhalten.\nGrund: `' + reason + '`')
-                    .catch(/*ERROR*/)
+                    .catch(error => {}/*ERROR*/)
             } catch (error) {
                 //ERROR
                 interaction.reply('Es gab einen Fehler.')
