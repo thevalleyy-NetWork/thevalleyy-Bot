@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 
 module.exports = (client, interaction) => {
+    if (!interaction.isButton()) return;
     if (interaction.customId !== "SPOTIFY_lyrics") return;
 
     const message = interaction.message

@@ -9,6 +9,7 @@
     "author": "thevalleyy",
     "license": "ISC",
     "dependencies": {
+        "@discordjs/rest": "^1.1.0",
         "@discordjs/voice": "^0.11.0",
         "discord-buttons": "^2.4.1",
         "discord-music-player": "^9.0.2",

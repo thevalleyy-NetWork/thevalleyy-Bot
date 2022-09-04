@@ -7,6 +7,7 @@ const Discord = require('discord.js')
 const config = require('./../config.json')
 
 module.exports = async (client, interaction) => {
+    if (!interaction.isButton()) return;
         if (interaction.customId !== "TICKET_archive") return;
 
         try {

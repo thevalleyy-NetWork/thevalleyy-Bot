@@ -9,19 +9,19 @@ const {
   
   /**
    * Creates a pagination embed
-   * @param {Message} msg
+   * @param {Interaction} interaction
    * @param {EmbedBuilder[]} pages
    * @param {ButtonBuilder[]} buttonList
    * @param {number} timeout
    * @returns
    */
   const paginationEmbed = async (
-    msg,
+    interaction,
     pages,
     buttonList,
     timeout = 120000
   ) => {
-    if (!msg && !msg.channel) throw new Error("Channel is inaccessible.");
+    if (!interaction && !interaction.channel) throw new Error("Channel is inaccessible.");
     if (!pages) throw new Error("Pages are not given.");
     if (!buttonList) throw new Error("Buttons are not given.");
     if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK")
@@ -32,19 +32,19 @@ const {
   
     let page = 0;
   
-    if (pages.length === 1) return await msg.channel.send({
-      embeds: [pages[0].setFooter({ text: `Page ${page + 1} / ${pages.length}` })]
+    if (pages.length === 1) return await interaction.reply({
+      embeds: [pages[0].setFooter({ text: `Seite 1 / 1` })]
     });
   
     const row = new ActionRowBuilder().addComponents(buttonList);
   
-    const curPage = await msg.channel.send({
-      embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
+    const curPage = await interaction.reply({
+      embeds: [pages[page].setFooter({ text: `Seite ${page + 1} / ${pages.length}` })],
       components: [row]
     });
   
     const filter = (i) =>
-      i.custom_id === buttonList[0].custo_id ||
+      i.custom_id === buttonList[0].custom_id ||
       i.custom_id === buttonList[1].custom_id;
   
     const collector = await curPage.createMessageComponentCollector({
@@ -53,7 +53,7 @@ const {
     });
   
     collector.on("collect", async (i) => {
-        if (msg.author.id !== i.user.id && i.user.id !== config.owner) return i.deferUpdate();
+        if (interaction.user.id !== i.user.id && i.user.id !== config.owner) return i.deferUpdate();
 
       switch (i.customId) {
         case buttonList[0].data.custom_id:
@@ -67,25 +67,30 @@ const {
       }
       await i.deferUpdate();
       await i.editReply({
-        embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
+        embeds: [pages[page].setFooter({ text: `Seite ${page + 1} / ${pages.length}` })],
         components: [row],
       });
       collector.resetTimer();
     });
   
     collector.on("end", () => {
-      if (curPage.editable) {
-        const disabledRow = new ActionRowBuilder().addComponents(
-          buttonList[0].setDisabled(true),
-          buttonList[1].setDisabled(true)
-        );
-        curPage.edit({
-          embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
-          components: [disabledRow],
-        });
-    }
+      interaction.fetchReply()
+        .then(reply => {
+          if (!reply) return console.log("Reply not found");
+
+          const disabledRow = new ActionRowBuilder().addComponents(
+            buttonList[0].setDisabled(true),
+            buttonList[1].setDisabled(true)
+          );
+          interaction.editReply({
+            embeds: [pages[page].setFooter({ text: `Page ${page + 1} / ${pages.length}` })],
+            components: [disabledRow],
+          });
+
+        })
+        .catch(err => console.log(err));
   });
-  
+
     return curPage;
   };
   module.exports = paginationEmbed;

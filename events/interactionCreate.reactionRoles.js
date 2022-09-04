@@ -1,4 +1,5 @@
 module.exports = async (client, interaction) => {
+    if (!interaction.isButton()) return;
 
     const modlog = '822575095721099304'
 

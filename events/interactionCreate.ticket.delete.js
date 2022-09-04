@@ -3,6 +3,7 @@
     const config = require('./../config.json')
     
     module.exports = (client, interaction) => {
+        if (!interaction.isButton()) return;
             if (interaction.customId !== "TICKET_delete") return;
 
             try{
