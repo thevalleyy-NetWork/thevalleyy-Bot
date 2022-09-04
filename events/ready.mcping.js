@@ -18,7 +18,7 @@ module.exports = (client) => {
                 client.channels.cache.get(modlog).send({ embeds: [failEmbed] })
             }).then(async(response) => {
                 if (!response) return
-                const json = JSON.parse(fs.readFileSync('./data/playerrec.json', 'utf8'))
+                const json = JSON.parse(fs.readFileSync('./data/mcstats.json', 'utf8'))
 
                 if (json.mostPlayers < response.players.online.toString()) {
                     let newData = {
@@ -28,7 +28,7 @@ module.exports = (client) => {
                     }
 
                     const newData_ = JSON.stringify(newData, null, 4)
-                    fs.writeFileSync('./data/playerrec.json', newData_, 'utf8')
+                    fs.writeFileSync('./data/mcstats.json', newData_, 'utf8')
 
                     const embedRecord = new Discord.EmbedBuilder()
                         .setColor('#14a2a3')
@@ -39,7 +39,7 @@ module.exports = (client) => {
                     await client.channels.cache.get(mcc).send({ embeds: [embedRecord] })
 
                 } else {
-                    const playerCount = JSON.parse(fs.readFileSync('./data/playerrec.json', 'utf8'))
+                    const playerCount = JSON.parse(fs.readFileSync('./data/mcstats.json', 'utf8'))
 
                     let newData__ = {
                         mostPlayers: playerCount.mostPlayers.toString(),
@@ -48,11 +48,11 @@ module.exports = (client) => {
                     }
 
                     const newData____ = JSON.stringify(newData__, null, 4)
-                    fs.writeFileSync('./data/playerrec.json', newData____, 'utf8')
+                    fs.writeFileSync('./data/mcstats.json', newData____, 'utf8')
                 }
 
                 // console.log("Aktualisiere Serverping...")
-                const stableCount = await fs.readFileSync('./data/playerrec.json', 'utf8');
+                const stableCount = await fs.readFileSync('./data/mcstats.json', 'utf8');
                 const stableCount_ = await JSON.parse(stableCount)
                 if (response.version.name.toString().toLowerCase().includes("wartungen")) { await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk **|** <:warning:981932931343855636> Wartungen  **|**  Letzter Ping: <t:${Math.round(new Date().getTime()/1000)}:R>`) } else await client.channels.cache.get(mcc).setTopic(`thevalleyy.tk  (${response.players.online}/${response.players.max})  **|**  Letzter Ping: <t:${Math.round(new Date().getTime()/1000)}:R>  **|**  🏆: ${stableCount_.mostPlayers}`)
             })

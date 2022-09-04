@@ -7,10 +7,17 @@ module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
     if (interaction.user.bot) return;
 
-        //  "\nColor: 'red', 'orange', 'yellow', 'green', 'turquoise', 'blue', 'violet', 'pink', 'brown', 'black', 'gray' \nOrientation: 'landscape', 'portrait', 'square' \nSize: 'small', 'medium', 'large',"
+    const query = interaction.options.getString('query').substring(0, 255);
+    var orientation = interaction.options.getString('orientation');
+    if (!orientation) var orientation = '';
+    var size = interaction.options.getString('size');
+    if (!size) var size = '';
+    var color = interaction.options.getString('color');
+    if (!color) var color = '';
+    var locale = interaction.options.getString('locale');
+    if (!locale) var locale = '';
 
         const pexels = createClient(config.keys.pexels);
-        const query = interaction.options.getString("query").substring(0, 255);
         let array = []
 
         const button1 = new Discord.ButtonBuilder()
@@ -30,9 +37,8 @@ module.exports = (client, interaction) => {
             button2
         ]
 
-
     try {
-        pexels.photos.search({ query, per_page: 80 }).then(result => {
+        pexels.photos.search({ query, orientation: orientation, size: size, color: color, locale: locale, per_page: 80 }).then(result => {
         if (result.photos.length == 0) return interaction.reply('Es wurden keine Bilder gefunden.')
         for (let i = 0; i < result.photos.length; i++) {
             const photo = result.photos[i];

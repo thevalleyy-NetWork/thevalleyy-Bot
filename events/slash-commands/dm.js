@@ -9,12 +9,13 @@ module.exports = async (client, interaction) => {
     const text = interaction.options.getString("content")
 
         if (user.user.id == config.owner || user.user.id == client.user.id) {
-            interaction.channel.send('DMs an `' + user.user.username + '` sind nicht erlaubt.')
+            interaction.reply('DMs an `' + user.user.username + '` sind nicht erlaubt.')
             return
         }
 
         try {
             await user.user.send(text.substring(0, 2000))
+            interaction.reply({ content: "✅", ephemeral: true })
             interaction.channel.send('Die Nachricht wurde an `' + user.user.tag + '` versandt.')
 
         } catch (error) {

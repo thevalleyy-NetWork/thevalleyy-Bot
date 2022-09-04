@@ -1,40 +1,32 @@
-const modlog = '822575095721099304'
 const Discord = require('discord.js')
 const config = require('./../config.json')
 const package = require('./../package.json').dependencies
 const fs = require('fs')
 
 module.exports = (client) => {
-    const iconurl = client.guilds.cache.get("631518992342843392").iconURL()
+    // const iconurl = client.guilds.cache.get("631518992342843392").iconURL()
 
     // startup presence (now random)
     function setRandomPackageStatus() {
-        const randomPackage = [Math.floor(Math.random() * (Object.keys(package).length))]
-        const potd = Object.keys(package)[randomPackage].toString()
-        const votd = Object.values(package)[randomPackage].toString().replace("^", "")
-
-        client.user.setPresence({ activities: [{ name: `mit ${potd} v${votd}` }] });
+        const { maintenance } = JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8')).maintenance;
+        if (maintenance == true) {
+            client.user.setPresence({
+                activities: [{ name: "🛑 Wartungsmodus", type: Discord.ActivityType.Playing }],
+                status: "dnd",
+              });
+        } else {
+            const randomPackage = [Math.floor(Math.random() * (Object.keys(package).length))]
+            const potd = Object.keys(package)[randomPackage].toString()
+            const votd = Object.values(package)[randomPackage].toString().replace("^", "")
+    
+            client.user.setPresence({ activities: [{ name: `mit ${potd} v${votd}` }] });
+        }
     }
     setRandomPackageStatus()
     setInterval(function() {
         setRandomPackageStatus()
     }, 1200000)
     
-    
-    // maybe send a startup embed
-    const startEmbed = new Discord.EmbedBuilder()
-        .setTitle('Startup <:POGGIES:786251968841515049>')
-        .addFields([{ name: 'Der Bot ist als ' + client.user.tag + ' eingeloggt.', value: 'Der Bot befindet sich auf ' + client.guilds.cache.size + ' Servern!'}])
-        .setFooter({
-            text: 'thevalleyy-NetWork',
-            iconURL: iconurl
-        })
-        .setTimestamp()
-        .setColor('149C51')
-        .setThumbnail('https://cdn.discordapp.com/attachments/727157435869036554/831785487919611935/8fc42347d4fb3d4ef7e5683d2131bb94.webp')
-        // client.channels.cache.get(modlog).send({ embeds: [startEmbed]});
-
-
 
     // request brickset api key & userhash
     fetch('https://brickset.com/api/v3.asmx/checkKey?apikey=' + config.keys.brickset).then(async response =>

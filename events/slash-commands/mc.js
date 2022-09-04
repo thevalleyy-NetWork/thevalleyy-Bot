@@ -41,11 +41,11 @@ module.exports = (client, interaction) => {
 
 
         if (ip == "thevalleyy.tk") {
-            const json = JSON.parse(fs.readFileSync("./data/playerrec.json", 'utf8'))
+            const json = JSON.parse(fs.readFileSync("./data/mcstats.json", 'utf8'))
             
             embed.addFields([
                 { name: "Spielerrekord:", value: json.mostPlayers.toString(), inline: true},
-                { name: "Erreicht am:", value: `<t:${json.date}:R>`, inline: true},
+                { name: "Erreicht:", value: `<t:${json.date}:R>`, inline: true},
                 { name: "Letzter Ping:", value: `<t:${json.lastPinged}:R>`, inline: true},
             ])
         }

@@ -133,7 +133,7 @@ module.exports = async (client, interaction) => {
             const lyricsButton = new Discord.ButtonBuilder()
             .setCustomId('SPOTIFY_lyrics')
             .setLabel('Lyrics')
-            .setStyle('Primary') //TODO: in Slash commands integrieren
+            .setStyle('Primary')
 
             const button = new Discord.ActionRowBuilder().addComponents(lyricsButton)
 

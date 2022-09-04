@@ -310,11 +310,12 @@ client.on("interactionCreate", async (interaction) => {
         if (await db(`SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${interaction.user.id}`).then(res => res[0])) return
         }
     } catch (e) {
+        //ERROR
         console.log(e)
     }
 
-    // if (interaction.user.id !== config.owner) return interaction.reply({ content: "Slash Commands sind aktuell deaktiviert!", ephemeral: true });
-    // TODO: Command, der alle Slash commands und events deaktiviert für user
+    const maintenance = await JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8')); //TODO: alle events canceln wenn maintenance oder blacklisted user
+    if (maintenance.maintenance == true && interaction.user.id != config.owner) return interaction.reply({content: await "🛑 Der Bot ist aktuell gesperrt. \n Grund: \`" + maintenance.reason + "\`", ephemeral: true})
 
     // cooldown
     if (interaction.user.id != config.owner) {
@@ -370,7 +371,7 @@ client.on("interactionCreate", async (interaction) => {
         { name: "channel:", value: '<#' + interaction.channel.id + '>', inline: true},
         { name: "guild.id:", value: `\`${interaction.guild.id}\``, inline: true},
         { name: "guild.name:", value: `\`${interaction.guild.name}\``, inline: true},
-        { name: "link:", value: `[${interaction.url}](${interaction.url} "link to ${interaction.user.username}'s message")`, inline: true},
+        { name: "link:", value: `[https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id}](https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id} "link to ${interaction.user.username}'s interaction")`, inline: true},
         { name: "timestamp:", value: `<t:${Math.round(interaction.createdTimestamp / 1000)}:F> (${Math.round(interaction.createdTimestamp / 1000)})`, inline: true},
     ])
     .setFooter({

@@ -2,7 +2,7 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-	.setName('beval')
+	.setName('bettereval')
     .setDMPermission(true)
 	.setDescription('Führt Shellcode aus')
 	.setDescriptionLocalizations({
