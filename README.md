@@ -3,36 +3,44 @@ Weird Discord-Bot
 
 
 **config.js**
+All following values are entered between quotation marks, unless otherwise described.
 ```json
 {
-    "token": "<bot token>",
-    "owner": "<discord id>",
-    "cooldown_standard": <seconds of default cooldown>,
-    "cmd_log_color": "<hex color for cmdlog embed>",
-    "cmd_log_channel_id": "<channel id>",
-    "mod_log_color": "<hex color for modlog embed>",
-    "mod_log_color_error": "<hex color for errors>",
-    "mod_log_channel_id": "<channel id>",
-    "standard_color": "<hex color for most of the embeds>",
+    "token": /*discord bot token*/,
+    "owner": /*owner's discord id*/,
+    "cooldown_standard": /*default cooldown in seconds (number)*/,
+    "cmd_log_color": /*hex color value for command log embed*/,
+    "cmd_log_channel_id": /*discord channel id for command log*/,
+    "mod_log_color": /*hex color value for command log embed*/,
+    "mod_log_color_error": /*hex color value for error log embed*/,
+    "mod_log_channel_id": /*discord channel id for mod log*/,
+    "standard_color": /*hex color value for default embeds*/,
     "keys": {
-        "brickset": "<brickset.com api key>",
-        "brickset_username": "brickset.com username",
-        "brickset_password": "brickset.com password",
-        "pexels": "pexels.com api key"
+        "brickset": /*brickset.com api key*/,
+        "brickset_username": /*brickset.com account username*/,
+        "brickset_password": /*brickset.com account password*/,
+        "pexels": /*pexels.com api key*/
     },
     "mysql": {
-        "host": "database host",
-        "port": database port,
-        "user": "database user",
-        "password": "database pwd",
-        "database": "database username"
+        "host": /*database host*/,
+        "port": /*database port (number)*/,
+        "user": /*database user*/,
+        "password": /*database password*/,
+        "database": /*database table name*/
+    },
+    "channels": {
+        "memberchannel": /*discord channel id for membercount channel*/,
+        "welcomechannel": /*discord channel id for welcome messages*/
     }
 }
 ```
 
 
+
 **data directory**
 ```
+Some of these files are smart enough to regenerate when deleted. Some not.
+
 /
 ├───other bot files
 └───data/
@@ -43,7 +51,6 @@ Weird Discord-Bot
     ├───mcstats.json
     └───stats.json
 ```
-Some of these files are smart enough to regenerate when deleted. Some not.
 
 
 
@@ -68,3 +75,4 @@ AUTO_INCREMENT=47
 ;
 
 ```
+The database is required to be a mysql database.
