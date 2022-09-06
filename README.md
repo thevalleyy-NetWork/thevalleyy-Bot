@@ -43,7 +43,7 @@ Weird Discord-Bot
     ├───mcstats.json
     └───stats.json
 ```
-Some of these folders are smart enough to regenerate when deleted. Some not.
+Some of these files are smart enough to regenerate when deleted. Some not.
 
 
 
