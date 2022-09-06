@@ -3,6 +3,7 @@ Weird Discord-Bot
 
 
 **config.js**
+<<<<<<< HEAD
 All following values are entered between quotation marks, unless otherwise described.
 ```json
 {
@@ -31,16 +32,46 @@ All following values are entered between quotation marks, unless otherwise descr
     "channels": {
         "memberchannel": /*discord channel id for membercount channel*/,
         "welcomechannel": /*discord channel id for welcome messages*/
+=======
+```json
+{
+    "token": "<bot token>",
+    "owner": "<discord id>",
+    "cooldown_standard": <seconds of default cooldown>,
+    "cmd_log_color": "<hex color for cmdlog embed>",
+    "cmd_log_channel_id": "<channel id>",
+    "mod_log_color": "<hex color for modlog embed>",
+    "mod_log_color_error": "<hex color for errors>",
+    "mod_log_channel_id": "<channel id>",
+    "standard_color": "<hex color for most of the embeds>",
+    "keys": {
+        "brickset": "<brickset.com api key>",
+        "brickset_username": "brickset.com username",
+        "brickset_password": "brickset.com password",
+        "pexels": "pexels.com api key"
+    },
+    "mysql": {
+        "host": "database host",
+        "port": database port,
+        "user": "database user",
+        "password": "database pwd",
+        "database": "database username"
+>>>>>>> e2e27057da40e2c7b47c2b86041a43ec52c4ea0e
     }
 }
 ```
 
 
+<<<<<<< HEAD
 
 **data directory**
 ```
 Some of these files are smart enough to regenerate when deleted. Some not.
 
+=======
+**data directory**
+```
+>>>>>>> e2e27057da40e2c7b47c2b86041a43ec52c4ea0e
 /
 ├───other bot files
 └───data/
@@ -51,6 +82,10 @@ Some of these files are smart enough to regenerate when deleted. Some not.
     ├───mcstats.json
     └───stats.json
 ```
+<<<<<<< HEAD
+=======
+Some of these files are smart enough to regenerate when deleted. Some not.
+>>>>>>> e2e27057da40e2c7b47c2b86041a43ec52c4ea0e
 
 
 
@@ -75,4 +110,7 @@ AUTO_INCREMENT=47
 ;
 
 ```
+<<<<<<< HEAD
 The database is required to be a mysql database.
+=======
+>>>>>>> e2e27057da40e2c7b47c2b86041a43ec52c4ea0e
