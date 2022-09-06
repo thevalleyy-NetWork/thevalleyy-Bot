@@ -1,9 +1,9 @@
 const config = require('./../config.json')
-const modlog = '822575095721099304'
-const Discord = require('discord.js')
-const channelId = '786239944581840956'
 const mysql = require('mysql2')
 const util = require('util')
+
+const modlog = config.mod_log_channel_id
+const channelId = config.channels.welcomechannel
 const muterole = "692016581823168632"
 const vcmuterole = "685814796746358838"
 

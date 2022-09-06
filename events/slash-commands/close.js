@@ -3,7 +3,7 @@ const config = require('../../config.json');
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const iconurl = interaction.guild.iconURL()
     const suprole = interaction.guild.roles.cache.find(role => role.name === 'Supporter')

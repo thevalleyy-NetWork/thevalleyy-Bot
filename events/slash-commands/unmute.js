@@ -17,7 +17,7 @@ const db = util.promisify(connection.query).bind(connection)
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
         const muteUser = interaction.options.get("user")
         const reason = interaction.options.getString("reason").substring(0, 255)

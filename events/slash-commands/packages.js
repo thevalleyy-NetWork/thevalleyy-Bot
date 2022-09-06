@@ -4,7 +4,7 @@ const package = require('../../package.json');
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
 
     let array = []

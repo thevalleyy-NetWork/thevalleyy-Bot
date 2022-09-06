@@ -1,6 +1,6 @@
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
 
     if (!interaction.options.get('user')) {

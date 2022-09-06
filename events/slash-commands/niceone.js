@@ -17,7 +17,7 @@ const db = util.promisify(connection.query).bind(connection)
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const user = interaction.options.get("user")
     const role = interaction.guild.roles.cache.find(role => role.name === 'Nice One').id

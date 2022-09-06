@@ -22,7 +22,7 @@ function getDuration(start, end) {
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
 
     // second argument?

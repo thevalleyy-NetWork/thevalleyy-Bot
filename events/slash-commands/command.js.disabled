@@ -4,7 +4,7 @@ const fs = require("node:fs");
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const cmd = interaction.options.getString("command");
     const iconurl = interaction.guild.iconURL() 

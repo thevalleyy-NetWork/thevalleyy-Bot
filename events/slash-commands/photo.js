@@ -5,7 +5,7 @@ const paginationEmbed = require("../../functions/pagination.js")
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const query = interaction.options.getString('query').substring(0, 255);
     var orientation = interaction.options.getString('orientation');

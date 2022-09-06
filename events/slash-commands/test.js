@@ -17,7 +17,7 @@ var db = util.promisify(connection.query).bind(connection)
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     interaction.reply("test")
 

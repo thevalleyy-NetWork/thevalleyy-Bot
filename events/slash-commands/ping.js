@@ -3,7 +3,7 @@ const config = require('../../config.json');
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     let tps = 0
     s = Date.now()

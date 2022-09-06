@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 module.exports = async (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "SPOTIFY_lyrics") return;
-    if (interaction.user.bot) return;
+     
 
     const iconurl = interaction.guild.iconURL()
     const message = interaction.message

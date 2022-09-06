@@ -5,7 +5,7 @@ const modlog = config.mod_log_channel_id
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const user = interaction.options.get('user');
     const reason = interaction.options.getString('reason');

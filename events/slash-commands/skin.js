@@ -5,7 +5,7 @@ const { EmbedBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const player = interaction.options.getString('player');
 

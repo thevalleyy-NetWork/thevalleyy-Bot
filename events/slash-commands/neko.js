@@ -4,7 +4,7 @@ const nekochannel = '799728881228709928'
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const fetch = (await import ('node-fetch')).default
 

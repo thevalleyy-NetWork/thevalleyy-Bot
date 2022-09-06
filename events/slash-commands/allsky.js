@@ -12,7 +12,7 @@ const {
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     let x = 0
         let y = 0

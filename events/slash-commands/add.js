@@ -1,6 +1,6 @@
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const num1 = +interaction.options.get('number1').value
     const num2 = +interaction.options.get('number2').value

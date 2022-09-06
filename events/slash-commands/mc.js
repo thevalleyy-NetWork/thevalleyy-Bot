@@ -5,7 +5,7 @@ const util = require('minecraft-server-util')
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
         var ip = interaction.options.getString('ip');
         var port = interaction.options.getString('port');

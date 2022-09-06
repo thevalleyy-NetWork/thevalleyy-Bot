@@ -3,7 +3,7 @@ const config = require('../../config.json');
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     let number = interaction.options.getNumber('number');
     if (number > 100 || number < 1) {

@@ -16,7 +16,7 @@ var db = util.promisify(connection.query).bind(connection)
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
     if (interaction.user.id != config.owner) {
         interaction.reply({content: 'Du hast keine Berechtigung, diesen Befehl auszuführen.', ephemeral: true})
         return;

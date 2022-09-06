@@ -50,7 +50,7 @@ button2
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
 
     const fetch = (await
         import ('node-fetch')).default

@@ -4,7 +4,7 @@ const fs = require("node:fs");
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.user.bot) return;
+     
     if (interaction.user.id != config.owner) {
         interaction.reply({content: 'Du hast keine Berechtigung, diesen Befehl auszuführen.', ephemeral: true})
         return;
