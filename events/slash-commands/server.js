@@ -38,7 +38,7 @@ module.exports = async (client, interaction) => {
 
     embed.addFields([
         { name: "Rollen", value: guild.roles.cache.map(role => role.toString()).join(", "), inline: false },
-        { name: "Features", value: "```" + guild.features ? guild.features.join(", ") + "```" : "Keine Features", inline: false }
+        { name: "Features", value: guild.features ? "```" + guild.features.join(", ") + "```" : "Keine Features", inline: false }
     ])
 
 
