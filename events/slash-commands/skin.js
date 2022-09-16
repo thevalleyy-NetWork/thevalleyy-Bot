@@ -81,29 +81,6 @@ module.exports = async (client, interaction) => {
                     if (json.textures.cape) embed6.addFields([{ name: "​", value: `• [Cape](${json.textures.cape.url})`, inline: true }])
 
 
-                    if (json.username.toString().toLowerCase() === json.username_history[0].username.toLowerCase()) {
-                        embed6.addFields([{ name: "Name geändert?", value: `Nein`, inline: true }])
-                    } else {
-                        embed6.addFields([{ name: "Name geändert?", value: `Ja`, inline: true }])
-
-
-                        const nameArray = json.username_history.reverse()
-                        let text
-
-                        for (let i = 0; i < nameArray.length; i++) {
-                            const name = nameArray[i];
-                            text += `${nameArray.length - i}. \`${name.username}\` ${name.changed_at ? `<t:${Math.round(new Date(name.changed_at).getTime() / 1000)}:R>`: ""}\n`
-                        }
-
-                        var embed8 = new Discord.EmbedBuilder()
-                            .setColor(config.standard_color)
-                            .setTimestamp()
-                            .setTitle("Skin von " + json.username)
-                            .setThumbnail("https://visage.surgeplay.com/head/" + json.uuid)
-                            .setDescription("Name-History\n\n" + text.substring(0, 2020).replaceAll(undefined, ""))
-
-                    }
-
 
                     embed6.addFields([
                         { name: "uuid", value: `\`${json.uuid}\``, inline: true},
