@@ -2,6 +2,7 @@ const cmdJson = require('../data/cmdstructure.json')
 const fs = require('fs')
 
 module.exports = (client) => {
+    let array = [];
     fs.rm('./data/cmd-json', { recursive: true }, (err) => {
         if (err) console.log(err)
 
@@ -16,7 +17,7 @@ module.exports = (client) => {
                 const permission = cmdJson.cmds[command].data.default_member_permissions  
                 const dm = cmdJson.cmds[command].data.dm_permission
     
-    
+                array.push(name.toLowerCase())
                 const pattern = `${JSON.stringify({cooldown, name, description, descriptionEn, options, permission, dm}, null, 2)}`
     
                 //create a file for every new command
@@ -28,6 +29,11 @@ module.exports = (client) => {
                 
                 }, 1000)
         })
+
+        fs.writeFile(`./data/cmdlist.json`, JSON.stringify(array, null, 4), function(err) {
+            //ERROR
+            if (err) console.log(err)
+        });
     })
 })
 }

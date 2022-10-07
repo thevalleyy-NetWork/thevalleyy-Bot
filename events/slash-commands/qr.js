@@ -16,7 +16,7 @@ module.exports = async (client, interaction) => {
         const attachment = new Discord.AttachmentBuilder()
             .setFile(url)
             .setName('qr.png')
-        interaction.reply({ content: `QR-Code für \`${interaction.options._hoistedOptions[0].value.substring(0,1000)}\``, files: [attachment] });
+        interaction.reply({ content: `QR-Code für \`${interaction.options._hoistedOptions[0].value.substring(0,1000)}\``, files: [attachment], ephemeral: true });
         return
     }
 

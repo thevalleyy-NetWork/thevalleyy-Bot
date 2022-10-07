@@ -8,7 +8,7 @@ module.exports = (client) => {
 
     // startup presence (now random)
     function setRandomPackageStatus() {
-        const { maintenance } = JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8')).maintenance;
+        const { maintenance } = JSON.parse(fs.readFileSync('./data/maintenance.json', 'utf8'));
         if (maintenance == true) {
             client.user.setPresence({
                 activities: [{ name: "🛑 Wartungsmodus", type: Discord.ActivityType.Playing }],

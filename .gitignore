@@ -309,6 +309,7 @@ $RECYCLE.BIN/
 config.json
 storage.notNiceOne.json
 data/
+.vscode/
 thevalleyy-Bot-ssh-key
 thevalleyy-Bot-ssh-key.pub
 

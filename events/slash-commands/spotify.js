@@ -87,6 +87,7 @@ module.exports = async (client, interaction) => {
     } else {
         // the same as above, but with a user as the second argument
         
+        if (!interaction.guild.members.cache.get(interaction.options.get('user').user.id)) return interaction.reply({ content: "Dieser Benutzer ist nicht auf diesem Server!", ephemeral: true })
         const user = interaction.options.get('user');
         await client.users.fetch(user.user.id, false)
 

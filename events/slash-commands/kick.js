@@ -5,7 +5,7 @@ const modlog = config.mod_log_channel_id
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-     
+    if (!interaction.guild.members.cache.get(interaction.options.get('user').user.id)) return interaction.reply({ content: "Dieser Benutzer ist nicht auf diesem Server!", ephemeral: true })
 
     const user = interaction.options.get('user');
     const reason = interaction.options.getString('reason');

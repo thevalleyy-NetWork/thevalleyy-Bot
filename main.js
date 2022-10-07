@@ -368,7 +368,7 @@ client.on('ready', async() => {
 
 // slash command handler
 client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
+    if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
 
     // blacklist
     try {
@@ -473,6 +473,9 @@ client.on("interactionCreate", async (interaction) => {
     if (!options) options = "n/a"
         executed.addFields([{ name: 'arguments:', value: `${options.substring(0, 1000)}${(options.toString().length > 1000 ? "\n..." : "")}`, inline: false}])
         client.channels.cache.get(config.cmd_log_channel_id).send({ embeds: [executed] })
+
+    } else return;
+
 })
 
 client.login(config.token)

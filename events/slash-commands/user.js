@@ -3,7 +3,7 @@ const config = require('../../config.json');
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-     
+    if (!interaction.guild.members.cache.get(interaction.options.get('user').user.id)) return interaction.reply({ content: "Dieser Benutzer ist nicht auf diesem Server!", ephemeral: true })
 
     if (interaction.options.get("user")) {
         var user = interaction.options.get("user").user;
