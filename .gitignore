@@ -310,6 +310,7 @@ config.json
 storage.notNiceOne.json
 data/
 .vscode/
+.idea/
 thevalleyy-Bot-ssh-key
 thevalleyy-Bot-ssh-key.pub
 

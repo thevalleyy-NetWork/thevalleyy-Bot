@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
-const config = require('../../config.json');
-const mysql = require('mysql2');
-const util = require('util');
+const Discord = require("discord.js");
+const config = require("../../config.json");
+const mysql = require("mysql2");
+const util = require("util");
 
 const connection = mysql.createPool({
     multipleStatements: true,
@@ -9,18 +9,15 @@ const connection = mysql.createPool({
     host: config.mysql.host,
     user: config.mysql.user,
     password: config.mysql.password,
-    database: config.mysql.database
-})
+    database: config.mysql.database,
+});
 
-var db = util.promisify(connection.query).bind(connection)
-
+var db = util.promisify(connection.query).bind(connection);
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-     
 
-    interaction.reply("test")
-
+    interaction.reply("test");
 
     // 		// import node-fetch
     // const fetch = require('node-fetch');
@@ -52,10 +49,8 @@ module.exports = (client, interaction) => {
     // 		  console.error(error);
     // 		});
 
-
     // const res = await db(`SELECT dctag FROM discord WHERE id = 32`)
     // await message.reply(decodeURI(res[0].dctag))
-
 
     // const members = message.guild.members.cache
     // members.forEach(async member => {
@@ -68,5 +63,4 @@ module.exports = (client, interaction) => {
     // } else {
     //     message.reply("Du bist nicht registriert!")
     // }
-
-}
+};

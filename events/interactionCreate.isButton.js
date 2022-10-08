@@ -1,7 +1,5 @@
-const fs = require('fs')
-let json = require("./../data/stats.json")
-
-
+const fs = require("fs");
+let json = require("./../data/stats.json");
 
 // const {
 //     ActionRowBuilder,
@@ -11,14 +9,12 @@ let json = require("./../data/stats.json")
 // } = require("discord.js");
 
 module.exports = (client, interaction) => {
-        if (!interaction.isButton()) return;
+    if (!interaction.isButton()) return;
 
+    let json = require("./../data/stats.json");
+    json.discord.buttonKlicks += 1;
 
-        let json = require("./../data/stats.json")
-        json.discord.buttonKlicks += 1
-    
-        
-        fs.writeFile("./data/stats.json", JSON.stringify(json, null, 4), (err) => {
-            if (err) throw(err)
-        })
-}
+    fs.writeFile("./data/stats.json", JSON.stringify(json, null, 4), (err) => {
+        if (err) throw err;
+    });
+};
