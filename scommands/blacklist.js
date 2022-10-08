@@ -8,6 +8,7 @@ module.exports = {
             "en-US": "Blacklists a user or shows all blacklisted users",
             "en-GB": "Blacklists a user or shows all blacklisted users",
         })
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .addUserOption((option) =>
             option
                 .setName("user")

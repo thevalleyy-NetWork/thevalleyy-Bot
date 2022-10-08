@@ -67,6 +67,11 @@ module.exports = async (client, interaction) => {
                 });
                 return;
             });
+
+        client.modLog(
+            `${user.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gebannt.`,
+            "ban.js"
+        );
         await interaction.reply(
             "Der User `" +
                 user.user.tag +

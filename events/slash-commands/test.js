@@ -18,6 +18,7 @@ module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     interaction.reply("test");
+    client.modLog("sus", "test.js");
 
     // 		// import node-fetch
     // const fetch = require('node-fetch');

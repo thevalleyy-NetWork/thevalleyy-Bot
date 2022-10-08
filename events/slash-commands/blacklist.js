@@ -17,14 +17,6 @@ var db = util.promisify(connection.query).bind(connection);
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    if (interaction.user.id != config.owner) {
-        interaction.reply({
-            content: "Du hast keine Berechtigung, diesen Befehl auszuführen.",
-            ephemeral: true,
-        });
-        return;
-    }
-
     const user = interaction.options.get("user");
 
     if (!user) {
@@ -52,10 +44,11 @@ module.exports = async (client, interaction) => {
                         : interaction.user.avatarURL(),
                 });
             interaction.reply({ embeds: [embed] });
-            return;
         } catch (err) {
+            interaction.reply("Es ist ein Fehler aufgetreten: \n" + err);
             //ERROR
         }
+        return;
     }
 
     try {
@@ -76,6 +69,10 @@ module.exports = async (client, interaction) => {
                     );
                     return;
                 }
+                client.modLog(
+                    `${user.user.tag} wurde von ${interaction.user.tag} von der Blacklist entfernt.`,
+                    "blacklist.js"
+                );
                 interaction.reply(
                     `\`${user.user.tag}\` wurde von der Blacklist entfernt.`
                 );
@@ -92,6 +89,10 @@ module.exports = async (client, interaction) => {
                     );
                     return;
                 }
+                client.modLog(
+                    `${user.user.tag} wurde von ${interaction.user.tag} zu der Blacklist hinzugefügt.`,
+                    "blacklist.js"
+                );
                 interaction.reply(
                     `\`${user.user.tag}\` wurde zur Blacklist hinzugefügt.`
                 );

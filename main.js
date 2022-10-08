@@ -10,6 +10,7 @@ const { token } = require("./config.json");
 const cooldownSet = new Set();
 const mysql = require("mysql2");
 const util = require("util");
+const { get } = require("http");
 const wait = require("node:timers/promises").setTimeout;
 
 const connection = mysql.createPool({
@@ -93,38 +94,27 @@ function log(text, style = "reset", background = "reset", showTime = true) {
     );
 }
 
-function gettime() {
-    var date = new Date();
+function gettime(full = false) {
+    function addZero(x, n) {
+        while (x.toString().length < n) {
+            x = "0" + x;
+        }
+        return x;
+    }
 
-    let secFiller = "";
-    let minFiller = "";
-    let hourFiller = "";
-    let dayFiller = "";
-    let monthFiller = "";
-
-    if (date.getSeconds().toString().length < 2) secFiller = "0";
-    if (date.getMinutes().toString().length < 2) minFiller = "0";
-    if (date.getHours().toString().length < 2) hourFiller = "0";
-    if (date.getDate().toString().length < 2) dayFiller = "0";
-    if (date.getMonth().toString().length < 2) monthFiller = "0";
-
-    var datetime =
-        dayFiller +
-        date.getDate() +
-        "." +
-        monthFiller +
-        (date.getMonth() + 1) +
-        ". " +
-        hourFiller +
-        date.getHours() +
-        ":" +
-        minFiller +
-        date.getMinutes() +
-        ":" +
-        secFiller +
-        date.getSeconds();
-
-    return datetime;
+    const d = new Date();
+    let y = d.getFullYear();
+    let mm = addZero(d.getMonth() + 1, 2);
+    let dd = addZero(d.getDate(), 2);
+    let h = addZero(d.getHours(), 2);
+    let m = addZero(d.getMinutes(), 2);
+    let s = addZero(d.getSeconds(), 2);
+    let ms = addZero(d.getMilliseconds(), 3);
+    if (full) {
+        return `${dd}.${mm}.${y} ${h}:${m}:${s}:${ms}`;
+    } else {
+        return `${dd}.${mm}. ${h}:${m}:${s}`;
+    }
 }
 
 log(
@@ -676,6 +666,111 @@ client.on("interactionCreate", async (interaction) => {
             .send({ embeds: [executed] });
     } else return;
 });
+
+// custom log override
+client.modLog = function (message, file) {
+    client.log(message, file);
+    const embed0 = new Discord.EmbedBuilder()
+        .setTitle("mod-log")
+        .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
+        .setFooter({ text: "origin: " + file + " | " + gettime(true) })
+        .setColor(config.mod_log_color);
+    client.channels.cache
+        .get(config.mod_log_channel_id)
+        .send({ embeds: [embed0] });
+};
+
+client.log = async function (message, file) {
+    const time = gettime(true);
+    try {
+        await db("INSERT INTO logs (message, origin, time) VALUES (?, ?, ?)", [
+            message,
+            file,
+            time,
+        ]);
+
+        const res = await db(
+            `SELECT * FROM logs WHERE message = ? AND origin = ? AND time = ?`,
+            [message, file, time]
+        );
+        if (res.length == 0) return console.log("no entry found");
+
+        const result = res[0];
+
+        await wait(3000);
+
+        const lastMessage = await client.channels.cache
+            .get(config.mod_log_channel_id)
+            .messages.fetch({ limit: 1 });
+        if (lastMessage.size == 0) return console.log("no message found");
+        if (!lastMessage.first().embeds[0])
+            return console.log("no embed found");
+
+        // edit last embed in channel
+        const embed = lastMessage.first().embeds[0];
+        if (
+            !embed.data.description.startsWith("```" + result.message + "```")
+        ) {
+            return;
+        }
+        if (
+            embed.data.footer.text.substring(
+                embed.data.footer.text.length - 23,
+                embed.data.footer.text.length - 5
+            ) != result.time.slice(0, 18)
+        ) {
+            return;
+        }
+
+        lastMessage.first().edit({
+            embeds: [
+                new Discord.EmbedBuilder()
+                    .setTitle(embed.data.title)
+                    .setDescription(embed.data.description.substring(0, 2022))
+                    .setFooter({
+                        text: embed.data.footer.text,
+                    })
+                    .setColor(config.mod_log_color)
+                    .addFields([
+                        {
+                            name: "sql id",
+                            value: `\`${result.id}\``,
+                            inline: true,
+                        },
+                        {
+                            name: "Δ-time",
+                            value: `\`${
+                                embed.data.footer.text
+                                    .substring(
+                                        embed.data.footer.text.length - 23,
+                                        embed.data.footer.text.length
+                                    )
+                                    .replaceAll(":", "")
+                                    .replaceAll(" ", "")
+                                    .replaceAll(".", "") -
+                                result.time
+                                    .replaceAll(":", "")
+                                    .replaceAll(" ", "")
+                                    .replaceAll(".", "")
+                            }ms\``,
+                            inline: true,
+                        },
+                        {
+                            name: "sql query",
+                            value: `\`\`\`sql\nSELECT * FROM logs WHERE id = ${result.id}\`\`\``,
+                            inline: false,
+                        },
+                    ]),
+            ],
+        });
+    } catch (e) {
+        throw e;
+        // client.error()
+    }
+};
+
+// custom error override
+client.error = function (message) {};
 
 client.login(config.token);
 

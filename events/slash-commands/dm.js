@@ -29,6 +29,10 @@ module.exports = async (client, interaction) => {
         interaction.channel.send(
             "Die Nachricht wurde an `" + user.user.tag + "` versandt."
         );
+        client.modLog(
+            `${interaction.user.tag} hat ${user.user.tag} eine DM geschickt.`,
+            "dm.js"
+        );
     } catch (error) {
         //ERROR
         interaction.reply(

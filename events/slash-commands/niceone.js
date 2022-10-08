@@ -46,12 +46,20 @@ module.exports = (client, interaction) => {
             interaction.reply(
                 "`" + user.user.tag + "` wurde `Nice One` entzogen."
             );
+            client.modLog(
+                `${user.user.tag} wurde von ${interaction.user.tag} Nice One entzogen.`,
+                "niceone.js"
+            );
         } else {
             user.member.roles.add(role);
             db(`UPDATE discord set niceone = 1 WHERE dcid = ${user.user.id}`);
 
             interaction.reply(
                 "`" + user.user.tag + "` hat `Nice One` bekommen."
+            );
+            client.modLog(
+                `${user.user.tag} hat von ${interaction.user.tag} Nice One erhalten.`,
+                "niceone.js"
             );
         }
     } catch (error) {

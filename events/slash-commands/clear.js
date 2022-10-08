@@ -15,6 +15,10 @@ module.exports = async (client, interaction) => {
 
     try {
         await interaction.channel.bulkDelete(number);
+        client.modLog(
+            `${interaction.user.tag} hat ${number} Nachrichten in <#${interaction.channel}> gelöscht.`,
+            "clear.js"
+        );
         interaction.reply(
             `Es \`${
                 number == 1

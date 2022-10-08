@@ -87,6 +87,10 @@ module.exports = (client, interaction) => {
             );
 
             interaction.reply({ embeds: [embed], components: [ticketButtons] });
+            client.modLog(
+                `${interaction.user.tag} hat das Ticket <#${interaction.channel}> geschlossen.`,
+                "close.js"
+            );
         } catch (err) {
             //ERROR
             interaction.client.channels.cache

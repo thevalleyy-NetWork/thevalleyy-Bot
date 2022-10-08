@@ -102,5 +102,9 @@ module.exports = async (client, interaction) => {
         interaction.editReply("Es ist ein Fehler aufgetreten: \n" + error);
         return;
     }
+    client.modLog(
+        `${interaction.user.tag} hat den Status geändert.`,
+        "status.js"
+    );
     interaction.editReply("Status wurde geändert.");
 };

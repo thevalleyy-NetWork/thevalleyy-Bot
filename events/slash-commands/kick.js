@@ -58,6 +58,10 @@ module.exports = async (client, interaction) => {
                 reason +
                 "` gekickt."
         );
+        client.modLog(
+            `${user.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gekickt.`,
+            "kick.js"
+        );
     } catch (error) {
         //ERROR
     }

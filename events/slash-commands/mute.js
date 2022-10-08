@@ -56,6 +56,12 @@ module.exports = (client, interaction) => {
             interaction.reply(
                 "`" + muteUser.user.tag + "` kann nun nichtmehr schreiben."
             );
+
+            client.modLog(
+                `${muteUser.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gemuted.`,
+                "mute.js"
+            );
+
             muteUser.user
                 .send(
                     "Du wurdest von `" +
