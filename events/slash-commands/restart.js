@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
 const process = require("process");
 const { spawn } = require("child_process");

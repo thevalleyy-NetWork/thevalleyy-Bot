@@ -5,8 +5,6 @@ module.exports = async (client, interaction) => {
 
     if (!interaction.customId.startsWith("REACTIONROLE")) return;
 
-    const iconurl = client.guilds.cache.get("631518992342843392").iconURL();
-
     try {
         const botRole = interaction.message.guild.roles.cache.find(
             (role) => role.name === "BotNews"
@@ -118,6 +116,6 @@ module.exports = async (client, interaction) => {
             interaction.deferUpdate();
         }
     } catch (error) {
-        console.log(error);
+        client.error(error, "reactionRoles.js");
     }
 };

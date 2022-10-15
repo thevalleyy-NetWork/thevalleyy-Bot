@@ -267,7 +267,7 @@ function slashCommands() {
 
             log("Started: Bot", "red", "reset", false);
         } catch (error) {
-            console.error(error);
+            client.error(error, "main.js");
         }
     }
 
@@ -340,8 +340,7 @@ function events() {
                                 return;
                         }
                     } catch (e) {
-                        //ERROR
-                        console.log(e);
+                        client.error(e, "main.js");
                     }
                 }
 
@@ -356,8 +355,7 @@ function events() {
                                 return;
                         }
                     } catch (e) {
-                        //ERROR
-                        console.log(e);
+                        client.error(e, "main.js");
                     }
                 }
 
@@ -372,8 +370,7 @@ function events() {
                                 return;
                         }
                     } catch (e) {
-                        //ERROR
-                        console.log(e);
+                        client.error(e, "main.js");
                     }
                 }
 
@@ -404,8 +401,7 @@ function events() {
                                 return;
                         }
                     } catch (e) {
-                        //ERROR
-                        console.log(e);
+                        client.error(e, "main.js");
                     }
                 }
 
@@ -420,8 +416,7 @@ function events() {
                                 return;
                         }
                     } catch (e) {
-                        //ERROR
-                        console.log(e);
+                        client.error(e, "main.js");
                     }
                 }
 
@@ -465,8 +460,7 @@ client.on("interactionCreate", async (interaction) => {
                     return;
             }
         } catch (e) {
-            //ERROR
-            console.log(e);
+            v;
         }
 
         const maintenance = await JSON.parse(
@@ -668,109 +662,110 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 // custom log override
-client.modLog = function (message, file) {
-    client.log(message, file);
+client.modLog = async function (message, file = "custom") {
+    const time = gettime(true);
     const embed0 = new Discord.EmbedBuilder()
         .setTitle("mod-log")
         .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
-        .setFooter({ text: "origin: " + file + " | " + gettime(true) })
+        .setFooter({ text: "origin: " + file + " | " + time })
         .setColor(config.mod_log_color);
+
+    const res = await db("SELECT id FROM logs ORDER BY id desc LIMIT 1");
+    if (res.length == 0) {
+        client.channels.cache
+            .get(config.mod_log_channel_id)
+            .send("Es gab einen Fehler beim Loggen.");
+        return;
+    }
+
+    embed0.addFields([
+        { name: "log-id", value: `\`${res[0].id + 1}\``, inline: true },
+        {
+            name: "sql-query",
+            value: `\`\`\`sql\nSELECT * FROM logs WHERE id = ${
+                res[0].id + 1
+            }\`\`\``,
+            inline: false,
+        },
+    ]);
+
     client.channels.cache
         .get(config.mod_log_channel_id)
         .send({ embeds: [embed0] });
+
+    client.log(message, file, time, 1);
 };
 
-client.log = async function (message, file) {
-    const time = gettime(true);
+client.log = async function (
+    message,
+    file = "custom",
+    time = gettime(true),
+    modlog = 0
+) {
     try {
-        await db("INSERT INTO logs (message, origin, time) VALUES (?, ?, ?)", [
-            message,
-            file,
-            time,
-        ]);
-
-        const res = await db(
-            `SELECT * FROM logs WHERE message = ? AND origin = ? AND time = ?`,
-            [message, file, time]
+        await db(
+            "INSERT INTO logs (message, origin, time, modlog) VALUES (?, ?, ?, ?)",
+            [message, file, time, modlog]
         );
-        if (res.length == 0) return console.log("no entry found");
-
-        const result = res[0];
-
-        await wait(3000);
-
-        const lastMessage = await client.channels.cache
-            .get(config.mod_log_channel_id)
-            .messages.fetch({ limit: 1 });
-        if (lastMessage.size == 0) return console.log("no message found");
-        if (!lastMessage.first().embeds[0])
-            return console.log("no embed found");
-
-        // edit last embed in channel
-        const embed = lastMessage.first().embeds[0];
-        if (
-            !embed.data.description.startsWith("```" + result.message + "```")
-        ) {
-            return;
-        }
-        if (
-            embed.data.footer.text.substring(
-                embed.data.footer.text.length - 23,
-                embed.data.footer.text.length - 5
-            ) != result.time.slice(0, 18)
-        ) {
-            return;
-        }
-
-        lastMessage.first().edit({
-            embeds: [
-                new Discord.EmbedBuilder()
-                    .setTitle(embed.data.title)
-                    .setDescription(embed.data.description.substring(0, 2022))
-                    .setFooter({
-                        text: embed.data.footer.text,
-                    })
-                    .setColor(config.mod_log_color)
-                    .addFields([
-                        {
-                            name: "sql id",
-                            value: `\`${result.id}\``,
-                            inline: true,
-                        },
-                        {
-                            name: "Δ-time",
-                            value: `\`${
-                                embed.data.footer.text
-                                    .substring(
-                                        embed.data.footer.text.length - 23,
-                                        embed.data.footer.text.length
-                                    )
-                                    .replaceAll(":", "")
-                                    .replaceAll(" ", "")
-                                    .replaceAll(".", "") -
-                                result.time
-                                    .replaceAll(":", "")
-                                    .replaceAll(" ", "")
-                                    .replaceAll(".", "")
-                            }ms\``,
-                            inline: true,
-                        },
-                        {
-                            name: "sql query",
-                            value: `\`\`\`sql\nSELECT * FROM logs WHERE id = ${result.id}\`\`\``,
-                            inline: false,
-                        },
-                    ]),
-            ],
-        });
     } catch (e) {
-        throw e;
-        // client.error()
+        client.channels.cache
+            .get(config.mod_log_channel_id)
+            .send("Es gab einen Fehler beim Loggen.\n" + e);
     }
 };
 
 // custom error override
-client.error = function (message) {};
+client.error = async function (message, file = "custom") {
+    try {
+        const time = gettime(true);
+        await db(
+            "INSERT INTO errors (message, origin, time) VALUES (?, ?, ?)",
+            [message, file, time]
+        );
+
+        const embed1 = new Discord.EmbedBuilder()
+            .setTitle("error")
+            .setDescription(
+                `\`\`\`${message.toString().substring(0, 2022)}\`\`\``
+            )
+            .setFooter({ text: "origin: " + file + " | " + time })
+            .setColor(config.mod_log_color_error);
+
+        const res = await db("SELECT id FROM errors ORDER BY id desc LIMIT 1");
+        if (res.length == 0) {
+            client.channels.cache
+                .get(config.mod_log_channel_id)
+                .send("Es gab einen Fehler beim Loggen des Fehlers. lol");
+            return;
+        }
+
+        embed1.addFields([
+            { name: "error-id", value: `\`${res[0].id}\``, inline: true },
+            {
+                name: "sql-query",
+                value: `\`\`\`sql\nSELECT * FROM errors WHERE id = ${res[0].id}\`\`\``,
+                inline: false,
+            },
+        ]);
+
+        client.channels.cache
+            .get(config.mod_log_channel_id)
+            .send({ embeds: [embed1] });
+    } catch (e) {
+        client.channels.cache
+            .get(config.mod_log_channel_id)
+            .send(
+                "Es gab einen Fehler beim Loggen eines Fehlers.\n" +
+                    e +
+                    "\n" +
+                    "Message: " +
+                    message +
+                    "\n" +
+                    "Origin: " +
+                    file
+            );
+    }
+};
 
 client.login(config.token);
 

@@ -46,7 +46,7 @@ module.exports = async (client, interaction) => {
             interaction.reply({ embeds: [embed] });
         } catch (err) {
             interaction.reply("Es ist ein Fehler aufgetreten: \n" + err);
-            //ERROR
+            client.error(err, "blacklist.js");
         }
         return;
     }
@@ -62,7 +62,7 @@ module.exports = async (client, interaction) => {
                         `UPDATE discord SET blacklisted = 0 WHERE dcid = ${user.user.id}`
                     );
                 } catch (err) {
-                    //ERROR
+                    client.error(err, "blacklist.js");
                     interaction.reply(
                         "Es gab einen Fehler:\n" +
                             err.toString().substring(0, 500)
@@ -82,7 +82,7 @@ module.exports = async (client, interaction) => {
                         `UPDATE discord SET blacklisted = 1 WHERE dcid = ${user.user.id}`
                     );
                 } catch (err) {
-                    //ERROR
+                    client.error(err, "blacklist.js");
                     interaction.reply(
                         "Es gab einen Fehler:\n" +
                             err.toString().substring(0, 500)
@@ -103,10 +103,8 @@ module.exports = async (client, interaction) => {
             );
         }
     } catch (err) {
-        //ERROR
-        interaction.reply(
-            "Es gab einen Fehler:\n" + err.toString().substring(0, 500)
-        );
+        client.error(err, "blacklist.js");
+        interaction.reply("Es gab einen Fehler");
         return;
     }
 };

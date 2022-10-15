@@ -55,11 +55,7 @@ module.exports = async (client, member) => {
                     }`
                 );
             } catch (e) {
-                member.guild.channels.cache
-                    .get(modlog)
-                    .send(
-                        `Fehler beim Abfragen von ${member.user.tag} in der Datenbank: ${e}`
-                    );
+                client.error(e, "welcome.js");
             }
         } else {
             // insert into db
@@ -73,11 +69,7 @@ module.exports = async (client, member) => {
                     )}', ${Date.now()}, ${Date.now()})`
                 );
             } catch (e) {
-                member.guild.channels.cache
-                    .get(modlog)
-                    .send(
-                        `Fehler beim Eintragen von ${member.user.tag} in die Datenbank: ${e}`
-                    );
+                client.error(e, "welcome.js");
             }
         }
 
@@ -90,10 +82,6 @@ module.exports = async (client, member) => {
             );
         });
     } catch (err) {
-        member.guild.channels.cache
-            .get(modlog)
-            .send(
-                `Fehler beim Abfragen von ${member.user.tag} in der Datenbank: ${err}`
-            );
+        client.error(err, "welcome.js");
     }
 };

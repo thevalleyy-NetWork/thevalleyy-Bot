@@ -1,5 +1,4 @@
 const modlog = "822575095721099304";
-const Discord = require("discord.js");
 
 const config = require("./../config.json");
 const mysql = require("mysql2");
@@ -59,6 +58,6 @@ module.exports = async (client, oldMember, newMember) => {
             user.roles.add(niceone);
         }
     } catch (error) {
-        client.channels.cache.get(modlog).send("cringe error\n" + error);
+        client.error(error, "rulesAccepted.js");
     }
 };

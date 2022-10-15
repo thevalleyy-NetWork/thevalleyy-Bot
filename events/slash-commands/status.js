@@ -98,12 +98,12 @@ module.exports = async (client, interaction) => {
             }
         }
     } catch (error) {
-        //ERROR
-        interaction.editReply("Es ist ein Fehler aufgetreten: \n" + error);
+        client.error(error, "status.js");
+        interaction.editReply("Es ist ein Fehler aufgetreten");
         return;
     }
-    client.modLog(
-        `${interaction.user.tag} hat den Status geändert.`,
+    client.log(
+        `${interaction.user.tag} hat den Status zu ${presence} geändert.`,
         "status.js"
     );
     interaction.editReply("Status wurde geändert.");

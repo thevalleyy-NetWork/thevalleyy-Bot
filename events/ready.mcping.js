@@ -9,18 +9,7 @@ module.exports = (client) => {
         setInterval(function () {
             util.status("node2.chaosbothosting.de", 25504)
                 .catch((error) => {
-                    const failEmbed = new Discord.EmbedBuilder()
-                        .setTitle("Es gab einen Fehler bei mcping.js")
-                        .setThumbnail(
-                            "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif"
-                        )
-                        .setDescription("Fehler: `" + error + "`")
-                        .setTimestamp()
-                        .setColor("#fc036b");
-
-                    client.channels.cache
-                        .get(modlog)
-                        .send({ embeds: [failEmbed] });
+                    client.log(error, "mcping.js");
                 })
                 .then(async (response) => {
                     if (!response) return;
@@ -110,6 +99,6 @@ module.exports = (client) => {
                 });
         }, 302000);
     } catch (error) {
-        client.channels.cache.get(modlog).send("Error at mcping.js: " + error);
+        client.error(error, "mcping.js");
     }
 };

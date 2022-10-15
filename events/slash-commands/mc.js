@@ -20,10 +20,12 @@ module.exports = (client, interaction) => {
         var port = "25565";
     }
 
+    client.log(`Pinging: IP: ${ip} | Port: ${port}`, "mc.js");
+
     util.status(ip, parseInt(port))
         .catch((error) => {
-            //ERROR
-            interaction.reply("Es gab einen Fehler...\n" + error);
+            client.error(error, "mc.js");
+            interaction.reply("Es gab einen Fehler.");
             return;
         })
         .then(async (response) => {

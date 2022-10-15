@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
 const mysql = require("mysql2");
 const util = require("util");
@@ -63,8 +62,7 @@ module.exports = (client, interaction) => {
             );
         }
     } catch (error) {
-        //ERROR
-        console.log(error);
+        client.error(error, "niceone.js");
         interaction.reply("Ein Fehler ist aufgetreten.");
     }
 };

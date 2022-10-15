@@ -63,9 +63,7 @@ module.exports = (client) => {
                     fs.writeFile(
                         `./data/brickset.json`,
                         JSON.stringify(json, null, 4),
-                        function (err) {
-                            if (err) console.log(err);
-                        }
+                        function (err) {}
                     );
                 });
         });
@@ -80,7 +78,7 @@ module.exports = (client) => {
             "./data/stats.json",
             JSON.stringify(jsonRecover, null, 4),
             (err) => {
-                if (err) throw err;
+                client.error(err, "startup.json");
             }
         );
     }

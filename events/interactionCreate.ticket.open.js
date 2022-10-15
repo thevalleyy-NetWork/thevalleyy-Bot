@@ -36,7 +36,6 @@ function time() {
 
 const modlog = "822575095721099304";
 const Discord = require("discord.js");
-const config = require("./../config.json");
 
 module.exports = (client, interaction) => {
     if (!interaction.isButton()) return;
@@ -184,6 +183,6 @@ module.exports = (client, interaction) => {
                 client.channels.cache.get(modlog).send({ embeds: [embedLog] });
             });
     } catch (err) {
-        console.log(err);
+        client.error(err, "ticket.open.js");
     }
 };

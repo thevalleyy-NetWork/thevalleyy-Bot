@@ -17,10 +17,6 @@ module.exports = async (client, member) => {
     try {
         updateMembers(member.guild);
     } catch (error) {
-        client.cache.channels
-            .get(modlog)
-            .send(
-                `Fehler beim Updaten der Mitgliederanzeige (${channelID}): ${error}`
-            );
+        client.error(error, "memberCount.js");
     }
 };

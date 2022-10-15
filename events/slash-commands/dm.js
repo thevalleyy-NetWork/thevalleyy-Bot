@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
 
 module.exports = async (client, interaction) => {
@@ -34,7 +33,7 @@ module.exports = async (client, interaction) => {
             "dm.js"
         );
     } catch (error) {
-        //ERROR
+        client.error(error, "dm.js");
         interaction.reply(
             "Die Nachricht konnte nicht an `" +
                 user.user.tag +

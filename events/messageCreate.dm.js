@@ -1,4 +1,3 @@
-const modlog = "822575095721099304";
 const { ChannelType } = require("discord.js");
 const Discord = require("discord.js");
 const config = require("../config.json");
@@ -47,6 +46,6 @@ module.exports = async (client, message) => {
             message.react("<:checkmarkEmbed:1005146896278503597> ");
         });
     } catch (error) {
-        throw error;
+        client.error(error, "dm.js");
     }
 };

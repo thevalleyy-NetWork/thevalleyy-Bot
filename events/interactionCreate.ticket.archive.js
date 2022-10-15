@@ -2,10 +2,6 @@ function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-const modlog = "822575095721099304";
-const Discord = require("discord.js");
-const config = require("./../config.json");
-
 module.exports = async (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "TICKET_archive") return;
@@ -43,6 +39,6 @@ module.exports = async (client, interaction) => {
         interaction.channel.send(
             "Es gab einen Fehler beim Archivieren eines Tickets: " + err
         );
-        console.log(err);
+        client.error(err, "ticket.archive.js");
     }
 };

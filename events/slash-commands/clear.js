@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -16,7 +13,7 @@ module.exports = async (client, interaction) => {
     try {
         await interaction.channel.bulkDelete(number);
         client.modLog(
-            `${interaction.user.tag} hat ${number} Nachrichten in <#${interaction.channel}> gelöscht.`,
+            `${interaction.user.tag} hat ${number} Nachrichten in ${interaction.channel.name} gelöscht.`,
             "clear.js"
         );
         interaction.reply(
@@ -24,10 +21,11 @@ module.exports = async (client, interaction) => {
                 number == 1
                     ? "wurde eine Nachricht"
                     : `wurden ${number} Nachrichten`
-            }\` gelöscht. \nAusgeführt durch: ` + interaction.user.tag
+            }\` gelöscht. \nAusgeführt durch: \`` +
+                interaction.user.tag +
+                "`"
         );
     } catch (error) {
-        //ERROR
-        throw error;
+        client.error(error, "clear.js");
     }
 };

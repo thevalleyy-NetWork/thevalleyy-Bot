@@ -8,6 +8,7 @@ module.exports = async (client, interaction) => {
 
     try {
         if (interaction.options._subcommand === "generate") {
+            client.log("Generating QR Code", "qr.js");
             const data = encodeURI(
                 interaction.options._hoistedOptions[0].value
             );
@@ -29,6 +30,7 @@ module.exports = async (client, interaction) => {
 
         if (interaction.options._subcommand === "scan") {
             await interaction.deferReply();
+            client.log("Scanning QR-Code", "qr.js");
 
             if (
                 interaction.options._hoistedOptions[0].attachment.contentType ==
@@ -88,7 +90,7 @@ module.exports = async (client, interaction) => {
             }
         }
     } catch (error) {
-        //ERROR
+        client.error(error, "qr.js");
         interaction.editReply({
             content:
                 "Der QR-Code konnte nicht gescannt werden!\nFehler: `" +

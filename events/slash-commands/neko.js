@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
 const nekochannel = "799728881228709928";
 
@@ -38,8 +37,7 @@ module.exports = async (client, interaction) => {
         ).then((response) => response.json());
         interaction.reply(image);
     } catch (error) {
-        //ERROR
-        console.log(error);
+        client.error(error, "neko.js");
         interaction.reply("Es gab einen Fehler.");
     }
 };

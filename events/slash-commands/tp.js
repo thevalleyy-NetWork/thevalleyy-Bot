@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const config = require("../../config.json");
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;

@@ -1,5 +1,4 @@
 const config = require("../../config.json");
-const Discord = require("discord.js");
 const mysql = require("mysql2");
 const util = require("util");
 
@@ -26,6 +25,10 @@ module.exports = async (client, interaction) => {
     }
 
     try {
+        client.log(
+            `Evaluating code: ${interaction.options.getString("sql")}`,
+            "db.js"
+        );
         await db(`${interaction.options.getString("sql")}`).then(
             async (res) => {
                 if (await !res[0]) return interaction.reply("[]");
@@ -42,7 +45,7 @@ module.exports = async (client, interaction) => {
             }
         );
     } catch (e) {
-        //ERROR
-        interaction.reply("Fehler beim Ausführen des Statements:\n`" + e + "`");
+        client.error(e, "db.js");
+        interaction.reply("Fehler beim Ausführen des Statements");
     }
 };

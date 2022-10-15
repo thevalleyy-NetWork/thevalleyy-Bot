@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
 const mysql = require("mysql2");
 const util = require("util");
@@ -70,7 +69,9 @@ module.exports = (client, interaction) => {
                         interaction.guild.name +
                         `\` gemuted.\nDauer: \`Permanent\`\nGrund:\`${reason}\``
                 )
-                .catch((error) => {} /*ERROR*/);
+                .catch((error) => {
+                    client.log(error, "mute.js");
+                });
         } else {
             muteUser.member.timeout(
                 +duration * 60000,
@@ -89,11 +90,12 @@ module.exports = (client, interaction) => {
                             Math.round(Date.now() / 1000) + +duration * 60
                         }:R>\nGrund: \`${reason}\``
                 )
-                .catch((error) => {} /*ERROR*/);
+                .catch((error) => {
+                    client.log(error, "mute.js");
+                });
         }
     } catch (error) {
-        //ERROR
+        client.error(error, "mute.js");
         interaction.reply("Es gab einen Fehler.");
-        throw error;
     }
 };

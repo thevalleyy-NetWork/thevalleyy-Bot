@@ -175,7 +175,7 @@ module.exports = async (client, interaction) => {
             "./events/slash-commands/" + cmdjson.data.name + ".js",
             async (err, stats) => {
                 if (err) {
-                    console.log(err);
+                    client.error(err, "help.js");
                     await embed.addFields([
                         {
                             name: "Filesize (code)",
@@ -197,7 +197,7 @@ module.exports = async (client, interaction) => {
                     "./scommands/" + cmdjson.data.name + ".js",
                     async (err, stats) => {
                         if (err) {
-                            console.log(err);
+                            client.error(err, "help.js");
                             await embed.addFields([
                                 {
                                     name: "Filesize (builder)",

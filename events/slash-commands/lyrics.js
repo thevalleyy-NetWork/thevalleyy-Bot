@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const config = require("../../config.json");
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -54,11 +53,9 @@ module.exports = async (client, interaction) => {
             .setTimestamp();
 
         await interaction.editReply({ embeds: [songEmbed] }).catch((err) => {
-            //ERROR
-            interaction.channel.send("Fehler: `" + err + "`");
+            client.error(err, "lyrics.js");
         });
     } catch (err) {
-        //ERROR
-        interaction.channel.send("Fehler: `" + err + "`");
+        client.error(err, "lyrics.js");
     }
 };

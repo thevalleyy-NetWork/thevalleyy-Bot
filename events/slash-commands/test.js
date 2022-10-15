@@ -18,50 +18,15 @@ module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     interaction.reply("test");
-    client.modLog("sus", "test.js");
 
-    // 		// import node-fetch
-    // const fetch = require('node-fetch');
-    // // set url as constant
-    // const URL = 'https://jsonplaceholder.typicode.com/todos';
+    // client.error("this is a custom error", "test.js");
+    // client.modLog("this is a custom modlog", "test.js");
+    // client.log("this is a custom log", "test.js");
 
-    // fetch(URL)
-    //   .then(response => response.json())
-    //   .then(json => console.log(json))
-    //   .catch(err => console.error(err));
-
-    // 		const https = require('https');
-    // 		const options = {
-    // 		  hostname: 'jsonplaceholder.typicode.com',
-    // 		  port: 443,
-    // 		  path: '/todos',
-    // 		  method: 'GET',
-    // 		};
-
-    // 		const req = https.request(options, res => {
-    // 		  console.log(`statusCode: ${res.statusCode}`);
-
-    // 		  res.on('data', d => {
-    // 			process.stdout.write(d);
-    // 		  });
-    // 		});
-
-    // 		req.on('error', error => {
-    // 		  console.error(error);
-    // 		});
-
-    // const res = await db(`SELECT dctag FROM discord WHERE id = 32`)
-    // await message.reply(decodeURI(res[0].dctag))
-
+    // TODO: Bei jedem client.error auch die interaction replien
     // const members = message.guild.members.cache
     // members.forEach(async member => {
     //     await db(`INSERT INTO discord (dcid, dctag, joindate, oldestjoindate) VALUES (${member.id}, '${await encodeURI(member.user.tag.replaceAll("'", " "))}', ${Date.now()}, ${Date.now()})`)
     //     console.log(`Registering: ${member.user.tag}`)
     // });
-
-    // if (await db(`SELECT dcid FROM discord WHERE dcid = ${message.author.id}`).then(res => res[0])) {
-    //     message.reply("Du bist registriert!")
-    // } else {
-    //     message.reply("Du bist nicht registriert!")
-    // }
 };

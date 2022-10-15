@@ -61,11 +61,9 @@ module.exports = async (client, interaction) => {
         await interaction
             .editReply({ embeds: [songEmbed] })
             .catch(async (err) => {
-                //ERROR
                 await interaction.editReply("Fehler: `" + err + "`");
             });
     } catch (err) {
-        //ERROR
         await interaction.editReply("Fehler: `" + err + "`");
     }
 };

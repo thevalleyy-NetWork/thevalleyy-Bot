@@ -1,6 +1,4 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
-const modlog = config.mod_log_channel_id;
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -37,7 +35,7 @@ module.exports = async (client, interaction) => {
                     "` gekickt."
             );
         } catch (e) {
-            //ERROR
+            client.error(e, "kick.js");
         }
 
         await user.member
@@ -63,6 +61,6 @@ module.exports = async (client, interaction) => {
             "kick.js"
         );
     } catch (error) {
-        //ERROR
+        client.error(error, "kick.js");
     }
 };

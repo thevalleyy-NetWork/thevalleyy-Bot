@@ -8,6 +8,8 @@ module.exports = async (client, interaction) => {
 
     const player = interaction.options.getString("player");
 
+    client.log(`Searching for ${player}`, "skin.js");
+
     const fetch = (await import("node-fetch")).default;
 
     await fetch("https://api.ashcon.app/mojang/v2/user/" + player).then(
@@ -17,7 +19,7 @@ module.exports = async (client, interaction) => {
                     if (json.code != 200 && json.code != undefined)
                         return interaction.reply(
                             `${json.error} ${json.code} \n\`\`${json.reason}\`\``
-                        ); //ERROR
+                        );
 
                     let embeds = [];
 

@@ -69,7 +69,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    //ERROR
                     interaction.reply("Es gab einen Fehler:" + json.message);
                     return;
                 }
@@ -300,7 +299,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    //ERROR
                     interaction.reply(
                         "Es gab einen Fehler beim Abrufen der Daten."
                     );
@@ -376,7 +374,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    //ERROR
                     interaction.reply(
                         "Es gab einen Fehler beim Abrufen der Daten."
                     );
@@ -504,7 +501,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json_) => {
                 if (json_.status == "error") {
-                    //ERROR
                     interaction.reply(
                         "Es gab einen Fehler beim Abrufen der Daten."
                     );
@@ -541,7 +537,6 @@ module.exports = async (client, interaction) => {
                     .then(async (response) => response.json())
                     .then((json) => {
                         if (json.status == "error") {
-                            //ERROR
                             interaction.reply(
                                 "Es gab einen Fehler beim Abrufen der Daten."
                             );
@@ -696,7 +691,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json_) => {
                 if (json_.status == "error") {
-                    //ERROR
                     interaction.reply(
                         "Es gab einen Fehler beim Abrufen der Daten."
                     );
@@ -843,7 +837,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    //ERROR
                     interaction.reply("Es gab einen Fehler:" + json.message);
                     return;
                 }
@@ -860,7 +853,6 @@ module.exports = async (client, interaction) => {
                     .then(async (response) => response.json())
                     .then((json) => {
                         if (json.status == "error") {
-                            //ERROR
                             interaction.reply(
                                 "Es gab einen Fehler:" + json.message
                             );
@@ -1004,7 +996,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    //ERROR
                     interaction.reply(
                         "Es gab einen Fehler beim Abrufen der Daten."
                     );
@@ -1058,7 +1049,6 @@ module.exports = async (client, interaction) => {
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    //ERROR
                     interaction.reply("Es gab einen Fehler:" + json.message);
                     return;
                 }
@@ -1076,7 +1066,6 @@ module.exports = async (client, interaction) => {
                     .then(async (response) => response.json())
                     .then((json) => {
                         if (json.status == "error") {
-                            //ERROR
                             interaction.reply(
                                 "Es gab einen Fehler:" + json.message
                             );

@@ -1,18 +1,5 @@
 const config = require("../../config.json");
 const util = require("util");
-const Discord = require("discord.js");
-const mysql = require("mysql2");
-
-const connection = mysql.createPool({
-    multipleStatements: true,
-    connectionLimit: 10,
-    host: config.mysql.host,
-    user: config.mysql.user,
-    password: config.mysql.password,
-    database: config.mysql.database,
-});
-
-var db = util.promisify(connection.query).bind(connection);
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -32,6 +19,7 @@ module.exports = async (client, interaction) => {
         return;
     }
     try {
+        client.log(`Evaluating code: ${evalcode}`, "eval.js");
         const result = await eval(evalcode);
         let output = result;
         if (typeof result !== "string") {
@@ -48,13 +36,7 @@ module.exports = async (client, interaction) => {
             "\n-----EVAL BEGIN-----\n" + output + "\n------EVAL END------\n"
         );
     } catch (error) {
-        //ERROR
-        interaction.reply(
-            "Fehler bei -eval in <#" +
-                interaction.channelId +
-                ">  |  ``" +
-                error +
-                "``"
-        );
+        client.error(error, "eval.js");
+        interaction.reply("Es ist ein Fehler aufgetreten.");
     }
 };

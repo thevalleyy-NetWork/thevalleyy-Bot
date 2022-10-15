@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
 
 module.exports = async (client, interaction) => {
@@ -11,6 +10,11 @@ module.exports = async (client, interaction) => {
         });
         return;
     }
+
+    client.log(
+        `Evaluating code: ${interaction.options.getString("code")}`,
+        "bettereval.js"
+    );
 
     let kill = [];
     let m;

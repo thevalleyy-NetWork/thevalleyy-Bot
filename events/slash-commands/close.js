@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const config = require("../../config.json");
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -92,10 +91,8 @@ module.exports = (client, interaction) => {
                 "close.js"
             );
         } catch (err) {
-            //ERROR
-            interaction.client.channels.cache
-                .get(modlog)
-                .send("Gab nen Fehler bei -close: " + err);
+            client.error(err, "close.js");
+            interaction.reply("Ein Fehler ist aufgetreten.");
         }
     } else {
         return interaction.reply(

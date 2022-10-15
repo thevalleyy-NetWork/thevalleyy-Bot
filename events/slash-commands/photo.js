@@ -33,6 +33,7 @@ module.exports = (client, interaction) => {
 
     buttonList = [button1, button2];
 
+    client.log(`Searching for ${query}`, "photo.js");
     try {
         pexels.photos
             .search({
@@ -71,8 +72,7 @@ module.exports = (client, interaction) => {
                 paginationEmbed(interaction, array, buttonList, 120000);
             });
     } catch (error) {
-        //ERROR
-        console.log(error);
+        client.error(error, "photo.js");
         interaction.reply("Es ist ein Fehler aufgetreten. Tut mir Leid :(");
     }
 };

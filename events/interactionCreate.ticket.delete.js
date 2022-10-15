@@ -1,7 +1,3 @@
-const modlog = "822575095721099304";
-const Discord = require("discord.js");
-const config = require("./../config.json");
-
 module.exports = (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "TICKET_delete") return;
@@ -14,6 +10,7 @@ module.exports = (client, interaction) => {
 
         if (interaction.member.roles.cache.has(modrole.id)) {
             interaction.channel.delete().catch((err) => {
+                client.error(err, "ticket.delete.js");
                 interaction.reply(
                     "Es gab einen Fehler beim Löschen eines Tickets: " + err
                 );
@@ -25,6 +22,6 @@ module.exports = (client, interaction) => {
             });
         }
     } catch (err) {
-        console.log(err);
+        client.error(err, "ticket.delete.js");
     }
 };

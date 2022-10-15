@@ -1,6 +1,4 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
-const modlog = config.mod_log_channel_id;
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -14,7 +12,6 @@ module.exports = async (client, interaction) => {
             ephemeral: true,
         });
 
-    const iconurl = interaction.guild.iconURL();
     const user = interaction.options.get("user");
     const reason = interaction.options.getString("reason");
     const dmdays = interaction.options.get("dmdays");
@@ -39,7 +36,7 @@ module.exports = async (client, interaction) => {
                     "` gebannt."
             );
         } catch (e) {
-            //ERROR
+            client.error(e, "ban.js");
         }
 
         if (dmdays) {
@@ -65,6 +62,7 @@ module.exports = async (client, interaction) => {
                         interaction.user.username,
                     ephemeral: true,
                 });
+                client.error(e, "ban.js");
                 return;
             });
 
@@ -79,7 +77,7 @@ module.exports = async (client, interaction) => {
                 reason +
                 "` gebannt."
         );
-    } catch {
-        //ERROR
+    } catch (e) {
+        client.error(e, "ban.js");
     }
 };

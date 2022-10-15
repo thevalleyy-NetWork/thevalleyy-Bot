@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../../config.json");
 const mysql = require("mysql2");
 const util = require("util");
@@ -72,10 +71,11 @@ module.exports = (client, interaction) => {
                     reason +
                     "`"
             )
-            .catch((error) => {} /*ERROR*/);
+            .catch((error) => {
+                client.log(error, "unmute.js");
+            });
     } catch (error) {
-        //ERROR
+        client.error(error, "unmute.js");
         interaction.reply("Es gab einen Fehler.");
-        throw error;
     }
 };

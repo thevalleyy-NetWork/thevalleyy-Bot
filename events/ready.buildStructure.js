@@ -4,10 +4,10 @@ const fs = require("fs");
 module.exports = (client) => {
     let array = [];
     fs.rm("./data/cmd-json", { recursive: true }, (err) => {
-        if (err) console.log(err);
+        if (err) client.error(err, "buildStructure.js");
 
         fs.mkdir("./data/cmd-json", (err) => {
-            if (err) console.log(err);
+            if (err) client.error(err, "buildStructure.js");
             Object.keys(cmdJson.cmds).forEach((command) => {
                 const cooldown = cmdJson.cmds[command].cooldown;
                 const name = cmdJson.cmds[command].data.name;
@@ -41,7 +41,7 @@ module.exports = (client) => {
                         pattern,
                         function (err) {
                             //ERROR
-                            if (err) console.log(err);
+                            if (err) client.error(err, "buildStructure.js");
                         }
                     );
                 }, 1000);
@@ -51,8 +51,7 @@ module.exports = (client) => {
                 `./data/cmdlist.json`,
                 JSON.stringify(array, null, 4),
                 function (err) {
-                    //ERROR
-                    if (err) console.log(err);
+                    // Error here returns null so i just dont log it, hah, get fucked
                 }
             );
         });

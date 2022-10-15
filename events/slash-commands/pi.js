@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -18,13 +15,14 @@ module.exports = async (client, interaction) => {
         var digits = interaction.options.getNumber("digits");
     }
 
+    client.log(`Generating ${digits} digits of pi`, "pi.js");
+
     // interaction.deferReply();
     async function parse(response) {
         const text = await response.text();
         try {
             return JSON.parse(text);
         } catch {
-            //ERROR
             return { error: text };
         }
     }
