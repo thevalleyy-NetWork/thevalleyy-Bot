@@ -10,7 +10,7 @@ module.exports = (client, interaction) => {
         array.push(
             Object.keys(package.dependencies)[i] +
                 ": v" +
-                Object.values(package.dependencies)[i]
+                Object.values(package.dependencies)[i].replace("^", "")
         );
     }
 

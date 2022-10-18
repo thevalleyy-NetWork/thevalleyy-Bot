@@ -705,7 +705,12 @@ client.log = async function (
     try {
         await db(
             "INSERT INTO logs (message, origin, time, modlog) VALUES (?, ?, ?, ?)",
-            [message, file, time, modlog]
+            [
+                encodeURI(message),
+                encodeURI(file),
+                encodeURI(time),
+                encodeURI(modlog.toString()),
+            ]
         );
     } catch (e) {
         client.channels.cache
@@ -720,7 +725,7 @@ client.error = async function (message, file = "custom") {
         const time = gettime(true);
         await db(
             "INSERT INTO errors (message, origin, time) VALUES (?, ?, ?)",
-            [message, file, time]
+            [encodeURI(message), encodeURI(file), encodeURI(time)]
         );
 
         const embed1 = new Discord.EmbedBuilder()
@@ -735,7 +740,9 @@ client.error = async function (message, file = "custom") {
         if (res.length == 0) {
             client.channels.cache
                 .get(config.mod_log_channel_id)
-                .send("Es gab einen Fehler beim Loggen des Fehlers. lol");
+                .send(
+                    "Es gab einen Fehler beim Loggen des Fehlers. Es wurde kein Eintrag in der Errors Datenbank gefunden."
+                );
             return;
         }
 

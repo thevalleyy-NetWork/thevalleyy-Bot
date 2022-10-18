@@ -22,15 +22,16 @@ module.exports = (client, interaction) => {
 
     client.log(`Pinging: IP: ${ip} | Port: ${port}`, "mc.js");
 
-    util.status(ip, parseInt(port))
-        .catch((error) => {
-            client.error(error, "mc.js");
-            interaction.reply("Es gab einen Fehler.");
-            return;
-        })
-        .then(async (response) => {
-            if (!response)
-                return interaction.reply("Der Server ist nicht erreichbar.");
+    try {
+        util.status(ip, parseInt(port)).then(async (response) => {
+            if (!response) {
+                if (interaction.replied) {
+                    interaction.followUp("Der Server ist nicht erreichbar.");
+                } else {
+                    interaction.reply("Der Server ist nicht erreichbar.");
+                }
+                return;
+            }
 
             const embed = new Discord.EmbedBuilder()
                 .setTitle(ip + ":" + port)
@@ -98,4 +99,8 @@ module.exports = (client, interaction) => {
 
             await interaction.reply({ embeds: [embed] });
         });
+    } catch (error) {
+        interaction.reply("Es gab einen Fehler.");
+        client.log(error, "mc.js");
+    }
 };
