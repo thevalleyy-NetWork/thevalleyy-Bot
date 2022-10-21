@@ -99,3 +99,4 @@ module.exports = (client, interaction) => {
         interaction.reply("Es gab einen Fehler.");
     }
 };
+// TODO: mute wird warum auch immer nicht geloggt

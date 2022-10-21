@@ -94,7 +94,7 @@ function log(text, style = "reset", background = "reset", showTime = true) {
     );
 }
 
-function gettime(full = false) {
+function gettime(full = false, date = new Date()) {
     function addZero(x, n) {
         while (x.toString().length < n) {
             x = "0" + x;
@@ -102,7 +102,7 @@ function gettime(full = false) {
         return x;
     }
 
-    const d = new Date();
+    const d = new Date(date);
     let y = d.getFullYear();
     let mm = addZero(d.getMonth() + 1, 2);
     let dd = addZero(d.getDate(), 2);
@@ -663,13 +663,14 @@ client.on("interactionCreate", async (interaction) => {
 
 // custom log override
 client.modLog = async function (message, file = "custom") {
-    const time = gettime(true);
+    const time = Date.now();
     const embed0 = new Discord.EmbedBuilder()
         .setTitle("mod-log")
         .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
-        .setFooter({ text: "origin: " + file + " | " + time })
+        .setFooter({ text: "origin: " + file + " | " + gettime(true, time) })
         .setColor(config.mod_log_color);
 
+    await wait(1000); // wait 1 second to prevent wrong ids
     const res = await db("SELECT id FROM logs ORDER BY id desc LIMIT 1");
     if (res.length == 0) {
         client.channels.cache
@@ -699,18 +700,13 @@ client.modLog = async function (message, file = "custom") {
 client.log = async function (
     message,
     file = "custom",
-    time = gettime(true),
+    time = Date.now(),
     modlog = 0
 ) {
     try {
         await db(
             "INSERT INTO logs (message, origin, time, modlog) VALUES (?, ?, ?, ?)",
-            [
-                encodeURI(message),
-                encodeURI(file),
-                encodeURI(time),
-                encodeURI(modlog.toString()),
-            ]
+            [encodeURI(message), encodeURI(file), time, modlog.toString()]
         );
     } catch (e) {
         client.channels.cache
@@ -722,10 +718,10 @@ client.log = async function (
 // custom error override
 client.error = async function (message, file = "custom") {
     try {
-        const time = gettime(true);
+        const time = Date.now();
         await db(
             "INSERT INTO errors (message, origin, time) VALUES (?, ?, ?)",
-            [encodeURI(message), encodeURI(file), encodeURI(time)]
+            [encodeURI(message), encodeURI(file), time]
         );
 
         const embed1 = new Discord.EmbedBuilder()
@@ -733,7 +729,9 @@ client.error = async function (message, file = "custom") {
             .setDescription(
                 `\`\`\`${message.toString().substring(0, 2022)}\`\`\``
             )
-            .setFooter({ text: "origin: " + file + " | " + time })
+            .setFooter({
+                text: "origin: " + file + " | " + gettime(true, time),
+            })
             .setColor(config.mod_log_color_error);
 
         const res = await db("SELECT id FROM errors ORDER BY id desc LIMIT 1");
