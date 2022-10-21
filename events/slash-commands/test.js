@@ -23,7 +23,6 @@ module.exports = (client, interaction) => {
     // client.modLog("this is a custom modlog", "test.js");
     // client.log("this is a custom log", "test.js");
 
-    // TODO: Bei jedem client.error auch die interaction replien
     // const members = message.guild.members.cache
     // members.forEach(async member => {
     //     await db(`INSERT INTO discord (dcid, dctag, joindate, oldestjoindate) VALUES (${member.id}, '${await encodeURI(member.user.tag.replaceAll("'", " "))}', ${Date.now()}, ${Date.now()})`)

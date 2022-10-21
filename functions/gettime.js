@@ -5,7 +5,7 @@
  * @returns
  */
 
-const getTime = (full = false, date = new Date()) => {
+const getTime = (full = false, date) => {
     function addZero(x, n) {
         while (x.toString().length < n) {
             x = "0" + x;
@@ -13,7 +13,7 @@ const getTime = (full = false, date = new Date()) => {
         return x;
     }
 
-    const d = new Date(parseInt(date));
+    d = date ? new Date(parseInt(date)) : new Date();
     let y = d.getFullYear();
     let mm = addZero(d.getMonth() + 1, 2);
     let dd = addZero(d.getDate(), 2);

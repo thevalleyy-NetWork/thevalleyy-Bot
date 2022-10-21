@@ -57,7 +57,7 @@ module.exports = (client, interaction) => {
             );
 
             client.modLog(
-                `${muteUser.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gemuted.`,
+                `${muteUser.user.tag} wurde von ${interaction.user.tag} wegen ${reason} permanent gemuted.`,
                 "mute.js"
             );
 
@@ -93,10 +93,16 @@ module.exports = (client, interaction) => {
                 .catch((error) => {
                     client.log(error, "mute.js");
                 });
+
+            client.modLog(
+                `${muteUser.user.tag} wurde von ${
+                    interaction.user.tag
+                } wegen ${reason} für ${+duration} Minuten gemuted.`,
+                "mute.js"
+            );
         }
     } catch (error) {
         client.error(error, "mute.js");
         interaction.reply("Es gab einen Fehler.");
     }
 };
-// TODO: mute wird warum auch immer nicht geloggt
