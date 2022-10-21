@@ -1,5 +1,7 @@
 const config = require("../../config.json");
 const util = require("util");
+const Discord = require("discord.js");
+const paginationEmbed = require("../../functions/pagination.js");
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -31,10 +33,41 @@ module.exports = async (client, interaction) => {
             return;
         }
 
-        interaction.reply("```js\n" + output.substring(0, 1950) + "```");
-        console.log(
-            "\n-----EVAL BEGIN-----\n" + output + "\n------EVAL END------\n"
-        );
+        if (output.length < 2000) {
+            console.log("short");
+            interaction.reply("```js\n" + output + "```");
+        } else {
+            console.log("long");
+            const button1 = new Discord.ButtonBuilder()
+                .setCustomId("previousbtn")
+                .setLabel("◀️")
+                .setStyle("Secondary");
+
+            const button2 = new Discord.ButtonBuilder()
+                .setCustomId("nextbtn")
+                .setLabel("▶️")
+                .setStyle("Secondary");
+
+            buttonList = [button1, button2];
+
+            const pages = [];
+            for (let i = 0; i < output.length; i += 4000) {
+                const page = new Discord.EmbedBuilder()
+                    .setTitle("Eval")
+                    .setDescription(
+                        "```js\n" + output.substring(i, i + 4000) + "```"
+                    )
+                    .setColor(config.standard_color)
+                    .setTimestamp();
+                pages.push(page);
+            }
+            paginationEmbed(interaction, pages, buttonList);
+        }
+
+        if (output != undefined)
+            console.log(
+                "\n-----EVAL BEGIN-----\n" + output + "\n------EVAL END------\n"
+            );
     } catch (error) {
         client.error(error, "eval.js");
         interaction.reply("Es ist ein Fehler aufgetreten.");
