@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
+    cooldown: 5,
     data: new SlashCommandBuilder()
         .setName("user")
         .setDMPermission(false)

@@ -1,17 +1,8 @@
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    const hackertext1 = interaction.options.getString("text");
-
-    if (
-        hackertext1.toLowerCase().includes("@here") ||
-        hackertext1.toLowerCase().includes("@everyone") ||
-        hackertext1.toLowerCase().includes("<@&")
-    )
-        return interaction.reply("lol nö");
-
-    const hackertext2 = hackertext1
-        .toLowerCase()
+    const hackertext2 = interaction.options
+        .getString("text")
         .replaceAll("sus", "<:SUS:843876559941402654>")
         .replaceAll("leet", "1337")
         .replaceAll("a", "4")
@@ -32,5 +23,10 @@ module.exports = (client, interaction) => {
         .replaceAll("b", "|>")
         .replaceAll("c", "<")
         .substring(0, 300);
-    interaction.channel.send(hackertext2);
+
+    interaction.reply({ content: "Done", ephemeral: true });
+    interaction.channel.send({
+        content: hackertext2,
+        allowedMentions: { parse: [] },
+    });
 };

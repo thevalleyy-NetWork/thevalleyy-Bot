@@ -34,10 +34,8 @@ module.exports = async (client, interaction) => {
         }
 
         if (output.length < 2000) {
-            console.log("short");
             interaction.reply("```js\n" + output + "```");
         } else {
-            console.log("long");
             const button1 = new Discord.ButtonBuilder()
                 .setCustomId("previousbtn")
                 .setLabel("◀️")
