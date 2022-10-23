@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const config = require("../../config.json");
 const mysql = require("mysql2");
 const util = require("util");
+const fs = require("node:fs");
 
 const connection = mysql.createPool({
     multipleStatements: true,
@@ -12,7 +13,7 @@ const connection = mysql.createPool({
     database: config.mysql.database,
 });
 
-var db = util.promisify(connection.query).bind(connection);
+const db = util.promisify(connection.query).bind(connection);
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
@@ -101,6 +102,38 @@ module.exports = async (client, interaction) => {
             interaction.reply(
                 `\`${user.user.tag}\` konnte nicht in der Datenbank gefunden werden.`
             );
+        }
+
+        try {
+            await db("SELECT * FROM discord").then(async (res) => {
+                const dbJson = {
+                    date: Date.now(),
+                    db: res,
+                };
+                await fs.writeFileSync(
+                    "./data/database.json",
+                    JSON.stringify(dbJson, null, 4)
+                );
+                client.db = await res;
+
+                const blacklist = await res
+                    .filter((x) => x.blacklisted == 1)
+                    .map((x) => x.dcid);
+                client.blacklist = blacklist;
+
+                await fs.writeFileSync(
+                    "./data/blacklist.json",
+                    JSON.stringify(client.blacklist, null, 4)
+                );
+            });
+        } catch (e) {
+            client.error(
+                "Retrieved error while caching db, using local copy\n" + e,
+                "ready.startup.js"
+            );
+            // use old database
+            client.db = require("./data/database.json").db;
+            client.blacklist = require("./data/blacklist.json");
         }
     } catch (err) {
         client.error(err, "blacklist.js");

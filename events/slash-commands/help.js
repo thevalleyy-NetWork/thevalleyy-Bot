@@ -1,9 +1,10 @@
-const allCommands = require("../../data/cmdlist.json");
 const Discord = require("discord.js");
 const config = require("../../config.json");
 const fs = require("node:fs");
 
 module.exports = async (client, interaction) => {
+    const allCommands = client.cmdlist;
+
     if (interaction.isAutocomplete()) {
         const filtered = allCommands
             .filter((choice) =>
@@ -69,9 +70,7 @@ module.exports = async (client, interaction) => {
 
     if (interaction.options._subcommand == "command") {
         const cmd = interaction.options._hoistedOptions[0].value.toString();
-        const cmdjson = require(`../../data/cmdstructure.json`).cmds[
-            cmd + ".js"
-        ];
+        const cmdjson = client.cmdStructure.cmds[cmd + ".js"];
 
         const embed = new Discord.EmbedBuilder()
             .setTitle(`/${cmd}`)

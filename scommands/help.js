@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const allCommands = require("../data/cmdlist.json");
 
 module.exports = {
     cooldown: 60,

@@ -1,22 +1,29 @@
 const Discord = require("discord.js");
-const cooldownSet = new Set();
-const he = require("he");
-const bricksetData = require("../../data/brickset.json");
-const paginationEmbed = require("../../functions/pagination.js");
 const { EmbedBuilder, ButtonBuilder } = require("discord.js");
+const he = require("he");
+
+const paginationEmbed = require("../../functions/pagination.js");
 const config = require("../../config.json");
 
-function validData() {
-    if (bricksetData.apikey.status == "error")
-        return bricksetData.apikey.message;
-    if (bricksetData.userkey.status == "error")
-        return bricksetData.userkey.message;
-    return true;
-}
+const cooldownSet = new Set();
+
+const fullstar = "<:fullstar:977964060891054161>";
+const emptystar = "<:emptystar:977964082554630194>";
+
+const button1 = new ButtonBuilder()
+    .setCustomId("previousbtn")
+    .setLabel("◀️")
+    .setStyle("Secondary");
+
+const button2 = new ButtonBuilder()
+    .setCustomId("nextbtn")
+    .setLabel("▶️")
+    .setStyle("Secondary");
+
+buttonList = [button1, button2];
 
 function cooldown(interaction) {
     if (interaction.user.id == config.owner) return;
-    // react and remove the message
     if (cooldownSet.has(interaction.user.id)) {
         interaction.reply({
             content:
@@ -32,35 +39,20 @@ function cooldown(interaction) {
     }, 20000);
 }
 
-const fullstar = "<:fullstar:977964060891054161>";
-const emptystar = "<:emptystar:977964082554630194>";
-const userhash = bricksetData.userkey.hash;
-
-const button1 = new ButtonBuilder()
-    .setCustomId("previousbtn")
-    .setLabel("◀️")
-    .setStyle("Secondary");
-
-const button2 = new ButtonBuilder()
-    .setCustomId("nextbtn")
-    .setLabel("▶️")
-    .setStyle("Secondary");
-
-//create an array of buttons
-
-buttonList = [button1, button2];
-
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const fetch = (await import("node-fetch")).default;
+    const userhash = client.brickset.userkey.hash;
+
+    if (client.brickset.userkey.status != "success")
+        return interaction.reply({
+            content:
+                "Der Lego Befehl ist wegen einem fehlerhaften API-Key gerade nicht verfügbar.",
+            ephemeral: true,
+        });
 
     if (interaction.options._subcommand == "set") {
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction)) return;
 
         fetch(
@@ -203,7 +195,7 @@ module.exports = async (client, interaction) => {
                         embed.addFields([
                             {
                                 name: "Barcodes:",
-                                value: `EAN: \`${set.barcode.EAN}\`, UPC: \`${set.barcode.UPC}\``,
+                                value: `EAN: \`${set.barcode.EAN}\`, \nUPC: \`${set.barcode.UPC}\``,
                                 inline: true,
                             },
                         ]);
@@ -286,11 +278,6 @@ module.exports = async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "api") {
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction) == true) return;
 
         fetch(
@@ -361,11 +348,6 @@ module.exports = async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "theme") {
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction) == true) return;
 
         fetch(
@@ -486,12 +468,6 @@ module.exports = async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "subtheme") {
-        // is the api key working?
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction) == true) return;
 
         // is the given theme valid?
@@ -677,11 +653,6 @@ module.exports = async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "year") {
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction) == true) return;
 
         // is the given theme valid?
@@ -824,11 +795,6 @@ module.exports = async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "review") {
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction) == true) return;
 
         fetch(
@@ -983,11 +949,6 @@ module.exports = async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "instructions") {
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction) == true) return;
 
         fetch(
@@ -1036,11 +997,6 @@ module.exports = async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "images") {
-        if (validData() !== true) {
-            interaction.reply(validData());
-            return;
-        }
-
         if (cooldown(interaction) == true) return;
 
         fetch(

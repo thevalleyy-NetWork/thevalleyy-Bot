@@ -42,12 +42,10 @@ module.exports = async (client, member) => {
                     member.roles.add(vcmuterole);
                 }
                 if ((await decodeURI(user.dctag)) !== member.user.tag) {
-                    await db(
-                        `UPDATE discord SET dctag = '${member.user.tag.replaceAll(
-                            "'",
-                            " "
-                        )}' WHERE dcid = ${member.id}`
-                    );
+                    await db(`UPDATE discord SET dctag = ? WHERE dcid = ?`, [
+                        member.user.tag.replaceAll("'", " "),
+                        member.id,
+                    ]);
                 }
                 await db(
                     `UPDATE discord SET joindate = ${Date.now()} WHERE dcid = ${

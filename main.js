@@ -1,18 +1,28 @@
+// --define and create some things--
+// packages
 const Discord = require("discord.js");
+const { REST } = require("@discordjs/rest");
+const mysql = require("mysql2");
+
+// native
 const path = require("path");
 const fs = require("node:fs");
 const process = require("process");
-const config = require("./config.json");
-const cmdJson = require("./data/cmdstructure.json");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord.js");
-const { token } = require("./config.json");
-const cooldownSet = new Set();
-const mysql = require("mysql2");
 const util = require("util");
 const { get } = require("http");
 const wait = require("node:timers/promises").setTimeout;
 
+// functions
+const log = require("./functions/log.js");
+const gettime = require("./functions/gettime.js");
+
+// files
+const config = require("./config.json");
+
+// other
+const cooldownSet = new Set();
+
+// database
 const connection = mysql.createPool({
     multipleStatements: true,
     connectionLimit: 10,
@@ -22,20 +32,9 @@ const connection = mysql.createPool({
     database: config.mysql.database,
 });
 
-var db = util.promisify(connection.query).bind(connection);
+const db = util.promisify(connection.query).bind(connection);
 
-const log = require("./functions/log.js");
-const gettime = require("./functions/gettime.js");
-
-log(
-    `\nLoading: ${require("./package.json").name} v${
-        require("./package.json").version
-    }\n`,
-    "red",
-    "reset",
-    false
-);
-
+// client
 const client = new Discord.Client({
     partials: [
         Discord.Partials.Message,
@@ -62,63 +61,28 @@ const client = new Discord.Client({
         Discord.GatewayIntentBits.GuildVoiceStates,
         Discord.GatewayIntentBits.GuildPresences,
         Discord.GatewayIntentBits.GuildMessageReactions,
-        Discord.GatewayIntentBits.GuildMessageTyping,
         Discord.GatewayIntentBits.DirectMessages,
         Discord.GatewayIntentBits.DirectMessageReactions,
-        Discord.GatewayIntentBits.DirectMessageTyping,
     ],
 });
 
-// MESSAGE-COMMANDS
-function messageCommands() {
-    let cmdJson = { cmds: {} };
-    log("Registering: Message-Commands", "yellow", "reset", false);
-
-    const readCommands = (dir) => {
-        // read the commands directory
-        const files = fs.readdirSync(path.join(__dirname, dir));
-
-        // loop through the files
-        for (const file of files) {
-            // check if the object is a directory
-            const stat = fs.lstatSync(path.join(__dirname, dir, file));
-            if (stat.isDirectory()) {
-                // at this point we know it is a directory, so we can call the function again
-                readCommands(path.join(dir, file));
-            } else if (!file.toLowerCase().endsWith(".js")) {
-                // make sure its a js file
-                log(`Skipping: ${file}`, "green", "reset", true);
-                return;
-            }
-            // at this point we know it is a file, so we can require it
-            log(`Loading: ${file}`, "cyan", "reset", true);
-            // define option as require the file
-            const option = require(path.join(__dirname, dir, file));
-            cmdJson.cmds[file] = option;
-        }
-        fs.writeFileSync(
-            "./data/CMDoptions.json",
-            JSON.stringify(cmdJson, null, 4)
-        );
-        log(
-            `Loaded: ${
-                files.filter((file) => file.toLowerCase().endsWith(".js"))
-                    .length
-            } Message-Commands\n`,
-            "blue",
-            "reset",
-            false
-        );
-    };
-    // execute the defined function with dir commands
-    readCommands("commands");
-}
+// startup log
+log(
+    `\nLoading: ${require("./package.json").name} v${
+        require("./package.json").version
+    }\n`,
+    "red",
+    "reset",
+    false
+);
 
 // SLASH-COMMANDS
 function slashCommands() {
+    // define an empty json object
     let cmdJson = { cmds: {} };
     // load every slash command
     log("Registering: Slash-Commands", "yellow", "reset", false);
+
     const commands = [];
     try {
         var commandFiles = fs.readdirSync("./scommands");
@@ -131,9 +95,6 @@ function slashCommands() {
         );
     }
 
-    // Place your client and guild ids here
-    const clientId = client.user.id;
-
     for (const file of commandFiles) {
         if (!file.toLowerCase().endsWith(".js")) {
             log(`Skipping: ${file}`, "green", "reset", true);
@@ -144,12 +105,10 @@ function slashCommands() {
             log(`Loading: ${file}`, "cyan", "reset", true);
         }
     }
-    fs.writeFileSync(
-        "./data/cmdstructure.json",
-        JSON.stringify(cmdJson, null, 4)
-    );
 
-    const rest = new REST({ version: "10" }).setToken(token);
+    client.cmdStructure = cmdJson;
+
+    const rest = new REST({ version: "10" }).setToken(config.token);
 
     async function refresh() {
         try {
@@ -164,9 +123,12 @@ function slashCommands() {
                 true
             );
 
-            const data = await rest.put(Routes.applicationCommands(clientId), {
-                body: commands,
-            });
+            const data = await rest.put(
+                Discord.Routes.applicationCommands(client.user.id),
+                {
+                    body: commands,
+                }
+            );
 
             log(
                 `Loaded: ${data.length} Slash-Commands\n`,
@@ -199,8 +161,6 @@ function events() {
             );
         }
         files.forEach(function (file) {
-            const stat = fs.lstatSync(path.join(__dirname, "events", file));
-
             if (!file.toLowerCase().endsWith(".js")) {
                 log(`Skipping: ${file}`, "green", "reset", true);
                 return;
@@ -216,6 +176,8 @@ function events() {
             log(`Scanned: ${file}`, "cyan", "reset", true);
         });
 
+        client.events = eventJson;
+
         log("\nRegistering: Events", "yellow", "reset", false);
 
         Object.keys(eventJson.event).forEach((event) => {
@@ -228,115 +190,56 @@ function events() {
             }
 
             client.on(event, async (...args) => {
-                // blacklist
-                if (event == "messageCreate") {
-                    try {
-                        if (args[0].author.bot) return;
+                try {
+                    if (event == "messageCreate") var user = args[0].author;
+                    else if (event == "interactionCreate")
+                        var user = args[0].user;
+                    else if (event == "voiceStateUpdate")
+                        var user = args[0].member.user;
+                    else if (event.startsWith("guildMember"))
+                        var user = args[0].user;
+
+                    if (user.bot) return;
+
+                    // is user blacklisted?
+                    if (await client.blacklist.includes(user.id)) {
+                    } else {
                         const maintenance = await JSON.parse(
                             fs.readFileSync("./data/maintenance.json", "utf8")
                         );
+
                         if (
                             maintenance.maintenance == true &&
-                            args[0].author.id != config.owner
-                        )
+                            user.id != config.owner
+                        ) {
+                            if (
+                                event == "interactionCreate" &&
+                                !args[0].isAutocomplete() &&
+                                !args[0].isChatInputCommand()
+                            ) {
+                                console.log(event, args[0], user);
+                                args[0].reply({
+                                    content:
+                                        "🛑 Der Bot ist aktuell gesperrt. \n Grund: `" +
+                                        maintenance.reason +
+                                        "`",
+                                    ephemeral: true,
+                                });
+                            }
                             return;
-
-                        if (args[0].author.id != config.owner) {
-                            if (
-                                await db(
-                                    `SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].author.id}`
-                                ).then((res) => res[0])
-                            )
-                                return;
                         }
-                    } catch (e) {
-                        client.error(e, "main.js");
+
+                        eventJson.event[event].forEach((file) => {
+                            const eventFile = require(`./events/${file}`);
+                            eventFile(client, ...args);
+                        });
                     }
+                } catch (error) {
+                    client.error(error, "main.js");
                 }
-
-                if (event == "guildMemberAdd" || event == "guildMemberRemove") {
-                    try {
-                        if (args[0].user.id != config.owner) {
-                            if (
-                                await db(
-                                    `SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].user.id}`
-                                ).then((res) => res[0])
-                            )
-                                return;
-                        }
-                    } catch (e) {
-                        client.error(e, "main.js");
-                    }
-                }
-
-                if (event == "guildMemberUpdate") {
-                    try {
-                        if (args[0].user.id != config.owner) {
-                            if (
-                                await db(
-                                    `SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].user.id}`
-                                ).then((res) => res[0])
-                            )
-                                return;
-                        }
-                    } catch (e) {
-                        client.error(e, "main.js");
-                    }
-                }
-
-                if (event == "interactionCreate") {
-                    try {
-                        if (args[0].user.bot) return;
-                        const maintenance = await JSON.parse(
-                            fs.readFileSync("./data/maintenance.json", "utf8")
-                        );
-                        if (
-                            maintenance.maintenance == true &&
-                            args[0].user.id != config.owner
-                        )
-                            return args[0].reply({
-                                content:
-                                    (await "🛑 Der Bot ist aktuell gesperrt. \n Grund: `") +
-                                    maintenance.reason +
-                                    "`",
-                                ephemeral: true,
-                            });
-
-                        if (args[0].user.id != config.owner) {
-                            if (
-                                await db(
-                                    `SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].user.id}`
-                                ).then((res) => res[0])
-                            )
-                                return;
-                        }
-                    } catch (e) {
-                        client.error(e, "main.js");
-                    }
-                }
-
-                if (event == "voiceStateUpdate") {
-                    try {
-                        if (args[0].member.user.id != config.owner) {
-                            if (
-                                await db(
-                                    `SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${args[0].member.user.id}`
-                                ).then((res) => res[0])
-                            )
-                                return;
-                        }
-                    } catch (e) {
-                        client.error(e, "main.js");
-                    }
-                }
-
-                // log("Incoming Event: " + event, "blue", "reset", true)
-                eventJson.event[event].forEach((file) => {
-                    const eventFile = require(`./events/${file}`);
-                    eventFile(client, ...args);
-                });
             });
         });
+
         log(
             `Loaded: ${
                 files.filter((file) => file.toLowerCase().endsWith(".js"))
@@ -351,7 +254,6 @@ function events() {
 
 // start all handlers
 client.on("ready", async () => {
-    // messageCommands()
     slashCommands();
     events();
 });
@@ -359,215 +261,224 @@ client.on("ready", async () => {
 // slash command handler
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
-        // blacklist
-        try {
-            if (interaction.user.id != config.owner) {
-                if (
-                    await db(
-                        `SELECT dcid FROM discord WHERE blacklisted = 1 AND dcid = ${interaction.user.id}`
-                    ).then((res) => res[0])
-                )
-                    return;
+        if (await client.blacklist.includes(interaction.user.id)) {
+        } else {
+            const maintenance = await JSON.parse(
+                fs.readFileSync("./data/maintenance.json", "utf8")
+            );
+
+            if (
+                maintenance.maintenance == true &&
+                interaction.user.id != config.owner
+            ) {
+                if (!interaction.isAutocomplete()) {
+                    interaction.reply({
+                        content:
+                            "🛑 Der Bot ist aktuell gesperrt. \n Grund: `" +
+                            maintenance.reason +
+                            "`",
+                        ephemeral: true,
+                    });
+                }
+                return;
             }
-        } catch (e) {
-            v;
-        }
 
-        const maintenance = await JSON.parse(
-            fs.readFileSync("./data/maintenance.json", "utf8")
-        );
-        if (
-            maintenance.maintenance == true &&
-            interaction.user.id != config.owner
-        )
-            return interaction.reply({
-                content:
-                    (await "🛑 Der Bot ist aktuell gesperrt. \n Grund: `") +
-                    maintenance.reason +
-                    "`",
-                ephemeral: true,
-            });
+            // cooldown
+            if (
+                interaction.user.id != config.owner &&
+                interaction.isChatInputCommand()
+            ) {
+                const cooldown =
+                    client.cmdStructure.cmds[interaction.commandName + ".js"]
+                        .cooldown;
 
-        // cooldown
-        if (interaction.user.id != config.owner) {
-            const cooldown =
-                cmdJson.cmds[interaction.commandName + ".js"].cooldown;
+                if (cooldown == undefined) {
+                    // No custom cooldown, use the default
 
-            if (cooldown == undefined) {
-                // No custom cooldown, use the default
+                    // react and remove the message
+                    if (cooldownSet.has(interaction.user.id))
+                        return interaction.reply({
+                            content: `⏳ \`/${interaction.commandName}\` hat einen Cooldown von \`${config.cooldown_standard}\` Sekunden.`,
+                            ephemeral: true,
+                        });
 
-                // react and remove the message
-                if (cooldownSet.has(interaction.user.id))
-                    return interaction.reply({
-                        content: `⏳ \`/${interaction.commandName}\` hat einen Cooldown von \`${config.cooldown_standard}\` Sekunden.`,
-                        ephemeral: true,
-                    });
+                    // add the user to the cooldown set
+                    cooldownSet.add(interaction.user.id);
+                    setTimeout(() => {
+                        cooldownSet.delete(interaction.user.id);
+                    }, config.cooldown_standard * 1000);
+                } else {
+                    // the same as above, but with a custom cooldown
+                    // calculate the cooldown
+                    d = Number(cooldown);
+                    var h = Math.floor(d / 3600);
+                    var m = Math.floor((d % 3600) / 60);
+                    var s = Math.floor((d % 3600) % 60);
 
-                // add the user to the cooldown set
-                cooldownSet.add(interaction.user.id);
-                setTimeout(() => {
-                    cooldownSet.delete(interaction.user.id);
-                }, config.cooldown_standard * 1000);
-            } else {
-                // the same as above, but with a custom cooldown
-                // calculate the cooldown
-                d = Number(cooldown);
-                var h = Math.floor(d / 3600);
-                var m = Math.floor((d % 3600) / 60);
-                var s = Math.floor((d % 3600) % 60);
-
-                var hDisplay =
-                    +h > 0
-                        ? +h == 1
-                            ? +m > 0
-                                ? `eine Stunde, `
-                                : +h == 1
-                                ? `eine Stunde`
+                    var hDisplay =
+                        +h > 0
+                            ? +h == 1
+                                ? +m > 0
+                                    ? `eine Stunde, `
+                                    : +h == 1
+                                    ? `eine Stunde`
+                                    : `${h} Stunden`
+                                : +m > 0
+                                ? `${h} Stunden, `
                                 : `${h} Stunden`
-                            : +m > 0
-                            ? `${h} Stunden, `
-                            : `${h} Stunden`
-                        : ``;
-                var mDisplay =
-                    +m > 0
-                        ? +m == 1
-                            ? +s > 0
-                                ? `eine Minute, `
-                                : +m == 1
-                                ? `eine Minute`
+                            : ``;
+                    var mDisplay =
+                        +m > 0
+                            ? +m == 1
+                                ? +s > 0
+                                    ? `eine Minute, `
+                                    : +m == 1
+                                    ? `eine Minute`
+                                    : `${m} Minuten`
+                                : +s > 0
+                                ? `${m} Minuten, `
                                 : `${m} Minuten`
-                            : +s > 0
-                            ? `${m} Minuten, `
-                            : `${m} Minuten`
-                        : ``;
-                var sDisplay =
-                    +s > 0 ? (+s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
+                            : ``;
+                    var sDisplay =
+                        +s > 0
+                            ? +s == 1
+                                ? `eine Sekunde`
+                                : `${s} Sekunden`
+                            : ``;
 
-                // do the magic
-                if (
-                    cooldownSet.has(
-                        interaction.user.id + interaction.commandName
-                    ) ||
-                    cooldownSet.has(interaction.user.id)
-                )
-                    return interaction.reply({
-                        content: `⏳ \`/${
-                            interaction.commandName
-                        }\` hat einen Cooldown von \`${
-                            hDisplay + mDisplay + sDisplay
-                        }\``,
-                        ephemeral: true,
-                    });
-                cooldownSet.add(interaction.user.id + interaction.commandName);
-                setTimeout(() => {
-                    cooldownSet.delete(
+                    // do the magic
+                    if (
+                        cooldownSet.has(
+                            interaction.user.id + interaction.commandName
+                        ) ||
+                        cooldownSet.has(interaction.user.id)
+                    )
+                        return interaction.reply({
+                            content: `⏳ \`/${
+                                interaction.commandName
+                            }\` hat einen Cooldown von \`${
+                                hDisplay + mDisplay + sDisplay
+                            }\``,
+                            ephemeral: true,
+                        });
+                    cooldownSet.add(
                         interaction.user.id + interaction.commandName
                     );
-                }, cooldown * 1000);
+                    setTimeout(() => {
+                        cooldownSet.delete(
+                            interaction.user.id + interaction.commandName
+                        );
+                    }, cooldown * 1000);
+                }
             }
-        }
 
-        if (interaction.guild) interaction.guild.members.fetch();
+            if (interaction.guild) interaction.guild.members.fetch();
 
-        const eventFile = require(`./events/slash-commands/${interaction.commandName}.js`);
-        eventFile(client, interaction);
+            const eventFile = require(`./events/slash-commands/${interaction.commandName}.js`);
+            eventFile(client, interaction);
 
-        const executed = new Discord.EmbedBuilder()
-            .setTitle("registered a slash-command")
-            .setThumbnail(interaction.user.avatarURL())
-            .setDescription(
-                `\`${interaction.user.tag}\`, <@${interaction.user.id}>`
-            )
-            .addFields([
-                {
-                    name: "command:",
-                    value: `/\`${interaction.commandName}\``,
-                    inline: true,
-                },
-                {
-                    name: "channel:",
-                    value: "<#" + interaction.channel.id + ">",
-                    inline: true,
-                },
-                {
-                    name: "timestamp:",
-                    value: `<t:${Math.round(
-                        interaction.createdTimestamp / 1000
-                    )}:F> (${Math.round(interaction.createdTimestamp / 1000)})`,
-                    inline: true,
-                },
-            ])
-            .setTimestamp()
-            .setColor(config.cmd_log_color);
-        if (interaction.guild) {
-            executed
+            if (interaction.isAutocomplete()) return;
+            const executed = new Discord.EmbedBuilder()
+                .setTitle("registered a slash-command")
+                .setThumbnail(interaction.user.avatarURL())
+                .setDescription(
+                    `\`${interaction.user.tag}\`, <@${interaction.user.id}>`
+                )
                 .addFields([
                     {
-                        name: "guild.id:",
-                        value: `\`${interaction.guild.id}\``,
+                        name: "command:",
+                        value: `/\`${interaction.commandName}\``,
                         inline: true,
                     },
                     {
-                        name: "guild.name:",
-                        value: `\`${interaction.guild.name}\``,
+                        name: "channel:",
+                        value: "<#" + interaction.channel.id + ">",
                         inline: true,
                     },
                     {
-                        name: "link:",
-                        value: `[https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id}](https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id} "link to ${interaction.user.username}'s interaction")`,
+                        name: "timestamp:",
+                        value: `<t:${Math.round(
+                            interaction.createdTimestamp / 1000
+                        )}:F> (${Math.round(
+                            interaction.createdTimestamp / 1000
+                        )})`,
                         inline: true,
                     },
                 ])
-                .setFooter({
-                    text: interaction.guild.name,
-                    iconURL: interaction.guild.iconURL(),
-                });
-        } else {
-            executed
-                .addFields([
-                    {
-                        name: "user.id:",
-                        value: `\`${interaction.user.id}\``,
-                        inline: true,
-                    },
-                    {
-                        name: "user.name:",
-                        value: `\`${interaction.user.username}\``,
-                        inline: true,
-                    },
-                    {
-                        name: "link:",
-                        value: `[https://discord.com/users/${interaction.user.id}](https://discord.com/users/${interaction.user.id} "link to ${interaction.user.username}'s discord account")`,
-                        inline: true,
-                    },
-                ])
-                .setFooter({
-                    text: interaction.user.tag,
-                    iconURL: interaction.user.avatarURL(),
-                });
-        }
+                .setTimestamp()
+                .setColor(config.cmd_log_color);
+            if (interaction.guild) {
+                executed
+                    .addFields([
+                        {
+                            name: "guild.id:",
+                            value: `\`${interaction.guild.id}\``,
+                            inline: true,
+                        },
+                        {
+                            name: "guild.name:",
+                            value: `\`${interaction.guild.name}\``,
+                            inline: true,
+                        },
+                        {
+                            name: "link:",
+                            value: `[https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id}](https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id} "link to ${interaction.user.username}'s interaction")`,
+                            inline: true,
+                        },
+                    ])
+                    .setFooter({
+                        text: interaction.guild.name,
+                        iconURL: interaction.guild.iconURL(),
+                    });
+            } else {
+                executed
+                    .addFields([
+                        {
+                            name: "user.id:",
+                            value: `\`${interaction.user.id}\``,
+                            inline: true,
+                        },
+                        {
+                            name: "user.name:",
+                            value: `\`${interaction.user.username}\``,
+                            inline: true,
+                        },
+                        {
+                            name: "link:",
+                            value: `[https://discord.com/users/${interaction.user.id}](https://discord.com/users/${interaction.user.id} "link to ${interaction.user.username}'s discord account")`,
+                            inline: true,
+                        },
+                    ])
+                    .setFooter({
+                        text: interaction.user.tag,
+                        iconURL: interaction.user.avatarURL(),
+                    });
+            }
 
-        if (interaction.options) {
-            options = "";
-            await interaction.options._hoistedOptions.forEach((option) => {
-                options += `\`${option.name}\`: \`${option.value}\`\n`;
-            });
-        }
-        // wait(1000)
+            if (interaction.options) {
+                options = "";
+                await interaction.options._hoistedOptions.forEach((option) => {
+                    options += `\`${option.name}\`: \`${option.value}\`\n`;
+                });
+            }
+            // wait(1000)
 
-        if (!options) options = "n/a";
-        executed.addFields([
-            {
-                name: "arguments:",
-                value: `${options.substring(0, 1000)}${
-                    options.toString().length > 1000 ? "\n..." : ""
-                }`,
-                inline: false,
-            },
-        ]);
-        client.channels.cache
-            .get(config.cmd_log_channel_id)
-            .send({ embeds: [executed] });
+            if (!options) options = "n/a";
+            executed.addFields([
+                {
+                    name: "arguments:",
+                    value: `${options.substring(0, 1000)}${
+                        options.toString().length > 1000 ? "\n..." : ""
+                    }`,
+                    inline: false,
+                },
+            ]);
+            // if (interaction.isChatInputCommand()) {
+            client.channels.cache
+                .get(config.cmd_log_channel_id)
+                .send({ embeds: [executed] });
+            // }
+        }
     } else return;
 });
 

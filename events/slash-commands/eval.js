@@ -67,7 +67,6 @@ module.exports = async (client, interaction) => {
                 "\n-----EVAL BEGIN-----\n" + output + "\n------EVAL END------\n"
             );
     } catch (error) {
-        client.error(error, "eval.js");
-        interaction.reply("Es ist ein Fehler aufgetreten.");
+        interaction.reply("```js\n" + error + "```");
     }
 };

@@ -14,7 +14,7 @@ const connection = mysql.createPool({
     database: config.mysql.database,
 });
 
-var db = util.promisify(connection.query).bind(connection);
+const db = util.promisify(connection.query).bind(connection);
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
