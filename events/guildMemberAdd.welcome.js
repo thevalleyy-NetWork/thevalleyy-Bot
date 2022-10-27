@@ -71,7 +71,7 @@ module.exports = async (client, member) => {
             }
         }
 
-        const message = `Herzlich Willkommen, <@${member.id}> auf dem **thevalleyy-NetWork**. \nLese dir noch das <#786239847554875402> durch, dann kannst du loslegen! :D`;
+        const message = `Herzlich Willkommen, <@${member.id}> auf dem **thevalleyy-NetWork**. \nLies dir noch das <#786239847554875402> durch, dann kannst du loslegen! :D`;
         const channel = member.guild.channels.cache.get(channelId);
         channel.send(message).then((message) => {
             setTimeout(
