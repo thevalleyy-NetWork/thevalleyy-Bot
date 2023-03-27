@@ -1,78 +1,65 @@
+
 # thevalleyy-Bot
-Weird Discord-Bot
+
+A Discord-Bot, written in JS, powered by NodeJS.
 
 
-**config.js**
-All following values are entered between quotation marks, unless otherwise described.
-```json
-{
-    "token": "discord bot token",
-    "owner": "owner's discord id",
-    "cooldown_standard": "default cooldown in seconds (number)",
-    "cmd_log_color": "hex color value for command log embed",
-    "cmd_log_channel_id": "discord channel id for command log",
-    "mod_log_color": "hex color value for command log embed",
-    "mod_log_color_error": "hex color value for error log embed",
-    "mod_log_channel_id": "discord channel id for mod log",
-    "standard_color": "hex color value for default embeds",
-    "keys": {
-        "brickset": "brickset.com api key",
-        "brickset_username": "brickset.com account username",
-        "brickset_password": "brickset.com account password",
-        "pexels": "pexels.com api key"
-    },
-    "mysql": {
-        "host": "database host",
-        "port": "database port (number)",
-        "user": "database user",
-        "password": "database password",
-        "database": "database table name"
-    },
-    "channels": {
-        "memberchannel": "discord channel id for membercount channel",
-        "welcomechannel": "discord channel id for welcome messages"
-    }
-}
-```
+## Features
+
+- Free and open source
+- 100% customisable
+- Slash command handling
+- Event listening
+- Error and log database
+- Message command handling _deprecated_
+
+## Tech Stack
+
+**Runtime:** NodeJS
+
+**Database:** MySQL, JSON
 
 
 
-**data directory**
-```
-Some of these files are smart enough to regenerate when deleted. Some not.
+## Usage
 
-/
-├───other bot files
-└───data/
-    ├───cmd-json/
-    ├───brickset.json
-    ├───cmdstructure.json
-    ├───maintenance.json
-    ├───mcstats.json
-    └───stats.json
-```
+Ensure the bot has at least privileges to register slash commands and send messages.
+
+Insert slash command `/ping`. Response: 
+
+<img src="https://i.imgur.com/jOUoRxj.png" width="800" />
+
+Oh, by the way: **The entire bot is written in German**.
+
+## Support
+
+For support, feel free to join my [discord server](https://discord.gg/DkEnwxNqeX).
+
+## Known Bugs
+- Literally everything. This bot is far, far from acceptable. That's why I'm still working on it.
+## Color Reference
+
+| Standard Colors             | Hex                                                                |
+| ----------------- | ------------------------------------------------------------------ |
+| Command log color | ![#36393f](https://via.placeholder.com/10/36393f?text=+) #36393f |
+| Mod log color | ![#03f8fc](https://via.placeholder.com/10/03f8fc?text=+) #03f8fc |
+| Error log color | ![#ff0000](https://via.placeholder.com/10/ff0000?text=+) #ff0000 |
+| Overall embeds | ![#36393f](https://via.placeholder.com/10/36393f?text=+) #36393f |
 
 
+## Authors
 
-**database scheme**
-```sql
-CREATE TABLE `discord` (
-	`id` INT(10) NOT NULL AUTO_INCREMENT,
-	`dcid` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`dctag` VARCHAR(2000) NULL DEFAULT '[NOT-SET]' COLLATE 'utf8mb4_0900_ai_ci',
-	`muted` TINYINT(3) NULL DEFAULT '0',
-	`voicemuted` TINYINT(3) NULL DEFAULT '0',
-	`blacklisted` TINYINT(3) NULL DEFAULT '0',
-	`niceone` TINYINT(3) NULL DEFAULT '1',
-	`joindate` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`oldestjoindate` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	PRIMARY KEY (`id`) USING BTREE
-)
-COMMENT='some things'
-COLLATE='utf8mb4_0900_ai_ci'
-ENGINE=InnoDB
-AUTO_INCREMENT=47
-;
+- [thevalleyy](https://www.github.com/thevalleyy)
 
-```
-The database is required to be a mysql database.
+
+## Acknowledgements
+
+ - [🧠 TomatoCake](https://github.com/DEVTomatoCake)
+ - [📚 Discord.JS](https://discord.js.org/#/)
+ - [🗨 StackOverflow](https://stackoverflow.com)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
