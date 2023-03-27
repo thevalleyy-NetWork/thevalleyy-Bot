@@ -153,7 +153,6 @@ module.exports = (client, interaction) => {
             });
 
             collector.on("end", async () => {
-                console.log("collector ended");
                 try {
                     for (let i = 0; i < buttonListUp.length; i++) {
                         const btn = buttonListUp[i];

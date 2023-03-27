@@ -3,11 +3,6 @@ const config = require("../../config.json");
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
-        return interaction.reply({
-            content: "Dieser Benutzer ist nicht auf diesem Server!",
-            ephemeral: true,
-        });
 
     if (interaction.options.get("user")) {
         var user = interaction.options.get("user").user;
@@ -16,6 +11,13 @@ module.exports = async (client, interaction) => {
     if (interaction.options.get("user")) {
         var member = interaction.options.get("user").member;
     } else var member = interaction.member;
+
+    if (interaction.guild.members.cache.get(user.id) == undefined) {
+        return interaction.reply({
+            content: "Dieser Benutzer ist nicht auf diesem Server!",
+            ephemeral: true,
+        });
+    }
 
     await client.users.fetch(user.id, { force: true });
 
@@ -92,7 +94,8 @@ module.exports = async (client, interaction) => {
                               .join(", ")
                               .replace("HypeSquadOnlineHouse2", "<:Hypesquad_brilliance_badge:1016793802389852202>")
                               .replace("HypeSquadOnlineHouse1", "<:Hypesquad_bravery_badge:1016793804709314611>")
-                              .replace("HypeSquadOnlineHouse0", "<:Hypesquad_balance_badge:1016793803664924733>"),
+                              .replace("HypeSquadOnlineHouse0", "<:Hypesquad_balance_badge:1016793803664924733>")
+                              .replace("ActiveDeveloper", "<:ActiveDeveloperBadge:1090031169598406700>"), //TODO: Richtige Auflösung ._.
                 inline: true,
             },
         ]);
