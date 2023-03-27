@@ -13,31 +13,21 @@ module.exports = (client, interaction) => {
     const iconurl = interaction.guild.iconURL();
 
     const idStart = "SKY_";
-    const buttonUp = new ButtonBuilder()
-        .setCustomId("SKY_btnUp")
-        .setLabel("           🔼           ")
-        .setStyle("Secondary");
 
-    const buttonDown = new ButtonBuilder()
-        .setCustomId("SKY_btnDown")
-        .setLabel("           🔽           ")
-        .setStyle("Secondary");
+    const emptyButton = new ButtonBuilder().setCustomId("SKY_btnEmpty").setLabel("X").setStyle("Secondary").setDisabled(true);
+    const emptyButton2 = new ButtonBuilder().setCustomId("SKY_btnEmpty2").setLabel("X").setStyle("Secondary").setDisabled(true);
+    const emptyButton3 = new ButtonBuilder().setCustomId("SKY_btnEmpty3").setLabel("X").setStyle("Secondary").setDisabled(true);
+    const emptyButton4 = new ButtonBuilder().setCustomId("SKY_btnEmpty4").setLabel("X").setStyle("Secondary").setDisabled(true);
 
-    const buttonRight = new ButtonBuilder()
-        .setCustomId("SKY_btnRight")
-        .setLabel("▶️")
-        .setStyle("Secondary");
+    const buttonUp = new ButtonBuilder().setCustomId("SKY_btnUp").setLabel("🔼").setStyle("Secondary");
 
-    const buttonReset = new ButtonBuilder()
-        .setCustomId("SKY_btnReset")
-        .setLabel("🔄")
-        .setStyle("Secondary")
-        .setDisabled(true);
+    const buttonDown = new ButtonBuilder().setCustomId("SKY_btnDown").setLabel("🔽").setStyle("Secondary");
 
-    const buttonLeft = new ButtonBuilder()
-        .setCustomId("SKY_btnLeft")
-        .setLabel("◀️")
-        .setStyle("Secondary");
+    const buttonRight = new ButtonBuilder().setCustomId("SKY_btnRight").setLabel("▶️").setStyle("Secondary");
+
+    const buttonReset = new ButtonBuilder().setCustomId("SKY_btnReset").setLabel("🔄").setStyle("Secondary").setDisabled(true);
+
+    const buttonLeft = new ButtonBuilder().setCustomId("SKY_btnLeft").setLabel("◀️").setStyle("Secondary");
 
     const startEmbed = new EmbedBuilder()
         .setTitle("Allsky")
@@ -54,9 +44,9 @@ module.exports = (client, interaction) => {
             },
         ]);
 
-    let buttonListUp = [buttonUp];
+    let buttonListUp = [emptyButton, buttonUp, emptyButton2];
     let buttonListMiddle = [buttonLeft, buttonReset, buttonRight];
-    let buttonListDown = [buttonDown];
+    let buttonListDown = [emptyButton3, buttonDown, emptyButton4];
 
     const rowUp = new ActionRowBuilder().addComponents(buttonListUp);
     const rowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);
@@ -70,22 +60,15 @@ module.exports = (client, interaction) => {
         .then(async (msg) => {
             const collector = await msg.createMessageComponentCollector({
                 componentType: Discord.ComponentType.Button,
-                time: 60000,
+                time: 6000,
             });
 
             collector.on("collect", async (i) => {
-                if (i.message.interaction.id !== msg.id)
-                    return console.log(i.message.interaction.id, msg.id);
+                if (i.message.interaction.id !== msg.id) return console.log(i.message.interaction.id, msg.id);
                 if (!i.customId.startsWith(idStart)) return;
-                if (
-                    i.user.id !== interaction.user.id &&
-                    i.user.id != config.owner
-                ) {
+                if (i.user.id !== interaction.user.id && i.user.id != config.owner) {
                     i.reply({
-                        content:
-                            "Nur `" +
-                            interaction.user.username +
-                            "` kann diesen Button betätigen",
+                        content: "Nur `" + interaction.user.username + "` kann diesen Button betätigen",
                         ephemeral: true,
                     });
                     return;
@@ -145,59 +128,33 @@ module.exports = (client, interaction) => {
                         iconURL: iconurl,
                     })
                     .setTimestamp(now);
-                if (y == 1)
-                    embed.setImage(
-                        "https://sonneberg.allsky7.net/latest/010319.jpg"
-                    );
-                if (y >= 2)
-                    embed.setImage(
-                        "https://sonneberg.allsky7.net/latest/010320.jpg"
-                    );
-                if (y <= 0 && x <= 0)
-                    embed.setImage(
-                        "https://sonneberg.allsky7.net/latest/010314.jpg"
-                    );
-                if (y <= 0 && x == 1)
-                    embed.setImage(
-                        "https://sonneberg.allsky7.net/latest/010315.jpg"
-                    );
-                if (y <= 0 && x == 2)
-                    embed.setImage(
-                        "https://sonneberg.allsky7.net/latest/010316.jpg"
-                    );
-                if (y <= 0 && x == 3)
-                    embed.setImage(
-                        "https://sonneberg.allsky7.net/latest/010317.jpg"
-                    );
-                if (y <= 0 && x >= 4)
-                    embed.setImage(
-                        "https://sonneberg.allsky7.net/latest/010318.jpg"
-                    );
+                if (y == 1) embed.setImage("https://sonneberg.allsky7.net/latest/010319.jpg");
+                else if (y >= 2) embed.setImage("https://sonneberg.allsky7.net/latest/010320.jpg");
+                else if (y <= 0 && x <= 0) embed.setImage("https://sonneberg.allsky7.net/latest/010314.jpg");
+                else if (y <= 0 && x == 1) embed.setImage("https://sonneberg.allsky7.net/latest/010315.jpg");
+                else if (y <= 0 && x == 2) embed.setImage("https://sonneberg.allsky7.net/latest/010316.jpg");
+                else if (y <= 0 && x == 3) embed.setImage("https://sonneberg.allsky7.net/latest/010317.jpg");
+                else if (y <= 0 && x >= 4) embed.setImage("https://sonneberg.allsky7.net/latest/010318.jpg");
 
-                let buttonListUp = [buttonUp];
+                let buttonListUp = [emptyButton, buttonUp, emptyButton2];
                 let buttonListMiddle = [buttonLeft, buttonReset, buttonRight];
-                let buttonListDown = [buttonDown];
+                let buttonListDown = [emptyButton3, buttonDown, emptyButton4];
 
-                const rowUp = new ActionRowBuilder().addComponents(
-                    buttonListUp
-                );
-                const rowMiddle = new ActionRowBuilder().addComponents(
-                    buttonListMiddle
-                );
-                const rowDown = new ActionRowBuilder().addComponents(
-                    buttonListDown
-                );
+                const rowUp = new ActionRowBuilder().addComponents(buttonListUp);
+                const rowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);
+                const rowDown = new ActionRowBuilder().addComponents(buttonListDown);
 
                 i.editReply({
                     components: [rowUp, rowMiddle, rowDown],
                     embeds: [embed],
                 });
 
-                // bug: doppelt -sky
+                // TODO: Doppeltes /sky verhindern
             });
 
             collector.on("end", async () => {
-                if (msg.editable) {
+                console.log("collector ended");
+                try {
                     for (let i = 0; i < buttonListUp.length; i++) {
                         const btn = buttonListUp[i];
                         btn.setDisabled(true);
@@ -216,21 +173,15 @@ module.exports = (client, interaction) => {
                         buttonListDown[i] = btn;
                     }
 
-                    const disabledRowUp = new ActionRowBuilder().addComponents(
-                        buttonListUp
-                    );
-                    const disabledRowMiddle =
-                        new ActionRowBuilder().addComponents(buttonListMiddle);
-                    const disabledRowDown =
-                        new ActionRowBuilder().addComponents(buttonListDown);
+                    const disabledRowUp = new ActionRowBuilder().addComponents(buttonListUp);
+                    const disabledRowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);
+                    const disabledRowDown = new ActionRowBuilder().addComponents(buttonListDown);
 
                     msg.edit({
-                        components: [
-                            disabledRowUp,
-                            disabledRowMiddle,
-                            disabledRowDown,
-                        ],
+                        components: [disabledRowUp, disabledRowMiddle, disabledRowDown],
                     });
+                } catch (error) {
+                    client.error(error, "allsky.js");
                 }
             });
         });

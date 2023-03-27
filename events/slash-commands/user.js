@@ -3,11 +3,7 @@ const config = require("../../config.json");
 
 module.exports = async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (
-        !interaction.guild.members.cache.get(
-            interaction.options.get("user").user.id
-        )
-    )
+    if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
         return interaction.reply({
             content: "Dieser Benutzer ist nicht auf diesem Server!",
             ephemeral: true,
@@ -94,18 +90,9 @@ module.exports = async (client, interaction) => {
                         : user.flags
                               .toArray()
                               .join(", ")
-                              .replace(
-                                  "HypeSquadOnlineHouse2",
-                                  "<:Hypesquad_brilliance_badge:1016793802389852202>"
-                              )
-                              .replace(
-                                  "HypeSquadOnlineHouse1",
-                                  "<:Hypesquad_bravery_badge:1016793804709314611>"
-                              )
-                              .replace(
-                                  "HypeSquadOnlineHouse0",
-                                  "<:Hypesquad_balance_badge:1016793803664924733>"
-                              ),
+                              .replace("HypeSquadOnlineHouse2", "<:Hypesquad_brilliance_badge:1016793802389852202>")
+                              .replace("HypeSquadOnlineHouse1", "<:Hypesquad_bravery_badge:1016793804709314611>")
+                              .replace("HypeSquadOnlineHouse0", "<:Hypesquad_balance_badge:1016793803664924733>"),
                 inline: true,
             },
         ]);
@@ -128,29 +115,19 @@ module.exports = async (client, interaction) => {
         ]);
         embed.setImage(user.bannerURL({ size: 4096 }));
     }
-    if (
-        member.premiumSinceTimestamp != null &&
-        member.premiumSinceTimestamp > Date.now()
-    )
+    if (member.premiumSinceTimestamp != null && member.premiumSinceTimestamp > Date.now())
         embed.addFields([
             {
                 name: "Boostet seit",
-                value: `<t:${Math.round(
-                    member.premiumSinceTimestamp / 1000
-                )}:R>`,
+                value: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}:R>`,
                 inline: true,
             },
         ]);
-    if (
-        member.communicationDisabledUntilTimestamp != null &&
-        member.communicationDisabledUntilTimestamp > Date.now()
-    )
+    if (member.communicationDisabledUntilTimestamp != null && member.communicationDisabledUntilTimestamp > Date.now())
         embed.addFields([
             {
                 name: "Timeout läuft ab",
-                value: `<t:${Math.round(
-                    member.communicationDisabledUntilTimestamp / 1000
-                )}:R>`,
+                value: `<t:${Math.round(member.communicationDisabledUntilTimestamp / 1000)}:R>`,
                 inline: true,
             },
         ]);

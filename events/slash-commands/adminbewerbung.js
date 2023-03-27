@@ -8,7 +8,7 @@ module.exports = (client, interaction) => {
         .setTitle("Admin-Bewerbung")
         .setColor(config.standard_color)
         .setDescription(
-            "[Bitte sende hier deine Bewerbung ein und wir werden sie schnellstmöglich bearbeiten.](https://tinyurl.com/bdz4kpd5)"
+            "Bitte sende [hier](https://tinyurl.com/bdz4kpd5) deine Bewerbung ein und wir werden sie schnellstmöglich bearbeiten."
         );
 
     interaction.reply({ embeds: [embed] });
