@@ -57,3 +57,5 @@ For support, feel free to join my [discord server](https://discord.gg/DkEnwxNqeX
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+![spaghetti-code](https://3ds.eiphax.tech/img/spaghetti.svg)
