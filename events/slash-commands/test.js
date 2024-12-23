@@ -1,23 +1,12 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
-const mysql = require("mysql2");
-const util = require("util");
-
-const connection = mysql.createPool({
-    multipleStatements: true,
-    connectionLimit: 10,
-    host: config.mysql.host,
-    user: config.mysql.user,
-    password: config.mysql.password,
-    database: config.mysql.database,
-});
-
-const db = util.promisify(connection.query).bind(connection);
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     interaction.reply("test");
+
+    // TODO: test database
 
     // client.error("this is a custom error", "test.js");
     // client.modLog("this is a custom modlog", "test.js");

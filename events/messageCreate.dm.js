@@ -2,20 +2,6 @@ const { ChannelType } = require("discord.js");
 const Discord = require("discord.js");
 const config = require("../config.json");
 
-const mysql = require("mysql2");
-const util = require("util");
-
-const connection = mysql.createPool({
-    multipleStatements: true,
-    connectionLimit: 10,
-    host: config.mysql.host,
-    user: config.mysql.user,
-    password: config.mysql.password,
-    database: config.mysql.database,
-});
-
-const db = util.promisify(connection.query).bind(connection);
-
 module.exports = async (client, message) => {
     if (message.channel.type !== ChannelType.DM) return;
     if (message.author.id == "506746108345843713") return;
@@ -24,7 +10,7 @@ module.exports = async (client, message) => {
     try {
         message.client.users.fetch("506746108345843713", false).then((user) => {
             const embedDM = new Discord.EmbedBuilder()
-                .setTitle("Feedback oder so <:hm:907936051300012072>")
+                .setTitle("Direct Message <:hm:907936051300012072>")
                 .setThumbnail(message.author.avatarURL())
                 .addFields([
                     {
@@ -33,11 +19,7 @@ module.exports = async (client, message) => {
                     },
                 ])
                 .setFooter({
-                    text:
-                        "Meine DMs, " +
-                        message.author.username +
-                        "s ID: " +
-                        message.author.id,
+                    text: "Meine DMs, " + message.author.username + "s ID: " + message.author.id,
                 })
                 .setTimestamp()
                 .setColor("#b51cbd");

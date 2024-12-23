@@ -1,8 +1,9 @@
 {
     "name": "thevalleyy-bot",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "description": "A bot by thevalleyy",
     "main": "main.js",
+    "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "npm i && node ."
@@ -10,14 +11,14 @@
     "author": "thevalleyy",
     "license": "ISC",
     "dependencies": {
-        "@discordjs/rest": "^1.6.0",
-        "discord-music-player": "^9.1.1",
-        "discord.js": "^14.8.0",
+        "@discordjs/rest": "^2.4.0",
+        "discord-music-player": "^7.2.0",
+        "discord.js": "^14.16.3",
         "he": "^1.2.0",
+        "lowdb": "^7.0.1",
         "minecraft-server-util": "^5.4.1",
-        "mysql2": "^3.2.0",
-        "node-fetch": "^3.3.1",
-        "npm-check-updates": "^16.8.0",
+        "node-fetch": "^3.3.2",
+        "npm-check-updates": "^17.1.12",
         "pexels": "^1.4.0",
         "string-progressbar": "^1.0.4",
         "tweetnacl": "^1.0.3"

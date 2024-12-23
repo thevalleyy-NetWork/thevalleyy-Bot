@@ -1,6 +1,14 @@
 const isJson = require("./isJson.js");
 const gettime = require("./gettime.js");
 
+/**
+ * Logs a message to the console
+ * @param {String|Object} text The text or object to log
+ * @param {String} style The text style
+ * @param {String} background The text background style
+ * @param {boolean} showTime Show the time in the log
+ * @returns
+ */
 function log(text, style = "reset", background = "reset", showTime = true) {
     if (isJson(text)) return console.log(text);
     const styles = {
@@ -48,10 +56,6 @@ function log(text, style = "reset", background = "reset", showTime = true) {
         throw "Invalid background style";
     }
 
-    console.log(
-        `${bgColor}${
-            showTime == true ? `[${gettime()}] » ` : ""
-        }${fgColor}${text}${styles.text.reset}`
-    );
+    console.log(`${bgColor}${showTime == true ? `[${gettime()}] » ` : ""}${fgColor}${text}${styles.text.reset}`);
 }
 module.exports = log;

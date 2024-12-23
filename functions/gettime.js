@@ -1,10 +1,9 @@
 /**
- * Gettime
- * @param {Boolean} full
- * @param {Date} date
- * @returns
+ * Get the current time
+ * @param {boolean} full Show full time with milliseconds
+ * @param {Date} date The date to get the time from
+ * @returns {String} The current time
  */
-
 const getTime = (full = false, date) => {
     function addZero(x, n) {
         while (x.toString().length < n) {
