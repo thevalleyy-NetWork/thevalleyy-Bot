@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 30,
     data: new SlashCommandBuilder()
         .setName("qr")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Generiert oder scannt einen QR-Code")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -23,14 +23,10 @@ module.exports = {
                     option
                         .setName("data")
                         .setRequired(true)
-                        .setDescription(
-                            "Der Text oder URL, der / die in den QR-Code geschrieben werden soll"
-                        )
+                        .setDescription("Der Text oder URL, der / die in den QR-Code geschrieben werden soll")
                         .setDescriptionLocalizations({
-                            "en-US":
-                                "The text or URL that should be written in the QR code",
-                            "en-GB":
-                                "The text or URL that should be written in the QR code",
+                            "en-US": "The text or URL that should be written in the QR code",
+                            "en-GB": "The text or URL that should be written in the QR code",
                         })
                 )
         )
@@ -44,14 +40,10 @@ module.exports = {
                     "en-GB": "Scans a qr code",
                 })
                 .addAttachmentOption((option) =>
-                    option
-                        .setName("qrcode")
-                        .setRequired(true)
-                        .setDescription("Der QR-Code, der gescannt werden soll")
-                        .setDescriptionLocalizations({
-                            "en-US": "The qr code that should be scanned",
-                            "en-GB": "The qr code that should be scanned",
-                        })
+                    option.setName("qrcode").setRequired(true).setDescription("Der QR-Code, der gescannt werden soll").setDescriptionLocalizations({
+                        "en-US": "The qr code that should be scanned",
+                        "en-GB": "The qr code that should be scanned",
+                    })
                 )
         ),
 };

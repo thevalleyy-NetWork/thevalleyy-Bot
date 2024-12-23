@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const config = require("../../config.json");
 const fs = require("node:fs");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.user.id != config.owner) {
@@ -13,9 +13,7 @@ module.exports = (client, interaction) => {
         return;
     }
 
-    const maintenance = JSON.parse(
-        fs.readFileSync("./data/maintenance.json", "utf8")
-    );
+    const maintenance = JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8"));
 
     const boolean = interaction.options.getBoolean("maintenance");
     const reason = interaction.options.getString("reason");
@@ -36,9 +34,7 @@ module.exports = (client, interaction) => {
         JSON.stringify(
             {
                 maintenance: boolean,
-                reason: reason
-                    ? reason
-                    : "⚙ Es finden aktuell Wartungsarbeiten statt.",
+                reason: reason ? reason : "⚙ Es finden aktuell Wartungsarbeiten statt.",
             },
             null,
             4
@@ -67,9 +63,7 @@ module.exports = (client, interaction) => {
     }
 
     interaction.reply({
-        content: `Der Bot ist nun im ${
-            boolean ? "Wartungsmodus" : "Normalmodus"
-        }.`,
+        content: `Der Bot ist nun im ${boolean ? "Wartungsmodus" : "Normalmodus"}.`,
         ephemeral: true,
     });
 };

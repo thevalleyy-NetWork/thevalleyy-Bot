@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("hackerman")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("😎")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -13,9 +13,7 @@ module.exports = {
         .addStringOption((option) =>
             option
                 .setName("text")
-                .setDescription(
-                    "Text, der in Hackerman-Schrift angezeigt werden soll"
-                )
+                .setDescription("Text, der in Hackerman-Schrift angezeigt werden soll")
                 .setRequired(true)
                 .setDescriptionLocalizations({
                     "en-US": "Text to encode",

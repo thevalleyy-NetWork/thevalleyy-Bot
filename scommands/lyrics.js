@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 20,
     data: new SlashCommandBuilder()
         .setName("lyrics")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Zeigt dir den Songtext eines Songs an.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -13,13 +13,9 @@ module.exports = {
         })
 
         .addStringOption((option) =>
-            option
-                .setName("song")
-                .setDescription("Der Song, dessen Songtext du sehen möchtest.")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "The song you want to see the lyrics of",
-                    "en-GB": "The song you want to see the lyrics of",
-                })
+            option.setName("song").setDescription("Der Song, dessen Songtext du sehen möchtest.").setRequired(true).setDescriptionLocalizations({
+                "en-US": "The song you want to see the lyrics of",
+                "en-GB": "The song you want to see the lyrics of",
+            })
         ),
 };

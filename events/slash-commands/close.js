@@ -1,48 +1,27 @@
 const Discord = require("discord.js");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const iconurl = interaction.guild.iconURL();
-    const suprole = interaction.guild.roles.cache.find(
-        (role) => role.name === "Supporter"
-    );
-    const modrole = interaction.guild.roles.cache.find(
-        (role) => role.name === "Moderator"
-    );
-    const ticketId = interaction.channel.topic
-        .replace("(", "")
-        .replace(")", "")
-        .split(" ")
-        .slice(9)
-        .join(" ");
+    const suprole = interaction.guild.roles.cache.find((role) => role.name === "Supporter");
+    const modrole = interaction.guild.roles.cache.find((role) => role.name === "Moderator");
+    const ticketId = interaction.channel.topic.replace("(", "").replace(")", "").split(" ").slice(9).join(" ");
 
-    if (!interaction.channel.name.startsWith("🎫-"))
-        return interaction.reply("Dieser Kanal ist kein geöffnetes Ticket.");
-    if (
-        ticketId == interaction.user.id ||
-        interaction.member.roles.cache.has(suprole.id) ||
-        interaction.member.roles.cache.has(modrole.id)
-    ) {
-        const category = interaction.guild.channels.cache.find(
-            (c) => c.name === "Tickets"
-        );
+    if (!interaction.channel.name.startsWith("🎫-")) return interaction.reply("Dieser Kanal ist kein geöffnetes Ticket.");
+    if (ticketId == interaction.user.id || interaction.member.roles.cache.has(suprole.id) || interaction.member.roles.cache.has(modrole.id)) {
+        const category = interaction.guild.channels.cache.find((c) => c.name === "Tickets");
 
         try {
             interaction.channel.permissionOverwrites.edit(ticketId, {
                 ViewChannel: false,
             });
 
-            interaction.channel.permissionOverwrites.edit(
-                interaction.guild.id,
-                {
-                    ViewChannel: false,
-                }
-            );
+            interaction.channel.permissionOverwrites.edit(interaction.guild.id, {
+                ViewChannel: false,
+            });
 
-            interaction.channel.setName(
-                interaction.channel.name.replace("🎫", "🔒")
-            );
+            interaction.channel.setName(interaction.channel.name.replace("🎫", "🔒"));
             interaction.channel.setPosition(category.children.cache.size - 1);
 
             const embed = new Discord.EmbedBuilder()
@@ -50,9 +29,7 @@ module.exports = (client, interaction) => {
                 .setDescription("Ticket archivieren?")
                 .setColor("#8319e6")
                 .setFooter({ text: interaction.guild.name, iconURL: iconurl })
-                .setThumbnail(
-                    "https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png"
-                )
+                .setThumbnail("https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png")
                 .setAuthor({
                     name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
@@ -80,23 +57,15 @@ module.exports = (client, interaction) => {
                 .setEmoji("<:crossButton:1005146897373216908>")
                 .setStyle("Secondary");
 
-            const ticketButtons = new Discord.ActionRowBuilder().addComponents(
-                buttonArchive,
-                buttonDelete
-            );
+            const ticketButtons = new Discord.ActionRowBuilder().addComponents(buttonArchive, buttonDelete);
 
             interaction.reply({ embeds: [embed], components: [ticketButtons] });
-            client.modLog(
-                `${interaction.user.tag} hat das Ticket <#${interaction.channel}> geschlossen.`,
-                "close.js"
-            );
+            client.modLog(`${interaction.user.tag} hat das Ticket <#${interaction.channel}> geschlossen.`, "close.js");
         } catch (err) {
             client.error(err, "close.js");
             interaction.reply("Ein Fehler ist aufgetreten.");
         }
     } else {
-        return interaction.reply(
-            "Du kannst nur dein eigenes Ticket schließen."
-        );
+        return interaction.reply("Du kannst nur dein eigenes Ticket schließen.");
     }
 };

@@ -1,6 +1,4 @@
-const fs = require("fs");
-
-module.exports = (client) => {
+export default (client) => {
     const { cmds } = client;
     let array = [];
 

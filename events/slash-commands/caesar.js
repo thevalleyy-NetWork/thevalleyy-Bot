@@ -1,10 +1,8 @@
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const text = interaction.options.getString("text");
-    interaction.options.getNumber("key") != null
-        ? (key = interaction.options.getNumber("key"))
-        : (key = 2);
+    interaction.options.getNumber("key") != null ? (key = interaction.options.getNumber("key")) : (key = 2);
     const decrypt = interaction.options.getBoolean("decrypt");
     const specialchars = interaction.options.getBoolean("specialchars");
 

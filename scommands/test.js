@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("test")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Test-Befehl (nur für Admins)")
         .setDefaultMemberPermissions(0) // 0 = admin only
         .setDescriptionLocalizations({

@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("games")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Spiele-Menü")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -11,12 +11,9 @@ module.exports = {
             "en-GB": "Game menu",
         })
         .addStringOption((option) =>
-            option
-                .setName("game")
-                .setDescription("Das Spiel, welches du spielen möchtest")
-                .setDescriptionLocalizations({
-                    "en-US": "The game you want to play",
-                    "en-GB": "The game you want to play",
-                })
+            option.setName("game").setDescription("Das Spiel, welches du spielen möchtest").setDescriptionLocalizations({
+                "en-US": "The game you want to play",
+                "en-GB": "The game you want to play",
+            })
         ),
 };

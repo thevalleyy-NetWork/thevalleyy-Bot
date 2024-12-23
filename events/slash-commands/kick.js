@@ -1,12 +1,8 @@
 const config = require("../../config.json");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (
-        !interaction.guild.members.cache.get(
-            interaction.options.get("user").user.id
-        )
-    )
+    if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
         return interaction.reply({
             content: "Dieser Benutzer ist nicht auf diesem Server!",
             ephemeral: true,
@@ -17,9 +13,7 @@ module.exports = async (client, interaction) => {
 
     if (user.id === interaction.user.id)
         return interaction.reply({
-            content:
-                "Du kannst dich nicht selbst kicken, " +
-                interaction.user.username,
+            content: "Du kannst dich nicht selbst kicken, " + interaction.user.username,
             ephemeral: true,
         });
 
@@ -38,28 +32,15 @@ module.exports = async (client, interaction) => {
             client.error(e, "kick.js");
         }
 
-        await user.member
-            .kick(reason + ", Kick von: " + interaction.user.tag)
-            .catch((e) => {
-                interaction.reply({
-                    content:
-                        "Ich konnte den User nicht kicken, " +
-                        interaction.user.username,
-                    ephemeral: true,
-                });
-                return;
+        await user.member.kick(reason + ", Kick von: " + interaction.user.tag).catch((e) => {
+            interaction.reply({
+                content: "Ich konnte den User nicht kicken, " + interaction.user.username,
+                ephemeral: true,
             });
-        await interaction.reply(
-            "Der User `" +
-                user.user.tag +
-                "` wurde mit dem Grund `" +
-                reason +
-                "` gekickt."
-        );
-        client.modLog(
-            `${user.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gekickt.`,
-            "kick.js"
-        );
+            return;
+        });
+        await interaction.reply("Der User `" + user.user.tag + "` wurde mit dem Grund `" + reason + "` gekickt.");
+        client.modLog(`${user.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gekickt.`, "kick.js");
     } catch (error) {
         client.error(error, "kick.js");
     }

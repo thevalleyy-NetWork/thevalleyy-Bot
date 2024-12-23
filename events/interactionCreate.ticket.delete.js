@@ -1,19 +1,15 @@
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "TICKET_delete") return;
 
     try {
         if (!interaction.channel.name.startsWith("🔒-")) return;
-        const modrole = interaction.guild.roles.cache.find(
-            (role) => role.name === "Moderator"
-        );
+        const modrole = interaction.guild.roles.cache.find((role) => role.name === "Moderator"); // TODO: change to config
 
         if (interaction.member.roles.cache.has(modrole.id)) {
             interaction.channel.delete().catch((err) => {
                 client.error(err, "ticket.delete.js");
-                interaction.reply(
-                    "Es gab einen Fehler beim Löschen eines Tickets: " + err
-                );
+                interaction.reply("Es gab einen Fehler beim Löschen eines Tickets: " + err);
             });
         } else {
             interaction.reply({

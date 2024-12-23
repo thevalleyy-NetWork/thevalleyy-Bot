@@ -1,4 +1,4 @@
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const hackertext2 = interaction.options

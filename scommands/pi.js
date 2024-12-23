@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("pi")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Gibt Pi aus.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -11,22 +11,16 @@ module.exports = {
             "en-GB": "Prints Pi",
         })
         .addNumberOption((option) =>
-            option
-                .setName("digits")
-                .setDescription("Anzahl der Stellen")
-                .setDescriptionLocalizations({
-                    "en-US": "Number of digits",
-                    "en-GB": "Number of digits",
-                })
+            option.setName("digits").setDescription("Anzahl der Stellen").setDescriptionLocalizations({
+                "en-US": "Number of digits",
+                "en-GB": "Number of digits",
+            })
         )
 
         .addBooleanOption((option) =>
-            option
-                .setName("hexadecimal")
-                .setDescription("Hexadezimal ausgeben?")
-                .setDescriptionLocalizations({
-                    "en-US": "Print in hexadecimal?",
-                    "en-GB": "Print in hexadecimal?",
-                })
+            option.setName("hexadecimal").setDescription("Hexadezimal ausgeben?").setDescriptionLocalizations({
+                "en-US": "Print in hexadecimal?",
+                "en-GB": "Print in hexadecimal?",
+            })
         ),
 };

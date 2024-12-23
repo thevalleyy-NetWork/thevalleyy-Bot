@@ -18,4 +18,4 @@ function isJson(item) {
 
     return false;
 }
-module.exports = isJson;
+export default isJson;

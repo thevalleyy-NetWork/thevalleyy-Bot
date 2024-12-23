@@ -1,4 +1,4 @@
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     await interaction.deferReply();
@@ -29,12 +29,9 @@ module.exports = async (client, interaction) => {
 
     // plus 1000 digits
     if (digits > 1000) {
-        fetch(
-            `https://api.pi.delivery/v1/pi?start=${digits}&numberOfDigits=1000&radix=${base}`
-        ).then(async (response) => {
+        fetch(`https://api.pi.delivery/v1/pi?start=${digits}&numberOfDigits=1000&radix=${base}`).then(async (response) => {
             const res = await parse(response);
-            if (res.error)
-                interaction.editReply("Error: \n`" + res.error + "`\n"); //ERROR
+            if (res.error) interaction.editReply("Error: \n`" + res.error + "`\n"); //ERROR
 
             if (!res.content) return;
             if (res.content) {
@@ -49,9 +46,7 @@ module.exports = async (client, interaction) => {
     }
 
     // sub 1001 digits
-    fetch(
-        `https://api.pi.delivery/v1/pi?start=0&numberOfDigits=${digits}&radix=${base}`
-    ).then(async (response) => {
+    fetch(`https://api.pi.delivery/v1/pi?start=0&numberOfDigits=${digits}&radix=${base}`).then(async (response) => {
         const res = await parse(response);
         if (res.error) interaction.editReply("Error: \n`" + res.error + "`\n");
 
@@ -60,11 +55,7 @@ module.exports = async (client, interaction) => {
             const string =
                 `${digits} ` +
                 (digits == 1 ? "digit" : "digits") +
-                ` of pi (base ${base}): \n\`${
-                    res.content.slice(0, 1) +
-                    (res.content.length >= 2 ? "," : "") +
-                    res.content.slice(1)
-                }\``;
+                ` of pi (base ${base}): \n\`${res.content.slice(0, 1) + (res.content.length >= 2 ? "," : "") + res.content.slice(1)}\``;
             interaction.editReply(string);
         }
     });

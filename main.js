@@ -1,78 +1,73 @@
-// --define and create some things--
 // packages
-const Discord = require("discord.js");
-const { REST } = require("@discordjs/rest");
-const package = require("./package.json");
+import { Partials, GatewayIntentBits, Client, Routes, EmbedBuilder, AttachmentBuilder } from "discord.js";
+import { REST } from "@discordjs/rest";
+import Enmap from "enmap";
 
 // native
-const path = require("path");
-const fs = require("node:fs");
-const { get } = require("http");
-const wait = require("node:timers/promises").setTimeout;
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // functions
-const log = require("./functions/log.js");
-const gettime = require("./functions/gettime.js");
+import log from "./functions/log.js";
+import gettime from "./functions/gettime.js";
 
 // files
-const config = require("./config.json");
+import config from "./config.json" with { type: "json" };
+import pck from "./package.json" with { type: "json" };
 
 // other
 const cooldownSet = new Set();
 
 // database
-// TODO: lowdb
+const users = new Enmap({ name: "users", autoFetch: true, fetchAll: false });
 
 // client
-const client = new Discord.Client({
-    partials: [
-        Discord.Partials.Message,
-        Discord.Partials.User,
-        Discord.Partials.Channel,
-        // Discord.Partials.Reaction,
-        // Discord.Partials.GuildMember,
-        // Discord.Partials.GuildScheduledEvent
-        // Discord.Partials.ThreadMember
-    ],
+const client = new Client({
+    partials: [Partials.Message, Partials.User, Partials.Channel],
     allowedMentions: {
         parse: ["users", "roles", "everyone"],
         repliedUser: false,
     },
     intents: [
-        Discord.GatewayIntentBits.Guilds,
-        Discord.GatewayIntentBits.GuildMembers,
-        Discord.GatewayIntentBits.GuildMessages,
-        Discord.GatewayIntentBits.GuildEmojisAndStickers,
-        Discord.GatewayIntentBits.GuildIntegrations,
-        Discord.GatewayIntentBits.GuildWebhooks,
-        Discord.GatewayIntentBits.GuildInvites,
-        Discord.GatewayIntentBits.GuildVoiceStates,
-        Discord.GatewayIntentBits.GuildPresences,
-        Discord.GatewayIntentBits.GuildMessageReactions,
-        Discord.GatewayIntentBits.DirectMessages,
-        Discord.GatewayIntentBits.DirectMessageReactions,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildIntegrations,
+        GatewayIntentBits.GuildWebhooks,
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions,
     ],
 });
 
 // SLASH-COMMANDS
-function slashCommands() {
+async function slashCommands() {
     let cmds = {};
     const commands = [];
 
     try {
         var commandFiles = fs.readdirSync("./scommands");
     } catch (err) {
-        return log("[" + gettime() + "] » Error: Unable to scan directory: " + err, "red", "reset", true);
+        throw err;
     }
 
     for (const file of commandFiles) {
         if (!file.toLowerCase().endsWith(".js")) {
             log(`Skipping: ${file}`, "green", "reset", true);
         } else {
-            cmds[file] = require(`./scommands/${file}`);
-            const command = require(`./scommands/${file}`);
-            commands.push(command.data.toJSON());
             log(`Loading: ${file}`, "cyan", "reset", true);
+            await import(`./scommands/${file}`).then((cmd) => {
+                cmds[file] = cmd.default;
+                commands.push(cmd.default.data.toJSON());
+            });
         }
     }
 
@@ -89,12 +84,11 @@ function slashCommands() {
                 true
             );
 
-            const data = await rest.put(Discord.Routes.applicationCommands(client.user.id), {
+            const data = await rest.put(Routes.applicationCommands(client.user.id), {
                 body: commands,
             });
 
             log(`Loaded: ${data.length} Slash-Commands`, "blue", "reset", false);
-            log("Start complete!\n", "red", "reset", false);
         } catch (error) {
             client.error(error, "main.js");
         }
@@ -107,11 +101,12 @@ function slashCommands() {
 function events() {
     let events = {};
 
-    fs.readdir(path.join(__dirname, "events"), async function (err, files) {
+    fs.readdir(path.join(__dirname, "events"), function (err, files) {
         if (err) {
-            return log("[" + gettime() + "] » Error: Unable to scan directory: " + err, "red", "reset", true);
+            throw err;
         }
-        await files.forEach(function (file) {
+
+        files.forEach(function (file) {
             if (!file.toLowerCase().endsWith(".js")) {
                 log(`Skipping: ${file}`, "green", "reset", true);
                 return;
@@ -123,18 +118,18 @@ function events() {
                 log(`Grouping: ${eventName}`, "cyan", "reset", true);
             }
             events[eventName].push(file);
-
             log(`\t${file}`, "cyan", "reset", true);
         });
 
         client.events = events;
         log("\nRegistering: Events", "yellow", "reset", false);
 
-        await Object.keys(events).forEach((event) => {
+        Object.keys(events).forEach((event) => {
             log("Listening: " + event, "cyan", "reset", true);
             if (event == "ready") {
-                events[event].forEach((file) => {
-                    require(`./events/${file}`)(client);
+                events[event].forEach(async (file) => {
+                    const eventModule = await import(`./events/${file}`);
+                    eventModule.default(client);
                 });
                 return;
             }
@@ -147,28 +142,12 @@ function events() {
                     else if (event.startsWith("guildMember")) var user = args[0].user;
 
                     if (user.bot) return;
+                    if (await client.blacklist.includes(user.id)) return;
 
-                    // is user blacklisted?
-                    if (await client.blacklist.includes(user.id)) {
-                    } else {
-                        const maintenance = await JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8"));
-
-                        if (maintenance.maintenance == true && user.id != config.owner) {
-                            if (event == "interactionCreate" && !args[0].isAutocomplete() && !args[0].isChatInputCommand()) {
-                                console.log(event, args[0], user);
-                                args[0].reply({
-                                    content: "🛑 Der Bot ist aktuell gesperrt. \n Grund: `" + maintenance.reason + "`",
-                                    ephemeral: true,
-                                });
-                            }
-                            return;
-                        }
-
-                        events[event].forEach((file) => {
-                            const eventFile = require(`./events/${file}`);
-                            eventFile(client, ...args);
-                        });
-                    }
+                    events[event].forEach(async (file) => {
+                        const eventFile = await import(`./events/${file}`);
+                        eventFile.default(client, ...args);
+                    });
                 } catch (error) {
                     client.error(error, "main.js");
                 }
@@ -181,271 +160,217 @@ function events() {
 
 // start all handlers
 client.on("ready", async () => {
-    log(`\nLoading: ${package.name} v${package.version}\n`, "red", "reset", false);
+    log(`\nLoading: ${pck.name} v${pck.version}\n`, "red", "reset", false);
 
     log("Registering: Slash-Commands", "yellow", "reset", false);
     await slashCommands();
 
     log("\nGrouping: Events", "yellow", "reset", false);
     await events();
+
+    log("Start complete!\n", "red", "reset", false);
 });
 
 // slash command handler
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
-        if (await client.blacklist.includes(interaction.user.id)) {
-        } else {
-            const maintenance = await JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8"));
+        if (await client.blacklist.includes(interaction.user.id)) return;
 
-            if (maintenance.maintenance == true && interaction.user.id != config.owner) {
-                if (!interaction.isAutocomplete()) {
-                    interaction.reply({
-                        content: "🛑 Der Bot ist aktuell gesperrt. \n Grund: `" + maintenance.reason + "`",
-                        ephemeral: true,
-                    });
-                }
-                return;
+        // maintenance mode
+        const maintenance = await JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8")); // TODO: import it and see if it still works
+        if (maintenance.maintenance == true && interaction.user.id != config.owner) {
+            if (!interaction.isAutocomplete()) {
+                interaction.reply({
+                    content: "🛑 Der Bot ist aktuell gesperrt. \n Grund: `" + maintenance.reason + "`",
+                    ephemeral: true,
+                });
             }
+            return;
+        }
 
-            // cooldown
-            if (interaction.user.id != config.owner && interaction.isChatInputCommand()) {
-                const cooldown = client.cmdStructure.cmds[interaction.commandName + ".js"].cooldown;
+        // cooldown
+        if (interaction.user.id != config.owner && (interaction.isChatInputCommand() || interaction.isCommand())) {
+            const cooldown = client.cmds[interaction.commandName + ".js"].cooldown
+                ? client.cmds[interaction.commandName + ".js"].cooldown
+                : config.cooldown_standard;
 
-                if (cooldown == undefined) {
-                    // No custom cooldown, use the default
+            // do the magic
+            if (cooldownSet.has(interaction.user.id + interaction.commandName) || cooldownSet.has(interaction.user.id)) {
+                d = Number(cooldown);
+                var h = Math.floor(d / 3600);
+                var m = Math.floor((d % 3600) / 60);
+                var s = Math.floor((d % 3600) % 60);
 
-                    // react and remove the message
-                    if (cooldownSet.has(interaction.user.id))
-                        return interaction.reply({
-                            content: `⏳ \`/${interaction.commandName}\` hat einen Cooldown von \`${config.cooldown_standard}\` Sekunden.`,
-                            ephemeral: true,
-                        });
-
-                    // add the user to the cooldown set
-                    cooldownSet.add(interaction.user.id);
-                    setTimeout(() => {
-                        cooldownSet.delete(interaction.user.id);
-                    }, config.cooldown_standard * 1000);
-                } else {
-                    // the same as above, but with a custom cooldown
-                    // calculate the cooldown
-                    d = Number(cooldown);
-                    var h = Math.floor(d / 3600);
-                    var m = Math.floor((d % 3600) / 60);
-                    var s = Math.floor((d % 3600) % 60);
-
-                    var hDisplay =
-                        +h > 0
-                            ? +h == 1
-                                ? +m > 0
-                                    ? `eine Stunde, `
-                                    : +h == 1
-                                    ? `eine Stunde`
-                                    : `${h} Stunden`
-                                : +m > 0
-                                ? `${h} Stunden, `
+                var hDisplay =
+                    +h > 0
+                        ? +h == 1
+                            ? +m > 0
+                                ? `eine Stunde, `
+                                : +h == 1
+                                ? `eine Stunde`
                                 : `${h} Stunden`
-                            : ``;
-                    var mDisplay =
-                        +m > 0
-                            ? +m == 1
-                                ? +s > 0
-                                    ? `eine Minute, `
-                                    : +m == 1
-                                    ? `eine Minute`
-                                    : `${m} Minuten`
-                                : +s > 0
-                                ? `${m} Minuten, `
+                            : +m > 0
+                            ? `${h} Stunden, `
+                            : `${h} Stunden`
+                        : ``;
+                var mDisplay =
+                    +m > 0
+                        ? +m == 1
+                            ? +s > 0
+                                ? `eine Minute, `
+                                : +m == 1
+                                ? `eine Minute`
                                 : `${m} Minuten`
-                            : ``;
-                    var sDisplay = +s > 0 ? (+s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
+                            : +s > 0
+                            ? `${m} Minuten, `
+                            : `${m} Minuten`
+                        : ``;
+                var sDisplay = +s > 0 ? (+s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
 
-                    // do the magic
-                    if (cooldownSet.has(interaction.user.id + interaction.commandName) || cooldownSet.has(interaction.user.id))
-                        return interaction.reply({
-                            content: `⏳ \`/${interaction.commandName}\` hat einen Cooldown von \`${hDisplay + mDisplay + sDisplay}\``,
-                            ephemeral: true,
-                        });
-                    cooldownSet.add(interaction.user.id + interaction.commandName);
-                    setTimeout(() => {
-                        cooldownSet.delete(interaction.user.id + interaction.commandName);
-                    }, cooldown * 1000);
-                }
+                return interaction.reply({
+                    content: `⏳ \`/${interaction.commandName}\` hat einen Cooldown von \`${hDisplay + mDisplay + sDisplay}\``,
+                    ephemeral: true,
+                });
             }
 
-            if (interaction.guild) interaction.guild.members.fetch();
+            cooldownSet.add(interaction.user.id + interaction.commandName);
+            setTimeout(() => {
+                cooldownSet.delete(interaction.user.id + interaction.commandName);
+            }, cooldown * 1000);
+        }
 
-            const eventFile = require(`./events/slash-commands/${interaction.commandName}.js`);
-            eventFile(client, interaction);
+        if (interaction.guild) interaction.guild.members.fetch();
 
-            if (interaction.isAutocomplete()) return;
+        const eventFile = await import(`./events/slash-commands/${interaction.commandName}.js`);
+        eventFile.default(client, interaction);
 
-            const executed = new Discord.EmbedBuilder()
-                .setTitle("registered a slash-command")
-                .setThumbnail(interaction.user.avatarURL())
-                .setDescription(`\`${interaction.user.tag}\`, <@${interaction.user.id}>`)
+        if (interaction.isAutocomplete()) return;
+
+        const executed = new EmbedBuilder()
+            .setTitle("Slash-Command")
+            .setThumbnail(interaction.user.avatarURL())
+            .setDescription(`\`${interaction.user.tag}\`, <@${interaction.user.id}>`)
+            .addFields([
+                {
+                    name: "Command:",
+                    value: `/\`${interaction.commandName}\``,
+                    inline: true,
+                },
+                {
+                    name: "Channel:",
+                    value: "<#" + interaction.channel.id + ">",
+                    inline: true,
+                },
+                {
+                    name: "Timestamp:",
+                    value: `<t:${Math.round(interaction.createdTimestamp / 1000)}:F> (${Math.round(interaction.createdTimestamp / 1000)})`,
+                    inline: true,
+                },
+            ])
+            .setTimestamp()
+            .setColor(config.colors.default);
+        if (interaction.guild) {
+            executed
                 .addFields([
                     {
-                        name: "command:",
-                        value: `/\`${interaction.commandName}\``,
+                        name: "Guild ID:",
+                        value: `\`${interaction.guild.id}\``,
                         inline: true,
                     },
                     {
-                        name: "channel:",
-                        value: "<#" + interaction.channel.id + ">",
+                        name: "Guild Name:",
+                        value: `\`${interaction.guild.name}\``,
                         inline: true,
                     },
                     {
-                        name: "timestamp:",
-                        value: `<t:${Math.round(interaction.createdTimestamp / 1000)}:F> (${Math.round(interaction.createdTimestamp / 1000)})`,
+                        name: "Link:",
+                        value: `[Link to ${interaction.user.username}'s interaction](https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id})`,
                         inline: true,
                     },
                 ])
-                .setTimestamp()
-                .setColor(config.colors.default);
-            if (interaction.guild) {
-                executed
-                    .addFields([
-                        {
-                            name: "guild.id:",
-                            value: `\`${interaction.guild.id}\``,
-                            inline: true,
-                        },
-                        {
-                            name: "guild.name:",
-                            value: `\`${interaction.guild.name}\``,
-                            inline: true,
-                        },
-                        {
-                            name: "link:",
-                            value: `[https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id}](https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id} "link to ${interaction.user.username}'s interaction")`,
-                            inline: true,
-                        },
-                    ])
-                    .setFooter({
-                        text: interaction.guild.name,
-                        iconURL: interaction.guild.iconURL(),
-                    });
-            } else {
-                executed
-                    .addFields([
-                        {
-                            name: "user.id:",
-                            value: `\`${interaction.user.id}\``,
-                            inline: true,
-                        },
-                        {
-                            name: "user.name:",
-                            value: `\`${interaction.user.username}\``,
-                            inline: true,
-                        },
-                        {
-                            name: "link:",
-                            value: `[https://discord.com/users/${interaction.user.id}](https://discord.com/users/${interaction.user.id} "link to ${interaction.user.username}'s discord account")`,
-                            inline: true,
-                        },
-                    ])
-                    .setFooter({
-                        text: interaction.user.tag,
-                        iconURL: interaction.user.avatarURL(),
-                    });
-            }
-
-            if (interaction.options) {
-                options = "";
-                await interaction.options._hoistedOptions.forEach((option) => {
-                    options += `\`${option.name}\`: \`${option.value}\`\n`;
+                .setFooter({
+                    text: interaction.guild.name,
+                    iconURL: interaction.guild.iconURL(),
                 });
-            }
-            // wait(1000)
+        } else {
+            executed
+                .addFields([
+                    {
+                        name: "User ID:",
+                        value: `\`${interaction.user.id}\``,
+                        inline: true,
+                    },
+                    {
+                        name: "Username:",
+                        value: `\`${interaction.user.username}\``,
+                        inline: true,
+                    },
+                    {
+                        name: "Link:",
+                        value: `[Link to ${interaction.user.username}'s discord Account](https://discord.com/users/${interaction.user.id})`,
+                        inline: true,
+                    },
+                ])
+                .setFooter({
+                    text: interaction.user.tag,
+                    iconURL: interaction.user.avatarURL(),
+                });
+        }
 
-            if (!options) options = "n/a";
+        if (interaction.options) {
+            var options = "";
+            await interaction.options._hoistedOptions.forEach((option) => {
+                options += `\`${option.name}\`: \`${option.value}\`\n`;
+            });
+        }
+        // wait(1000)
+
+        if (options) {
             executed.addFields([
                 {
-                    name: "arguments:",
+                    name: "Arguments:",
                     value: `${options.substring(0, 1000)}${options.toString().length > 1000 ? "\n..." : ""}`,
                     inline: false,
                 },
             ]);
-            // if (interaction.isChatInputCommand()) {
-            client.channels.cache.get(config.channels.cmdlogchannel).send({ embeds: [executed] });
-            // }
         }
-    } else return;
+
+        client.channels.cache.get(config.channels.cmdlogchannel).send({ embeds: [executed] });
+    }
 });
 
 // custom log override
 client.modLog = async function (message, file = "custom") {
     const time = Date.now();
-    const embed = new Discord.EmbedBuilder()
+    const embed = new EmbedBuilder()
         .setTitle("Mod-Log")
         .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
         .setFooter({ text: "origin: " + file + " | " + gettime(true, time) })
         .setColor(config.colors.info);
 
-    // await wait(1000); // wait 1 second to prevent wrong ids
-    // TODO: log modlog
-
-    // embed.addFields([
-    //     { name: "log-id", value: `\`${res[0].id + 1}\``, inline: true },
-    //     {
-    //         name: "sql-query",
-    //         value: `\`\`\`sql\nSELECT * FROM logs WHERE id = ${res[0].id + 1}\`\`\``,
-    //         inline: false,
-    //     },
-    // ]);
+    // log to modlog database, get id and add to embed
+    // client.log(message, file, time, 1); should return the id
 
     client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] });
-
-    // client.log(message, file, time, 1);
 };
 
 client.log = async function (message, file = "custom", time = Date.now(), modlog = 0) {
-    //TODO log to database
-    // try {
-    //     await db("INSERT INTO logs (message, origin, time, modlog) VALUES (?, ?, ?, ?)", [
-    //         encodeURI(message),
-    //         encodeURI(file),
-    //         time,
-    //         modlog.toString(),
-    //     ]);
-    // } catch (e) {
-    //     client.channels.cache.get(config.mod_log_channel_id).send("Es gab einen Fehler beim Loggen.\n" + e);
-    // }
+    //TODO log to database, return id
 };
 
 // custom error override
-client.error = async function (message, file = "custom") {
+client.error = async function (message = "not provided", file = "custom") {
     try {
         const time = Date.now();
-        // await db("INSERT INTO errors (message, origin, time) VALUES (?, ?, ?)", [encodeURI(message), encodeURI(file), time]);
+        //TODO: log to database, get id and add to embed
 
-        const embed = new Discord.EmbedBuilder()
+        const embed = new EmbedBuilder()
             .setTitle("Error")
             .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
             .setFooter({
                 text: "origin: " + file + " | " + gettime(true, time),
             })
             .setColor(config.colors.error);
-
-        // TODO: log error
-
-        // const res = await db("SELECT id FROM errors ORDER BY id desc LIMIT 1");
-        // if (res.length == 0) {
-        //     client.channels.cache
-        //         .get(config.mod_log_channel_id)
-        //         .send("Es gab einen Fehler beim Loggen des Fehlers. Es wurde kein Eintrag in der Errors Datenbank gefunden.");
-        //     return;
-        // }
-
-        // embed.addFields([
-        //     { name: "error-id", value: `\`${res[0].id}\``, inline: true },
-        //     {
-        //         name: "sql-query",
-        //         value: `\`\`\`sql\nSELECT * FROM errors WHERE id = ${res[0].id}\`\`\``,
-        //         inline: false,
-        //     },
-        // ]);
 
         client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] });
     } catch (e) {
@@ -455,35 +380,37 @@ client.error = async function (message, file = "custom") {
     }
 };
 
+// database
+client.db = users;
+
+// login
 client.login(config.token);
 
 // uncaught error handling
-// log("Initialising: error-handling", "yellow", "reset", false)
+// log("Initialising: Error handling", "yellow", "reset", false)
 // process.on('uncaughtException', function(error, source) {
-//     const embedfail = new Discord.EmbedBuilder()
-//         .setTitle('Es gab einen Fehler!')
+//     const embed = new EmbedBuilder()
+//         .setTitle('Uncaught exception!')
 //         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
 //         .setFooter({
 //             text: `${source}`,
 //             iconURL: client.user.avatarURL({ format: 'png' })
 //         })
 //         .setTimestamp()
-//         .setColor(config.mod_log_color_error)
+//         .setColor(config.colors.error)
 //         .addFields([
 //             { name: "Exakte Zeit:", value: `\`${gettime()}\``, inline: true },
 //         ])
 //     if (error.toString().length < 1000) {
-//         embedfail.addFields([
+//         embed.addFields([
 //             { name: "Fehler:", value: `\`${error}\``, inline: false}
 //         ])
-//         } else {
-//         embedfail.addFields([
-//             { name: "Fehler:", value: "Der Fehler ist zu lang, um hier dargestellt zu werden.", inline: true}
-//         ])
-
-//         const attachment = new Discord.AttachmentBuilder(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
-//         client.channels.cache.get(config.mod_log_channel_id).send({ files: [attachment] })
 //     }
-//     client.channels.cache.get(config.mod_log_channel_id).send({ embeds: [embedfail] })
+//     client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] })
+
+//     if (error.toString().length > 1000) {
+//         const attachment = new AttachmentBuilder(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
+//         client.channels.cache.get(config.channels.modlogchannel).send({ files: [attachment.setName('error.log')] })
+//     }
 // })
-// log(`Initialised: Error-Handling`, "red", "reset", false)
+// log(`Initialised: Error handling`, "red", "reset", false)

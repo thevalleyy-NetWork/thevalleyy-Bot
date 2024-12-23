@@ -1,4 +1,4 @@
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const rusasarray = [

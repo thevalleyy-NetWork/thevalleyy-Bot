@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const config = require("../../config.json");
 const fs = require("node:fs");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const user = interaction.options.get("user");

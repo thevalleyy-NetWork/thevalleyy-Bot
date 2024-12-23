@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("blacklist")
         .setDescription("Blacklistet einen User oder gibt die Blackliste aus")
@@ -10,12 +10,9 @@ module.exports = {
         })
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .addUserOption((option) =>
-            option
-                .setName("user")
-                .setDescription("Nutzer, der geblacklistet werden soll")
-                .setDescriptionLocalizations({
-                    "en-US": "User to be blacklisted",
-                    "en-GB": "User to be blacklisted",
-                })
+            option.setName("user").setDescription("Nutzer, der geblacklistet werden soll").setDescriptionLocalizations({
+                "en-US": "User to be blacklisted",
+                "en-GB": "User to be blacklisted",
+            })
         ),
 };

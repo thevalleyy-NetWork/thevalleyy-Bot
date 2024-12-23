@@ -1,6 +1,6 @@
 const config = require("../../config.json");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
     if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
         return interaction.reply({

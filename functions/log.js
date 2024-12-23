@@ -1,5 +1,5 @@
-const isJson = require("./isJson.js");
-const gettime = require("./gettime.js");
+import isJson from "./isJson.js";
+import gettime from "./gettime.js";
 
 /**
  * Logs a message to the console
@@ -58,4 +58,4 @@ function log(text, style = "reset", background = "reset", showTime = true) {
 
     console.log(`${bgColor}${showTime == true ? `[${gettime()}] » ` : ""}${fgColor}${text}${styles.text.reset}`);
 }
-module.exports = log;
+export default log;

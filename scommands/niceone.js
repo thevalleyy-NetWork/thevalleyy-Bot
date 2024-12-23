@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("niceone")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Toggelt die Nice One Rolle eines Users")
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers) // 0 = admin only
         .setDescriptionLocalizations({
@@ -11,13 +11,9 @@ module.exports = {
             "en-GB": "Toggles the Nice One role of a user",
         })
         .addUserOption((option) =>
-            option
-                .setName("user")
-                .setDescription("Nutzer")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "User",
-                    "en-GB": "User",
-                })
+            option.setName("user").setDescription("Nutzer").setRequired(true).setDescriptionLocalizations({
+                "en-US": "User",
+                "en-GB": "User",
+            })
         ),
 };

@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("error")
         .setDMPermission(true)
@@ -18,15 +18,10 @@ module.exports = {
                     "en-GB": "Lists the last n errors.",
                 })
                 .addNumberOption((option) =>
-                    option
-                        .setName("amount")
-                        .setDescription(
-                            "Die Anzahl der Errors, die aufgelistet werden sollen."
-                        )
-                        .setDescriptionLocalizations({
-                            "en-US": "The amount of errors to be listed.",
-                            "en-GB": "The amount of errors to be listed.",
-                        })
+                    option.setName("amount").setDescription("Die Anzahl der Errors, die aufgelistet werden sollen.").setDescriptionLocalizations({
+                        "en-US": "The amount of errors to be listed.",
+                        "en-GB": "The amount of errors to be listed.",
+                    })
                 )
         )
         .addSubcommand((subcommand) =>
@@ -42,24 +37,17 @@ module.exports = {
                     option
                         .setName("message")
                         .setRequired(true)
-                        .setDescription(
-                            "Die Zeichenfolge, die in die Datenbank eingetragen werden soll."
-                        )
+                        .setDescription("Die Zeichenfolge, die in die Datenbank eingetragen werden soll.")
                         .setDescriptionLocalizations({
                             "en-US": "String to log.",
                             "en-GB": "String to log.",
                         })
                 )
                 .addStringOption((option) =>
-                    option
-                        .setName("origin")
-                        .setDescription(
-                            "Der Ursprung der Nachricht, z.B. der Name des Befehls."
-                        )
-                        .setDescriptionLocalizations({
-                            "en-US": "The origin of the message.",
-                            "en-GB": "The origin of the message.",
-                        })
+                    option.setName("origin").setDescription("Der Ursprung der Nachricht, z.B. der Name des Befehls.").setDescriptionLocalizations({
+                        "en-US": "The origin of the message.",
+                        "en-GB": "The origin of the message.",
+                    })
                 )
         ),
 };

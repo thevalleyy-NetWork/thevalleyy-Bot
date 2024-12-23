@@ -3,16 +3,13 @@ const config = require("../../config.json");
 const fs = require("node:fs");
 const util = require("minecraft-server-util");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     var ip = interaction.options.getString("ip");
     var port = interaction.options.getString("port");
 
-    if (
-        !interaction.options.getString("ip") &&
-        !interaction.options.getString("port")
-    ) {
+    if (!interaction.options.getString("ip") && !interaction.options.getString("port")) {
         var ip = "thevalleyy.tk";
         var port = "";
     }
@@ -59,17 +56,11 @@ module.exports = (client, interaction) => {
                     },
                 ])
 
-                .setThumbnail(
-                    "https://eu.mc-api.net/v3/server/favicon/" + ip + ":" + port
-                )
-                .setImage(
-                    `http://status.mclive.eu/${ip}/${ip}/${port}/banner.png`
-                );
+                .setThumbnail("https://eu.mc-api.net/v3/server/favicon/" + ip + ":" + port)
+                .setImage(`http://status.mclive.eu/${ip}/${ip}/${port}/banner.png`);
 
             if (ip == "thevalleyy.tk") {
-                const json = JSON.parse(
-                    fs.readFileSync("./data/mcstats.json", "utf8")
-                );
+                const json = JSON.parse(fs.readFileSync("./data/mcstats.json", "utf8"));
 
                 embed.addFields([
                     {

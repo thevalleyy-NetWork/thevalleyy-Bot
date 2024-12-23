@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("status")
@@ -28,13 +28,10 @@ module.exports = {
         )
 
         .addStringOption((option) =>
-            option
-                .setName("text")
-                .setDescription("Text der angezeigt wird")
-                .setDescriptionLocalizations({
-                    "en-US": "Text to be shown",
-                    "en-GB": "Text to be shown",
-                })
+            option.setName("text").setDescription("Text der angezeigt wird").setDescriptionLocalizations({
+                "en-US": "Text to be shown",
+                "en-GB": "Text to be shown",
+            })
         )
 
         .addStringOption((option) =>

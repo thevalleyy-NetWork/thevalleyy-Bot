@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("bettereval")
         .setDMPermission(true)
@@ -10,13 +10,9 @@ module.exports = {
             "en-GB": "Executes shellcode",
         })
         .addStringOption((option) =>
-            option
-                .setName("code")
-                .setDescription("Shellcode")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "Shellcode",
-                    "en-GB": "Shellcode",
-                })
+            option.setName("code").setDescription("Shellcode").setRequired(true).setDescriptionLocalizations({
+                "en-US": "Shellcode",
+                "en-GB": "Shellcode",
+            })
         ),
 };

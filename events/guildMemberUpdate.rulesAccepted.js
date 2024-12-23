@@ -1,25 +1,22 @@
-const modlog = "822575095721099304";
-const config = require("./../config.json");
+import config from "../config.json" with { type: "json" };
 
-module.exports = async (client, oldMember, newMember) => {
-    const iconurl = newMember.guild.iconURL();
+export default async (client, oldMember, newMember) => {
+    if (newMember.guild.id != config.guild) return;
     try {
         if (oldMember.pending === newMember.pending) return;
         if (newMember.pending === false) {
-            const niceone = newMember.guild.roles.cache.find((role) => role.name === "Nice One").id;
+            const niceone = newMember.guild.roles.cache.find((role) => role.name === "Nice One").id; // TODO: change to config
             const mitglied = newMember.guild.roles.cache.find((role) => role.name === "Mitglied").id;
+            
             const user = newMember.guild.members.cache.get(newMember.user.id);
+             user.roles.add(mitglied);
 
-            user.roles.add(mitglied);
-
-            //TODO: make use of the database
-            // if (await db(`SELECT dcid FROM discord WHERE niceone != 1 AND dcid = ${newMember.user.id}`).then((res) => res[0]))
-            //     return client.channels.cache
-            //         .get(modlog)
-            //         .send("Serverregeln akzeptiert: <@" + newMember.user.id + ">, `" + newMember.user.id + "`\nHat Nice One bekommen: Nein");
-            // client.channels.cache
-            //     .get(modlog)
-            //     .send("Serverregeln akzeptiert: <@" + newMember.user.id + ">, `" + newMember.user.id + "`\nHat Nice One bekommen: Ja");
+            //TODO: testfor niceone
+            //TODO: test this code
+            
+            client.channels.cache
+                .get(config.channels.modlogchannel)
+                .send("Serverregeln akzeptiert: <@" + newMember.user.id + ">, `" + newMember.user.id + "`\nHat Nice One bekommen: Ja");
 
             user.roles.add(niceone);
         }

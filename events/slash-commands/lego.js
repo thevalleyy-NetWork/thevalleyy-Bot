@@ -32,7 +32,7 @@ function cooldown(interaction) {
     }, 20000);
 }
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const fetch = (await import("node-fetch")).default;

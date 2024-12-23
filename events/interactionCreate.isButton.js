@@ -1,11 +1,10 @@
-const fs = require("fs");
-let json = require("./../data/stats.json");
+import fs from "fs";
 
-module.exports = (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isButton()) return;
 
-    let json = require("./../data/stats.json");
-    json.discord.buttonKlicks += 1;
+    const json = await import("./../data/stats.json", { with: { type: "json" } });
+    json.default.discord.buttonKlicks += 1;
 
     fs.writeFile("./data/stats.json", JSON.stringify(json, null, 4), (err) => {
         if (err) client.error(err, "isButton.js");

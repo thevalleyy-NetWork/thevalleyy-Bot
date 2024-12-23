@@ -3,7 +3,7 @@ const config = require("../../config.json");
 const { createClient } = require("pexels");
 const paginationEmbed = require("../../functions/pagination.js");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const query = interaction.options.getString("query").substring(0, 255);
@@ -19,15 +19,9 @@ module.exports = (client, interaction) => {
     const pexels = createClient(config.keys.pexels);
     let array = [];
 
-    const button1 = new Discord.ButtonBuilder()
-        .setCustomId("previousbtn")
-        .setLabel("◀️")
-        .setStyle("Secondary");
+    const button1 = new Discord.ButtonBuilder().setCustomId("previousbtn").setLabel("◀️").setStyle("Secondary");
 
-    const button2 = new Discord.ButtonBuilder()
-        .setCustomId("nextbtn")
-        .setLabel("▶️")
-        .setStyle("Secondary");
+    const button2 = new Discord.ButtonBuilder().setCustomId("nextbtn").setLabel("▶️").setStyle("Secondary");
 
     //create an array of buttons
 
@@ -45,10 +39,7 @@ module.exports = (client, interaction) => {
                 per_page: 80,
             })
             .then((result) => {
-                if (result.photos.length == 0)
-                    return interaction.reply(
-                        "Es wurden keine Bilder gefunden."
-                    );
+                if (result.photos.length == 0) return interaction.reply("Es wurden keine Bilder gefunden.");
                 for (let i = 0; i < result.photos.length; i++) {
                     const photo = result.photos[i];
                     const embed = new Discord.EmbedBuilder()

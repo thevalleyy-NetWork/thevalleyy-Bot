@@ -1,6 +1,6 @@
 const config = require("../../config.json");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.user.id != config.owner) {
@@ -11,10 +11,7 @@ module.exports = async (client, interaction) => {
         return;
     }
 
-    client.log(
-        `Evaluating code: ${interaction.options.getString("code")}`,
-        "bettereval.js"
-    );
+    client.log(`Evaluating code: ${interaction.options.getString("code")}`, "bettereval.js");
 
     let kill = [];
     let m;
@@ -22,40 +19,15 @@ module.exports = async (client, interaction) => {
     const getLines = (d) => d.split(/(\r?\n)+/).join("");
 
     if (interaction.user) {
-        await interaction.reply(
-            "```xl\n" + interaction.options.getString("code") + "\n```"
-        );
+        await interaction.reply("```xl\n" + interaction.options.getString("code") + "\n```");
         m = await interaction.fetchReply();
-    } else
-        m = await interaction.reply(
-            "```xl\n" + interaction.options.getString("code") + "\n```"
-        );
+    } else m = await interaction.reply("```xl\n" + interaction.options.getString("code") + "\n```");
 
     const update = () => {
-        const text =
-            interaction.options.getString("code") +
-            "\n\n" +
-            getLines(data.join("")) +
-            "\n" +
-            (exited ? exited : "");
+        const text = interaction.options.getString("code") + "\n\n" + getLines(data.join("")) + "\n" + (exited ? exited : "");
         if (interaction.user)
-            interaction
-                .editReply(
-                    "```xl\n" +
-                        text.substring(0, 1960).trim() +
-                        (text.length > 1959 ? "\n..." : "") +
-                        "\n" +
-                        "```"
-                )
-                .catch(() => {});
-        else
-            m.edit(
-                "```xl\n" +
-                    text.substring(0, 1960).trim() +
-                    (text.length > 1959 ? "\n..." : "") +
-                    "\n" +
-                    "```"
-            ).catch(() => {});
+            interaction.editReply("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n" + "```").catch(() => {});
+        else m.edit("```xl\n" + text.substring(0, 1960).trim() + (text.length > 1959 ? "\n..." : "") + "\n" + "```").catch(() => {});
         if (text.length > 2000) kill.push(true);
     };
 

@@ -1,10 +1,9 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ComponentType } from "discord.js"
+import config from "../../config.json" with { type: "json" };
 
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require("discord.js");
-
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
+    // allow more skies
 
     let x = 0;
     let y = 0;
@@ -59,7 +58,7 @@ module.exports = (client, interaction) => {
         })
         .then(async (msg) => {
             const collector = await msg.createMessageComponentCollector({
-                componentType: Discord.ComponentType.Button,
+                componentType: ComponentType.Button,
                 time: 6000,
             });
 
@@ -121,7 +120,7 @@ module.exports = (client, interaction) => {
                 }
 
                 const embed = new EmbedBuilder()
-                    .setTitle(`Allsky ||X = ${x}; Y = ${y}||`)
+                    .setTitle(`Allsky x = ${x}; y = ${y}`)
                     .setColor(config.standard_color)
                     .setFooter({
                         text: interaction.guild.name,

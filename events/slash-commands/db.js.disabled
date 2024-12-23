@@ -13,7 +13,7 @@ const connection = mysql.createPool({
 
 const db = util.promisify(connection.query).bind(connection);
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.user.id != config.owner) {

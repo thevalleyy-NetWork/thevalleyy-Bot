@@ -1,20 +1,8 @@
-const config = require("../config.json");
-const channelId = config.memberchannel;
+import updateMembers from "./guildMemberAdd.memberCount.js"; // TODO: test this
 
-module.exports = async (client, member) => {
-    const updateMembers = async (guild = member.guild) => {
-        var memberCount = await guild.members.cache.filter(
-            (member) => !member.user.bot
-        ).size;
-        const channel = guild.channels.cache.get(channelId);
-        channel.setName(
-            `Mitglieder: ${memberCount.toLocaleString()}`,
-            "updating membercount"
-        );
-    };
-
+export default async (client, member) => {
     try {
-        updateMembers(member.guild);
+        updateMembers(client, member);
     } catch (error) {
         client.error(error, "memberCount.js");
     }

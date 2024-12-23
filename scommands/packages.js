@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("packages")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Zeigt alle installierten NPM-Packages an.")
         .setDescriptionLocalizations({
             "en-US": "Shows all installed npm packages",

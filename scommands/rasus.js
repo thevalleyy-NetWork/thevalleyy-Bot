@@ -1,8 +1,5 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("rasus")
-        .setDMPermission(false)
-        .setDescription("Rasus! 😳"),
+export default {
+    data: new SlashCommandBuilder().setName("rasus").setContexts([0]).setDescription("Rasus! 😳"),
 };

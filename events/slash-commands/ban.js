@@ -1,12 +1,8 @@
 const config = require("../../config.json");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (
-        !interaction.guild.members.cache.get(
-            interaction.options.get("user").user.id
-        )
-    )
+    if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
         return interaction.reply({
             content: "Dieser Benutzer ist nicht auf diesem Server!",
             ephemeral: true,
@@ -18,9 +14,7 @@ module.exports = async (client, interaction) => {
 
     if (user.id === interaction.user.id)
         return interaction.reply({
-            content:
-                "Du kannst dich nicht selbst bannen, " +
-                interaction.user.username,
+            content: "Du kannst dich nicht selbst bannen, " + interaction.user.username,
             ephemeral: true,
         });
 
@@ -47,36 +41,19 @@ module.exports = async (client, interaction) => {
         await user.member
             .ban({
                 deleteMessageDays: days,
-                reason:
-                    reason +
-                    ", Ban von: " +
-                    interaction.user.tag +
-                    " (DMDs: " +
-                    days +
-                    ")",
+                reason: reason + ", Ban von: " + interaction.user.tag + " (DMDs: " + days + ")",
             })
             .catch((e) => {
                 interaction.reply({
-                    content:
-                        "Ich konnte den User nicht bannen, " +
-                        interaction.user.username,
+                    content: "Ich konnte den User nicht bannen, " + interaction.user.username,
                     ephemeral: true,
                 });
                 client.error(e, "ban.js");
                 return;
             });
 
-        client.modLog(
-            `${user.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gebannt.`,
-            "ban.js"
-        );
-        await interaction.reply(
-            "Der User `" +
-                user.user.tag +
-                "` wurde mit dem Grund `" +
-                reason +
-                "` gebannt."
-        );
+        client.modLog(`${user.user.tag} wurde von ${interaction.user.tag} wegen ${reason} gebannt.`, "ban.js");
+        await interaction.reply("Der User `" + user.user.tag + "` wurde mit dem Grund `" + reason + "` gebannt.");
     } catch (e) {
         client.error(e, "ban.js");
     }

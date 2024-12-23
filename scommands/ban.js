@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("ban")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Bannt einen User")
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers) // 0 = admin only
         .setDescriptionLocalizations({
@@ -11,34 +11,23 @@ module.exports = {
             "en-GB": "Bans a user",
         })
         .addUserOption((option) =>
-            option
-                .setName("user")
-                .setDescription("User den du bannen willst")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "User to ban",
-                    "en-GB": "User to ban",
-                })
+            option.setName("user").setDescription("User den du bannen willst").setRequired(true).setDescriptionLocalizations({
+                "en-US": "User to ban",
+                "en-GB": "User to ban",
+            })
         )
 
         .addStringOption((option) =>
-            option
-                .setName("reason")
-                .setDescription("Grund für den Ban")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "Ban reason",
-                    "en-GB": "Ban reason",
-                })
+            option.setName("reason").setDescription("Grund für den Ban").setRequired(true).setDescriptionLocalizations({
+                "en-US": "Ban reason",
+                "en-GB": "Ban reason",
+            })
         )
 
         .addBooleanOption((option) =>
-            option
-                .setName("dmdays")
-                .setDescription("Nachrichten löschen? (Letzte Woche)")
-                .setDescriptionLocalizations({
-                    "en-US": "Delete messages? (last week)",
-                    "en-GB": "Delete messages? (last week)",
-                })
+            option.setName("dmdays").setDescription("Nachrichten löschen? (Letzte Woche)").setDescriptionLocalizations({
+                "en-US": "Delete messages? (last week)",
+                "en-GB": "Delete messages? (last week)",
+            })
         ),
 };

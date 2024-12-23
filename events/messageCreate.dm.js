@@ -1,15 +1,14 @@
-const { ChannelType } = require("discord.js");
-const Discord = require("discord.js");
-const config = require("../config.json");
+import { ChannelType, EmbedBuilder } from "discord.js";
+import config from "../config.json" with { type: "json" };
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
     if (message.channel.type !== ChannelType.DM) return;
-    if (message.author.id == "506746108345843713") return;
+    if (message.author.id == config.owner) return;
     if (message.author.bot) return;
 
-    try {
-        message.client.users.fetch("506746108345843713", false).then((user) => {
-            const embedDM = new Discord.EmbedBuilder()
+    try { //TODO: test this
+        message.client.users.fetch(config.owner, false).then((user) => {
+            const embed = new EmbedBuilder()
                 .setTitle("Direct Message <:hm:907936051300012072>")
                 .setThumbnail(message.author.avatarURL())
                 .addFields([
@@ -22,9 +21,9 @@ module.exports = async (client, message) => {
                     text: "Meine DMs, " + message.author.username + "s ID: " + message.author.id,
                 })
                 .setTimestamp()
-                .setColor("#b51cbd");
+                .setColor(config.colors.magenta);
 
-            user.send({ embeds: [embedDM] });
+            user.send({ embeds: [embed] });
             message.react("<:checkmarkEmbed:1005146896278503597> ");
         });
     } catch (error) {

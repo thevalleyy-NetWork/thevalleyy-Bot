@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const embed = new Discord.EmbedBuilder()

@@ -34,10 +34,10 @@ function time() {
     return datetime;
 }
 
-const modlog = "822575095721099304";
-const Discord = require("discord.js");
+import { EmbedBuilder } from "discord.js";
+import config from "../config.json" with { type: "json"}
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "TICKET_create") return;
 
@@ -46,40 +46,22 @@ module.exports = (client, interaction) => {
     const ticketName = "🎫-" + interaction.user.username.toLowerCase();
 
     try {
-        const firstTicket = server.channels.cache.find(
-            (c) => c.name.toLowerCase() === ticketName
-        );
+        const firstTicket = server.channels.cache.find((c) => c.name.toLowerCase() === ticketName);
         if (firstTicket)
             return interaction.reply({
-                content:
-                    "Du hast bereits ein offenes Ticket, <#" +
-                    firstTicket.id +
-                    ">",
+                content: "Du hast bereits ein offenes Ticket, <#" + firstTicket.id + ">",
                 ephemeral: true,
             });
 
-        const suprole = interaction.guild.roles.cache.find(
-            (role) => role.name === "Supporter"
-        );
-        const modrole = interaction.guild.roles.cache.find(
-            (role) => role.name === "Moderator"
-        );
+        const suprole = interaction.guild.roles.cache.find((role) => role.name === "Supporter"); //TODO: change to config
+        const modrole = interaction.guild.roles.cache.find((role) => role.name === "Moderator");
 
         // ticket can be created
-        const category = server.channels.cache.find(
-            (c) => c.name === "Tickets"
-        );
+        const category = server.channels.cache.find((c) => c.name === "Tickets");
         server.channels
             .create({
                 name: ticketName,
-                topic:
-                    "Created at: " +
-                    time() +
-                    " by " +
-                    interaction.user.tag +
-                    " (" +
-                    interaction.user.id +
-                    ")",
+                topic: "Created at: " + time() + " by " + interaction.user.tag + " (" + interaction.user.id + ")",
                 position: 0,
                 parent: category,
             })
@@ -122,17 +104,12 @@ module.exports = (client, interaction) => {
                 });
 
                 interaction.reply({
-                    content:
-                        "Dein Ticket wurde in <#" + channel.id + "> erstellt!",
+                    content: "Dein Ticket wurde in <#" + channel.id + "> erstellt!",
                     ephemeral: true,
                 });
 
-                const embed = new Discord.EmbedBuilder()
-                    .setTitle(
-                        "Heyho, " +
-                            interaction.user.username +
-                            ", \nHerzlich Willkommen im Support"
-                    )
+                const embed = new EmbedBuilder()
+                    .setTitle("Heyho, " + interaction.user.username + ", \nHerzlich Willkommen im Support")
                     .setDescription(
                         "Hier helfen dir die <@&" +
                             suprole +
@@ -140,14 +117,12 @@ module.exports = (client, interaction) => {
                             modrole +
                             ">en bei deinen Anliegen. \nDa wir aber keine Maschinen sind, kann es \nmanchmal ein bisschen dauern, bis du eine \nRückmeldung bekommst."
                     )
-                    .setColor("#8319E6")
+                    .setColor(config.colors.purple)
                     .setFooter({
                         text: interaction.guild.name,
                         iconURL: server.iconURL(),
                     })
-                    .setThumbnail(
-                        "https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png"
-                    )
+                    .setThumbnail("https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png")
                     .setAuthor({
                         name: "Support-Ticket",
                         iconURL: interaction.user.avatarURL(),
@@ -163,11 +138,9 @@ module.exports = (client, interaction) => {
                     message.pin();
                 });
 
-                const embedLog = new Discord.EmbedBuilder()
+                const embedLog = new EmbedBuilder()
                     .setTitle("Ein Ticket wurde erstellt")
-                    .setThumbnail(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27"
-                    )
+                    .setThumbnail("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27")
                     .addFields([
                         {
                             name: interaction.user.tag,
@@ -179,8 +152,8 @@ module.exports = (client, interaction) => {
                         iconURL: server.iconURL(),
                     })
                     .setTimestamp()
-                    .setColor("#03f8fc");
-                client.channels.cache.get(modlog).send({ embeds: [embedLog] });
+                    .setColor(config.colors.info);
+                client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embedLog] });
             });
     } catch (err) {
         client.error(err, "ticket.open.js");

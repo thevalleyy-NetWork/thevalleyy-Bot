@@ -87,4 +87,4 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
 
     return curPage;
 };
-module.exports = paginationEmbed;
+export default paginationEmbed;

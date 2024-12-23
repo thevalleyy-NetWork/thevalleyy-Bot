@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const iconurl = interaction.guild.iconURL();
@@ -10,11 +10,7 @@ module.exports = async (client, interaction) => {
 
         const waitEmbed = new Discord.EmbedBuilder()
             .setColor("0099ff")
-            .setDescription(
-                "Suche nach: `" +
-                    interaction.options.getString("song").substring(0, 150) +
-                    "`..."
-            );
+            .setDescription("Suche nach: `" + interaction.options.getString("song").substring(0, 150) + "`...");
 
         interaction.reply({ embeds: [waitEmbed] });
         const { title, author, lyrics, thumbnail, links, error } = await fetch(

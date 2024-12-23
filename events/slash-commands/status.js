@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const config = require("../../config.json");
 const { ActivityType } = require("discord.js");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.user.id != config.owner) {
@@ -102,9 +102,6 @@ module.exports = async (client, interaction) => {
         interaction.editReply("Es ist ein Fehler aufgetreten");
         return;
     }
-    client.log(
-        `${interaction.user.tag} hat den Status zu ${presence} geändert.`,
-        "status.js"
-    );
+    client.log(`${interaction.user.tag} hat den Status zu ${presence} geändert.`, "status.js");
     interaction.editReply("Status wurde geändert.");
 };

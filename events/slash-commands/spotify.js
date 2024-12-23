@@ -14,14 +14,12 @@ function getDuration(start, end) {
     if (date.getMinutes().toString().length < 2) minFiller = "0";
     if (date.getHours().toString().length - 1 < 2) hourFiller = "0";
 
-    var dura = `${hourFiller}${
-        date.getHours() + date.getTimezoneOffset() / 60
-    }:${minFiller}${date.getMinutes()}:${secFiller}${date.getSeconds()}`;
+    var dura = `${hourFiller}${date.getHours() + date.getTimezoneOffset() / 60}:${minFiller}${date.getMinutes()}:${secFiller}${date.getSeconds()}`;
 
     return dura;
 }
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     // second argument?
@@ -44,21 +42,13 @@ module.exports = async (client, interaction) => {
         }
 
         // calculate the progressbar
-        const songlenght =
-            new Date(await result.timestamps.end.toString()).getTime() -
-            new Date(await result.timestamps.start.toString()).getTime();
+        const songlenght = new Date(await result.timestamps.end.toString()).getTime() - new Date(await result.timestamps.start.toString()).getTime();
         const lenghtInSeconds =
             new Date(songlenght).getSeconds() +
             new Date(songlenght).getMinutes() * 60 +
-            (new Date(songlenght).getHours() +
-                new Date(songlenght).getTimezoneOffset() / 60) *
-                3600;
-        const currentSeconds =
-            Date.now().toString().slice(0, -3) -
-            result.createdTimestamp.toString().slice(0, -3);
-        const values = progressbar.filledBar(lenghtInSeconds, currentSeconds, [
-            (size = 38),
-        ]);
+            (new Date(songlenght).getHours() + new Date(songlenght).getTimezoneOffset() / 60) * 3600;
+        const currentSeconds = Date.now().toString().slice(0, -3) - result.createdTimestamp.toString().slice(0, -3);
+        const values = progressbar.filledBar(lenghtInSeconds, currentSeconds, [(size = 38)]);
 
         // create the embed
         const embed = new Discord.EmbedBuilder()
@@ -112,34 +102,23 @@ module.exports = async (client, interaction) => {
                 },
             ])
             .addFields([{ name: `${values[0]}`, value: `​`, inline: true }])
-            .setThumbnail(
-                `https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`
-            )
+            .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
             .setTimestamp()
             .setFooter({
                 text: interaction.guild.name,
                 iconURL: interaction.guild.iconURL(),
             });
 
-        const lyricsButton = new Discord.ButtonBuilder()
-            .setCustomId("SPOTIFY_lyrics")
-            .setLabel("Lyrics")
-            .setStyle("Primary");
+        const lyricsButton = new Discord.ButtonBuilder().setCustomId("SPOTIFY_lyrics").setLabel("Lyrics").setStyle("Primary");
 
-        const button = new Discord.ActionRowBuilder().addComponents(
-            lyricsButton
-        );
+        const button = new Discord.ActionRowBuilder().addComponents(lyricsButton);
 
         // send the embed
         interaction.reply({ embeds: [embed], components: [button] });
     } else {
         // the same as above, but with a user as the second argument
 
-        if (
-            !interaction.guild.members.cache.get(
-                interaction.options.get("user").user.id
-            )
-        )
+        if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
             return interaction.reply({
                 content: "Dieser Benutzer ist nicht auf diesem Server!",
                 ephemeral: true,
@@ -155,24 +134,16 @@ module.exports = async (client, interaction) => {
             }
         });
         if (!result) {
-            interaction.reply(
-                `\`${user.user.username}\` hört gerade nichts auf Spotify.`
-            );
+            interaction.reply(`\`${user.user.username}\` hört gerade nichts auf Spotify.`);
             return;
         }
 
-        const songlenght =
-            new Date(await result.timestamps.end.toString()).getTime() -
-            new Date(await result.timestamps.start.toString()).getTime();
+        const songlenght = new Date(await result.timestamps.end.toString()).getTime() - new Date(await result.timestamps.start.toString()).getTime();
         const lenghtInSeconds =
             new Date(songlenght).getSeconds() +
             new Date(songlenght).getMinutes() * 60 +
-            (new Date(songlenght).getHours() +
-                new Date(songlenght).getTimezoneOffset() / 60) *
-                3600;
-        const currentSeconds =
-            Date.now().toString().slice(0, -3) -
-            result.createdTimestamp.toString().slice(0, -3);
+            (new Date(songlenght).getHours() + new Date(songlenght).getTimezoneOffset() / 60) * 3600;
+        const currentSeconds = Date.now().toString().slice(0, -3) - result.createdTimestamp.toString().slice(0, -3);
         const values = progressbar.filledBar(lenghtInSeconds, currentSeconds);
 
         const embed = new Discord.EmbedBuilder()
@@ -225,23 +196,16 @@ module.exports = async (client, interaction) => {
                 },
             ])
             .addFields([{ name: `${values[0]}`, value: `​`, inline: true }])
-            .setThumbnail(
-                `https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`
-            )
+            .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
             .setTimestamp()
             .setFooter({
                 text: interaction.guild.name,
                 iconURL: interaction.guild.iconURL(),
             });
 
-        const lyricsButton = new Discord.ButtonBuilder()
-            .setCustomId("SPOTIFY_lyrics")
-            .setLabel("Lyrics")
-            .setStyle("Primary");
+        const lyricsButton = new Discord.ButtonBuilder().setCustomId("SPOTIFY_lyrics").setLabel("Lyrics").setStyle("Primary");
 
-        const button = new Discord.ActionRowBuilder().addComponents(
-            lyricsButton
-        );
+        const button = new Discord.ActionRowBuilder().addComponents(lyricsButton);
 
         interaction.reply({ embeds: [embed], components: [button] });
     }

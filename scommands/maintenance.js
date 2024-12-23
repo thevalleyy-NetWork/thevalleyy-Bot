@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("maintenance")
         .setDescription("Setzt den Bot in den Wartungsmodus.")
@@ -9,23 +9,16 @@ module.exports = {
             "en-GB": "Activates maintenance mode",
         })
         .addBooleanOption((option) =>
-            option
-                .setName("maintenance")
-                .setDescription("Wartungsmodus")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "Maintenance mode",
-                    "en-GB": "Maintenance mode",
-                })
+            option.setName("maintenance").setDescription("Wartungsmodus").setRequired(true).setDescriptionLocalizations({
+                "en-US": "Maintenance mode",
+                "en-GB": "Maintenance mode",
+            })
         )
 
         .addStringOption((option) =>
-            option
-                .setName("reason")
-                .setDescription("Grund")
-                .setDescriptionLocalizations({
-                    "en-US": "Reason",
-                    "en-GB": "Reason",
-                })
+            option.setName("reason").setDescription("Grund").setDescriptionLocalizations({
+                "en-US": "Reason",
+                "en-GB": "Reason",
+            })
         ),
 };

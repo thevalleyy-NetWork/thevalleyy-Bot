@@ -1,11 +1,8 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("restart")
-        .setDescription("Startet den Bot neu.")
-        .setDescriptionLocalizations({
-            "en-US": "Restarts the bot",
-            "en-GB": "Restarts the bot",
-        }),
+export default {
+    data: new SlashCommandBuilder().setName("restart").setDescription("Startet den Bot neu.").setDescriptionLocalizations({
+        "en-US": "Restarts the bot",
+        "en-GB": "Restarts the bot",
+    }),
 };

@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 300,
     data: new SlashCommandBuilder()
         .setName("allsky")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("✨Beobachte den Himmel✨ (fast live)")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({

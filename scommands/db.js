@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 5,
     data: new SlashCommandBuilder()
         .setName("db")
@@ -10,13 +10,9 @@ module.exports = {
             "en-GB": "Access the bot database",
         })
         .addStringOption((option) =>
-            option
-                .setName("sql")
-                .setDescription("SQL-Anfrage")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "SQL query",
-                    "en-GB": "SQL query",
-                })
+            option.setName("sql").setDescription("SQL-Anfrage").setRequired(true).setDescriptionLocalizations({
+                "en-US": "SQL query",
+                "en-GB": "SQL query",
+            })
         ),
 };

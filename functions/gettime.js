@@ -12,7 +12,7 @@ const getTime = (full = false, date) => {
         return x;
     }
 
-    d = date ? new Date(parseInt(date)) : new Date();
+    const d = date ? new Date(parseInt(date)) : new Date();
     let y = d.getFullYear();
     let mm = addZero(d.getMonth() + 1, 2);
     let dd = addZero(d.getDate(), 2);
@@ -26,4 +26,4 @@ const getTime = (full = false, date) => {
         return `${dd}.${mm}. ${h}:${m}:${s}`;
     }
 };
-module.exports = getTime;
+export default getTime;

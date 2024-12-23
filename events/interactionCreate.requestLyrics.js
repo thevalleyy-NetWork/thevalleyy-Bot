@@ -1,16 +1,17 @@
-const Discord = require("discord.js");
+import { ButtonBuilder, ActionRowBuilder, EmbedBuilder } from "discord.js";
+import config from "../config.json" with { type: "json" };
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "SPOTIFY_lyrics") return;
 
     const iconurl = interaction.guild.iconURL();
     const message = interaction.message;
-    const arguments = message.embeds[0].fields[0].value;
+    const args = message.embeds[0].fields[0].value;
     const fetch = (await import("node-fetch")).default;
 
-    const row = new Discord.ActionRowBuilder().addComponents(
-        new Discord.ButtonBuilder()
+    const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
             .setCustomId(message.components[0].components[0].data.custom_id)
             .setLabel(message.components[0].components[0].data.label)
             .setStyle(message.components[0].components[0].data.style)
@@ -20,22 +21,16 @@ module.exports = async (client, interaction) => {
     await message.edit({ embeds: [message.embeds[0]], components: [row] });
 
     try {
-        const waitEmbed = new Discord.EmbedBuilder()
-            .setColor("0099ff")
-            .setDescription("Suche nach: `" + arguments + "`...");
+        const waitEmbed = new EmbedBuilder().setColor(config.colors.info).setDescription("Suche nach: `" + args + "`...");
         await interaction.reply({ embeds: [waitEmbed] });
 
         const { title, author, lyrics, thumbnail, links, error } = await fetch(
-            `https://some-random-api.ml/lyrics?title=${arguments
-                .replaceAll("ä", "ae")
-                .replaceAll("ü", "ue")
-                .replaceAll("ö", "oe")
-                .replaceAll("ß", "ss")}`
+            `https://some-random-api.ml/lyrics?title=${args.replaceAll("ä", "ae").replaceAll("ü", "ue").replaceAll("ö", "oe").replaceAll("ß", "ss")}`
         ).then((response) => response.json());
 
         if (error) {
-            const errorEmbed = new Discord.EmbedBuilder()
-                .setColor("#ff0000")
+            const errorEmbed = new EmbedBuilder()
+                .setColor(config.colors.errror)
                 .setTitle("Es gab einen Fehler...")
                 .setDescription("`" + error + "`")
                 .setFooter({ text: interaction.guild.name, iconURL: iconurl })
@@ -43,8 +38,8 @@ module.exports = async (client, interaction) => {
             await interaction.editReply({ embeds: [errorEmbed] });
             return;
         }
-
-        const songEmbed = new Discord.EmbedBuilder()
+        // TODO: test if this still works
+        const songEmbed = new EmbedBuilder()
             .setAuthor({
                 name: `${author} (${title})`,
                 iconURL: interaction.user.avatarURL(),
@@ -52,17 +47,15 @@ module.exports = async (client, interaction) => {
             })
             .setThumbnail(thumbnail.genius)
             .setDescription(lyrics.substring(0, 4096))
-            .setColor("0099ff")
+            .setColor(config.colors.info)
             .setFooter({
                 text: interaction.guild.name,
                 iconURL: iconurl,
             })
             .setTimestamp();
-        await interaction
-            .editReply({ embeds: [songEmbed] })
-            .catch(async (err) => {
-                await interaction.editReply("Fehler: `" + err + "`");
-            });
+        await interaction.editReply({ embeds: [songEmbed] }).catch(async (err) => {
+            await interaction.editReply("Fehler: `" + err + "`");
+        });
     } catch (err) {
         await interaction.editReply("Fehler: `" + err + "`");
     }

@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const guild = interaction.guild;
@@ -47,9 +47,7 @@ module.exports = async (client, interaction) => {
             },
             {
                 name: "Serversprache",
-                value: `:flag_${guild.preferredLocale
-                    .replace("en-", "")
-                    .toLowerCase()}:`,
+                value: `:flag_${guild.preferredLocale.replace("en-", "").toLowerCase()}:`,
                 inline: true,
             },
             {
@@ -94,10 +92,7 @@ module.exports = async (client, interaction) => {
             },
         ]);
 
-    if (guild.vanityURLCode)
-        embed.addFields([
-            { name: "Vanity-Code", value: guild.vanityURLCode, inline: true },
-        ]);
+    if (guild.vanityURLCode) embed.addFields([{ name: "Vanity-Code", value: guild.vanityURLCode, inline: true }]);
 
     embed.addFields([
         {
@@ -107,9 +102,7 @@ module.exports = async (client, interaction) => {
         },
         {
             name: "Features",
-            value: guild.features
-                ? "```" + guild.features.join(", ") + "```"
-                : "Keine Features",
+            value: guild.features ? "```" + guild.features.join(", ") + "```" : "Keine Features",
             inline: false,
         },
     ]);

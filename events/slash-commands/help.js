@@ -2,18 +2,12 @@ const Discord = require("discord.js");
 const config = require("../../config.json");
 const fs = require("node:fs");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     const allCommands = client.cmdlist;
 
     if (interaction.isAutocomplete()) {
-        const filtered = allCommands
-            .filter((choice) =>
-                choice.includes(interaction.options.getFocused().toLowerCase())
-            )
-            .slice(0, 25);
-        await interaction.respond(
-            filtered.map((choice) => ({ name: choice, value: choice }))
-        );
+        const filtered = allCommands.filter((choice) => choice.includes(interaction.options.getFocused().toLowerCase())).slice(0, 25);
+        await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
         return;
     }
 
@@ -72,9 +66,7 @@ module.exports = async (client, interaction) => {
         const cmd = interaction.options._hoistedOptions[0].value.toString();
         const cmdjson = client.cmdStructure.cmds[cmd + ".js"];
 
-        const embed = new Discord.EmbedBuilder()
-            .setTitle(`/${cmd}`)
-            .setColor(config.standard_color);
+        const embed = new Discord.EmbedBuilder().setTitle(`/${cmd}`).setColor(config.standard_color);
 
         if (!cmdjson.data.description) {
             embed.addFields([
@@ -98,9 +90,7 @@ module.exports = async (client, interaction) => {
             embed.addFields([
                 {
                     name: "Berechtigungen",
-                    value: `\`\`\`${new Discord.PermissionsBitField(
-                        cmdjson.data.default_member_permissions.toString()
-                    ).toArray()}\`\`\``,
+                    value: `\`\`\`${new Discord.PermissionsBitField(cmdjson.data.default_member_permissions.toString()).toArray()}\`\`\``,
                     inline: true,
                 },
             ]);
@@ -141,8 +131,7 @@ module.exports = async (client, interaction) => {
                     ? `${m} Minuten, `
                     : `${m} Minuten`
                 : ``;
-        var sDisplay =
-            +s > 0 ? (+s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
+        var sDisplay = +s > 0 ? (+s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
 
         embed.addFields([
             {
@@ -170,14 +159,32 @@ module.exports = async (client, interaction) => {
             ]);
         }
 
-        fs.stat(
-            "./events/slash-commands/" + cmdjson.data.name + ".js",
-            async (err, stats) => {
+        fs.stat("./events/slash-commands/" + cmdjson.data.name + ".js", async (err, stats) => {
+            if (err) {
+                client.error(err, "help.js");
+                await embed.addFields([
+                    {
+                        name: "Filesize (code)",
+                        value: `\`\`\`n/a\`\`\``,
+                        inline: true,
+                    },
+                ]);
+            } else {
+                await embed.addFields([
+                    {
+                        name: "Filesize (code)",
+                        value: `\`\`\`${await stats.size} bytes\`\`\``,
+                        inline: true,
+                    },
+                ]);
+            }
+
+            fs.stat("./scommands/" + cmdjson.data.name + ".js", async (err, stats) => {
                 if (err) {
                     client.error(err, "help.js");
                     await embed.addFields([
                         {
-                            name: "Filesize (code)",
+                            name: "Filesize (builder)",
                             value: `\`\`\`n/a\`\`\``,
                             inline: true,
                         },
@@ -185,102 +192,65 @@ module.exports = async (client, interaction) => {
                 } else {
                     await embed.addFields([
                         {
-                            name: "Filesize (code)",
+                            name: "Filesize (builder)",
                             value: `\`\`\`${await stats.size} bytes\`\`\``,
                             inline: true,
                         },
                     ]);
                 }
 
-                fs.stat(
-                    "./scommands/" + cmdjson.data.name + ".js",
-                    async (err, stats) => {
-                        if (err) {
-                            client.error(err, "help.js");
-                            await embed.addFields([
-                                {
-                                    name: "Filesize (builder)",
-                                    value: `\`\`\`n/a\`\`\``,
-                                    inline: true,
-                                },
-                            ]);
-                        } else {
-                            await embed.addFields([
-                                {
-                                    name: "Filesize (builder)",
-                                    value: `\`\`\`${await stats.size} bytes\`\`\``,
-                                    inline: true,
-                                },
-                            ]);
-                        }
+                // i dont fucking now why i have to add the code here, it just works
 
-                        // i dont fucking now why i have to add the code here, it just works
+                if (cmdjson.data.options[0]) {
+                    let options = "";
+                    cmdjson.data.options.map((option) => {
+                        options +=
+                            `${option.name}: ` +
+                            `\n\tBeschreibung: ${option.description} ` +
+                            `\n\tTyp: ${option.type
+                                .toString()
+                                .replace("11", "Anhang")
+                                .replace("10", "Nummer")
+                                .replace("9", "Rolle oder Benutzer")
+                                .replace("8", "Rolle")
+                                .replace("7", "Kanal")
+                                .replace("6", "Benutzer")
+                                .replace("5", "Boolescher Wert")
+                                .replace("4", "Integer")
+                                .replace("3", "Zeichenfolge")
+                                .replace("2", "SubcommandGroup")
+                                .replace("1", "Subcommand")} ` +
+                            `\n\tErforderlich: ${option.required ? "Ja" : "Nein"} ` +
+                            `${option.choices ? "\n\tAuswahlmöglichkeiten: Ja" : ""} ` +
+                            `${option.autocomplete ? "\n\tAutocomplete: Ja" : ""} \n\n`;
+                    });
 
-                        if (cmdjson.data.options[0]) {
-                            let options = "";
-                            cmdjson.data.options.map((option) => {
-                                options +=
-                                    `${option.name}: ` +
-                                    `\n\tBeschreibung: ${option.description} ` +
-                                    `\n\tTyp: ${option.type
-                                        .toString()
-                                        .replace("11", "Anhang")
-                                        .replace("10", "Nummer")
-                                        .replace("9", "Rolle oder Benutzer")
-                                        .replace("8", "Rolle")
-                                        .replace("7", "Kanal")
-                                        .replace("6", "Benutzer")
-                                        .replace("5", "Boolescher Wert")
-                                        .replace("4", "Integer")
-                                        .replace("3", "Zeichenfolge")
-                                        .replace("2", "SubcommandGroup")
-                                        .replace("1", "Subcommand")} ` +
-                                    `\n\tErforderlich: ${
-                                        option.required ? "Ja" : "Nein"
-                                    } ` +
-                                    `${
-                                        option.choices
-                                            ? "\n\tAuswahlmöglichkeiten: Ja"
-                                            : ""
-                                    } ` +
-                                    `${
-                                        option.autocomplete
-                                            ? "\n\tAutocomplete: Ja"
-                                            : ""
-                                    } \n\n`;
-                            });
+                    embed.addFields([
+                        {
+                            name: cmdjson.data.options.length > 1 ? "Argumente" : "Argument",
+                            value: `\`\`\`${options}\`\`\``,
+                        },
+                    ]);
+                } else {
+                    embed.addFields([
+                        {
+                            name: "Argumente",
+                            value: "```Keine```",
+                            inline: true,
+                        },
+                    ]);
+                }
 
-                            embed.addFields([
-                                {
-                                    name:
-                                        cmdjson.data.options.length > 1
-                                            ? "Argumente"
-                                            : "Argument",
-                                    value: `\`\`\`${options}\`\`\``,
-                                },
-                            ]);
-                        } else {
-                            embed.addFields([
-                                {
-                                    name: "Argumente",
-                                    value: "```Keine```",
-                                    inline: true,
-                                },
-                            ]);
-                        }
+                embed
+                    .setFooter({
+                        text: interaction.guild.name,
+                        iconURL: iconurl,
+                    })
+                    .setTimestamp();
 
-                        embed
-                            .setFooter({
-                                text: interaction.guild.name,
-                                iconURL: iconurl,
-                            })
-                            .setTimestamp();
-
-                        interaction.reply({ embeds: [embed] });
-                    }
-                );
-            }
-        );
+                interaction.reply({ embeds: [embed] });
+            });
+        });
     }
     return;
 };

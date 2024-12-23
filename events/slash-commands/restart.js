@@ -2,7 +2,7 @@ const config = require("../../config.json");
 const process = require("process");
 const { spawn } = require("child_process");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.user.id != config.owner) {

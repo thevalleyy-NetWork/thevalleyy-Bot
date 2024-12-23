@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 20,
     data: new SlashCommandBuilder()
         .setName("clear")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Löscht die angegebene Anzahl an Nachrichten.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages) // 0 = admin only
         .setDescriptionLocalizations({
@@ -14,9 +14,7 @@ module.exports = {
         .addNumberOption((option) =>
             option
                 .setName("number")
-                .setDescription(
-                    "Anzahl der Nachrichten, die gelöscht werden sollen"
-                )
+                .setDescription("Anzahl der Nachrichten, die gelöscht werden sollen")
                 .setRequired(true)
                 .setDescriptionLocalizations({
                     "en-US": "Amount of messages to be deleted",

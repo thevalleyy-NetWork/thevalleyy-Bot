@@ -1,42 +1,40 @@
-const Discord = require("discord.js");
-const config = require("./../config.json");
-const package = require("./../package.json").dependencies;
-const fs = require("fs");
+import { ActivityType} from "discord.js";
+import config from "./../config.json" with { type: "json" };
+import packageJson from "./../package.json" with { type: "json" };
+import fs from "fs";
 
-const util = require("util");
-const wait = require("node:timers/promises").setTimeout;
+const pck = packageJson.dependencies;
 
-module.exports = async (client) => {
-    // TODO: make use of the database
-    client.db = require("./../data/database.json").db;
-    client.blacklist = require("./../data/blacklist.json");
+export default async (client) => {
+    const blacklistModule = await import('./../data/blacklist.json', { with: { type: 'json' } });
+    client.blacklist = blacklistModule.default;
 
     // startup presence (now random)
-    function setRandomPackageStatus() {
+    function setRandompckStatus() {
         const { maintenance } = JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8"));
         if (maintenance == true) {
             client.user.setPresence({
                 activities: [
                     {
                         name: "🛑 Wartungsmodus",
-                        type: Discord.ActivityType.Playing,
+                        type: ActivityType.Playing,
                     },
                 ],
                 status: "dnd",
             });
         } else {
-            const randomPackage = [Math.floor(Math.random() * Object.keys(package).length)];
-            const potd = Object.keys(package)[randomPackage].toString();
-            const votd = Object.values(package)[randomPackage].toString().replace("^", "");
+            const randompck = [Math.floor(Math.random() * Object.keys(pck).length)];
+            const potd = Object.keys(pck)[randompck].toString();
+            const votd = Object.values(pck)[randompck].toString().replace("^", "");
 
             client.user.setPresence({
                 activities: [{ name: `mit ${potd} v${votd}` }],
             });
         }
     }
-    setRandomPackageStatus();
+    setRandompckStatus();
     setInterval(function () {
-        setRandomPackageStatus();
+        setRandompckStatus();
     }, 1200000);
 
     // request brickset api key & userhash
@@ -65,17 +63,17 @@ module.exports = async (client) => {
                     });
             });
     } catch (e) {
-        client.error("Error during Api-Key validation request (brickset)\n" + e, "ready.startup.js");
+        client.error("Error during api key validation request (brickset)\n" + e, "ready.startup.js");
     }
 
     // repair the sometimes broken stats json
     try {
-        require("./../data/stats.json");
+        await import("./../data/stats.json", { with: { type: 'json' } });
     } catch {
         let jsonRecover = { discord: { buttonKlicks: 0 } };
 
         fs.writeFile("./data/stats.json", JSON.stringify(jsonRecover, null, 4), (err) => {
-            client.error(err, "startup.json");
+            client.error(err, "startup.js");
         });
     }
 };

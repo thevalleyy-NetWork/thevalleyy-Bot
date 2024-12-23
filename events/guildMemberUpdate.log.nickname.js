@@ -1,8 +1,8 @@
-const modlog = "822575095721099304";
-const Discord = require("discord.js");
+import config from "../config.json" with { type: "json" };
+import { EmbedBuilder } from "discord.js";
 
-module.exports = async (client, oldMember, newMember) => {
-    if (newMember.guild.id != "631518992342843392") return;
+export default async (client, oldMember, newMember) => {
+    if (newMember.guild.id != config.guild) return;
     if (oldMember.nickname === newMember.nickname) return;
     const iconurl = newMember.guild.iconURL();
 
@@ -25,7 +25,7 @@ module.exports = async (client, oldMember, newMember) => {
         var newname = newMember.nickname;
     }
 
-    const embedNickLog = new Discord.EmbedBuilder()
+    const embed = new EmbedBuilder()
         .setTitle("LOG: Nickname geändert")
         .addFields([
             {
@@ -39,6 +39,6 @@ module.exports = async (client, oldMember, newMember) => {
 
         .setFooter({ text: newMember.guild.name, iconURL: iconurl })
         .setTimestamp()
-        .setColor("#24E498");
-    client.channels.cache.get(modlog).send({ embeds: [embedNickLog] });
+        .setColor(config.colors.info);
+    client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] });
 };

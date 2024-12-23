@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("lego")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Alle möglichen Infos zu LEGO-bezogenen Themen")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -23,14 +23,10 @@ module.exports = {
                     option
                         .setName("query")
                         .setRequired(true)
-                        .setDescription(
-                            "Suchanfrage (z. B. die Setnummer, Begriffe & Themen, ect."
-                        )
+                        .setDescription("Suchanfrage (z. B. die Setnummer, Begriffe & Themen, ect.")
                         .setDescriptionLocalizations({
-                            "en-US":
-                                "Search query (e.g. the set number, keywords & themes, etc.)",
-                            "en-GB":
-                                "Search query (e.g. the set number, keywords & themes, etc.)",
+                            "en-US": "Search query (e.g. the set number, keywords & themes, etc.)",
+                            "en-GB": "Search query (e.g. the set number, keywords & themes, etc.)",
                         })
                 )
         )
@@ -44,13 +40,10 @@ module.exports = {
                     "en-GB": "Information about a specific Lego theme",
                 })
                 .addStringOption((option) =>
-                    option
-                        .setName("theme")
-                        .setDescription("Theme (z. B. Star Wars, Technic, ect.")
-                        .setDescriptionLocalizations({
-                            "en-US": "Theme (e.g. Star Wars, Technic, etc.)",
-                            "en-GB": "Theme (e.g. Star Wars, Technic, etc.)",
-                        })
+                    option.setName("theme").setDescription("Theme (z. B. Star Wars, Technic, ect.").setDescriptionLocalizations({
+                        "en-US": "Theme (e.g. Star Wars, Technic, etc.)",
+                        "en-GB": "Theme (e.g. Star Wars, Technic, etc.)",
+                    })
                 )
         )
 
@@ -66,14 +59,10 @@ module.exports = {
                     option
                         .setName("theme")
                         .setRequired(true)
-                        .setDescription(
-                            "Theme (z. B. Star Wars, Technic, ect.) Anzeigen alles Themes mit /lego themes"
-                        )
+                        .setDescription("Theme (z. B. Star Wars, Technic, ect.) Anzeigen alles Themes mit /lego themes")
                         .setDescriptionLocalizations({
-                            "en-US":
-                                "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
-                            "en-GB":
-                                "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
+                            "en-US": "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
+                            "en-GB": "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
                         })
                 )
         )
@@ -87,14 +76,10 @@ module.exports = {
                     "en-GB": "Instructions for a specific set",
                 })
                 .addStringOption((option) =>
-                    option
-                        .setName("setnumber")
-                        .setRequired(true)
-                        .setDescription("Setnummer (z. B. 75292)")
-                        .setDescriptionLocalizations({
-                            "en-US": "Set number (e.g. 75292)",
-                            "en-GB": "Set number (e.g. 75292)",
-                        })
+                    option.setName("setnumber").setRequired(true).setDescription("Setnummer (z. B. 75292)").setDescriptionLocalizations({
+                        "en-US": "Set number (e.g. 75292)",
+                        "en-GB": "Set number (e.g. 75292)",
+                    })
                 )
         )
 
@@ -107,42 +92,30 @@ module.exports = {
                     "en-GB": "Images of a specific set",
                 })
                 .addStringOption((option) =>
-                    option
-                        .setName("setnumber")
-                        .setRequired(true)
-                        .setDescription("Setnummer (z. B. 75292)")
-                        .setDescriptionLocalizations({
-                            "en-US": "Set number (e.g. 75292)",
-                            "en-GB": "Set number (e.g. 75292)",
-                        })
+                    option.setName("setnumber").setRequired(true).setDescription("Setnummer (z. B. 75292)").setDescriptionLocalizations({
+                        "en-US": "Set number (e.g. 75292)",
+                        "en-GB": "Set number (e.g. 75292)",
+                    })
                 )
         )
 
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("year")
-                .setDescription(
-                    "Infos darüber, welche Sets eines Themes wie oft erschienen sind"
-                )
+                .setDescription("Infos darüber, welche Sets eines Themes wie oft erschienen sind")
                 .setDescriptionLocalizations({
-                    "en-US":
-                        "Information about how often a set of a specific theme has been released",
-                    "en-GB":
-                        "Information about how often a set of a specific theme has been released",
+                    "en-US": "Information about how often a set of a specific theme has been released",
+                    "en-GB": "Information about how often a set of a specific theme has been released",
                 })
 
                 .addStringOption((option) =>
                     option
                         .setName("theme")
                         .setRequired(true)
-                        .setDescription(
-                            "Theme (z. B. Star Wars, Technic, ect.) Anzeigen alles Themes mit /lego themes"
-                        )
+                        .setDescription("Theme (z. B. Star Wars, Technic, ect.) Anzeigen alles Themes mit /lego themes")
                         .setDescriptionLocalizations({
-                            "en-US":
-                                "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
-                            "en-GB":
-                                "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
+                            "en-US": "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
+                            "en-GB": "Theme (e.g. Star Wars, Technic, etc.) Display all themes with /lego themes",
                         })
                 )
         )
@@ -150,34 +123,23 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("review")
-                .setDescription(
-                    "Rezensionen von Brickset.com Nutzern zu einem spezifischen Set"
-                )
+                .setDescription("Rezensionen von Brickset.com Nutzern zu einem spezifischen Set")
                 .setDescriptionLocalizations({
-                    "en-US":
-                        "Reviews of a specific set by users of Brickset.com",
-                    "en-GB":
-                        "Reviews of a specific set by users of Brickset.com",
+                    "en-US": "Reviews of a specific set by users of Brickset.com",
+                    "en-GB": "Reviews of a specific set by users of Brickset.com",
                 })
                 .addStringOption((option) =>
-                    option
-                        .setName("setnumber")
-                        .setRequired(true)
-                        .setDescription("Setnummer (z. B. 75292)")
-                        .setDescriptionLocalizations({
-                            "en-US": "Set number (e.g. 75292)",
-                            "en-GB": "Set number (e.g. 75292)",
-                        })
+                    option.setName("setnumber").setRequired(true).setDescription("Setnummer (z. B. 75292)").setDescriptionLocalizations({
+                        "en-US": "Set number (e.g. 75292)",
+                        "en-GB": "Set number (e.g. 75292)",
+                    })
                 )
         )
 
         .addSubcommand((subcommand) =>
-            subcommand
-                .setName("api")
-                .setDescription("API-Statistik für den API-Key des Bots")
-                .setDescriptionLocalizations({
-                    "en-US": "API stats for the API key of the bot",
-                    "en-GB": "API stats for the API key of the bot",
-                })
+            subcommand.setName("api").setDescription("API-Statistik für den API-Key des Bots").setDescriptionLocalizations({
+                "en-US": "API stats for the API key of the bot",
+                "en-GB": "API stats for the API key of the bot",
+            })
         ),
 };

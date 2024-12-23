@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName("eval")
         .setDescription("Führt JavaScript-Code aus")
@@ -9,13 +9,9 @@ module.exports = {
             "en-GB": "Executes JavaScript code",
         })
         .addStringOption((option) =>
-            option
-                .setName("code")
-                .setDescription("JavaScript-Code")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "JavaScript code",
-                    "en-GB": "JavaScript code",
-                })
+            option.setName("code").setDescription("JavaScript-Code").setRequired(true).setDescriptionLocalizations({
+                "en-US": "JavaScript code",
+                "en-GB": "JavaScript code",
+            })
         ),
 };

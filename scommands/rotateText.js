@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("rotatetext")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Dreht alle gängigen Buchstaben um")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -12,13 +12,9 @@ module.exports = {
             "en-GB": "Rotates all common letters",
         })
         .addStringOption((option) =>
-            option
-                .setName("text")
-                .setDescription("Text")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "Text to rotate",
-                    "en-GB": "Text to rotate",
-                })
+            option.setName("text").setDescription("Text").setRequired(true).setDescriptionLocalizations({
+                "en-US": "Text to rotate",
+                "en-GB": "Text to rotate",
+            })
         ),
 };

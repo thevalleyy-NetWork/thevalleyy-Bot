@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("photo")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Sucht nach Fotos im Internet.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
         .setDescriptionLocalizations({
@@ -12,14 +12,10 @@ module.exports = {
             "en-GB": "Searches the internet for photos",
         })
         .addStringOption((option) =>
-            option
-                .setName("query")
-                .setDescription("Suchanfrage")
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    "en-US": "Search query",
-                    "en-GB": "Search query",
-                })
+            option.setName("query").setDescription("Suchanfrage").setRequired(true).setDescriptionLocalizations({
+                "en-US": "Search query",
+                "en-GB": "Search query",
+            })
         )
 
         .addStringOption((option) =>
@@ -30,11 +26,7 @@ module.exports = {
                     "en-US": "Orientation of the photo",
                     "en-GB": "Orientation of the photo",
                 })
-                .addChoices(
-                    { name: "Landscape", value: "landscape" },
-                    { name: "Portrait", value: "portrait" },
-                    { name: "Square", value: "square" }
-                )
+                .addChoices({ name: "Landscape", value: "landscape" }, { name: "Portrait", value: "portrait" }, { name: "Square", value: "square" })
         )
 
         .addStringOption((option) =>

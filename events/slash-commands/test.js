@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const config = require("../../config.json");
 
-module.exports = (client, interaction) => {
+export default (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
+    if (interaction.user.id == config.owner) return interaction.reply("You do not have permission to use this command.");
 
     interaction.reply("test");
 

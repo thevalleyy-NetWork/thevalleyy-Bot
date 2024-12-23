@@ -1,17 +1,13 @@
-const config = require("../config.json");
-const modlog = config.mod_log_channel_id;
-const channelId = config.channels.memberchannel;
+import config from "../config.json" with { type: "json" };
 
-module.exports = async (client, member) => {
+export default async (client, member) => {
+    // TODO: test this
+    if (member.guild.id != config.guild) return;
+
     const updateMembers = async (guild = member.guild) => {
-        var memberCount = await guild.members.cache.filter(
-            (member) => !member.user.bot
-        ).size;
-        const channel = guild.channels.cache.get(channelId);
-        channel.setName(
-            `Mitglieder: ${memberCount.toLocaleString()}`,
-            "updating membercount"
-        );
+        const memberCount = await guild.members.cache.filter((member) => !member.user.bot).size;
+        const channel = guild.channels.cache.get(config.channels.memberchannel);
+        channel.setName(`Mitglieder: ${memberCount.toLocaleString()}`, "updating membercount");
     };
 
     try {

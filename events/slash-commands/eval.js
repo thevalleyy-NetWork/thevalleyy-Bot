@@ -3,7 +3,7 @@ const util = require("util");
 const Discord = require("discord.js");
 const paginationEmbed = require("../../functions/pagination.js");
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.user.id != config.owner) {
@@ -36,15 +36,9 @@ module.exports = async (client, interaction) => {
         if (output.length < 2000) {
             interaction.reply("```js\n" + output + "```");
         } else {
-            const button1 = new Discord.ButtonBuilder()
-                .setCustomId("previousbtn")
-                .setLabel("◀️")
-                .setStyle("Secondary");
+            const button1 = new Discord.ButtonBuilder().setCustomId("previousbtn").setLabel("◀️").setStyle("Secondary");
 
-            const button2 = new Discord.ButtonBuilder()
-                .setCustomId("nextbtn")
-                .setLabel("▶️")
-                .setStyle("Secondary");
+            const button2 = new Discord.ButtonBuilder().setCustomId("nextbtn").setLabel("▶️").setStyle("Secondary");
 
             buttonList = [button1, button2];
 
@@ -52,9 +46,7 @@ module.exports = async (client, interaction) => {
             for (let i = 0; i < output.length; i += 4000) {
                 const page = new Discord.EmbedBuilder()
                     .setTitle("Eval")
-                    .setDescription(
-                        "```js\n" + output.substring(i, i + 4000) + "```"
-                    )
+                    .setDescription("```js\n" + output.substring(i, i + 4000) + "```")
                     .setColor(config.standard_color)
                     .setTimestamp();
                 pages.push(page);
@@ -62,10 +54,7 @@ module.exports = async (client, interaction) => {
             paginationEmbed(interaction, pages, buttonList);
         }
 
-        if (output != undefined)
-            console.log(
-                "\n-----EVAL BEGIN-----\n" + output + "\n------EVAL END------\n"
-            );
+        if (output != undefined) console.log("\n-----EVAL BEGIN-----\n" + output + "\n------EVAL END------\n");
     } catch (error) {
         interaction.reply("```js\n" + error + "```");
     }

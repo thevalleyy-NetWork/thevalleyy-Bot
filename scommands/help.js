@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export default {
     cooldown: 60,
     data: new SlashCommandBuilder()
         .setName("help")
-        .setDMPermission(false)
+        .setContexts([0])
         .setDescription("Hilfe-Menü")
         .setDescriptionLocalizations({
             "en-US": "Displays the help menu for this bot",
@@ -21,9 +21,7 @@ module.exports = {
                 .addStringOption((option) =>
                     option
                         .setName("command")
-                        .setDescription(
-                            "Der Command für den du Hilfe benötigst"
-                        )
+                        .setDescription("Der Command für den du Hilfe benötigst")
                         .setDescriptionLocalizations({
                             "en-US": "The command you want to get help for",
                             "en-GB": "The command you want to get help for",
@@ -33,12 +31,9 @@ module.exports = {
                 )
         )
         .addSubcommand((subcommand) =>
-            subcommand
-                .setName("about")
-                .setDescription("Hier findest du alle Credits für den Bot")
-                .setDescriptionLocalizations({
-                    "en-US": "Here you can find all credits for the bot",
-                    "en-GB": "Here you can find all credits for the bot",
-                })
+            subcommand.setName("about").setDescription("Hier findest du alle Credits für den Bot").setDescriptionLocalizations({
+                "en-US": "Here you can find all credits for the bot",
+                "en-GB": "Here you can find all credits for the bot",
+            })
         ),
 };
