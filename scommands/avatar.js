@@ -1,19 +1,19 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.avatar;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("avatar")
         .setContexts([0])
-        .setDescription("Zeigt dir den supercoolen Avatar eines Users")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Shows the avatar of a user",
-            "en-GB": "Shows the avatar of a user",
+            "de": localization.description.de,
         })
         .addUserOption((option) =>
-            option.setName("user").setDescription("Der Nutzer dessen Avatar du sehen willst").setDescriptionLocalizations({
-                "en-US": "The user whose avatar you want to see",
-                "en-GB": "The user whose avatar you want to see",
+            option.setName("user").setDescription(localization.user.en).setDescriptionLocalizations({
+                "de": localization.user.de,
             })
         ),
 };

@@ -1,59 +1,54 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.log;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("log")
-        .setDMPermission(true)
-        .setDescription("Zugriff auf die Log-DB")
+        .setContexts([0, 1])
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Do something with the log.",
-            "en-GB": "Do something with the log.",
+            "de": localization.description.de,
         })
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("list")
-                .setDescription("Listet die letzten n Logs auf.")
+                .setDescription(localization.list.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Lists the last n logs.",
-                    "en-GB": "Lists the last n logs.",
+                    "de": localization.list.description.de,
                 })
                 .addNumberOption((option) =>
-                    option.setName("amount").setDescription("Die Anzahl der Logs, die aufgelistet werden sollen.").setDescriptionLocalizations({
-                        "en-US": "The amount of logs to be listed.",
-                        "en-GB": "The amount of logs to be listed.",
+                    option.setName("amount").setDescription(localization.list.amount.en).setDescriptionLocalizations({
+                        "de": localization.list.amount.de,
                     })
                 )
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("insert")
-                .setDescription("Loggt eine Zeichenfolge in die Datenbank.")
+                .setDescription(localization.insert.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Logs a string to the database.",
-                    "en-GB": "Logs a string to the database.",
+                    "de": localization.insert.description.de,
                 })
 
                 .addStringOption((option) =>
                     option
                         .setName("message")
                         .setRequired(true)
-                        .setDescription("Die Zeichenfolge, die in die Datenbank eingetragen werden soll.")
+                        .setDescription(localization.insert.message.en)
                         .setDescriptionLocalizations({
-                            "en-US": "String to log.",
-                            "en-GB": "String to log.",
+                            "de": localization.insert.message.de,
                         })
                 )
 
                 .addBooleanOption((option) =>
-                    option.setName("modlog").setDescription("Soll diese Nachricht auch im Modlog geloggt werden?").setDescriptionLocalizations({
-                        "en-US": "Should this message be logged in the modlog?",
-                        "en-GB": "Should this message be logged in the modlog?",
+                    option.setName("modlog").setDescription(localization.insert.modlog.en).setDescriptionLocalizations({
+                        "de": localization.insert.modlog.de,
                     })
                 )
                 .addStringOption((option) =>
-                    option.setName("origin").setDescription("Der Ursprung der Nachricht, z.B. der Name des Befehls.").setDescriptionLocalizations({
-                        "en-US": "The origin of the message.",
-                        "en-GB": "The origin of the message.",
+                    option.setName("origin").setDescription(localization.insert.origin.en).setDescriptionLocalizations({
+                        "de": localization.insert.origin.de,
                     })
                 )
         ),

@@ -1,12 +1,13 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.adminbewerbung;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("adminbewerbung")
         .setContexts([0])
-        .setDescription("Du willst auch so ne coole rote Rolle? Hier kannst du dich bewerben!")
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Apply for admin",
-            "en-GB": "Apply for admin",
+            "de": localization.description.de,
         }),
 };

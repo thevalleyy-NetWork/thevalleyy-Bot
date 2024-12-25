@@ -1,13 +1,14 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.test;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("test")
-        .setContexts([0])
-        .setDescription("Test-Befehl (nur für Admins)")
-        .setDefaultMemberPermissions(0) // 0 = admin only
+        .setContexts([0, 1])
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(0)
         .setDescriptionLocalizations({
-            "en-US": "Test command (admin only)",
-            "en-GB": "Test command (admin only)",
+            "de": localization.description.de,
         }),
 };

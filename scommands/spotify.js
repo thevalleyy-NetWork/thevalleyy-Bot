@@ -1,15 +1,20 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.spotify;
 
 export default {
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("spotify")
         .setContexts([0])
-        .setDescription("Infos darüber, was jemand gerade auf Spotify hört")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Info about what someone is listening to on Spotify",
-            "en-GB": "Info about what someone is listening to on Spotify",
+            "de": localization.description.de,
         })
-        .addUserOption((option) => option.setName("user").setDescription("User")),
+        .addUserOption((option) =>
+            option.setName("user").setDescription(localization.user.en).setDescriptionLocalizations({
+                "de": localization.user.de,
+            })
+        ),
 };

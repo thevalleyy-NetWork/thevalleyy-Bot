@@ -1,24 +1,24 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.clear;
 
 export default {
     cooldown: 20,
     data: new SlashCommandBuilder()
         .setName("clear")
         .setContexts([0])
-        .setDescription("Löscht die angegebene Anzahl an Nachrichten.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .setDescriptionLocalizations({
-            "en-US": "Deletes the given amount of messages.",
-            "en-GB": "Deletes the given amount of messages.",
+            "de": localization.description.de,
         })
         .addNumberOption((option) =>
             option
                 .setName("number")
-                .setDescription("Anzahl der Nachrichten, die gelöscht werden sollen")
+                .setDescription(localization.number.en)
                 .setRequired(true)
                 .setDescriptionLocalizations({
-                    "en-US": "Amount of messages to be deleted",
-                    "en-GB": "Amount of messages to be deleted",
+                    "de": localization.number.de,
                 })
         ),
 };

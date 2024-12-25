@@ -1,0 +1,884 @@
+{
+    "slashCommands": {
+        "add": {
+            "description": {
+                "de": "Addiert zwei Zahlen",
+                "en": "Get the sum of two numbers"
+            },
+            "number1": {
+                "de": "Erste Zahl",
+                "en": "First number"
+            },
+            "number2": {
+                "de": "Zweite Zahl",
+                "en": "Second number"
+            }
+        },
+        "adminbewerbung": {
+            "description": {
+                "de": "Du willst auch eine coole rote Rolle? Hier kannst du dich bewerben!",
+                "en": "You want a cool red role too? Apply here!"
+            }
+        },
+        "allsky": {
+            "description": {
+                "de": "✨Beobachte den Himmel✨",
+                "en": "✨Observe the sky✨"
+            }
+        },
+        "avatar": {
+            "description": {
+                "de": "Zeigt dir den supercoolen Avatar eines Users",
+                "en": "Shows the profile picture of a user"
+            },
+            "user": {
+                "de": "Der Nutzer, dessen Avatar du sehen möchtest",
+                "en": "The user whose avatar you want to see"
+            }
+        },
+        "ban": {
+            "description": {
+                "de": "Bannt einen User",
+                "en": "Bans a user"
+            },
+            "user": {
+                "de": "Der User, den du bannen möchtest",
+                "en": "The user you want to ban"
+            },
+            "reason": {
+                "de": "Der Grund für den Ban",
+                "en": "The reason for the ban"
+            },
+            "dmdays": {
+                "de": "Nachrichten des Nutzers löschen? (7 Tage)",
+                "en": "Delete user's messages? (7 days)"
+            }
+        },
+        "bettereval": {
+            "description": {
+                "de": "Führt Shell-Befehle aus",
+                "en": "Executes shell commands"
+            },
+            "code": {
+                "de": "Der Code, den du ausführen möchtest",
+                "en": "The code you want to execute"
+            }
+        },
+        "blacklist": {
+            "description": {
+                "de": "Gibt die Blacklist aus / fügt einen User hinzu",
+                "en": "Shows the blacklist / adds a user"
+            },
+            "user": {
+                "de": "Der User, den du zur Blacklist hinzufügen möchtest",
+                "en": "The user you want to add to the blacklist"
+            }
+        },
+        "caesar": {
+            "description": {
+                "de": "Verschlüsselt / Entschlüsselt eine Nachricht mit dem Caesar-Verschlüsselungsverfahren",
+                "en": "Encrypts / Decrypts a message using the Caesar cipher"
+            },
+            "text": {
+                "de": "Der Text, den du verschlüsseln möchtest",
+                "en": "The text you want to encrypt"
+            },
+            "key": {
+                "de": "Die Anzahl der Stellen, um die der Text verschoben werden",
+                "en": "The number of positions by which the text should be shifted"
+            },
+            "decrypt": {
+                "de": "Entschlüsseln?",
+                "en": "Decrypt?"
+            },
+            "specialchars": {
+                "de": "Dürfen Sonderzeichen verwendet werden? (Standard: Nein)",
+                "en": "May special characters be used? (Default: No)"
+            }
+        },
+        "clear": {
+            "description": {
+                "de": "Löscht die angegebene Anzahl an Nachrichten",
+                "en": "Deletes the specified number of messages"
+            },
+            "number": {
+                "de": "Die Anzahl der Nachrichten, die gelöscht werden sollen",
+                "en": "The number of messages to be deleted"
+            }
+        },
+        "close": {
+            "description": {
+                "de": "Schließt ein Ticket",
+                "en": "Closes a ticket"
+            }
+        },
+        "db": {
+            "description": {
+                "de": "Führt eine Datenbankabfrage aus",
+                "en": "Executes a database query"
+            },
+            "query": {
+                "de": "Die Abfrage, die du ausführen möchtest",
+                "en": "The query you want to execute"
+            }
+        },
+        "dm": {
+            "description": {
+                "de": "Sendet eine Nachricht an einen User",
+                "en": "Sends a message to a user"
+            },
+            "user": {
+                "de": "Der User, dem du schreiben möchtest",
+                "en": "The user you want to write to"
+            },
+            "content": {
+                "de": "Die Nachricht, die du senden möchtest",
+                "en": "The message you want to send"
+            }
+        },
+        "error": {
+            "description": {
+                "de": "Zugriff auf Fehlermeldungen",
+                "en": "Access to error messages"
+            },
+            "list": {
+                "description": {
+                    "de": "Listet die letzten n Fehlermeldungen auf",
+                    "en": "Lists the last n error messages"
+                },
+                "amount": {
+                    "de": "Die Anzahl der Fehlermeldungen, die du sehen möchtest",
+                    "en": "The number of error messages you want to see"
+                }
+            },
+            "insert": {
+                "description": {
+                    "de": "Fügt eine Fehlermeldung hinzu",
+                    "en": "Adds an error message"
+                },
+                "message": {
+                    "de": "Die Fehlermeldung, die du hinzufügen möchtest",
+                    "en": "The error message you want to add"
+                },
+                "origin": {
+                    "de": "Der Ursprung der Fehlermeldung",
+                    "en": "The origin of the error message"
+                }
+            }
+        },
+        "eval": {
+            "description": {
+                "de": "Führt JavaScript-Code aus",
+                "en": "Executes JavaScript code"
+            },
+            "code": {
+                "de": "Der Code, den du ausführen möchtest",
+                "en": "The code you want to execute"
+            }
+        },
+        "games": {
+            "description": {
+                "de": "Spiele ein Spiel",
+                "en": "Play a game"
+            },
+            "game": {
+                "de": "Das Spiel, das du spielen möchtest",
+                "en": "The game you want to play"
+            }
+        },
+        "hackerman": {
+            "description": {
+                "de": "😎👨🏽‍💻",
+                "en": "😎👨🏽‍💻"
+            },
+            "text": {
+                "de": "Der Text, den du verschlüsseln möchtest",
+                "en": "The text you want to encrypt"
+            }
+        },
+        "help": {
+            "description": {
+                "de": "Öffnet das Hilfemenü",
+                "en": "Opens the help menu"
+            },
+            "command": {
+                "description": {
+                    "de": "Zeigt Informationen zu einem bestimmten Befehl",
+                    "en": "Shows information about a specific command"
+                },
+                "command": {
+                    "de": "Der Befehl, zu dem du Informationen sehen möchtest",
+                    "en": "The command you want to see information about"
+                }
+            },
+            "about": {
+                "description": {
+                    "de": "Zeigt Informationen und Credits über den Bot",
+                    "en": "Shows information and credits about the bot"
+                }
+            }
+        },
+        "kick": {
+            "description": {
+                "de": "Kickt einen User",
+                "en": "Kicks a user"
+            },
+            "user": {
+                "de": "Der User, den du kicken möchtest",
+                "en": "The user you want to kick"
+            },
+            "reason": {
+                "de": "Der Grund für den Kick",
+                "en": "The reason for the kick"
+            }
+        },
+        "lego": {
+            "description": {
+                "de": "Alle möglichen Infos zu LEGO-bezogenen Themen",
+                "en": "All kinds of information about LEGO-related topics"
+            },
+            "set": {
+                "description": {
+                    "de": "Zeigt Informationen zu einem LEGO-Set",
+                    "en": "Shows information about a LEGO set"
+                },
+                "query": {
+                    "de": "Suchanfrage (z. B. die Setnummer, Begriffe & Themen, etc.",
+                    "en": "Search query (e.g. the set number, keywords & themes, etc."
+                }
+            },
+            "theme": {
+                "description": {
+                    "de": "Zeigt Informationen zu einem LEGO-Theme",
+                    "en": "Shows information about a LEGO theme"
+                },
+                "theme": {
+                    "de": "Theme (z. B. Star Wars, Technic, etc.",
+                    "en": "Theme (e.g. Star Wars, Technic, etc.)"
+                }
+            },
+            "subtheme": {
+                "description": {
+                    "de": "Alle Subthemes eines bestimmten Themes",
+                    "en": "All subthemes of a specific theme"
+                },
+                "theme": {
+                    "de": "Theme (z. B. Star Wars, Technic, etc.) - Anzeigen aller Themes mit /lego themes",
+                    "en": "Theme (e.g. Star Wars, Technic, etc.) - Show all themes with /lego themes"
+                }
+            },
+            "instructions": {
+                "description": {
+                    "de": "Zeigt Bauanleitungen zu einem LEGO-Set",
+                    "en": "Shows building instructions for a LEGO set"
+                },
+                "setnumber": {
+                    "de": "Setnummer (z. B. 75292)",
+                    "en": "Set number (e.g. 75292)"
+                }
+            },
+            "images": {
+                "description": {
+                    "de": "Zeigt Bilder zu einem LEGO-Set",
+                    "en": "Shows images of a LEGO set"
+                },
+                "setnumber": {
+                    "de": "Setnummer (z. B. 75292)",
+                    "en": "Set number (e.g. 75292)"
+                }
+            },
+            "year": {
+                "description": {
+                    "de": "Infos darüber, welche Sets eines Themes wie oft erschienen sind",
+                    "en": "Information about how often sets of a theme have been released"
+                },
+                "theme": {
+                    "de": "Theme (z. B. Star Wars, Technic, etc.) - Anzeigen aller Themes mit /lego themes",
+                    "en": "Theme (e.g. Star Wars, Technic, etc.) - Show all themes with /lego themes"
+                }
+            },
+            "review": {
+                "description": {
+                    "de": "Rezensionen von Brickset.com Nutzern zu einem spezifischen Set",
+                    "en": "Reviews from Brickset.com users for a specific set"
+                },
+                "setnumber": {
+                    "de": "Setnummer (z. B. 75292)",
+                    "en": "Set number (e.g. 75292)"
+                }
+            },
+            "api": {
+                "description": {
+                    "de": "Statistik für den API-Key des Bots",
+                    "en": "Statistics for the bot's API key"
+                }
+            }
+        },
+        "log": {
+            "description": {
+                "de": "Zugriff auf Logeinträge",
+                "en": "Access to log entries"
+            },
+            "list": {
+                "description": {
+                    "de": "Listet die letzten n Logeinträge auf",
+                    "en": "Lists the last n log entries"
+                },
+                "amount": {
+                    "de": "Die Anzahl der Logeinträge, die du sehen möchtest",
+                    "en": "The number of log entries you want to see"
+                }
+            },
+            "insert": {
+                "description": {
+                    "de": "Fügt einen Logeintrag hinzu",
+                    "en": "Adds a log entry"
+                },
+                "message": {
+                    "de": "Der Logeintrag, den du hinzufügen möchtest",
+                    "en": "The log entry you want to add"
+                },
+                "modlog": {
+                    "de": "Soll der Logeintrag im Modlog erscheinen?",
+                    "en": "Should the log entry appear in the modlog?"
+                },
+                "origin": {
+                    "de": "Der Ursprung des Logeintrags",
+                    "en": "The origin of the log entry"
+                }
+            }
+        },
+        "lyrics": {
+            "description": {
+                "de": "Zeigt den Text eines Songs",
+                "en": "Shows the lyrics of a song"
+            },
+            "song": {
+                "de": "Der Song, dessen Text du sehen möchtest",
+                "en": "The song whose lyrics you want to see"
+            }
+        },
+        "maintenance": {
+            "description": {
+                "de": "Schaltet den Wartungsmodus ein / aus",
+                "en": "Turns maintenance mode on / off"
+            },
+            "maintenance": {
+                "de": "Soll der Wartungsmodus eingeschaltet werden?",
+                "en": "Should maintenance mode be turned on?"
+            },
+            "reason": {
+                "de": "Grund",
+                "en": "Reason"
+            }
+        },
+        "mc": {
+            "description": {
+                "de": "Zeigt Informationen zu einem Minecraft-Server",
+                "en": "Shows information about a Minecraft server"
+            },
+            "ip": {
+                "de": "Die IP-Adresse des Servers",
+                "en": "The IP address of the server"
+            },
+            "port": {
+                "de": "Der Port des Servers",
+                "en": "The port of the server"
+            }
+        },
+        "mute": {
+            "description": {
+                "de": "Mutet einen User",
+                "en": "Mutes a user"
+            },
+            "user": {
+                "de": "Der User, den du muten möchtest",
+                "en": "The user you want to mute"
+            },
+            "duration": {
+                "description": {
+                    "de": "Die Dauer des Mutes",
+                    "en": "The duration of the mute"
+                },
+                "choices": {
+                    "permanent": {
+                        "de": "Permanent",
+                        "en": "Permanently"
+                    },
+                    "1min": {
+                        "de": "1 Minute",
+                        "en": "1 minute"
+                    },
+                    "5min": {
+                        "de": "5 Minuten",
+                        "en": "5 minutes"
+                    },
+                    "10min": {
+                        "de": "10 Minuten",
+                        "en": "10 minutes"
+                    },
+                    "30min": {
+                        "de": "30 Minuten",
+                        "en": "30 minutes"
+                    },
+                    "1h": {
+                        "de": "1 Stunde",
+                        "en": "1 hour"
+                    },
+                    "2h": {
+                        "de": "2 Stunden",
+                        "en": "2 hours"
+                    },
+                    "4h": {
+                        "de": "4 Stunden",
+                        "en": "4 hours"
+                    },
+                    "12h": {
+                        "de": "12 Stunden",
+                        "en": "12 hours"
+                    },
+                    "1d": {
+                        "de": "1 Tag",
+                        "en": "1 day"
+                    },
+                    "2d": {
+                        "de": "2 Tage",
+                        "en": "2 days"
+                    },
+                    "1w": {
+                        "de": "1 Woche",
+                        "en": "1 week"
+                    },
+                    "2w": {
+                        "de": "2 Wochen",
+                        "en": "2 weeks"
+                    },
+                    "1m": {
+                        "de": "1 Monat",
+                        "en": "1 month"
+                    }
+                }
+            },
+            "reason": {
+                "de": "Der Grund für den Mute",
+                "en": "The reason for the mute"
+            }
+        },
+        "neko": {
+            "description": {
+                "de": "Zeigt dir ein zufälliges Katzenbild. Nur im Neko-Channel verfügbar!",
+                "en": "Shows you a random cat picture. Only available in the Neko channel!"
+            },
+            "type": {
+                "description": {
+                    "de": "Der Typ des Bildes",
+                    "en": "The type of the image"
+                },
+                "choices": {
+                    "Hug": {
+                        "de": "Umarmung",
+                        "en": "Hug"
+                    },
+                    "Cry": {
+                        "de": "Weinen",
+                        "en": "Cry"
+                    },
+                    "Smug": {
+                        "de": "Angeberisch",
+                        "en": "Smug"
+                    },
+                    "Slap": {
+                        "de": "Ohrfeigen",
+                        "en": "Slap"
+                    },
+                    "Pat": {
+                        "de": "Streicheln",
+                        "en": "Pat"
+                    },
+                    "Laugh": {
+                        "de": "Lachen",
+                        "en": "Laugh"
+                    },
+                    "Feed": {
+                        "de": "Füttern",
+                        "en": "Feed"
+                    },
+                    "Cuddle": {
+                        "de": "Kuscheln",
+                        "en": "Cuddle"
+                    }
+                }
+            }
+        },
+        "niceone": {
+            "description": {
+                "de": "Schaltet die Nice One Rolle eines Nutzers um",
+                "en": "Toggles a user's Nice One role"
+            },
+            "user": {
+                "de": "Der User, dessen Nice One Rolle du umschalten möchtest",
+                "en": "The user whose Nice One role you want to toggle"
+            }
+        },
+        "packages": {
+            "description": {
+                "de": "Zeigt alle installierten npm-Packages an",
+                "en": "Shows all installed npm packages"
+            }
+        },
+        "photo": {
+            "description": {
+                "de": "Sucht nach Fotos im Internet",
+                "en": "Searches for photos on the internet"
+            },
+            "query": {
+                "de": "Die Suchanfrage",
+                "en": "The search query"
+            },
+            "orientation": {
+                "description": {
+                    "de": "Die Ausrichtung des Fotos",
+                    "en": "The orientation of the images"
+                },
+                "choices": {
+                    "Landscape": {
+                        "de": "Querformat",
+                        "en": "Landscape"
+                    },
+                    "Portrait": {
+                        "de": "Hochformat",
+                        "en": "Portrait"
+                    },
+                    "Square": {
+                        "de": "Quadratisch",
+                        "en": "Square"
+                    }
+                }
+            },
+            "size": {
+                "description": {
+                    "de": "Minimalgröße des Fotos",
+                    "en": "Minimum size of the image"
+                },
+                "choices": {
+                    "Large": {
+                        "de": "Groß (24 MP)",
+                        "en": "Large (24 MP)"
+                    },
+                    "Medium": {
+                        "de": "Mittel (12 MP)",
+                        "en": "Medium (12 MP)"
+                    },
+                    "Small": {
+                        "de": "Klein (4 MP)",
+                        "en": "Small (4 MP)"
+                    }
+                }
+            },
+            "color": {
+                "description": {
+                    "de": "Durchschnittliche Farbe des Fotos",
+                    "en": "Average color of the image"
+                },
+                "choices": {
+                    "red": {
+                        "de": "Rot",
+                        "en": "Red"
+                    },
+                    "orange": {
+                        "de": "Orange",
+                        "en": "Orange"
+                    },
+                    "yellow": {
+                        "de": "Gelb",
+                        "en": "Yellow"
+                    },
+                    "green": {
+                        "de": "Grün",
+                        "en": "Green"
+                    },
+                    "turquoise": {
+                        "de": "Türkis",
+                        "en": "Turquoise"
+                    },
+                    "blue": {
+                        "de": "Blau",
+                        "en": "Blue"
+                    },
+                    "violet": {
+                        "de": "Violett",
+                        "en": "Violet"
+                    },
+                    "pink": {
+                        "de": "Rosa",
+                        "en": "Pink"
+                    },
+                    "white": {
+                        "de": "Weiß",
+                        "en": "White"
+                    },
+                    "gray": {
+                        "de": "Grau",
+                        "en": "Gray"
+                    },
+                    "black": {
+                        "de": "Schwarz",
+                        "en": "Black"
+                    },
+                    "brown": {
+                        "de": "Braun",
+                        "en": "Brown"
+                    }
+                }
+            },
+            "locale": {
+                "description": {
+                    "de": "Sprache der Suchanfrage",
+                    "en": "Language of the search query"
+                },
+                "choices": {
+                    "English": {
+                        "de": "Englisch",
+                        "en": "English"
+                    },
+                    "Deutsch": {
+                        "de": "Deutsch",
+                        "en": "German"
+                    },
+                    "Francais": {
+                        "de": "Französisch",
+                        "en": "French"
+                    },
+                    "Italiano": {
+                        "de": "Italienisch",
+                        "en": "Italian"
+                    },
+                    "Espanol": {
+                        "de": "Spanisch",
+                        "en": "Spanish"
+                    },
+                    "Portugues": {
+                        "de": "Portugiesisch",
+                        "en": "Portuguese"
+                    },
+                    "Polski": {
+                        "de": "Polnisch",
+                        "en": "Polish"
+                    },
+                    "Dansk": {
+                        "de": "Dänisch",
+                        "en": "Danish"
+                    }
+                }
+            }
+        },
+        "pi": {
+            "description": {
+                "de": "Zeigt die ersten n Stellen von Pi",
+                "en": "Shows the first n digits of Pi"
+            },
+            "digits": {
+                "de": "Die Anzahl der Stellen, die du sehen möchtest",
+                "en": "The number of digits you want to see"
+            },
+            "hexadecimal": {
+                "de": "Hexadezimal ausgeben?",
+                "en": "Output in hexadecimal?"
+            }
+        },
+        "ping": {
+            "description": {
+                "de": "Uptime, Ping, etc.",
+                "en": "Uptime, ping, etc."
+            }
+        },
+        "qr": {
+            "description": {
+                "de": "Generiert oder scannt einen QR-Code",
+                "en": "Generates or scans a QR code"
+            },
+            "generate": {
+                "description": {
+                    "de": "Generiert einen QR-Code",
+                    "en": "Generates a QR code"
+                },
+                "data": {
+                    "de": "Der Text oder URL, der / die in den QR-Code geschrieben werden soll",
+                    "en": "The text or URL to be written in the QR code"
+                }
+            },
+            "scan": {
+                "description": {
+                    "de": "Scannt einen QR-Code",
+                    "en": "Scans a QR code"
+                },
+                "qrcode": {
+                    "de": "Der QR-Code, den du scannen möchtest",
+                    "en": "The QR code you want to scan"
+                }
+            }
+        },
+        "rasus": {
+            "description": {
+                "de": "Rasus! 😳",
+                "en": "Rasus! 😳"
+            }
+        },
+        "restart": {
+            "description": {
+                "de": "Startet den Bot neu",
+                "en": "Restarts the bot"
+            }
+        },
+        "rotateText": {
+            "description": {
+                "de": "Rotiert einen Text",
+                "en": "Rotates a text"
+            },
+            "text": {
+                "de": "Der Text, den du rotieren möchtest",
+                "en": "The text you want to rotate"
+            }
+        },
+        "server": {
+            "description": {
+                "de": "Zeigt Informationen über den Server",
+                "en": "Shows information about the server"
+            }
+        },
+        "serverlist": {
+            "description": {
+                "de": "Zeigt alle Server, in denen der Bot ist",
+                "en": "Shows all servers the bot is in"
+            }
+        },
+        "skin": {
+            "description": {
+                "de": "Zeigt den Skin eines Minecraft-Spielers",
+                "en": "Shows the skin of a Minecraft player"
+            },
+            "player": {
+                "de": "Spielername oder UUID",
+                "en": "Player name or UUID"
+            }
+        },
+        "spotify": {
+            "description": {
+                "de": "Infos darüber, was jemand gerade auf Spotify hört",
+                "en": "Information about what someone is currently listening to on Spotify"
+            },
+            "user": {
+                "de": "Der User, dessen Spotify-Status du sehen möchtest",
+                "en": "The user whose Spotify status you want to see"
+            }
+        },
+        "status": {
+            "description": {
+                "de": "Setzt einen Bot-Status",
+                "en": "Sets a bot status"
+            },
+            "presence": {
+                "description": {
+                    "de": "Der Status-Typ",
+                    "en": "Presence type"
+                },
+                "choices": {
+                    "Online": {
+                        "de": "Online",
+                        "en": "Online"
+                    },
+                    "Idle": {
+                        "de": "Abwesend",
+                        "en": "Idle"
+                    },
+                    "DND": {
+                        "de": "Bitte nicht stören",
+                        "en": "Do not disturb"
+                    },
+                    "Invisible": {
+                        "de": "Unsichtbar",
+                        "en": "Invisible"
+                    },
+                    "Streaming": {
+                        "de": "Streaming",
+                        "en": "Streaming"
+                    }
+                }
+            },
+            "text": {
+                "de": "Der Text, der im Status angezeigt werden soll",
+                "en": "The text to be displayed in the status"
+            },
+            "activity": {
+                "description": {
+                    "de": "Status-Aktivität",
+                    "en": "Status activity"
+                },
+                "choices": {
+                    "Playing": {
+                        "de": "Spielt",
+                        "en": "Playing"
+                    },
+                    "Listening": {
+                        "de": "Hört",
+                        "en": "Listening"
+                    },
+                    "Watching": {
+                        "de": "Schaut",
+                        "en": "Watching"
+                    },
+                    "Competing": {
+                        "de": "Nimmt teil an",
+                        "en": "Competing"
+                    }
+                }
+            }
+        },
+        "test": {
+            "description": {
+                "de": "Testbefehl (nur für Entwickler)",
+                "en": "Test command (only for developers)"
+            }
+        },
+        "text": {
+            "description": {
+                "de": "Lässt den Bot einen Text senden",
+                "en": "Lets the bot send a text"
+            },
+            "text": {
+                "de": "Der Text, den der Bot senden soll",
+                "en": "The text the bot should send"
+            }
+        },
+        "tp": {
+            "description": {
+                "de": "Infos zu meinem Texture Pack",
+                "en": "Information about my texture pack"
+            }
+        },
+        "unmute": {
+            "description": {
+                "de": "Unmutet einen User",
+                "en": "Unmutes a user"
+            },
+            "user": {
+                "de": "Der User, den du unmuten möchtest",
+                "en": "The user you want to unmute"
+            },
+            "reason": {
+                "de": "Der Grund für den Unmute",
+                "en": "The reason for the unmute"
+            }
+        },
+        "user": {
+            "description": {
+                "de": "Zeigt Informationen über einen User",
+                "en": "Shows information about a user"
+            },
+            "user": {
+                "de": "Der User, über den du Informationen sehen möchtest",
+                "en": "The user you want to see information about"
+            }
+        }
+    }
+}

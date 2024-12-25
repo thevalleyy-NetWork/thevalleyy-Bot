@@ -1,39 +1,37 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.help;
 
 export default {
     cooldown: 60,
     data: new SlashCommandBuilder()
         .setName("help")
-        .setContexts([0])
-        .setDescription("Hilfe-Menü")
+        .setContexts([0, 1])
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Displays the help menu for this bot",
-            "en-GB": "Displays the help menu for this bot",
+            "de": localization.description.de,
         })
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("command")
-                .setDescription("Hilfe zu einem bestimmten Command")
+                .setDescription(localization.command.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Help for a specific command",
-                    "en-GB": "Help for a specific command",
+                    "de": localization.command.description.de,
                 })
                 .addStringOption((option) =>
                     option
                         .setName("command")
-                        .setDescription("Der Command für den du Hilfe benötigst")
+                        .setDescription(localization.command.command.en)
                         .setDescriptionLocalizations({
-                            "en-US": "The command you want to get help for",
-                            "en-GB": "The command you want to get help for",
+                            "de": localization.command.command.de,
                         })
                         .setAutocomplete(true)
                         .setRequired(true)
                 )
         )
         .addSubcommand((subcommand) =>
-            subcommand.setName("about").setDescription("Hier findest du alle Credits für den Bot").setDescriptionLocalizations({
-                "en-US": "Here you can find all credits for the bot",
-                "en-GB": "Here you can find all credits for the bot",
+            subcommand.setName("about").setDescription(localization.about.description.en).setDescriptionLocalizations({
+                "de": localization.about.description.de,
             })
         ),
 };

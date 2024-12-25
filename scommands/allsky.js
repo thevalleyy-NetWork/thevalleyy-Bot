@@ -1,14 +1,15 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.allsky;
 
 export default {
     cooldown: 300,
     data: new SlashCommandBuilder()
         .setName("allsky")
         .setContexts([0])
-        .setDescription("✨Beobachte den Himmel✨ (fast live)")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Watch the sky",
-            "en-GB": "Watch the sky",
+            "de": localization.description.de,
         }),
 };

@@ -1,20 +1,20 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.skin;
 
 export default {
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("skin")
         .setContexts([0])
-        .setDescription("Infos zu einem Minecraft-Spieler")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Info about a Minecraft player",
-            "en-GB": "Info about a Minecraft player",
+            "de": localization.description.de,
         })
         .addStringOption((option) =>
-            option.setName("player").setDescription("Spielername oder UUID").setRequired(true).setDescriptionLocalizations({
-                "en-US": "player name or uuid",
-                "en-GB": "player name or uuid",
+            option.setName("player").setDescription(localization.player.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.player.de,
             })
         ),
 };

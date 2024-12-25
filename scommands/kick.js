@@ -1,26 +1,24 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.kick;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("kick")
         .setContexts([0])
-        .setDescription("Kickt einen User")
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers) 
         .setDescriptionLocalizations({
-            "en-US": "Kicks a user",
-            "en-GB": "Kicks a user",
+            "de": localization.description.de,
         })
         .addUserOption((option) =>
-            option.setName("user").setDescription("User den du kicken willst").setRequired(true).setDescriptionLocalizations({
-                "en-US": "User to kick",
-                "en-GB": "User to kick",
+            option.setName("user").setDescription(localization.user.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.user.de,
             })
         )
-
         .addStringOption((option) =>
-            option.setName("reason").setDescription("Grund für den Kick").setRequired(true).setDescriptionLocalizations({
-                "en-US": "Kick reason",
-                "en-GB": "Kick reason",
+            option.setName("reason").setDescription(localization.reason.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.reason.de,
             })
         ),
 };

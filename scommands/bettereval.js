@@ -1,18 +1,18 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.bettereval;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("bettereval")
-        .setDMPermission(true)
-        .setDescription("Führt Shellcode aus")
+        .setContexts([0, 1])
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Executes shellcode",
-            "en-GB": "Executes shellcode",
+            "de": localization.description.de,
         })
         .addStringOption((option) =>
-            option.setName("code").setDescription("Shellcode").setRequired(true).setDescriptionLocalizations({
-                "en-US": "Shellcode",
-                "en-GB": "Shellcode",
+            option.setName("code").setDescription(localization.code.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.code.de,
             })
         ),
 };

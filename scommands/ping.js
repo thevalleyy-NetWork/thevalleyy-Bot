@@ -1,13 +1,13 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.ping;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("ping")
-        .setContexts([0])
-        .setDescription("Uptime, Ping, ect.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setContexts([0, 1])
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Uptime, ping, ect.",
-            "en-GB": "Uptime, ping, ect.",
+            "de": localization.description.de
         }),
 };

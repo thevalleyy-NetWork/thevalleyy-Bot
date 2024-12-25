@@ -1,33 +1,31 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.ban;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("ban")
         .setContexts([0])
-        .setDescription("Bannt einen User")
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .setDescriptionLocalizations({
-            "en-US": "Bans a user",
-            "en-GB": "Bans a user",
+            "de": localization.description.de,
         })
         .addUserOption((option) =>
-            option.setName("user").setDescription("User den du bannen willst").setRequired(true).setDescriptionLocalizations({
-                "en-US": "User to ban",
-                "en-GB": "User to ban",
+            option.setName("user").setDescription(localization.user.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.user.de,
             })
         )
 
         .addStringOption((option) =>
-            option.setName("reason").setDescription("Grund für den Ban").setRequired(true).setDescriptionLocalizations({
-                "en-US": "Ban reason",
-                "en-GB": "Ban reason",
+            option.setName("reason").setDescription(localization.reason.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.reason.de,
             })
         )
 
         .addBooleanOption((option) =>
-            option.setName("dmdays").setDescription("Nachrichten löschen? (Letzte Woche)").setDescriptionLocalizations({
-                "en-US": "Delete messages? (last week)",
-                "en-GB": "Delete messages? (last week)",
+            option.setName("dmdays").setDescription(localization.dmdays.en).setDescriptionLocalizations({
+                "de": localization.dmdays.de,
             })
         ),
 };

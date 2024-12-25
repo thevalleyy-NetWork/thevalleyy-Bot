@@ -1,23 +1,23 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.hackerman;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("hackerman")
         .setContexts([0])
-        .setDescription("😎")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Be as cool as a real hacker 😎",
-            "en-GB": "Be as cool as a real hacker 😎",
+            "de": localization.description.de,
         })
         .addStringOption((option) =>
             option
                 .setName("text")
-                .setDescription("Text, der in Hackerman-Schrift angezeigt werden soll")
+                .setDescription(localization.text.en)
                 .setRequired(true)
                 .setDescriptionLocalizations({
-                    "en-US": "Text to encode",
-                    "en-GB": "Text to encode",
+                    "de": localization.text.de,
                 })
         ),
 };

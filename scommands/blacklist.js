@@ -1,18 +1,17 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.blacklist;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("blacklist")
-        .setDescription("Blacklistet einen User oder gibt die Blackliste aus")
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Blacklists a user or shows all blacklisted users",
-            "en-GB": "Blacklists a user or shows all blacklisted users",
-        })
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+            "de": localization.description.de,
+        }) //TODO: admin only
         .addUserOption((option) =>
-            option.setName("user").setDescription("Nutzer, der geblacklistet werden soll").setDescriptionLocalizations({
-                "en-US": "User to be blacklisted",
-                "en-GB": "User to be blacklisted",
+            option.setName("user").setDescription(localization.user.en).setDescriptionLocalizations({
+                "de": localization.user.de,
             })
         ),
 };

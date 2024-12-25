@@ -1,8 +1,9 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.restart;
 
 export default {
-    data: new SlashCommandBuilder().setName("restart").setDescription("Startet den Bot neu.").setDescriptionLocalizations({
-        "en-US": "Restarts the bot",
-        "en-GB": "Restarts the bot",
+    data: new SlashCommandBuilder().setName("restart").setDescription(localization.description.en).setDescriptionLocalizations({
+        "de": localization.description.de,
     }),
 };

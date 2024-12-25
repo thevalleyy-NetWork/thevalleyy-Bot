@@ -1,32 +1,31 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.qr;
 
 export default {
     cooldown: 30,
     data: new SlashCommandBuilder()
         .setName("qr")
         .setContexts([0])
-        .setDescription("Generiert oder scannt einen QR-Code")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Generates or scans a qr code",
-            "en-GB": "Generates or scans a qr code",
+            "de": localization.description.de,
         })
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("generate")
-                .setDescription("Generiert einen QR-Code")
+                .setDescription(localization.generate.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Generates a qr code",
-                    "en-GB": "Generates a qr code",
+                    "de": localization.generate.description.de
                 })
                 .addStringOption((option) =>
                     option
                         .setName("data")
                         .setRequired(true)
-                        .setDescription("Der Text oder URL, der / die in den QR-Code geschrieben werden soll")
+                        .setDescription(localization.generate.data.en)
                         .setDescriptionLocalizations({
-                            "en-US": "The text or URL that should be written in the QR code",
-                            "en-GB": "The text or URL that should be written in the QR code",
+                            "de": localization.generate.data.de
                         })
                 )
         )
@@ -34,15 +33,13 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("scan")
-                .setDescription("Scannt einen QR-Code")
+                .setDescription(localization.scan.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Scans a qr code",
-                    "en-GB": "Scans a qr code",
+                    "de": localization.scan.description.de
                 })
                 .addAttachmentOption((option) =>
-                    option.setName("qrcode").setRequired(true).setDescription("Der QR-Code, der gescannt werden soll").setDescriptionLocalizations({
-                        "en-US": "The qr code that should be scanned",
-                        "en-GB": "The qr code that should be scanned",
+                    option.setName("qrcode").setRequired(true).setDescription(localization.scan.qrcode.en).setDescriptionLocalizations({
+                        "de": localization.scan.qrcode.de
                     })
                 )
         ),

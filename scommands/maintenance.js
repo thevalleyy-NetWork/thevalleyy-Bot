@@ -1,24 +1,22 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.maintenance;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("maintenance")
-        .setDescription("Setzt den Bot in den Wartungsmodus.")
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Activates maintenance mode",
-            "en-GB": "Activates maintenance mode",
+            "de": localization.description.de,
         })
         .addBooleanOption((option) =>
-            option.setName("maintenance").setDescription("Wartungsmodus").setRequired(true).setDescriptionLocalizations({
-                "en-US": "Maintenance mode",
-                "en-GB": "Maintenance mode",
+            option.setName("maintenance").setDescription(localization.maintenance.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.maintenance.de,
             })
         )
-
         .addStringOption((option) =>
-            option.setName("reason").setDescription("Grund").setDescriptionLocalizations({
-                "en-US": "Reason",
-                "en-GB": "Reason",
+            option.setName("reason").setDescription(localization.reason.en).setDescriptionLocalizations({
+                "de": localization.reason.de,
             })
         ),
 };

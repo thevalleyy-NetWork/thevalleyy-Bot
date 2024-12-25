@@ -5,7 +5,7 @@ export default {
         .setName("add")
         .setContexts([0])
         .setDescription("Addiert zwei Zahlen")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
             "en-US": "Get the sum of two numbers",
             "en-GB": "Get the sum of two numbers",

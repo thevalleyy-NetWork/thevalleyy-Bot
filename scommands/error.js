@@ -1,52 +1,48 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.error;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("error")
-        .setDMPermission(true)
-        .setDescription("Zugriff auf die Error-DB.")
+        .setContexts([0, 1])
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Do something with the error log.",
-            "en-GB": "Do something with the error log.",
+            "de": localization.description.de,
         })
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("list")
-                .setDescription("Listet die letzten n Errors auf.")
+                .setDescription(localization.list.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Lists the last n errors.",
-                    "en-GB": "Lists the last n errors.",
+                    "de": localization.list.description.de,
                 })
                 .addNumberOption((option) =>
-                    option.setName("amount").setDescription("Die Anzahl der Errors, die aufgelistet werden sollen.").setDescriptionLocalizations({
-                        "en-US": "The amount of errors to be listed.",
-                        "en-GB": "The amount of errors to be listed.",
+                    option.setName("amount").setDescription(localization.list.amount.en).setDescriptionLocalizations({
+                        "de": localization.list.amount.de,
                     })
                 )
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("insert")
-                .setDescription("Loggt eine Zeichenfolge in die Datenbank.")
+                .setDescription(localization.insert.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Logs a string to the database.",
-                    "en-GB": "Logs a string to the database.",
+                    "de": localization.insert.description.de,
                 })
 
                 .addStringOption((option) =>
                     option
                         .setName("message")
                         .setRequired(true)
-                        .setDescription("Die Zeichenfolge, die in die Datenbank eingetragen werden soll.")
+                        .setDescription(localization.insert.message.en)
                         .setDescriptionLocalizations({
-                            "en-US": "String to log.",
-                            "en-GB": "String to log.",
+                            "de": localization.insert.message.de,
                         })
                 )
                 .addStringOption((option) =>
-                    option.setName("origin").setDescription("Der Ursprung der Nachricht, z.B. der Name des Befehls.").setDescriptionLocalizations({
-                        "en-US": "The origin of the message.",
-                        "en-GB": "The origin of the message.",
+                    option.setName("origin").setDescription(localization.insert.origin.en).setDescriptionLocalizations({
+                        "de": localization.insert.origin.de,
                     })
                 )
         ),

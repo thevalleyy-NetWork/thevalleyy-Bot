@@ -1,26 +1,25 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.pi;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("pi")
         .setContexts([0])
-        .setDescription("Gibt Pi aus.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Prints Pi",
-            "en-GB": "Prints Pi",
+            "de": localization.description.de,
         })
         .addNumberOption((option) =>
-            option.setName("digits").setDescription("Anzahl der Stellen").setDescriptionLocalizations({
-                "en-US": "Number of digits",
-                "en-GB": "Number of digits",
+            option.setName("digits").setDescription(localization.digits.en).setDescriptionLocalizations({
+                "de": localization.digits.de,
             })
         )
 
         .addBooleanOption((option) =>
-            option.setName("hexadecimal").setDescription("Hexadezimal ausgeben?").setDescriptionLocalizations({
-                "en-US": "Print in hexadecimal?",
-                "en-GB": "Print in hexadecimal?",
+            option.setName("hexadecimal").setDescription(localization.hexadecimal.en).setDescriptionLocalizations({
+                "de": localization.hexadecimal.de,
             })
         ),
 };

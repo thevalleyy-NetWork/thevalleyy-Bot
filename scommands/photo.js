@@ -1,90 +1,246 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.photo;
 
 export default {
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("photo")
         .setContexts([0])
-        .setDescription("Sucht nach Fotos im Internet.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Searches the internet for photos",
-            "en-GB": "Searches the internet for photos",
+            "de": localization.description.de,
         })
         .addStringOption((option) =>
-            option.setName("query").setDescription("Suchanfrage").setRequired(true).setDescriptionLocalizations({
-                "en-US": "Search query",
-                "en-GB": "Search query",
+            option.setName("query").setDescription(localization.query.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.query.de,
             })
         )
 
         .addStringOption((option) =>
             option
                 .setName("orientation")
-                .setDescription("Ausrichtung des Fotos")
+                .setDescription(localization.orientation.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Orientation of the photo",
-                    "en-GB": "Orientation of the photo",
+                    "de": localization.orientation.description.de,
                 })
-                .addChoices({ name: "Landscape", value: "landscape" }, { name: "Portrait", value: "portrait" }, { name: "Square", value: "square" })
+                .addChoices(
+                    {
+                        name: localization.orientation.choices.Landscape.en,
+                        name_localizations: {
+                            "de": localization.orientation.choices.Landscape.de,
+                        },
+                        value: "landscape",
+                    },
+                    {
+                        name: localization.orientation.choices.Portrait.en,
+                        name_localizations: {
+                            "de": localization.orientation.choices.Portrait.de,
+                        },
+                        value: "portrait",
+                    },
+                    {
+                        name: localization.orientation.choices.Square.en,
+                        name_localizations: {
+                            "de": localization.orientation.choices.Square.de,
+                        },
+                        value: "square",
+                    }
+                )
         )
 
         .addStringOption((option) =>
             option
                 .setName("size")
-                .setDescription("Minimalgröße des Fotos")
+                .setDescription(localization.size.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Minimum size of the photo",
-                    "en-GB": "Minimum size of the photo",
+                    "de": localization.size.description.de,
                 })
                 .addChoices(
-                    { name: "Large (24 MP)", value: "large" },
-                    { name: "Medium (12 MP)", value: "medium" },
-                    { name: "Small (4MP)", value: "small" }
+                    {
+                        name: localization.size.choices.Large.en,
+                        name_localizations: {
+                            "de": localization.size.choices.Large.de,
+                        },
+                        value: "large",
+                    },
+                    {
+                        name: localization.size.choices.Medium.en,
+                        name_localizations: {
+                            "de": localization.size.choices.Medium.de,
+                        },
+                        value: "medium",
+                    },
+                    {
+                        name: localization.size.choices.Small.en,
+                        name_localizations: {
+                            "de": localization.size.choices.Small.de,
+                        },
+                        value: "small",
+                    }
                 )
         )
 
         .addStringOption((option) =>
             option
                 .setName("color")
-                .setDescription("Durchschnittliche Farbe des Fotos")
+                .setDescription(localization.color.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Average color of the photo",
-                    "en-GB": "Average color of the photo",
+                    "de": localization.color.description.de,
                 })
                 .addChoices(
-                    { name: "red", value: "red" },
-                    { name: "orange", value: "orange" },
-                    { name: "yellow", value: "yellow" },
-                    { name: "green", value: "green" },
-                    { name: "turquoise", value: "turquoise" },
-                    { name: "blue", value: "blue" },
-                    { name: "violet", value: "violet" },
-                    { name: "pink", value: "pink" },
-                    { name: "white", value: "white" },
-                    { name: "gray", value: "gray" },
-                    { name: "black", value: "black" },
-                    { name: "brown", value: "brown" }
+                    {
+                        name: localization.color.choices.red.en,
+                        name_localizations: {
+                            "de": localization.color.choices.red.de,
+                        },
+                        value: "red",
+                    },
+                    {
+                        name: localization.color.choices.orange.en,
+                        name_localizations: {
+                            "de": localization.color.choices.orange.de,
+                        },
+                        value: "orange",
+                    },
+                    {
+                        name: localization.color.choices.yellow.en,
+                        name_localizations: {
+                            "de": localization.color.choices.yellow.de,
+                        },
+                        value: "yellow",
+                    },
+                    {
+                        name: localization.color.choices.green.en,
+                        name_localizations: {
+                            "de": localization.color.choices.green.de,
+                        },
+                        value: "green",
+                    },
+                    {
+                        name: localization.color.choices.turquoise.en,
+                        name_localizations: {
+                            "de": localization.color.choices.turquoise.de,
+                        },
+                        value: "turquoise",
+                    },
+                    {
+                        name: localization.color.choices.blue.en,
+                        name_localizations: {
+                            "de": localization.color.choices.blue.de,
+                        },
+                        value: "blue",
+                    },
+                    {
+                        name: localization.color.choices.violet.en,
+                        name_localizations: {
+                            "de": localization.color.choices.violet.de,
+                        },
+                        value: "violet",
+                    },
+                    {
+                        name: localization.color.choices.pink.en,
+                        name_localizations: {
+                            "de": localization.color.choices.pink.de,
+                        },
+                        value: "pink",
+                    },
+                    {
+                        name: localization.color.choices.white.en,
+                        name_localizations: {
+                            "de": localization.color.choices.white.de,
+                        },
+                        value: "white",
+                    },
+                    {
+                        name: localization.color.choices.gray.en,
+                        name_localizations: {
+                            "de": localization.color.choices.gray.de,
+                        },
+                        value: "gray",
+                    },
+                    {
+                        name: localization.color.choices.black.en,
+                        name_localizations: {
+                            "de": localization.color.choices.black.de,
+                        },
+                        value: "black",
+                    },
+                    {
+                        name: localization.color.choices.brown.en,
+                        name_localizations: {
+                            "de": localization.color.choices.brown.de,
+                        },
+                        value: "brown",
+                    }
                 )
         )
 
         .addStringOption((option) =>
             option
                 .setName("locale")
-                .setDescription("Sprache der Suchanfrage")
+                .setDescription(localization.locale.description.en)
                 .setDescriptionLocalizations({
-                    "en-US": "Language of the search query",
-                    "en-GB": "Language of the search query",
+                    "de": localization.locale.description.de,
                 })
                 .addChoices(
-                    { name: "English", value: "en-US" },
-                    { name: "Deutsch", value: "de-DE" },
-                    { name: "Français", value: "fr-FR" },
-                    { name: "Italiano", value: "it-IT" },
-                    { name: "Español", value: "es-ES" },
-                    { name: "Português", value: "pt-BR" },
-                    { name: "Polski", value: "pl-PL" },
-                    { name: "Dansk", value: "da-DK" }
+                    {
+                        name: localization.locale.choices.English.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.English.de,
+                        },
+                        value: "en-US",
+                    },
+                    {
+                        name: localization.locale.choices.Deutsch.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.Deutsch.de,
+                        },
+                        value: "de",
+                    },
+                    {
+                        name: localization.locale.choices.Francais.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.Francais.de,
+                        },
+                        value: "fr-FR",
+                    },
+                    {
+                        name: localization.locale.choices.Italiano.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.Italiano.de,
+                        },
+                        value: "it-IT",
+                    },
+                    {
+                        name: localization.locale.choices.Espanol.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.Espanol.de,
+                        },
+                        value: "es-ES",
+                    },
+                    {
+                        name: localization.locale.choices.Portugues.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.Portugues.de,
+                        },
+                        value: "pt-BR",
+                    },
+                    {
+                        name: localization.locale.choices.Polski.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.Polski.de,
+                        },
+                        value: "pl-PL",
+                    },
+                    {
+                        name: localization.locale.choices.Dansk.en,
+                        name_localizations: {
+                            "de": localization.locale.choices.Dansk.de,
+                        },
+                        value: "da-DK",
+                    }
                 )
         ),
 };

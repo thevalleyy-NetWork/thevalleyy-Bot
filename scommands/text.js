@@ -1,19 +1,19 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.text;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("text")
         .setContexts([0])
-        .setDescription("Lässt den Bot einen Text senden.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Let the bot say something",
-            "en-GB": "Let the bot say something",
+            "de": localization.description.de,
         })
         .addStringOption((option) =>
-            option.setName("text").setDescription("Text, der gesendet werden soll").setRequired(true).setDescriptionLocalizations({
-                "en-US": "Text to send",
-                "en-GB": "Text to send",
+            option.setName("text").setDescription(localization.text.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.text.de,
             })
         ),
 };

@@ -1,19 +1,19 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.niceone;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("niceone")
         .setContexts([0])
-        .setDescription("Toggelt die Nice One Rolle eines Users")
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .setDescriptionLocalizations({
-            "en-US": "Toggles the Nice One role of a user",
-            "en-GB": "Toggles the Nice One role of a user",
+            "de": localization.description.de,
         })
         .addUserOption((option) =>
-            option.setName("user").setDescription("Nutzer").setRequired(true).setDescriptionLocalizations({
-                "en-US": "User",
-                "en-GB": "User",
+            option.setName("user").setDescription(localization.user.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.user.de,
             })
         ),
 };

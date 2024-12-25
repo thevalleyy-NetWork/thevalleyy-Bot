@@ -1,19 +1,19 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.games;
 
 export default {
     data: new SlashCommandBuilder()
         .setName("games")
         .setContexts([0])
-        .setDescription("Spiele-Menü")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) 
         .setDescriptionLocalizations({
-            "en-US": "Game menu",
-            "en-GB": "Game menu",
+            "de": localization.description.de,
         })
         .addStringOption((option) =>
-            option.setName("game").setDescription("Das Spiel, welches du spielen möchtest").setDescriptionLocalizations({
-                "en-US": "The game you want to play",
-                "en-GB": "The game you want to play",
+            option.setName("game").setDescription(localization.description.en).setDescriptionLocalizations({
+                "de": localization.description.de,
             })
         ),
 };

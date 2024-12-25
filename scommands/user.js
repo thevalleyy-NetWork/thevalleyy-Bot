@@ -1,20 +1,20 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.user;
 
 export default {
     cooldown: 5,
     data: new SlashCommandBuilder()
         .setName("user")
         .setContexts([0])
-        .setDescription("Infos zu einem User")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) // 0 = admin only
+        .setDescription(localization.description.en)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "en-US": "Info about a user",
-            "en-GB": "Info about a user",
+            "de": localization.description.de,
         })
         .addUserOption((option) =>
-            option.setName("user").setDescription("Nutzer").setDescriptionLocalizations({
-                "en-US": "User",
-                "en-GB": "User",
+            option.setName("user").setDescription(localization.user.en).setDescriptionLocalizations({
+                "de": localization.user.de,
             })
         ),
 };

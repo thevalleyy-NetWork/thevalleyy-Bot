@@ -1,18 +1,18 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import strings from "../localization.json" with {type: "json"};
+const localization = strings.slashCommands.db;
 
 export default {
     cooldown: 5,
     data: new SlashCommandBuilder()
         .setName("db")
-        .setDescription("Zugang zur Bot-Datenbank")
+        .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "en-US": "Access the bot database",
-            "en-GB": "Access the bot database",
+            "de": localization.description.de,
         })
         .addStringOption((option) =>
-            option.setName("sql").setDescription("SQL-Anfrage").setRequired(true).setDescriptionLocalizations({
-                "en-US": "SQL query",
-                "en-GB": "SQL query",
+            option.setName("query").setDescription(localization.query.en).setRequired(true).setDescriptionLocalizations({
+                "de": localization.query.de,
             })
         ),
 };
