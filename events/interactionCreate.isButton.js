@@ -1,12 +1,17 @@
 import fs from "fs";
 
-export default async (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isButton()) return;
 
-    const json = await import("./../data/stats.json", { with: { type: "json" } });
-    json.default.discord.buttonKlicks += 1;
+    const jsonModule = await import("./../data/stats.json", { with: { type: "json" } });
+    jsonModule.default.discord.buttonKlicks += 1;
 
-    fs.writeFile("./data/stats.json", JSON.stringify(json, null, 4), (err) => {
+    fs.writeFile("./data/stats.json", JSON.stringify(jsonModule.default, null, 4), (err) => {
         if (err) client.error(err, "isButton.js");
     });
 };

@@ -2,7 +2,12 @@ function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-export default async (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "TICKET_archive") return;
 

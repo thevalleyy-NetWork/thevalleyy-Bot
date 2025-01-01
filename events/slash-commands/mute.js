@@ -1,62 +1,94 @@
-const config = require("../../config.json");
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.mute;
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => { // TODO: test if this works
     if (!interaction.isChatInputCommand()) return;
-    if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
-        return interaction.reply({
-            content: "Dieser Benutzer ist nicht auf diesem Server!",
-            ephemeral: true,
-        });
 
     const muteUser = interaction.options.get("user");
     const reason = interaction.options.getString("reason").substring(0, 255);
     const duration = interaction.options.getString("duration");
-    const muteRole = interaction.guild.roles.cache.find((role) => role.name === "Muted Chat").id;
 
-    if (muteUser.id == config.owner || muteUser.id == client.user.id) return interaction.reply("<:FeelsSusMan:870034696396996630>");
-    if (muteUser.id == interaction.user.id) return interaction.reply("Sure, ~~Jan~~ " + interaction.user.username);
+    if (!interaction.guild.members.cache.get(muteUser.user.id))
+        return interaction.reply({
+            content: l10n.notOnThisServer[locale],
+            ephemeral: true,
+        });
+
+    const muteRole = interaction.guild.roles.cache.get(config.roles.mutechat)?.id;
+    if (!muteRole) return interaction.reply({ content: l10n.noMuteRole[locale], ephemeral: true });
+
+    if (muteUser.id == config.owner || muteUser.id == client.user.id) return interaction.reply({ content: l10n.owner[locale], ephemeral: true });
+    if (muteUser.id == interaction.user.id) return interaction.reply({ content: l10n.selfMute[locale], ephemeral: true });
     if (muteUser.member.roles.cache.has(muteRole) || Date.now() <= muteUser.member.communicationDisabledUntilTimestamp)
-        return interaction.reply("`" + muteUser.user.tag + "` ist schon gestummt.");
+        return interaction.reply({
+            content: l10n.alreadyMuted[locale].replace("{user}", muteUser.user.tag),
+            ephemeral: true,
+        });
 
     try {
         if (duration == 0) {
-            // db(`UPDATE discord set muted = 1 WHERE dcid = ${muteUser.user.id}`);
+            // Permanent mute
+            // TODO: update in enmap
+            muteUser.member.roles.add(muteRole, l10n.muteString[locale].replace("{executor}", interaction.user.tag).replace("{reason}", reason));
+            interaction.reply({
+                content: l10n.muted[locale].replace("{user}", muteUser.user.tag),
+                ephemeral: true,
+            });
 
-            muteUser.member.roles.add(muteRole, `Mute von: ${interaction.user.tag}, Grund: ${reason}`);
-            interaction.reply("`" + muteUser.user.tag + "` kann nun nichtmehr schreiben.");
-
-            client.modLog(`${muteUser.user.tag} wurde von ${interaction.user.tag} wegen ${reason} permanent gemuted.`, "mute.js");
+            client.modLog(
+                l10n.muteLogPerm[locale].replace("{user}", muteUser.user.tag).replace("{executor}", interaction.user.tag).replace("{reason}", reason),
+                "mute.js"
+            );
 
             muteUser.user
                 .send(
-                    "Du wurdest von `" +
-                        interaction.user.tag +
-                        "` auf dem Server `" +
-                        interaction.guild.name +
-                        `\` gemuted.\nDauer: \`Permanent\`\nGrund:\`${reason}\``
+                    l10n.muteMessage[locale]
+                        .replace("{executor}", "`" + interaction.user.tag + "`")
+                        .replace("{guild}", "`" + interaction.guild.name + "`")
+                        .replace("{duration}", "`Permanent`")
+                        .replace("{reason}", "`" + reason + "`")
                 )
-                .catch((error) => {
-                    client.log(error, "mute.js");
-                });
+                .catch((error) => {}); // Ignore errors -> user has DMs disabled
         } else {
-            muteUser.member.timeout(+duration * 60000, `Mute von: ${interaction.user.tag}, Grund: ${reason}`);
-            interaction.reply("`" + muteUser.user.tag + "` kann nun nichtmehr schreiben.");
+            muteUser.member.timeout(
+                +duration * 60000,
+                l10n.muteString[locale].replace("{executor}", interaction.user.tag).replace("{reason}", reason)
+            );
+            interaction.reply({
+                content: l10n.muted[locale].replace("{user}", "`" + muteUser.user.tag + "`"),
+                ephemeral: true,
+            });
+
+            client.modLog(
+                l10n.muteLog[locale]
+                    .replace("{user}", muteUser.user.tag)
+                    .replace("{executor}", interaction.user.tag)
+                    .replace("{reason}", reason)
+                    .replace("{duration}", +duration),
+                "mute.js"
+            );
+
             muteUser.user
                 .send(
-                    "Du wurdest von `" +
-                        interaction.user.tag +
-                        "` auf dem Server `" +
-                        interaction.guild.name +
-                        `\` gemuted.\nUnmute: <t:${Math.round(Date.now() / 1000) + +duration * 60}:R>\nGrund: \`${reason}\``
+                    l10n.timeoutMessage[locale]
+                        .replace("{executor}", "`" + interaction.user.tag + "`")
+                        .replace("{guild}", "`" + interaction.guild.name + "`")
+                        .replace("{duration}", "`" + `<t:${Math.round(Date.now() / 1000) + +duration * 60}:R>` + " minutes`")
+                        .replace("{reason}", "`" + reason + "`")
                 )
-                .catch((error) => {
-                    client.log(error, "mute.js");
-                });
-
-            client.modLog(`${muteUser.user.tag} wurde von ${interaction.user.tag} wegen ${reason} für ${+duration} Minuten gemuted.`, "mute.js");
+                .catch((error) => {});
         }
     } catch (error) {
         client.error(error, "mute.js");
-        interaction.reply("Es gab einen Fehler.");
+        interaction.reply({
+            content: l10n.error[locale],
+            ephemeral: true,
+        });
     }
 };

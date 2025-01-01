@@ -1,12 +1,11 @@
 {
     "name": "thevalleyy-bot",
     "version": "2.1.0",
-    "description": "A bot by thevalleyy",
+    "description": "a simple discord bot",
     "main": "main.js",
     "type": "module",
     "private": true,
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "npm i && node ."
     },
     "author": "thevalleyy",

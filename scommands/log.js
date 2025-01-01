@@ -3,6 +3,7 @@ import strings from "../localization.json" with {type: "json"};
 const localization = strings.slashCommands.log;
 
 export default {
+    adminOnly: true,
     data: new SlashCommandBuilder()
         .setName("log")
         .setContexts([0, 1])
@@ -17,6 +18,11 @@ export default {
                 .setDescriptionLocalizations({
                     "de": localization.list.description.de,
                 })
+                .addNumberOption((option) =>
+                    option.setName("id").setDescription(localization.list.id.en).setDescriptionLocalizations({
+                        "de": localization.list.id.de,
+                    })
+                )
                 .addNumberOption((option) =>
                     option.setName("amount").setDescription(localization.list.amount.en).setDescriptionLocalizations({
                         "de": localization.list.amount.de,

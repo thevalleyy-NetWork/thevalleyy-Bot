@@ -3,6 +3,7 @@ import strings from "../localization.json" with {type: "json"};
 const localization = strings.slashCommands.test;
 
 export default {
+    adminOnly: true,
     data: new SlashCommandBuilder()
         .setName("test")
         .setContexts([0, 1])

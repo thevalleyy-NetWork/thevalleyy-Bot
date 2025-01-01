@@ -1,14 +1,18 @@
 import { ButtonBuilder, ActionRowBuilder, EmbedBuilder } from "discord.js";
 import config from "../config.json" with { type: "json" };
 
-export default async (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "SPOTIFY_lyrics") return;
 
     const iconurl = interaction.guild.iconURL();
     const message = interaction.message;
     const args = message.embeds[0].fields[0].value;
-    const fetch = (await import("node-fetch")).default;
 
     const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
@@ -25,12 +29,12 @@ export default async (client, interaction) => {
         await interaction.reply({ embeds: [waitEmbed] });
 
         const { title, author, lyrics, thumbnail, links, error } = await fetch(
-            `https://some-random-api.ml/lyrics?title=${args.replaceAll("ä", "ae").replaceAll("ü", "ue").replaceAll("ö", "oe").replaceAll("ß", "ss")}`
+            `https://some-random-api.com/lyrics?title=${encodeURIComponent(args)}`
         ).then((response) => response.json());
 
         if (error) {
             const errorEmbed = new EmbedBuilder()
-                .setColor(config.colors.errror)
+                .setColor(config.colors.error)
                 .setTitle("Es gab einen Fehler...")
                 .setDescription("`" + error + "`")
                 .setFooter({ text: interaction.guild.name, iconURL: iconurl })
@@ -38,7 +42,7 @@ export default async (client, interaction) => {
             await interaction.editReply({ embeds: [errorEmbed] });
             return;
         }
-        // TODO: test if this still works
+
         const songEmbed = new EmbedBuilder()
             .setAuthor({
                 name: `${author} (${title})`,
@@ -54,9 +58,9 @@ export default async (client, interaction) => {
             })
             .setTimestamp();
         await interaction.editReply({ embeds: [songEmbed] }).catch(async (err) => {
-            await interaction.editReply("Fehler: `" + err + "`");
+            client.error(err, "lyrics.js (button)");
         });
     } catch (err) {
-        await interaction.editReply("Fehler: `" + err + "`");
+        client.error(err, "lyrics.js (button)");
     }
 };

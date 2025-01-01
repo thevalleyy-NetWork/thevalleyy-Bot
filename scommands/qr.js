@@ -30,17 +30,17 @@ export default {
                 )
         )
 
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName("scan")
-                .setDescription(localization.scan.description.en)
-                .setDescriptionLocalizations({
-                    "de": localization.scan.description.de
-                })
-                .addAttachmentOption((option) =>
-                    option.setName("qrcode").setRequired(true).setDescription(localization.scan.qrcode.en).setDescriptionLocalizations({
-                        "de": localization.scan.qrcode.de
-                    })
-                )
-        ),
+        // .addSubcommand((subcommand) =>
+        //     subcommand
+        //         .setName("scan")
+        //         .setDescription(localization.scan.description.en)
+        //         .setDescriptionLocalizations({
+        //             "de": localization.scan.description.de
+        //         })
+        //         .addAttachmentOption((option) =>
+        //             option.setName("qrcode").setRequired(true).setDescription(localization.scan.qrcode.en).setDescriptionLocalizations({
+        //                 "de": localization.scan.qrcode.de
+        //             })
+        //         )
+        // ),
 };

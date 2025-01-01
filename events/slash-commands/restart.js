@@ -1,17 +1,14 @@
-const config = require("../../config.json");
-const process = require("process");
-const { spawn } = require("child_process");
+import { spawn } from "child_process";
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.restart;
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-
-    if (interaction.user.id != config.owner) {
-        interaction.reply({
-            content: "Du hast keine Berechtigung, diesen Befehl auszuführen.",
-            ephemeral: true,
-        });
-        return;
-    }
 
     (function main() {
         if (process.env.process_restarting) {

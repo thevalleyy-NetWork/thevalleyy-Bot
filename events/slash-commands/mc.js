@@ -1,97 +1,95 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-const fs = require("node:fs");
-const util = require("minecraft-server-util");
+import { EmbedBuilder } from "discord.js";
+import fs from "node:fs";
+import util from "minecraft-server-util";
 
-export default (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.mc;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
-    var ip = interaction.options.getString("ip");
-    var port = interaction.options.getString("port");
-
-    if (!interaction.options.getString("ip") && !interaction.options.getString("port")) {
-        var ip = "thevalleyy.tk";
-        var port = "";
-    }
-    if (!interaction.options.getString("port")) {
-        var port = "25565";
-    }
+    const ip = interaction.options.getString("ip") ? interaction.options.getString("ip") : config.minecraft.ip;
+    const port = interaction.options.getString("port") ? interaction.options.getString("port") : config.minecraft.port;
 
     client.log(`Pinging: IP: ${ip} | Port: ${port}`, "mc.js");
 
     try {
-        util.status(ip, parseInt(port)).then(async (response) => {
-            if (!response) {
-                if (interaction.replied) {
-                    interaction.followUp("Der Server ist nicht erreichbar.");
-                } else {
-                    interaction.reply("Der Server ist nicht erreichbar.");
-                }
-                return;
-            }
+        await interaction.deferReply();
+        const response = await util.status(ip, parseInt(port)).catch((error) => {
+            interaction.followUp(l10n.notReachable[locale]);
+        })
 
-            const embed = new Discord.EmbedBuilder()
-                .setTitle(ip + ":" + port)
-                .setTimestamp()
-                .setColor(config.standard_color)
-                .setFooter({
-                    text: interaction.guild.name,
-                    iconURL: interaction.guild.iconURL(),
-                })
-                .addFields([
-                    {
-                        name: "Spieler:",
-                        value: `(${response.players.online}/${response.players.max})`,
-                        inline: true,
-                    },
-                    {
-                        name: "Version:",
-                        value: `${response.version.name} (${response.version.protocol})`,
-                        inline: true,
-                    },
-                    {
-                        name: "Ping:",
-                        value: response.roundTripLatency.toString() + "ms",
-                        inline: true,
-                    },
-                ])
+        if (!response) return;
 
-                .setThumbnail("https://eu.mc-api.net/v3/server/favicon/" + ip + ":" + port)
-                .setImage(`http://status.mclive.eu/${ip}/${ip}/${port}/banner.png`);
+        const embed = new EmbedBuilder()
+            .setTitle(ip + (port == "25565" ? `` : `:${port}`))
+            .setTimestamp()
+            .setColor(config.colors.default)
+            .setFooter({
+                text: interaction.guild.name,
+                iconURL: interaction.guild.iconURL(),
+            })
+            .addFields([
+                {
+                    name: `${l10n.players[locale]}:`,
+                    value: `(${response.players.online}/${response.players.max})`,
+                    inline: true,
+                },
+                {
+                    name: `${l10n.version[locale]}:`,
+                    value: `${response.version.name} (${response.version.protocol})`,
+                    inline: true,
+                },
+                {
+                    name: `${l10n.ping[locale]}:`,
+                    value: response.roundTripLatency.toString() + "ms",
+                    inline: true,
+                },
+            ])
 
-            if (ip == "thevalleyy.tk") {
-                const json = JSON.parse(fs.readFileSync("./data/mcstats.json", "utf8"));
+            .setThumbnail("https://eu.mc-api.net/v3/server/favicon/" + ip + ":" + port)
+            .setImage(`http://status.mclive.eu/${ip}/${ip}/${port}/banner.png`);
 
-                embed.addFields([
-                    {
-                        name: "Spielerrekord:",
-                        value: json.mostPlayers.toString(),
-                        inline: true,
-                    },
-                    {
-                        name: "Erreicht:",
-                        value: `<t:${json.date}:R>`,
-                        inline: true,
-                    },
-                    {
-                        name: "Letzter Ping:",
-                        value: `<t:${json.lastPinged}:R>`,
-                        inline: true,
-                    },
-                ]);
-            }
+        if (ip == config.minecraft.ip && port == config.minecraft.port) {
+            const json = JSON.parse(fs.readFileSync("./data/mcstats.json", "utf8"));
+
             embed.addFields([
                 {
-                    name: "​",
-                    value: `[${ip} auf NameMC](https://namemc.com/server/${ip}:${port})`,
-                    inline: false,
+                    name: `${l10n.playerRecord[locale]}:`,
+                    value: json.mostPlayers.toString(),
+                    inline: true,
+                },
+                {
+                    name: `${l10n.reached[locale]}:`,
+                    value: `<t:${json.date}:R>`,
+                    inline: true,
+                },
+                {
+                    name: `${l10n.lastPing[locale]}:`,
+                    value: `<t:${json.lastPinged}:R>`,
+                    inline: true,
                 },
             ]);
+        }
+        embed.addFields([
+            {
+                name: "​",
+                value: `[${ip} ${l10n.onNameMC[locale]}](https://namemc.com/server/${ip}:${port})`,
+                inline: false,
+            },
+        ]);
 
-            await interaction.reply({ embeds: [embed] });
-        });
+        await interaction.followUp({ embeds: [embed] });
     } catch (error) {
-        interaction.reply("Es gab einen Fehler.");
-        client.log(error, "mc.js");
+        interaction.followUp(
+            l10n.error[locale],
+        );
+        client.error(error, "mc.js");
     }
 };

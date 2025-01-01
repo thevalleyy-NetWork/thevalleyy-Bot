@@ -15,5 +15,10 @@ export default {
             option.setName("text").setDescription(localization.text.en).setRequired(true).setDescriptionLocalizations({
                 "de": localization.text.de,
             })
+        )
+        .addChannelOption((option) =>
+            option.setName("channel").setDescription(localization.channel.en).setDescriptionLocalizations({
+                "de": localization.channel.de,
+            })
         ),
 };

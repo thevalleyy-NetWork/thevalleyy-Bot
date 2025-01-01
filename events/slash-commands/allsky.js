@@ -1,51 +1,52 @@
-import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ComponentType } from "discord.js"
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ComponentType } from "discord.js";
 import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.allsky;
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-    // allow more skies
 
     let x = 0;
     let y = 0;
-    let now = Date.now();
+    const now = Date.now();
 
     const iconurl = interaction.guild.iconURL();
-
     const idStart = "SKY_";
 
-    const emptyButton = new ButtonBuilder().setCustomId("SKY_btnEmpty").setLabel("X").setStyle("Secondary").setDisabled(true);
-    const emptyButton2 = new ButtonBuilder().setCustomId("SKY_btnEmpty2").setLabel("X").setStyle("Secondary").setDisabled(true);
-    const emptyButton3 = new ButtonBuilder().setCustomId("SKY_btnEmpty3").setLabel("X").setStyle("Secondary").setDisabled(true);
-    const emptyButton4 = new ButtonBuilder().setCustomId("SKY_btnEmpty4").setLabel("X").setStyle("Secondary").setDisabled(true);
+    const emptyButton0 = new ButtonBuilder().setCustomId("SKY_empty0").setLabel("X").setStyle("Secondary").setDisabled(true);
+    const emptyButton1 = new ButtonBuilder().setCustomId("SKY_empty1").setLabel("X").setStyle("Secondary").setDisabled(true);
+    const emptyButton2 = new ButtonBuilder().setCustomId("SKY_empty2").setLabel("X").setStyle("Secondary").setDisabled(true);
+    const emptyButton3 = new ButtonBuilder().setCustomId("SKY_empty3").setLabel("X").setStyle("Secondary").setDisabled(true);
 
-    const buttonUp = new ButtonBuilder().setCustomId("SKY_btnUp").setLabel("🔼").setStyle("Secondary");
+    const buttonUp = new ButtonBuilder().setCustomId("SKY_up").setLabel("🔼").setStyle("Secondary");
+    const buttonDown = new ButtonBuilder().setCustomId("SKY_down").setLabel("🔽").setStyle("Secondary");
+    const buttonRight = new ButtonBuilder().setCustomId("SKY_right").setLabel("▶️").setStyle("Secondary");
+    const buttonLeft = new ButtonBuilder().setCustomId("SKY_left").setLabel("◀️").setStyle("Secondary");
+    const buttonReset = new ButtonBuilder().setCustomId("SKY_reset").setLabel("🔄").setStyle("Secondary").setDisabled(true);
 
-    const buttonDown = new ButtonBuilder().setCustomId("SKY_btnDown").setLabel("🔽").setStyle("Secondary");
-
-    const buttonRight = new ButtonBuilder().setCustomId("SKY_btnRight").setLabel("▶️").setStyle("Secondary");
-
-    const buttonReset = new ButtonBuilder().setCustomId("SKY_btnReset").setLabel("🔄").setStyle("Secondary").setDisabled(true);
-
-    const buttonLeft = new ButtonBuilder().setCustomId("SKY_btnLeft").setLabel("◀️").setStyle("Secondary");
-
-    const startEmbed = new EmbedBuilder()
-        .setTitle("Allsky")
-        .setColor(config.standard_color)
+    const embed = new EmbedBuilder()
+        .setTitle(l10n.embed.title[locale])
+        .setColor(config.colors.default)
         .setTimestamp(now)
         .setFooter({ text: interaction.guild.name, iconURL: iconurl })
-        .setImage("https://archive.allsky.tv/AMS52/LATEST/010314.jpg")
+        .setImage("https://archive.allsky.tv/AMS52/LATEST/010314.jpg") // TODO: add more skies to discover
         .addFields([
-            { name: "Ort:", value: "Sonneberg, Thüringen", inline: true },
+            { name: l10n.embed.fields.location.name[locale], value: l10n.embed.fields.location.value[locale], inline: true },
             {
-                name: "Bilder von:",
-                value: "https://allsky7.net/",
+                name: l10n.embed.fields.source.name[locale],
+                value: l10n.embed.fields.source.value[locale],
                 inline: true,
             },
         ]);
 
-    let buttonListUp = [emptyButton, buttonUp, emptyButton2];
-    let buttonListMiddle = [buttonLeft, buttonReset, buttonRight];
-    let buttonListDown = [emptyButton3, buttonDown, emptyButton4];
+    const buttonListUp = [emptyButton0, buttonUp, emptyButton1];
+    const buttonListMiddle = [buttonLeft, buttonReset, buttonRight];
+    const buttonListDown = [emptyButton2, buttonDown, emptyButton3];
 
     const rowUp = new ActionRowBuilder().addComponents(buttonListUp);
     const rowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);
@@ -54,20 +55,20 @@ export default (client, interaction) => {
     interaction
         .reply({
             components: [rowUp, rowMiddle, rowDown],
-            embeds: [startEmbed],
+            embeds: [embed],
         })
         .then(async (msg) => {
             const collector = await msg.createMessageComponentCollector({
                 componentType: ComponentType.Button,
-                time: 6000,
+                time: 60000,
             });
 
             collector.on("collect", async (i) => {
-                if (i.message.interaction.id !== msg.id) return console.log(i.message.interaction.id, msg.id);
+                if (i.message.interaction.id !== msg.id) return 
                 if (!i.customId.startsWith(idStart)) return;
                 if (i.user.id !== interaction.user.id && i.user.id != config.owner) {
                     i.reply({
-                        content: "Nur `" + interaction.user.username + "` kann diesen Button betätigen",
+                        content: l10n.preventOthers[locale].replace("{user}", interaction.user.username),
                         ephemeral: true,
                     });
                     return;
@@ -76,68 +77,58 @@ export default (client, interaction) => {
                 await i.deferUpdate();
                 collector.resetTimer();
 
-                if (i.customId.endsWith("btnUp")) {
-                    if (y >= 2) {
-                        y = 0;
-                    } else {
-                        y += 1;
-                    }
+                if (i.customId.endsWith("up")) {
+                    // 0 -> 1;
+                    // 1 -> 2;
+                    // 2 -> 0;
+
+                    y = (y + 1) % 3;
                 }
 
-                if (i.customId.endsWith("btnDown")) {
-                    if (y <= 0) {
-                        y = 2;
-                    } else {
-                        y -= 1;
-                    }
+                if (i.customId.endsWith("down")) {
+                    y = (y + 2) % 3;
                 }
 
-                if (i.customId.endsWith("btnRight")) {
-                    if (x >= 4) {
-                        x = 0;
-                    } else {
-                        x += 1;
-                    }
+                if (i.customId.endsWith("right")) {
+                    x = (x + 1) % 5;
                 }
 
-                if (i.customId.endsWith("btnLeft")) {
-                    if (x <= 0) {
-                        x = 4;
-                    } else {
-                        x -= 1;
-                    }
+                if (i.customId.endsWith("left")) {
+                    x = (x + 4) % 5;
                 }
 
-                if (i.customId.endsWith("btnReset")) {
-                    x = 0;
-                    y = 0;
+                if (i.customId.endsWith("reset")) {
+                    x = y = 0;
                 }
 
-                if (x == 0 && y == 0) {
-                    buttonReset.setDisabled(true);
-                } else {
-                    buttonReset.setDisabled(false);
-                }
+                buttonReset.setDisabled(x === 0 && y === 0); // disable reset button if x and y are 0
 
                 const embed = new EmbedBuilder()
-                    .setTitle(`Allsky x = ${x}; y = ${y}`)
-                    .setColor(config.standard_color)
+                    .setTitle(l10n.editEmbed.title[locale].replace("{x}", x).replace("{y}", y))
+                    .setColor(config.colors.default)
                     .setFooter({
                         text: interaction.guild.name,
                         iconURL: iconurl,
                     })
                     .setTimestamp(now);
-                if (y == 1) embed.setImage("https://sonneberg.allsky7.net/latest/010319.jpg");
-                else if (y >= 2) embed.setImage("https://sonneberg.allsky7.net/latest/010320.jpg");
-                else if (y <= 0 && x <= 0) embed.setImage("https://sonneberg.allsky7.net/latest/010314.jpg");
-                else if (y <= 0 && x == 1) embed.setImage("https://sonneberg.allsky7.net/latest/010315.jpg");
-                else if (y <= 0 && x == 2) embed.setImage("https://sonneberg.allsky7.net/latest/010316.jpg");
-                else if (y <= 0 && x == 3) embed.setImage("https://sonneberg.allsky7.net/latest/010317.jpg");
-                else if (y <= 0 && x >= 4) embed.setImage("https://sonneberg.allsky7.net/latest/010318.jpg");
 
-                let buttonListUp = [emptyButton, buttonUp, emptyButton2];
-                let buttonListMiddle = [buttonLeft, buttonReset, buttonRight];
-                let buttonListDown = [emptyButton3, buttonDown, emptyButton4];
+                const images = [
+                    "https://archive.allsky.tv/AMS52/LATEST/010314.jpg",
+                    "https://archive.allsky.tv/AMS52/LATEST/010315.jpg",
+                    "https://archive.allsky.tv/AMS52/LATEST/010316.jpg",
+                    "https://archive.allsky.tv/AMS52/LATEST/010317.jpg",
+                    "https://archive.allsky.tv/AMS52/LATEST/010318.jpg",
+                    "https://archive.allsky.tv/AMS52/LATEST/010319.jpg",
+                    "https://archive.allsky.tv/AMS52/LATEST/010320.jpg"
+                ];
+
+                if (y == 1) embed.setImage(images[5]);
+                else if (y >= 2) embed.setImage(images[6]);
+                else embed.setImage(images[x]);
+
+                const buttonListUp = [emptyButton0, buttonUp, emptyButton1];
+                const buttonListMiddle = [buttonLeft, buttonReset, buttonRight];
+                const buttonListDown = [emptyButton2, buttonDown, emptyButton3];
 
                 const rowUp = new ActionRowBuilder().addComponents(buttonListUp);
                 const rowMiddle = new ActionRowBuilder().addComponents(buttonListMiddle);

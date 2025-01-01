@@ -1,10 +1,20 @@
-const Discord = require("discord.js");
+import { EmbedBuilder } from "discord.js";
 
-export default (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.ping;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
+    const time = Date.now();
 
     let tps = 0;
-    s = Date.now();
+    let s = Date.now();
     while (Date.now() - s <= 1) tps++;
     tps *= 1000; //:HugTomate:
 
@@ -15,32 +25,36 @@ export default (client, interaction) => {
     totalSeconds %= 3600;
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = Math.floor(totalSeconds % 60);
-    let uptime = `\`${days}\` Tage, \`${hours}\` Stunden, \`${minutes}\` Minuten und \`${seconds}\` Sekunden`;
+    let uptime = `\`${days}\` ${days == 1 ? l10n.uptime.days.singular[locale] : l10n.uptime.days.plural[locale]}, \`${hours}\` ${
+        hours == 1 ? l10n.uptime.hours.singular[locale] : l10n.uptime.hours.plural[locale]
+    }, \`${minutes}\` ${minutes == 1 ? l10n.uptime.minutes.singular[locale] : l10n.uptime.minutes.plural[locale]} ${
+        l10n.uptime.and[locale]
+    } \`${seconds}\` ${seconds == 1 ? l10n.uptime.seconds.singular[locale] : l10n.uptime.seconds.plural[locale]}`;
 
     const iconurl = interaction.guild.iconURL();
 
-    const prePingEmbed = new Discord.EmbedBuilder().setTitle("...").setColor("#36393f");
+    const prePingEmbed = new EmbedBuilder().setTitle("...").setColor(config.colors.default);
     interaction.reply({ embeds: [prePingEmbed] }).then((m) => {
-        const pingEmbed = new Discord.EmbedBuilder()
-            .setTitle("Bot-Info")
+        const pingEmbed = new EmbedBuilder()
+            .setTitle(l10n.botInfo[locale])
             .addFields([
                 {
-                    name: "Bot:",
-                    value: `\`${(Date.now() - interaction.createdTimestamp).toString().replace("-", "")}\`ms`,
+                    name: `${l10n.bot[locale]}:`,
+                    value: `\`${(time - interaction.createdTimestamp).toString()}\`ms`,
                     inline: true,
                 },
                 {
-                    name: "API:",
+                    name: `${l10n.api[locale]}:`,
                     value: `\`${Math.round(client.ws.ping)}\`ms`,
                     inline: true,
                 },
-                { name: "TPS:", value: `\`${tps}\``, inline: true },
-                { name: "Uptime:", value: `${uptime}`, inline: true },
+                { name: `${l10n.tps[locale]}:`, value: `\`${tps}\``, inline: true },
+                { name: `${l10n.uptimeWord[locale]}:`, value: `${uptime}`, inline: true },
             ])
 
             .setFooter({ text: interaction.guild.name, iconURL: iconurl })
             .setTimestamp()
-            .setColor("#36393f");
+            .setColor(config.colors.default);
         interaction.editReply({ embeds: [pingEmbed] });
     });
 };

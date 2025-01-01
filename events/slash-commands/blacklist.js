@@ -1,131 +1,85 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-const fs = require("node:fs");
+import { EmbedBuilder } from "discord.js";
+import fs from "node:fs";
+import config from "../../config.json" with { type: "json" };
 
-export default async (client, interaction) => {
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.blacklist;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
     const user = interaction.options.get("user");
 
-    // TODO: make use of the database
-    // if (!user) {
-    //     try {
-    //         const res = await db(
-    //             `SELECT dcid FROM discord WHERE blacklisted = 1`
-    //         );
-    //         if (res.length == 0) {
-    //             interaction.reply("Es sind keine Nutzer auf der Blacklist.");
-    //             return;
-    //         }
-    //         const embed = new Discord.EmbedBuilder()
-    //             .setTitle("Blacklist")
-    //             .setDescription(
-    //                 res.map((r) => `<@${r.dcid}>, \`${r.dcid}\``).join("\n")
-    //             )
-    //             .setColor(config.standard_color)
-    //             .setTimestamp()
-    //             .setFooter({
-    //                 text: interaction.guild
-    //                     ? interaction.guild.name
-    //                     : interaction.user.tag,
-    //                 iconURL: interaction.guild
-    //                     ? interaction.guild.iconURL()
-    //                     : interaction.user.avatarURL(),
-    //             });
-    //         interaction.reply({ embeds: [embed] });
-    //     } catch (err) {
-    //         interaction.reply("Es ist ein Fehler aufgetreten: \n" + err);
-    //         client.error(err, "blacklist.js");
-    //     }
-    //     return;
-    // }
+    if (!user) {
+        try {
+            if (client.blacklist.length == 0) {
+                interaction.reply({
+                    content: l10n.noEntries[locale],
+                    ephemeral: true,
+                });
+                return;
+            }
+            const embed = new EmbedBuilder()
+                .setTitle(l10n.embed.title[locale])
+                .setDescription(client.blacklist.map((r) => `<@${r}>, \`${r}\``).join("\n"))
+                .setColor(config.colors.default)
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.guild ? interaction.guild.name : interaction.user.tag,
+                    iconURL: interaction.guild ? interaction.guild.iconURL() : interaction.user.avatarURL(),
+                });
+            interaction.reply({ embeds: [embed] });
+        } catch (err) {
+            client.error(err, "blacklist.js");
+            interaction.reply(l10n.error[locale]);
+        }
+        return;
+    }
 
-    // try {
-    //     const res = await db(
-    //         `SELECT dcid, blacklisted FROM discord WHERE dcid = ${user.user.id}`
-    //     );
-    //     if (res[0]) {
-    //         if (res[0].blacklisted === 1) {
-    //             try {
-    //                 await db(
-    //                     `UPDATE discord SET blacklisted = 0 WHERE dcid = ${user.user.id}`
-    //                 );
-    //             } catch (err) {
-    //                 client.error(err, "blacklist.js");
-    //                 interaction.reply(
-    //                     "Es gab einen Fehler:\n" +
-    //                         err.toString().substring(0, 500)
-    //                 );
-    //                 return;
-    //             }
-    //             client.modLog(
-    //                 `${user.user.tag} wurde von ${interaction.user.tag} von der Blacklist entfernt.`,
-    //                 "blacklist.js"
-    //             );
-    //             interaction.reply(
-    //                 `\`${user.user.tag}\` wurde von der Blacklist entfernt.`
-    //             );
-    //         } else {
-    //             try {
-    //                 await db(
-    //                     `UPDATE discord SET blacklisted = 1 WHERE dcid = ${user.user.id}`
-    //                 );
-    //             } catch (err) {
-    //                 client.error(err, "blacklist.js");
-    //                 interaction.reply(
-    //                     "Es gab einen Fehler:\n" +
-    //                         err.toString().substring(0, 500)
-    //                 );
-    //                 return;
-    //             }
-    //             client.modLog(
-    //                 `${user.user.tag} wurde von ${interaction.user.tag} zu der Blacklist hinzugefügt.`,
-    //                 "blacklist.js"
-    //             );
-    //             interaction.reply(
-    //                 `\`${user.user.tag}\` wurde zur Blacklist hinzugefügt.`
-    //             );
-    //         }
-    //     } else {
-    //         interaction.reply(
-    //             `\`${user.user.tag}\` konnte nicht in der Datenbank gefunden werden.`
-    //         );
-    //     }
+    try {
+        if (user.user.id == config.owner || user.user.id == client.user.id) {
+            interaction.reply({content: l10n.notAllowed[locale].replace("{user}", `\`${user.user.tag}\``), ephemeral: true});
+            return;
+        }
 
-    //     try {
-    //         await db("SELECT * FROM discord").then(async (res) => {
-    //             const dbJson = {
-    //                 date: Date.now(),
-    //                 db: res,
-    //             };
-    //             await fs.writeFileSync(
-    //                 "./data/database.json",
-    //                 JSON.stringify(dbJson, null, 4)
-    //             );
-    //             client.db = await res;
 
-    //             const blacklist = await res
-    //                 .filter((x) => x.blacklisted == 1)
-    //                 .map((x) => x.dcid);
-    //             client.blacklist = blacklist;
+        // user has been provided
+        if (client.blacklist.includes(user.user.id)) {
+            try {
+                // remove from blacklist
+                fs.writeFileSync(
+                    "./data/blacklist.json",
+                    JSON.stringify(client.blacklist.filter((x) => x != user.user.id))
+                );
+            } catch (err) {
+                client.error(err, "blacklist.js");
+                interaction.reply(l10n.error[locale]);
+                return;
+            }
 
-    //             await fs.writeFileSync(
-    //                 "./data/blacklist.json",
-    //                 JSON.stringify(client.blacklist, null, 4)
-    //             );
-    //         });
-    //     } catch (e) {
-    //         client.error(
-    //             "Retrieved error while caching db, using local copy\n" + e,
-    //             "ready.startup.js"
-    //         );
-    //         // use old database
-    //         client.db = require("./data/database.json").db;
-    //         client.blacklist = require("./data/blacklist.json");
-    //     }
-    // } catch (err) {
-    //     client.error(err, "blacklist.js");
-    //     interaction.reply("Es gab einen Fehler");
-    //     return;
-    // }
+            client.modLog(l10n.removed[locale].replace("{user}", user.user.tag).replace("{executor}", interaction.user.tag), "blacklist.js");
+            interaction.reply({content: l10n.replyRemoved[locale].replace("{user}", `\`${user.user.tag}\``), ephemeral: true});
+        } else {
+            try {
+                // add to blacklist
+                client.blacklist.push(user.user.id);
+                fs.writeFileSync("./data/blacklist.json", JSON.stringify(client.blacklist));
+            } catch (err) {
+                client.error(err, "blacklist.js");
+                interaction.reply(l10n.error[locale]);
+                return;
+            }
+
+            client.modLog(l10n.added[locale].replace("{user}", user.user.tag).replace("{executor}", interaction.user.tag), "blacklist.js");
+            interaction.reply({content: l10n.replyAdded[locale].replace("{user}", `\`${user.user.tag}\``), ephemeral: true});
+        }
+    } catch (err) {
+        client.error(err, "blacklist.js");
+        interaction.reply(l10n.error[locale]);
+    }
 };

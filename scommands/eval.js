@@ -3,6 +3,7 @@ import strings from "../localization.json" with {type: "json"};
 const localization = strings.slashCommands.eval;
 
 export default {
+    adminOnly:true,
     data: new SlashCommandBuilder()
         .setName("eval")
         .setDescription(localization.description.en)

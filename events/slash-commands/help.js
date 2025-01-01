@@ -1,8 +1,16 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-const fs = require("node:fs");
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
+import fs from "node:fs";
 
-export default async (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.help;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     const allCommands = client.cmdlist;
 
     if (interaction.isAutocomplete()) {
@@ -13,9 +21,9 @@ export default async (client, interaction) => {
 
     const iconurl = interaction.guild.iconURL();
     if (interaction.options._subcommand == "about") {
-        const embed1 = new Discord.EmbedBuilder()
-            .setColor(config.standard_color)
-            .setTitle("Hilfe-Menü")
+        const embed = new EmbedBuilder()
+            .setColor(config.colors.default)
+            .setTitle(l10n.baseEmbed.title[locale])
             .setTimestamp()
             .setFooter({
                 text: interaction.guild.name,
@@ -23,86 +31,63 @@ export default async (client, interaction) => {
             })
             .addFields([
                 {
-                    name: "Info",
-                    value: "Hallu! Ich bins, ~~Tim~~ der Bot <:Okayge:840151989995438120>. \nFür Hilfe zu den Commands kannst du gerne ``/help command`` verwenden. \nBei Bugs bitte mir eine DM senden, danke :) \nFür mehr Infos zu mir kann ich dir ``/ping`` empfehlen. \nViel Spaß mit mir",
+                    name: l10n.baseEmbed.fields.about.name[locale],
+                    value: l10n.baseEmbed.fields.about.value[locale],
                     inline: true,
                 },
                 {
-                    name: "​",
-                    value: "**Mitgeholfen bei der Programmierung und Umsetzung dieses Bots haben:**",
+                    name: l10n.baseEmbed.fields.supporters.name[locale],
+                    value: l10n.baseEmbed.fields.supporters.value[locale],
                     inline: false,
                 },
                 {
-                    name: "🧠 TomatoCake",
-                    value: "Danke für die regelmäßigen Code-Snippets, die ich von dir geklaut habe <:PeppoHuck:845379741019668481>. Sehr sympathisch mit dir zu arbeiten",
+                    name: l10n.baseEmbed.fields.tomato.name[locale],
+                    value: l10n.baseEmbed.fields.tomato.value[locale],
                     inline: true,
                 },
                 {
-                    name: "👥 Alle anderen",
-                    value: "Danke an alle anderen, die mir bei der Entwicklung dieses Bots geholfen haben. \nIch hoffe, dass ihr euch auch so viel Spaß mit diesem Bot habt, wie ich ihn habe.",
+                    name: l10n.baseEmbed.fields.chaoshosting.name[locale],
+                    value: l10n.baseEmbed.fields.chaoshosting.value[locale],
                     inline: true,
                 },
                 {
-                    name: "🖥️ Chaoshosting",
-                    value: "Danke für die Bereitstellung des Servers. Ich hoffe, dass euch mein Bot gefällt.",
+                    name: l10n.baseEmbed.fields.everybody.name[locale],
+                    value: l10n.baseEmbed.fields.everybody.value[locale],
                     inline: true,
                 },
-                {
-                    name: "📚 Discord.JS",
-                    value: "Danke für die Bereitstellung der Library, die ich für diesen Bot nutze. \nOhne euch wäre dieser Bot nicht möglich gewesen.",
-                    inline: true,
-                },
-                {
-                    name: "🗨️ StackOverflow",
-                    value: "Danke für die Bereitstellung der Community, die mir bei Problemen immer weiterhilft. \nWie ein echter Programmiere bediene ich mich dort regelmäßig an Code, und es ist sehr großartig dass es euch gibt.",
-                    inline: true,
-                },
+                
             ]);
-        interaction.reply({ embeds: [embed1] });
+        interaction.reply({ embeds: [embed] });
         return;
     }
 
     if (interaction.options._subcommand == "command") {
         const cmd = interaction.options._hoistedOptions[0].value.toString();
-        const cmdjson = client.cmdStructure.cmds[cmd + ".js"];
+        const cmdjson = client.cmds[cmd + ".js"];
+        if (!cmdjson) return interaction.reply({ content: l10n.commands.notFound[locale], ephemeral: true });
 
-        const embed = new Discord.EmbedBuilder().setTitle(`/${cmd}`).setColor(config.standard_color);
+        const embed = new EmbedBuilder().setTitle(`/${cmd}`).setColor(config.colors.default);
 
-        if (!cmdjson.data.description) {
-            embed.addFields([
-                {
-                    name: "Beschreibung",
-                    value: `\`\`\`Keine\`\`\``,
-                    inline: true,
-                },
-            ]);
-        } else {
-            embed.addFields([
-                {
-                    name: "Beschreibung",
-                    value: `\`\`\`${cmdjson.data.description.toString()}\`\`\``,
-                    inline: true,
-                },
-            ]);
-        }
+        embed.addFields([
+            {
+                name: l10n.commands.description[locale],
+                value: cmdjson.data.description ? `\`\`\`${cmdjson.data.description_localizations[locale] ? cmdjson.data.description_localizations[locale] : cmdjson.data.description}\`\`\`` : `\`\`\`${l10n.commands.none[locale]}\`\`\``,
+                inline: true,
+            },
+        ]);
 
         if (cmdjson.data.default_member_permissions) {
             embed.addFields([
                 {
-                    name: "Berechtigungen",
-                    value: `\`\`\`${new Discord.PermissionsBitField(cmdjson.data.default_member_permissions.toString()).toArray()}\`\`\``,
+                    name: l10n.commands.permissions[locale],
+                    value: `\`\`\`${new PermissionsBitField(cmdjson.data.default_member_permissions.toString()).toArray()}\`\`\``,
                     inline: true,
                 },
             ]);
         }
 
-        if (!cmdjson.cooldown) {
-            var cooldown = config.cooldown_standard;
-        } else {
-            var cooldown = cmdjson.cooldown;
-        }
 
-        d = Number(cooldown);
+        const d = Number(cmdjson.cooldown ? cmdjson.cooldown : config.cooldown_standard);
         var h = Math.floor(d / 3600);
         var m = Math.floor((d % 3600) / 60);
         var s = Math.floor((d % 3600) % 60);
@@ -111,134 +96,163 @@ export default async (client, interaction) => {
             +h > 0
                 ? +h == 1
                     ? +m > 0
-                        ? `eine Stunde, `
+                        ? `${l10n.commands.time.hour.singular[locale]}, `
                         : +h == 1
-                        ? `eine Stunde`
-                        : `${h} Stunden`
+                        ? `${l10n.commands.time.hour.singular[locale]}`
+                        : `${h} ${l10n.commands.time.hour.plural[locale]}`
                     : +m > 0
-                    ? `${h} Stunden, `
-                    : `${h} Stunden`
+                    ? `${h} ${l10n.commands.time.hour.plural[locale]}, `
+                    : `${h} ${l10n.commands.time.hour.plural[locale]}`
                 : ``;
         var mDisplay =
             +m > 0
                 ? +m == 1
                     ? +s > 0
-                        ? `eine Minute, `
+                        ? `${l10n.commands.time.minute.singular[locale]}, `
                         : +m == 1
-                        ? `eine Minute`
-                        : `${m} Minuten`
+                        ? `${l10n.commands.time.minute.singular[locale]}`
+                        : `${m} ${l10n.commands.time.minute.plural[locale]}`
                     : +s > 0
-                    ? `${m} Minuten, `
-                    : `${m} Minuten`
+                    ? `${m} ${l10n.commands.time.minute.plural[locale]}, `
+                    : `${m} ${l10n.commands.time.minute.plural[locale]}`
                 : ``;
-        var sDisplay = +s > 0 ? (+s == 1 ? `eine Sekunde` : `${s} Sekunden`) : ``;
+        var sDisplay = +s > 0 ? (+s == 1 ? `${l10n.commands.time.second.singular[locale]}` : `${s} ${l10n.commands.time.second.plural[locale]}`) : ``;
 
         embed.addFields([
             {
-                name: "Cooldown",
+                name: l10n.commands.cooldown[locale],
                 value: `\`\`\`${hDisplay + mDisplay + sDisplay}\`\`\``,
                 inline: true,
             },
         ]);
 
-        if (cmdjson.data.dm_permission == false) {
-            embed.addFields([
-                {
-                    name: "DM-Permission",
-                    value: `<:crossEmbed:1005146898451140749>`,
-                    inline: true,
-                },
-            ]);
-        } else {
-            embed.addFields([
-                {
-                    name: "DM-Permission",
-                    value: `<:checkmarkEmbed:1005146896278503597>`,
-                    inline: true,
-                },
-            ]);
-        }
+        embed.addFields([
+            {
+                name: l10n.commands.DMPermission[locale],
+                value: cmdjson.data.contexts.includes(1) ? l10n.commands.yes[locale] : l10n.commands.no[locale],
+                inline: true,
+            },
+        ]);
 
-        fs.stat("./events/slash-commands/" + cmdjson.data.name + ".js", async (err, stats) => {
+        fs.stat("./events/slash-commands/" + cmdjson.data.name + ".js", (err, stats) => {
             if (err) {
                 client.error(err, "help.js");
-                await embed.addFields([
+                embed.addFields([
                     {
-                        name: "Filesize (code)",
-                        value: `\`\`\`n/a\`\`\``,
+                        name: l10n.commands.filesizeCode[locale],
+                        value: `\`\`\`${l10n.commands.notAvailable[locale]}\`\`\``,
                         inline: true,
                     },
                 ]);
             } else {
-                await embed.addFields([
+                embed.addFields([
                     {
-                        name: "Filesize (code)",
-                        value: `\`\`\`${await stats.size} bytes\`\`\``,
+                        name: l10n.commands.filesizeCode[locale],
+                        value: `\`\`\`${stats.size} ${l10n.commands.bytes[locale]}\`\`\``,
                         inline: true,
                     },
                 ]);
             }
 
-            fs.stat("./scommands/" + cmdjson.data.name + ".js", async (err, stats) => {
+            fs.stat("./scommands/" + cmdjson.data.name + ".js", (err, stats) => {
                 if (err) {
                     client.error(err, "help.js");
-                    await embed.addFields([
+                    embed.addFields([
                         {
-                            name: "Filesize (builder)",
-                            value: `\`\`\`n/a\`\`\``,
+                            name: l10n.commands.filesizeBuilder[locale],
+                            value: `\`\`\`${l10n.commands.notAvailable[locale]}\`\`\``,
                             inline: true,
                         },
                     ]);
                 } else {
-                    await embed.addFields([
+                    embed.addFields([
                         {
-                            name: "Filesize (builder)",
-                            value: `\`\`\`${await stats.size} bytes\`\`\``,
+                            name: l10n.commands.filesizeBuilder[locale],
+                            value: `\`\`\`${stats.size} ${l10n.commands.bytes[locale]}\`\`\``,
                             inline: true,
                         },
                     ]);
                 }
 
                 // i dont fucking now why i have to add the code here, it just works
-
                 if (cmdjson.data.options[0]) {
+                    // there are options
+                    const optionList = [];
                     let options = "";
-                    cmdjson.data.options.map((option) => {
-                        options +=
-                            `${option.name}: ` +
-                            `\n\tBeschreibung: ${option.description} ` +
-                            `\n\tTyp: ${option.type
-                                .toString()
-                                .replace("11", "Anhang")
-                                .replace("10", "Nummer")
-                                .replace("9", "Rolle oder Benutzer")
-                                .replace("8", "Rolle")
-                                .replace("7", "Kanal")
-                                .replace("6", "Benutzer")
-                                .replace("5", "Boolescher Wert")
-                                .replace("4", "Integer")
-                                .replace("3", "Zeichenfolge")
-                                .replace("2", "SubcommandGroup")
-                                .replace("1", "Subcommand")} ` +
-                            `\n\tErforderlich: ${option.required ? "Ja" : "Nein"} ` +
-                            `${option.choices ? "\n\tAuswahlmöglichkeiten: Ja" : ""} ` +
-                            `${option.autocomplete ? "\n\tAutocomplete: Ja" : ""} \n\n`;
-                    });
 
-                    embed.addFields([
-                        {
-                            name: cmdjson.data.options.length > 1 ? "Argumente" : "Argument",
-                            value: `\`\`\`${options}\`\`\``,
-                        },
-                    ]);
+                    if (cmdjson.data.options[0].options) {
+                        // this is a nested command
+                        for (let i = 0; i < cmdjson.data.options.length; i++) {
+                            const option = cmdjson.data.options[i];
+                            optionList.push(option);
+                        }
+
+                        optionList.map((option) => {
+                            options += `/${cmdjson.data.name} ${option.name}: ` + `\n\t${l10n.commands.description[locale]}: ${option.description} `;
+
+                            if (option.options[0]) {
+                                option.options.map((subOption) => {
+                                    options +=
+                                        `\n\t${subOption.name}: ` +
+                                        `\n\t\t${l10n.commands.description[locale]}: ${subOption.description_localizations[locale] ? subOption.description_localizations[locale] : subOption.description} ` +
+                                        `\n\t\t${l10n.commands.type[locale]}: ${subOption.type
+                                            .toString()
+                                            .replace("11",l10n.commands.optionTypes[11][locale])
+                                            .replace("10",l10n.commands.optionTypes[10][locale])
+                                            .replace("9", l10n.commands.optionTypes[9][locale])
+                                            .replace("8", l10n.commands.optionTypes[8][locale])
+                                            .replace("7", l10n.commands.optionTypes[7][locale])
+                                            .replace("6", l10n.commands.optionTypes[6][locale])
+                                            .replace("5", l10n.commands.optionTypes[5][locale])
+                                            .replace("4", l10n.commands.optionTypes[4][locale])
+                                            .replace("3", l10n.commands.optionTypes[3][locale])
+                                            .replace("2", l10n.commands.optionTypes[2][locale])
+                                            .replace("1", l10n.commands.optionTypes[1][locale])}` +
+                                        `\n\t\t${l10n.commands.required[locale]}: ${subOption.required ? l10n.commands.yesEmote[locale] : l10n.commands.noEmote[locale]} ` +
+                                        `${subOption.choices ? `\n\t\t${l10n.commands.choices[locale]}: ${l10n.commands.yesEmote[locale]}` : ""} ` +
+                                        `${subOption.autocomplete ? `\n\t\t${l10n.commands.autocomplete[locale]}: ${l10n.commands.yesEmote[locale]}` : ""} \n\n`;
+                                });
+                            }
+                        });
+                    } else {
+                        for (let i = 0; i < cmdjson.data.options.length; i++) {
+                            const option = cmdjson.data.options[i];
+                            optionList.push(option);
+                        }
+
+                        optionList.map((option) => {
+                            options +=
+                                `${option.name}: ` +
+                                `\n\t${l10n.commands.description[locale]}: ${option.description_localizations[locale] ? option.description_localizations[locale] : option.description} ` +
+                                `\n\t${l10n.commands.type[locale]}: ${option.type
+                                    .toString()
+                                    .replace("11",l10n.commands.optionTypes[11][locale])
+                                    .replace("10",l10n.commands.optionTypes[10][locale])
+                                    .replace("9", l10n.commands.optionTypes[9][locale])
+                                    .replace("8", l10n.commands.optionTypes[8][locale])
+                                    .replace("7", l10n.commands.optionTypes[7][locale])
+                                    .replace("6", l10n.commands.optionTypes[6][locale])
+                                    .replace("5", l10n.commands.optionTypes[5][locale])
+                                    .replace("4", l10n.commands.optionTypes[4][locale])
+                                    .replace("3", l10n.commands.optionTypes[3][locale])
+                                    .replace("2", l10n.commands.optionTypes[2][locale])
+                                    .replace("1", l10n.commands.optionTypes[1][locale])}` +
+                                `\n\t${l10n.commands.required[locale]}: ${option.required ? l10n.commands.yesEmote[locale] : l10n.commands.noEmote[locale]} ` +
+                                `${option.choices ? `\n\t${l10n.commands.choices[locale]}: ${l10n.commands.yesEmote[locale]}` : ""} ` +
+                                `${option.autocomplete ? `\n\t${l10n.commands.autocomplete[locale]}: ${l10n.commands.yesEmote[locale]}` : ""} \n\n`;
+                        });
+                    }
+
+                    embed.setDescription(
+                        
+                            `${cmdjson.data.options.length > 1 ? `**${l10n.commands.arguments.plural[locale]}**:` : `**${l10n.commands.arguments.singular[locale]}**:`} \n\`\`\`${options}\`\`\``
+                            
+                        
+                    );
                 } else {
-                    embed.addFields([
-                        {
-                            name: "Argumente",
-                            value: "```Keine```",
-                            inline: true,
-                        },
-                    ]);
+                    embed.setDescription(
+                        `**${l10n.commands.arguments.plural[locale]}**: \n\`\`\`${l10n.commands.none[locale]}\`\`\``
+                    );
                 }
 
                 embed

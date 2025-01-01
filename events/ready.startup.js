@@ -6,8 +6,15 @@ import fs from "fs";
 const pck = packageJson.dependencies;
 
 export default async (client) => {
-    const blacklistModule = await import('./../data/blacklist.json', { with: { type: 'json' } });
-    client.blacklist = blacklistModule.default;
+    const loadBlacklist = () => {
+        const blacklistModule = JSON.parse(fs.readFileSync('./data/blacklist.json', 'utf8'));
+        client.blacklist = blacklistModule;
+    };
+
+    loadBlacklist();
+    fs.watchFile('./data/blacklist.json', (curr, prev) => {
+        loadBlacklist();
+    });
 
     // startup presence (now random)
     function setRandompckStatus() {

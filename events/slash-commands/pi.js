@@ -1,21 +1,26 @@
-export default async (client, interaction) => {
+import { EmbedBuilder } from "discord.js";
+
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.pi
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
     await interaction.deferReply();
 
-    if (!interaction.options.getBoolean("hexadecimal")) {
-        var base = 10;
-    } else {
-        var base = 16;
-    }
+    const base = interaction.options.getBoolean("hexadecimal") ? 16 : 10;
+    const digits = interaction.options.getNumber("digits") || 16;
+    const start = interaction.options.getNumber("start") || 0;
 
-    if (!interaction.options.getNumber("digits")) {
-        var digits = 16;
-    } else {
-        var digits = interaction.options.getNumber("digits");
-    }
+    if (digits > 1000) return interaction.editReply(l10n.tooLarge[locale].replace("{max}", "1000"));
 
-    client.log(`Generating ${digits} digits of pi`, "pi.js");
+    client.log(`Requesting ${digits} digits of pi (${interaction.user.tag})`, "pi.js");
 
     // interaction.deferReply();
     async function parse(response) {
@@ -27,37 +32,28 @@ export default async (client, interaction) => {
         }
     }
 
-    // plus 1000 digits
-    if (digits > 1000) {
-        fetch(`https://api.pi.delivery/v1/pi?start=${digits}&numberOfDigits=1000&radix=${base}`).then(async (response) => {
+        fetch(`https://api.pi.delivery/v1/pi?start=${start}&numberOfDigits=${digits}&radix=${base}`).then(async (response) => {
             const res = await parse(response);
-            if (res.error) interaction.editReply("Error: \n`" + res.error + "`\n"); //ERROR
+            if (res.error) interaction.editReply(l10n.error[locale] + "\n```" + res.error + "```"); 
 
-            if (!res.content) return;
+            if (!res.content) return interaction.editReply(l10n.error[locale]);
             if (res.content) {
-                const string =
-                    `${res.content.length} ` +
-                    (res.content.length > 1 ? "digits" : "digit") +
-                    ` digits of pi, starting from the ${digits}th digit (base ${base}): \n\`${res.content}\``;
-                interaction.editReply(string);
+
+            const embed = new EmbedBuilder()
+                .setColor(config.colors.default)
+                .setTitle(l10n.pi[locale])
+                .setDescription("```" + res.content + "```")
+                .addFields(
+                    { name: res.content.length > 1 ? l10n.digits.plural[locale] : l10n.digits.singular[locale], value: `\`\`${res.content.length}\`\``, inline: true},
+                    { name: l10n.start[locale], value: `\`\`${start}\`\``, inline: true},
+                    { name: l10n.base[locale], value: `\`\`${base}\`\``, inline: true},
+                )
+                .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+                .setTimestamp()
+
+                interaction.editReply({ embeds: [embed] });
             }
         });
         return;
-    }
 
-    // sub 1001 digits
-    fetch(`https://api.pi.delivery/v1/pi?start=0&numberOfDigits=${digits}&radix=${base}`).then(async (response) => {
-        const res = await parse(response);
-        if (res.error) interaction.editReply("Error: \n`" + res.error + "`\n");
-
-        if (!res.content) return;
-        if (res.content) {
-            const string =
-                `${digits} ` +
-                (digits == 1 ? "digit" : "digits") +
-                ` of pi (base ${base}): \n\`${res.content.slice(0, 1) + (res.content.length >= 2 ? "," : "") + res.content.slice(1)}\``;
-            interaction.editReply(string);
-        }
-    });
-    return;
 };

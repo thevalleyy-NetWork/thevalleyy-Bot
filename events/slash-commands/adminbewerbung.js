@@ -1,13 +1,21 @@
 import { EmbedBuilder } from "discord.js"
 import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.adminbewerbung
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
     const embed = new EmbedBuilder()
-        .setTitle("Admin-Bewerbung")
+        .setTitle(l10n.embed.title[locale])
         .setColor(config.colors.default)
-        .setDescription("Bitte sende [hier](https://tinyurl.com/bdz4kpd5) deine Bewerbung ein und wir werden sie schnellstmöglich bearbeiten.");
+
+    embed.setDescription(l10n.embed.description[locale].replace("{link}", config.links.adminbewerbung));
 
     interaction.reply({ embeds: [embed] });
 };

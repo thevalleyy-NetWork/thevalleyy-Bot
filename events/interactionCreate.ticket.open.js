@@ -37,7 +37,12 @@ function time() {
 import { EmbedBuilder } from "discord.js";
 import config from "../config.json" with { type: "json"}
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "TICKET_create") return;
 

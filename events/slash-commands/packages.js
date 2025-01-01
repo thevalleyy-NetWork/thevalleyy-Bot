@@ -1,29 +1,37 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-const package = require("../../package.json");
+import { EmbedBuilder } from "discord.js";
 
-export default (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import pck from "../../package.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.packages
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
-    let array = [];
-    for (let i = 0; i < Object.keys(package.dependencies).length; i++) {
-        array.push(Object.keys(package.dependencies)[i] + ": v" + Object.values(package.dependencies)[i].replace("^", ""));
+    const array = [];
+    for (let i = 0; i < Object.keys(pck.dependencies).length; i++) {
+        array.push(Object.keys(pck.dependencies)[i] + ": v" + Object.values(pck.dependencies)[i].replace("^", ""));
     }
 
-    const embed = new Discord.EmbedBuilder()
-        .setColor(config.standard_color)
-        .setTitle(package.name + " v" + package.version)
-        .setDescription("Packages:\n" + `\`\`\`${array.join(", ").replaceAll(", ", ",\n")}\`\`\``)
+    const embed = new EmbedBuilder()
+        .setColor(config.colors.default)
+        .setTitle(pck.name + " v" + pck.version)
+        .setDescription(`${l10n.packages[locale]}:\n` + `\`\`\`${array.join(", ").replaceAll(", ", ",\n")}\`\`\``)
         .setThumbnail(client.user.avatarURL())
         .addFields([
             {
-                name: "Start-Datei",
-                value: "`" + package.main + "`",
+                name: `${l10n.startFile[locale]}:`,
+                value: "`" + pck.main + "`",
                 inline: true,
             },
             {
-                name: "Description",
-                value: "`" + package.description + "`",
+                name: `${l10n.description[locale]}:`,
+                value: "`" + pck.description + "`",
                 inline: true,
             },
         ]);

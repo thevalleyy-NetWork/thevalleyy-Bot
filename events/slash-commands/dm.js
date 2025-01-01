@@ -1,10 +1,18 @@
-const config = require("../../config.json");
+import config from "../../config.json" with { type: "json" };
 
-export default async (client, interaction) => {
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.dm;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
     if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
         return interaction.reply({
-            content: "Dieser Benutzer ist nicht auf diesem Server!",
+            content: l10n.notAvailable[locale].replace("{user}", `\`${interaction.options.get("user").user.tag}\``),
             ephemeral: true,
         });
 
@@ -12,17 +20,18 @@ export default async (client, interaction) => {
     const text = interaction.options.getString("content");
 
     if (user.user.id == config.owner || user.user.id == client.user.id) {
-        interaction.reply("DMs an `" + user.user.username + "` sind nicht erlaubt.");
+        interaction.reply({
+            content: l10n.notAllowed[locale].replace("{user}", `\`${user.user.tag}\``),
+            ephemeral: true,
+        });
         return;
     }
 
     try {
         await user.user.send(text.substring(0, 2000));
-        interaction.reply({ content: "✅", ephemeral: true });
-        interaction.channel.send("Die Nachricht wurde an `" + user.user.tag + "` versandt.");
-        client.modLog(`${interaction.user.tag} hat ${user.user.tag} eine DM geschickt.`, "dm.js");
+        interaction.reply({ content: l10n.success[locale].replace("{user}", `\`${user.user.tag}\``), ephemeral: true });
+        client.modLog(l10n.modLog[locale].replace("{executor}", interaction.user.tag).replace("{user}", user.user.tag), "dm.js");
     } catch (error) {
-        client.error(error, "dm.js");
-        interaction.reply("Die Nachricht konnte nicht an `" + user.user.tag + "` versendet werden.");
+        interaction.reply({ content: l10n.error[locale].replace("{user}", `\`${user.user.tag}\``), ephemeral: true });
     }
 };

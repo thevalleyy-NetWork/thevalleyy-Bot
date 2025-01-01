@@ -1,5 +1,14 @@
-export default async (client, interaction) => {
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.rasus
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
+    const user = interaction.options.getUser("user");
 
     const rusasarray = [
         "ruuuuuuuuusas",
@@ -15,6 +24,6 @@ export default async (client, interaction) => {
     ];
 
     const rusas = rusasarray[Math.floor(Math.random() * rusasarray.length)];
-    interaction.channel.send(rusas);
+    interaction.channel.send(rusas + (user ? ` <@${user.id}>` : ""));
     interaction.reply({ content: "😳", ephemeral: true });
 };

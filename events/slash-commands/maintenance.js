@@ -1,31 +1,31 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-const fs = require("node:fs");
+import { ActivityType } from "discord.js";
+import fs from "node:fs";
 
-export default (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.maintenance;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-
-    if (interaction.user.id != config.owner) {
-        interaction.reply({
-            content: "Du hast keine Berechtigung, diesen Befehl auszuführen.",
-            ephemeral: true,
-        });
-        return;
-    }
 
     const maintenance = JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8"));
 
     const boolean = interaction.options.getBoolean("maintenance");
     const reason = interaction.options.getString("reason");
 
-    if (boolean == true && maintenance.maintenance == true)
+    if (boolean  && maintenance.maintenance )
         return interaction.reply({
-            content: "Der Bot ist bereits im Wartungsmodus.",
+            content: l10n.alreadyInMaintenance[locale],
             ephemeral: true,
         });
-    if (boolean == false && maintenance.maintenance == false)
+    if (!boolean && !maintenance.maintenance )
         return interaction.reply({
-            content: "Der Bot ist nicht im Wartungsmodus.",
+            content: l10n.notInMaintenance[locale],
             ephemeral: true,
         });
 
@@ -34,18 +34,18 @@ export default (client, interaction) => {
         JSON.stringify(
             {
                 maintenance: boolean,
-                reason: reason ? reason : "⚙ Es finden aktuell Wartungsarbeiten statt.",
+                reason: reason ? reason : config.maintenance.reason,
             },
             null,
             4
         )
     );
-    if (boolean == true) {
+    if (boolean) {
         client.user.setPresence({
             activities: [
                 {
-                    name: "🛑 Wartungsmodus",
-                    type: Discord.ActivityType.Playing,
+                    name: config.maintenance.activityOn,
+                    type: ActivityType.Playing,
                 },
             ],
             status: "dnd",
@@ -54,8 +54,8 @@ export default (client, interaction) => {
         client.user.setPresence({
             activities: [
                 {
-                    name: "✅ Wartungen beendet",
-                    type: Discord.ActivityType.Playing,
+                    name: config.maintenance.activityOff,
+                    type: ActivityType.Playing,
                 },
             ],
             status: "online",
@@ -63,7 +63,7 @@ export default (client, interaction) => {
     }
 
     interaction.reply({
-        content: `Der Bot ist nun im ${boolean ? "Wartungsmodus" : "Normalmodus"}.`,
+        content: `${l10n.botIs[locale]} ${boolean ? l10n.maintenance[locale] : l10n.normal[locale]}.`,
         ephemeral: true,
     });
 };

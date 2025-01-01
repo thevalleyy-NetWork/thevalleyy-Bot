@@ -1,33 +1,34 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-const { createClient } = require("pexels");
-const paginationEmbed = require("../../functions/pagination.js");
+import { ButtonBuilder, EmbedBuilder } from "discord.js";
+import { createClient } from "pexels";
 
-export default (client, interaction) => {
+import paginationEmbed from "../../functions/pagination.js";
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.photo;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
     const query = interaction.options.getString("query").substring(0, 255);
-    var orientation = interaction.options.getString("orientation");
-    if (!orientation) var orientation = "";
-    var size = interaction.options.getString("size");
-    if (!size) var size = "";
-    var color = interaction.options.getString("color");
-    if (!color) var color = "";
-    var locale = interaction.options.getString("locale");
-    if (!locale) var locale = "";
+    const orientation = interaction.options.getString("orientation") ? interaction.options.getString("orientation") : "";
+    const size = interaction.options.getString("size") ? interaction.options.getString("size") : "";
+    const color = interaction.options.getString("color") ? interaction.options.getString("color") : "";
+    const localeSearch = interaction.options.getString("locale") ? interaction.options.getString("locale") : "";
 
     const pexels = createClient(config.keys.pexels);
-    let array = [];
+    const array = [];
 
-    const button1 = new Discord.ButtonBuilder().setCustomId("previousbtn").setLabel("◀️").setStyle("Secondary");
+    const button0 = new ButtonBuilder().setCustomId("previousbtn").setLabel("◀️").setStyle("Secondary");
+    const button1 = new ButtonBuilder().setCustomId("nextbtn").setLabel("▶️").setStyle("Secondary");
 
-    const button2 = new Discord.ButtonBuilder().setCustomId("nextbtn").setLabel("▶️").setStyle("Secondary");
+    const buttonList = [button0, button1];
 
-    //create an array of buttons
-
-    buttonList = [button1, button2];
-
-    client.log(`Searching for ${query}`, "photo.js");
+    client.log(`Searching for ${query} (${interaction.user.tag})`, "photo.js");
     try {
         pexels.photos
             .search({
@@ -35,15 +36,15 @@ export default (client, interaction) => {
                 orientation: orientation,
                 size: size,
                 color: color,
-                locale: locale,
+                locale: localeSearch,
                 per_page: 80,
             })
             .then((result) => {
-                if (result.photos.length == 0) return interaction.reply("Es wurden keine Bilder gefunden.");
+                if (result.photos.length == 0) return interaction.reply({content: l10n.noImages[locale], ephemeral: true});
                 for (let i = 0; i < result.photos.length; i++) {
                     const photo = result.photos[i];
-                    const embed = new Discord.EmbedBuilder()
-                        .setTitle("Fotosuche: " + query)
+                    const embed = new EmbedBuilder()
+                        .setTitle(l10n.imageSearch[locale] + " " + query)
                         .setColor(photo.avg_color)
                         .setTimestamp()
                         .setAuthor({
@@ -56,7 +57,7 @@ export default (client, interaction) => {
                             iconURL: interaction.guild.iconURL(),
                         })
                         .setDescription(
-                            `[${photo.alt}](${photo.src.original}) von [${photo.photographer}](${photo.photographer_url}) auf [Pexels](https://www.pexels.com)`
+                            `${l10n.copyrightString[locale].replace("{photo}", `[${photo.alt}](${photo.src.original})`).replace("{author}", `[${photo.photographer}](${photo.photographer_url})`).replace("{source}", `[Pexels](https://www.pexels.com)`)}`
                         );
                     array.push(embed);
                 }
@@ -64,6 +65,6 @@ export default (client, interaction) => {
             });
     } catch (error) {
         client.error(error, "photo.js");
-        interaction.reply("Es ist ein Fehler aufgetreten. Tut mir Leid :(");
+        interaction.reply({content: l10n.error[locale], ephemeral: true});
     }
 };

@@ -3,9 +3,11 @@ import strings from "../localization.json" with {type: "json"};
 const localization = strings.slashCommands.status;
 
 export default {
+    adminOnly: true,
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("status")
+        .setContexts([0, 1])
         .setDescription(localization.description.en)
         .setDescriptionLocalizations({
             "de": localization.description.de,

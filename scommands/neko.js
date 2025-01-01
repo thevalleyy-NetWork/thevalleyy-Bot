@@ -22,16 +22,9 @@ export default {
                     {
                         name: localization.type.choices.Hug.en,
                         name_localizations: {
-                            "de": localization.type.choices.Hug.de, //TODO: this doesnt work
+                            "de": localization.type.choices.Hug.de,
                         },
                         value: "hug",
-                    },
-                    {
-                        name: localization.type.choices.Cry.en,
-                        name_localizations: {
-                            "de": localization.type.choices.Cry.de,
-                        },
-                        value: "cry",
                     },
                     {
                         name: localization.type.choices.Smug.en,
@@ -55,11 +48,11 @@ export default {
                         value: "pat",
                     },
                     {
-                        name: localization.type.choices.Laugh.en,
+                        name: localization.type.choices.Waifu.en,
                         name_localizations: {
-                            "de": localization.type.choices.Laugh.de,
+                            "de": localization.type.choices.Waifu.de,
                         },
-                        value: "laugh",
+                        value: "waifu",
                     },
                     {
                         name: localization.type.choices.Feed.en,

@@ -1,38 +1,26 @@
-const Discord = require("discord.js");
-const { EmbedBuilder, ButtonBuilder } = require("discord.js");
-const he = require("he");
+import { EmbedBuilder, ButtonBuilder } from "discord.js";
+import he from "he";
 
-const paginationEmbed = require("../../functions/pagination.js");
-const config = require("../../config.json");
+import paginationEmbed from "../../functions/pagination.js";
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.lego;
 
 const cooldownSet = new Set();
-
 const fullstar = "<:fullstar:977964060891054161>";
 const emptystar = "<:emptystar:977964082554630194>";
 
 const button1 = new ButtonBuilder().setCustomId("previousbtn").setLabel("◀️").setStyle("Secondary");
-
 const button2 = new ButtonBuilder().setCustomId("nextbtn").setLabel("▶️").setStyle("Secondary");
 
-buttonList = [button1, button2];
+const buttonList = [button1, button2];
 
-function cooldown(interaction) {
-    if (interaction.user.id == config.owner) return;
-    if (cooldownSet.has(interaction.user.id)) {
-        interaction.reply({
-            content: "⏳ Dieser Command kann nur alle 20 Sekunden verwendet werden. ⏳",
-            ephemeral: true,
-        });
-        return true;
-    }
-
-    cooldownSet.add(interaction.user.id);
-    setTimeout(() => {
-        cooldownSet.delete(interaction.user.id);
-    }, 20000);
-}
-
-export default async (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
     const fetch = (await import("node-fetch")).default;
@@ -40,25 +28,29 @@ export default async (client, interaction) => {
 
     if (client.brickset.userkey.status != "success")
         return interaction.reply({
-            content: "Der Lego Befehl ist wegen einem fehlerhaften API-Key gerade nicht verfügbar.",
+            content: l10n.notAvailable[locale],
             ephemeral: true,
         });
 
     if (interaction.options._subcommand == "set") {
-        if (cooldown(interaction)) return;
-
         fetch(
             `https://brickset.com/api/v3.asmx/getSets?apikey=${config.keys.brickset}&userHash=${userhash}&params={"query":"${interaction.options._hoistedOptions[0].value}"}`
         )
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    interaction.reply("Es gab einen Fehler:" + json.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
 
                 if (json.sets.length == 0) {
-                    interaction.reply("Es wurde kein passendes Set gefunden.");
+                    interaction.reply({
+                        content: l10n.noSet[locale],
+                        ephemeral: true,
+                    });
                     return;
                 }
 
@@ -66,12 +58,12 @@ export default async (client, interaction) => {
                 for (let i = 0; i < json.sets.length; i++) {
                     const set = json.sets[i];
                     const embed = new EmbedBuilder();
-                    embed.setColor(config.standard_color);
+                    embed.setColor(config.colors.default);
                     embed.setTitle(set.name);
                     embed.setImage(set.image.imageURL);
                     embed.addFields([
                         {
-                            name: "Setnummer:",
+                            name: `${l10n.setNumber[locale]}:`,
                             value: `\`${set.number}\``,
                             inline: true,
                         },
@@ -80,16 +72,16 @@ export default async (client, interaction) => {
                     if (set.released == true) {
                         embed.addFields([
                             {
-                                name: "Veröffentlicht:",
-                                value: `Ja: \`${set.year}\``,
+                                name: `${l10n.released[locale]}:`,
+                                value: `${l10n.yes[locale]}: \`${set.year}\``,
                                 inline: true,
                             },
                         ]);
                     } else {
                         embed.addFields([
                             {
-                                name: "Veröffentlicht:",
-                                value: `Nein, geplant: \`${set.year}\``,
+                                name: `${l10n.released[locale]}:`,
+                                value: `${l10n.no[locale]}, ${l10n.planned[locale]}: \`${set.year}\``,
                                 inline: true,
                             },
                         ]);
@@ -97,7 +89,7 @@ export default async (client, interaction) => {
                     if (set.LEGOCom.DE.dateFirstAvailable && set.LEGOCom.DE.dateLastAvailable) {
                         embed.addFields([
                             {
-                                name: "Verfügbar:",
+                                name: `${l10n.available[locale]}:`,
                                 value: `<t:${Math.round(new Date(set.LEGOCom.DE.dateFirstAvailable).getTime() / 1000)}:d> - <t:${Math.round(
                                     new Date(set.LEGOCom.DE.dateLastAvailable).getTime() / 1000
                                 )}:d> (${set.availability})`,
@@ -108,24 +100,26 @@ export default async (client, interaction) => {
                     if (set.minifigs) {
                         embed.addFields([
                             {
-                                name: "Stückanzahl:",
-                                value: `\`${set.pieces}\` ⊇ \`${set.minifigs}\` Minifiguren`,
+                                name: `${l10n.pieceCount[locale]}:`,
+                                value: `\`${set.pieces}\` ⊇ \`${set.minifigs}\` ${l10n.miniFigures[locale]}`,
                                 inline: true,
                             },
                         ]);
                     } else {
-                        embed.addFields([
-                            {
-                                name: "Stückanzahl:",
-                                value: `\`${set.pieces}\``,
-                                inline: true,
-                            },
-                        ]);
+                        if (set.pieces) {
+                            embed.addFields([
+                                {
+                                    name: `${l10n.pieceCount[locale]}:`,
+                                    value: `\`${set.pieces}\``,
+                                    inline: true,
+                                },
+                            ]);
+                        }
                     }
                     if (set.LEGOCom.DE.retailPrice) {
                         embed.addFields([
                             {
-                                name: "Preis (DE):",
+                                name: `${l10n.price[locale]}:`,
                                 value: `${set.LEGOCom.DE.retailPrice}€`,
                                 inline: true,
                             },
@@ -135,7 +129,7 @@ export default async (client, interaction) => {
                     } else {
                         embed.addFields([
                             {
-                                name: "Altersempfehlung:",
+                                name: `${l10n.ageRecommendation[locale]}:`,
                                 value: `\`${set.ageRange.min}\` - \`${set.ageRange.max}\``,
                                 inline: true,
                             },
@@ -144,7 +138,7 @@ export default async (client, interaction) => {
                     if (set.dimensions.weight) {
                         embed.addFields([
                             {
-                                name: "Dimensionen:",
+                                name: `${l10n.dimensions[locale]}:`,
                                 value: `\`${Math.round(set.dimensions.depth)}\`×\`${Math.round(set.dimensions.width)}\`×\`${Math.round(
                                     set.dimensions.height
                                 )}\` cm, \`${Math.round(set.dimensions.weight * 1000)}\` g (${set.packagingType})`,
@@ -155,7 +149,7 @@ export default async (client, interaction) => {
                         if (set.dimensions.depth) {
                             embed.addFields([
                                 {
-                                    name: "Dimensionen:",
+                                    name: `${l10n.dimensions[locale]}:`,
                                     value: `\`${Math.round(set.dimensions.depth)}\`×\`${Math.round(set.dimensions.width)}\`×\`${Math.round(
                                         set.dimensions.height
                                     )}\` cm (${set.packagingType})`,
@@ -167,7 +161,7 @@ export default async (client, interaction) => {
                     if (set.barcode.EAN && set.barcode.UPC) {
                         embed.addFields([
                             {
-                                name: "Barcodes:",
+                                name: `${l10n.barcode.plural[locale]}:`,
                                 value: `EAN: \`${set.barcode.EAN}\`, \nUPC: \`${set.barcode.UPC}\``,
                                 inline: true,
                             },
@@ -175,7 +169,7 @@ export default async (client, interaction) => {
                     } else if (set.barcode.EAN) {
                         embed.addFields([
                             {
-                                name: "Barcode:",
+                                name: `${l10n.barcode.singular[locale]}:`,
                                 value: `EAN: \`${set.barcode.EAN}\``,
                                 inline: true,
                             },
@@ -183,7 +177,7 @@ export default async (client, interaction) => {
                     } else if (set.barcode.UPC) {
                         embed.addFields([
                             {
-                                name: "Barcode:",
+                                name: `${l10n.barcode.singular[locale]}:`,
                                 value: `UPC: \`${set.barcode.UPC}\``,
                                 inline: true,
                             },
@@ -192,14 +186,14 @@ export default async (client, interaction) => {
                     if (set.rating)
                         embed.addFields([
                             {
-                                name: "Bewertung:",
+                                name: `${l10n.rating[locale]}:`,
                                 value: `${fullstar.repeat(Math.round(set.rating)) + emptystar.repeat(5 - Math.round(set.rating))}`,
                                 inline: true,
                             },
                         ]);
                     embed.addFields([
                         {
-                            name: "Zuletzt aktualisiert:",
+                            name: `${l10n.updated[locale]}:`,
                             value: `<t:${Math.round(new Date(set.lastUpdated).getTime() / 1000)}:R>`,
                             inline: true,
                         },
@@ -207,7 +201,7 @@ export default async (client, interaction) => {
                     if (set.subtheme) {
                         embed.addFields([
                             {
-                                name: "Theme:",
+                                name: `${l10n.theme[locale]}:`,
                                 value: `\`${set.themeGroup}\` ➝ \`${set.theme}\` ➝ \`${set.subtheme}\``,
                                 inline: false,
                             },
@@ -215,7 +209,7 @@ export default async (client, interaction) => {
                     } else if (set.theme) {
                         embed.addFields([
                             {
-                                name: "Theme:",
+                                name: `${l10n.theme[locale]}:`,
                                 value: `\`${set.themeGroup}\` ➝ \`${set.theme}\``,
                                 inline: false,
                             },
@@ -223,7 +217,7 @@ export default async (client, interaction) => {
                     } else {
                         embed.addFields([
                             {
-                                name: "Theme:",
+                                name: `${l10n.theme[locale]}:`,
                                 value: `\`${set.themeGroup}\``,
                                 inline: false,
                             },
@@ -232,7 +226,7 @@ export default async (client, interaction) => {
                     embed.addFields([
                         {
                             name: "​",
-                            value: `[Zu ${set.name} auf Brickset](${set.bricksetURL})`,
+                            value: `${l10n.link[locale].replace("{name}", set.name).replace("{url}", set.bricksetURL)}`,
                             inline: false,
                         },
                     ]);
@@ -246,46 +240,56 @@ export default async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "api") {
-        if (cooldown(interaction) == true) return;
-
         fetch(`https://brickset.com/api/v3.asmx/getKeyUsageStats?apikey=${config.keys.brickset}`)
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    interaction.reply("Es gab einen Fehler beim Abrufen der Daten.");
-                    console.log(json.status, json.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
 
                 let dataarray = json.apiKeyUsage.slice(0, 24);
 
-                const embed = new Discord.EmbedBuilder()
-                    .setColor(config.standard_color)
+                const embed = new EmbedBuilder()
+                    .setColor(config.colors.default)
                     .setAuthor({
                         name: "Brickset-API",
-                        iconURL: "https://brickset.com/favicon.ico",
+                        iconURL: "https://www.google.com/s2/favicons?sz=64&domain=brickset.com",
                         url: "https://brickset.com/",
                     })
-                    .setDescription("Abfragen über den API-Key der " + dataarray.length + " letzten bekannten Tagen")
                     .setTimestamp()
                     .setFooter({
                         text: interaction.guild.name,
                         iconURL: interaction.guild.iconURL(),
                     });
+
+                if (dataarray.length == 1) {
+                    embed.setDescription(l10n.api.description.singular[locale].replace("{n}", dataarray.length));
+                } else {
+                    embed.setDescription(l10n.api.description.plural[locale].replace("{n}", dataarray.length));
+                }
+
+                if (dataarray.length > 25) {
+                    dataarray = dataarray.slice(0, 24); // limit to 25 entries
+                }
+
                 dataarray.forEach((data) => {
                     if (data.count == 1) {
                         embed.addFields([
                             {
-                                name: `${new Date(data.dateStamp).toLocaleDateString().replaceAll(".", ". ")}:`,
-                                value: `\`\`${data.count}\`\` Request`,
+                                name: `${new Date(data.dateStamp).toLocaleDateString()}:`,
+                                value: `\`\`${data.count}\`\` ${l10n.api.request.singular[locale]}`,
                                 inline: true,
                             },
                         ]);
                     } else {
                         embed.addFields([
                             {
-                                name: `${new Date(data.dateStamp).toLocaleDateString().replaceAll(".", ". ")}:`,
-                                value: `\`\`${data.count}\`\` Requests`,
+                                name: `${new Date(data.dateStamp).toLocaleDateString()}:`,
+                                value: `\`\`${data.count}\`\` ${l10n.api.request.plural[locale]}`,
                                 inline: true,
                             },
                         ]);
@@ -294,7 +298,7 @@ export default async (client, interaction) => {
                 embed.addFields([
                     {
                         name: "​",
-                        value: "[Zu Brickset](https://brickset.com/)",
+                        value: `[${l10n.api.toBrickset[locale]}](https://brickset.com/)`,
                         inline: false,
                     },
                 ]);
@@ -304,27 +308,28 @@ export default async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "theme") {
-        if (cooldown(interaction) == true) return;
-
         fetch(`https://brickset.com/api/v3.asmx/getThemes?apikey=${config.keys.brickset}`)
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    interaction.reply("Es gab einen Fehler beim Abrufen der Daten.");
-                    console.log(json.status, json.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
+
                 if (interaction.options._hoistedOptions[0]) {
                     // search for specific theme
-                    let foundarr = [];
+                    const foundarr = [];
                     json.themes.forEach((theme) => {
                         if (
                             theme.theme.toLowerCase().replaceAll(" ", "") ==
                             interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")
                         ) {
                             foundarr.push("yes");
-                            const embed = new Discord.EmbedBuilder()
-                                .setColor(config.standard_color)
+                            const embed = new EmbedBuilder()
+                                .setColor(config.colors.default)
                                 .setTitle(theme.theme)
                                 .setTimestamp()
                                 .setFooter({
@@ -333,38 +338,41 @@ export default async (client, interaction) => {
                                 })
                                 .addFields([
                                     {
-                                        name: "Theme:",
+                                        name: `${l10n.theme[locale]}:`,
                                         value: `\`${theme.theme}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Sets zum Theme:",
+                                        name: `${l10n.setsToTheme[locale]}:`,
                                         value: `\`${theme.setCount}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Unterthemen:",
+                                        name: `${l10n.subThemes[locale]}:`,
                                         value: `\`${theme.subthemeCount}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Ersterscheinung:",
+                                        name: `${l10n.firstSet[locale]}:`,
                                         value: `\`${theme.yearFrom}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Letzterscheinung: ",
+                                        name: `${l10n.lastSet[locale]}:`,
                                         value: `\`${theme.yearTo}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "⌀ Sets pro Jahr:",
-                                        value: `\`${Math.round(theme.setCount / (theme.yearTo - theme.yearFrom + 1))}\``,
+                                        name: `${l10n.setsPerYear[locale]}:`,
+                                        value: `\`${Math.ceil(theme.setCount / (theme.yearTo - theme.yearFrom + 1))}\``,
                                         inline: true,
                                     },
                                     {
                                         name: "​",
-                                        value: `[Alle ${theme.theme}-Sets](https://brickset.com/sets/theme-${theme.theme.replaceAll(" ", "-")})`,
+                                        value: `[${l10n.allSets[locale].replace(
+                                            "{theme}",
+                                            theme.theme
+                                        )}](https://brickset.com/sets/theme-${theme.theme.replaceAll(" ", "-")})`,
                                         inline: false,
                                     },
                                 ]);
@@ -373,7 +381,10 @@ export default async (client, interaction) => {
                     });
 
                     if (foundarr.length == 0) {
-                        interaction.reply("Es wurde kein Theme gefunden.\nMit `/lego theme` bekommst du alle Themes angezeigt.");
+                        interaction.reply({
+                            content: l10n.noTheme[locale],
+                            ephemeral: true,
+                        });
                     }
                     return;
                 }
@@ -383,8 +394,8 @@ export default async (client, interaction) => {
                     dataarray.push(theme.theme);
                 });
 
-                const embed = new Discord.EmbedBuilder();
-                embed.setColor(config.standard_color).setTitle(`Alle ${json.matches} Lego Themes`).setTimestamp().setFooter({
+                const embed = new EmbedBuilder();
+                embed.setColor(config.colors.default).setTitle(l10n.allThemes[locale].replace("{n}", json.matches)).setTimestamp().setFooter({
                     text: interaction.guild.name,
                     iconURL: interaction.guild.iconURL(),
                 });
@@ -392,7 +403,7 @@ export default async (client, interaction) => {
                 embed.addFields([
                     {
                         name: "​",
-                        value: `Du möchtest mehr über ein einzelnes Theme wissen?\nMit \`/lego theme <Name>\` bekommst du mehr Informationen.`,
+                        value: l10n.moreAboutTheme[locale],
                         inline: false,
                     },
                 ]);
@@ -402,31 +413,35 @@ export default async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "subtheme") {
-        if (cooldown(interaction) == true) return;
-
         // is the given theme valid?
         fetch(`https://brickset.com/api/v3.asmx/getThemes?apikey=${config.keys.brickset}`)
             .then(async (response) => response.json())
             .then((json_) => {
                 if (json_.status == "error") {
-                    interaction.reply("Es gab einen Fehler beim Abrufen der Daten.");
-                    console.log(json_.status, json_.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json_?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
 
                 // is the given theme valid?
-                let foundarr = [];
+                const foundarr = [];
                 json_.themes.forEach((theme) => {
-                    if (theme.theme.toLowerCase().replaceAll(" ", "") == interaction.options._hoistedOptions[0].value.replaceAll(" ", "")) {
+                    if (
+                        theme.theme.toLowerCase().replaceAll(" ", "") ==
+                        interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")
+                    ) {
                         foundarr.push(theme);
                     }
                 });
 
                 // it wasn't found
                 if (foundarr.length == 0) {
-                    interaction.reply(
-                        "Es wurde kein Theme gefunden, zu dem Unterthemen angezeigt werden können.\nMit `/lego theme` bekommst du alle Themes angezeigt."
-                    );
+                    interaction.reply({
+                        content: l10n.noSubTheme[locale],
+                        ephemeral: true,
+                    });
                     return;
                 }
 
@@ -435,59 +450,62 @@ export default async (client, interaction) => {
                     .then(async (response) => response.json())
                     .then((json) => {
                         if (json.status == "error") {
-                            interaction.reply("Es gab einen Fehler beim Abrufen der Daten.");
-                            console.log(json.status, json.message);
+                            interaction.reply({
+                                content: l10n.error[locale].replace("{error}", json?.message),
+                                ephemeral: true,
+                            });
                             return;
                         }
 
                         // there are no subthemes
                         if (json.matches == 1 && json.subthemes[0].subtheme.toLowerCase() == "{none}") {
-                            interaction.reply(
-                                `Zu dem Theme \`${foundarr[0].theme}\` gibt es keine Unterthemen.\nFür mehr Informationen nutze \`/lego theme ${foundarr[0].theme}\`.`
-                            );
+                            interaction.reply({
+                                content: l10n.noSubThemeFound[locale].replaceAll("{theme}", foundarr[0].theme),
+                                ephemeral: true,
+                            });
                             return;
                         }
 
-                        dataarray = [];
+                        const dataarray = [];
                         for (let i = 0; i < json.matches; i++) {
                             const stheme = json.subthemes[i];
 
                             // define all embeds
-                            const embed = new Discord.EmbedBuilder().setColor(config.standard_color);
+                            const embed = new EmbedBuilder().setColor(config.colors.default);
                             if (stheme.subtheme.toLowerCase() == "{none}") {
-                                embed.setTitle(foundarr[0].theme + " - Oberthema");
+                                embed.setTitle(foundarr[0].theme + ` - ${l10n.mainTheme[locale]}`);
                                 embed.addFields([
                                     {
-                                        name: "Sets ohne Subtheme:",
+                                        name: `${l10n.setsWithoutSubtheme[locale]}:`,
                                         value: `\`${stheme.setCount} / ${foundarr[0].setCount}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Sets mit Subtheme:",
+                                        name: `${l10n.setsWithSubtheme[locale]}:`,
                                         value: `\`${foundarr[0].setCount - stheme.setCount} / ${foundarr[0].setCount}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Sets zum Theme " + foundarr[0].theme + ":",
+                                        name: `${l10n.setsToTheme[locale]} ${foundarr[0].theme}:`,
                                         value: `\`${foundarr[0].setCount}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Erstveröffentlichung:",
+                                        name: `${l10n.firstPublished[locale]}:`,
                                         value: `\`${foundarr[0].yearFrom}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Letztveröffentlichung:",
-                                        value: "Letztveröffentlichung:",
+                                        name: `${l10n.firstPublished[locale]}:`,
+                                        value: `\`${foundarr[0].yearTo}\``,
                                         inline: true,
                                     },
                                     {
                                         name: "​",
-                                        value: `[Alle ${foundarr[0].theme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(
-                                            " ",
-                                            "-"
-                                        )})`,
+                                        value: `[${l10n.allSets[locale].replace(
+                                            "{theme}",
+                                            foundarr[0].theme
+                                        )}](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")})`,
                                         inline: false,
                                     },
                                 ]);
@@ -495,33 +513,36 @@ export default async (client, interaction) => {
                                 embed.setTitle(foundarr[0].theme + " - " + stheme.subtheme);
                                 embed.addFields([
                                     {
-                                        name: "Name des Unterthemas:",
+                                        name: `${l10n.subtopicName[locale]}:`,
                                         value: `\`${stheme.subtheme}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Anzahl aller Sets:",
+                                        name: `${l10n.amountOfSets[locale]}:`,
                                         value: `\`${stheme.setCount}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "⌀ Sets pro Jahr:",
-                                        value: `\`${Math.round(stheme.setCount / (stheme.yearTo - stheme.yearFrom + 1))}\``,
+                                        name: `${l10n.setsPerYear[locale]}:`,
+                                        value: `\`${Math.ceil(stheme.setCount / (stheme.yearTo - stheme.yearFrom + 1))}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Erstveröffentlichung:",
+                                        name: `${l10n.firstPublished[locale]}:`,
                                         value: `\`${stheme.yearFrom}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Letztveröffentlichung:",
+                                        name: `${l10n.lastPublished[locale]}:`,
                                         value: `\`${stheme.yearTo}\``,
                                         inline: true,
                                     },
                                     {
                                         name: "​",
-                                        value: `[Alle ${stheme.subtheme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(
+                                        value: `[${l10n.allSets[locale].replace(
+                                            "{theme}",
+                                            stheme.subtheme
+                                        )}](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(
                                             " ",
                                             "-"
                                         )}/subtheme-${stheme.subtheme.replaceAll(" ", "-")})`,
@@ -533,7 +554,7 @@ export default async (client, interaction) => {
                         }
 
                         // Call the paginationEmbed method, first three arguments are required
-                        // timeout is the time till the reaction collectors are active, after this you can't change pages (in ms), defaults to 120000
+                        // timeout is the time the reaction collectors are active, after this you can't change pages (in ms), defaults to 120000
                         paginationEmbed(interaction, dataarray, buttonList, 120000);
                     });
             });
@@ -541,78 +562,83 @@ export default async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "year") {
-        if (cooldown(interaction) == true) return;
-
         // is the given theme valid?
         fetch(`https://brickset.com/api/v3.asmx/getThemes?apikey=${config.keys.brickset}`)
             .then(async (response) => response.json())
             .then((json_) => {
                 if (json_.status == "error") {
-                    interaction.reply("Es gab einen Fehler beim Abrufen der Daten.");
-                    console.log(json_.status, json_.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json_?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
 
                 // is the given theme valid?
-                let foundarr = [];
+                const foundarr = [];
                 json_.themes.forEach((theme) => {
-                    if (theme.theme.toLowerCase().replaceAll(" ", "") == interaction.options._hoistedOptions[0].value.replaceAll(" ", "")) {
+                    if (
+                        theme.theme.toLowerCase().replaceAll(" ", "") ==
+                        interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")
+                    ) {
                         foundarr.push(theme);
                     }
                 });
 
                 // it wasn't found
                 if (foundarr.length == 0) {
-                    interaction.reply(
-                        "Es wurde kein Theme gefunden, zu dem Infos angezeigt werden können.\nMit `" +
-                            message.content.split(" ")[0] +
-                            " Themes` bekommst du alle Themes angezeigt."
-                    );
+                    interaction.reply(l10n.noThemeFound[locale]);
                     return;
                 }
 
                 fetch(`https://brickset.com/api/v3.asmx/getYears?apikey=${config.keys.brickset}&Theme=${foundarr[0].theme}`)
                     .then(async (response) => response.json())
                     .then((json) => {
-                        // ERRORCATCHING?
+                        if (json_.status == "error") {
+                            interaction.reply({
+                                content: l10n.error[locale].replace("{error}", json_?.message),
+                                ephemeral: true,
+                            });
+                            return;
+                        }
 
                         const embedarray = [];
 
-                        const embed = new Discord.EmbedBuilder()
-                            .setColor(config.standard_color)
-                            .setTitle("Quick Facts")
+                        const embed = new EmbedBuilder()
+                            .setColor(config.colors.default)
+                            .setTitle(l10n.quickFacts[locale])
                             .addFields([
                                 {
-                                    name: "Theme:",
+                                    name: `${l10n.theme[locale]}:`,
                                     value: `\`${foundarr[0].theme}\``,
                                     inline: true,
                                 },
                                 {
-                                    name: "Sets:",
+                                    name: `${l10n.sets[locale]}:`,
                                     value: `\`${foundarr[0].setCount}\``,
                                     inline: true,
                                 },
                                 {
-                                    name: "⌀ Sets pro Jahr:",
-                                    value: `\`${Math.round(foundarr[0].setCount / json.matches)}\``,
+                                    name: `${l10n.setsPerYear[locale]}:`,
+                                    value: `\`${Math.ceil(foundarr[0].setCount / json.matches)}\``,
                                     inline: true,
                                 },
                                 {
-                                    name: "Erstveröffentlichung:",
+                                    name: `${l10n.firstPublished[locale]}:`,
                                     value: `\`${foundarr[0].yearFrom}\``,
                                     inline: true,
                                 },
                                 {
-                                    name: "Letztveröffentlichung:",
+                                    name: `${l10n.lastPublished[locale]}:`,
                                     value: `\`${foundarr[0].yearTo}\``,
                                     inline: true,
                                 },
                                 {
                                     name: "​",
-                                    value: `[Alle ${foundarr[0].theme}-Sets](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(
-                                        " ",
-                                        "-"
-                                    )})`,
+                                    value: `[${l10n.allSets[locale].replace(
+                                        "{theme}",
+                                        foundarr[0].theme
+                                    )}](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")})`,
                                     inline: false,
                                 },
                             ]);
@@ -620,28 +646,28 @@ export default async (client, interaction) => {
                         embedarray.push(embed);
 
                         json.years.forEach((yr) => {
-                            const embed = new Discord.EmbedBuilder()
-                                .setColor(config.standard_color)
+                            const embed = new EmbedBuilder()
+                                .setColor(config.colors.default)
                                 .setTitle(`${foundarr[0].theme} - ${yr.year}`)
                                 .addFields([
                                     {
-                                        name: "Sets:",
+                                        name: `${l10n.sets[locale]}:`,
                                         value: `\`${yr.setCount}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Theme:",
+                                        name: `${l10n.theme[locale]}:`,
                                         value: `\`${foundarr[0].theme}\``,
                                         inline: true,
                                     },
                                     {
-                                        name: "Jahr:",
+                                        name: `${l10n.year[locale]}:`,
                                         value: `\`${yr.year}\``,
                                         inline: true,
                                     },
                                     {
                                         name: "​",
-                                        value: `[Alle ${foundarr[0].theme}-Sets (${
+                                        value: `[${l10n.allSets[locale].replace("{theme}", foundarr[0].theme)} (${
                                             yr.year
                                         })](https://brickset.com/sets/theme-${foundarr[0].theme.replaceAll(" ", "-")}/year-${yr.year})`,
                                         inline: false,
@@ -657,33 +683,49 @@ export default async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "review") {
-        if (cooldown(interaction) == true) return;
-
         fetch(
             `https://brickset.com/api/v3.asmx/getSets?apikey=${config.keys.brickset}&userHash=${userhash}&params={"query":"${interaction.options._hoistedOptions[0].value}"}`
         )
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    interaction.reply("Es gab einen Fehler:" + json.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
-                if (json.sets.length == 0) return interaction.reply("Es wurde kein Set gefunden.");
-                if (json.sets.length > 1) return interaction.reply("Es kommen mehrere Sets in Frage. Bitte gib eine konkrete Setnummer an.");
+
+                if (json.sets.length == 0) return interaction.reply(l10n.noSet[locale]);
+                // if (json.sets.length > 1) // TODO: Auswahlmenü für die Sets
+
+                const setName = json.sets[0].name;
 
                 fetch(`https://brickset.com/api/v3.asmx/getReviews?apikey=${config.keys.brickset}&setID=${json.sets[0].setID}`)
                     .then(async (response) => response.json())
                     .then((json) => {
                         if (json.status == "error") {
-                            interaction.reply("Es gab einen Fehler:" + json.message);
+                            interaction.reply({
+                                content: l10n.error[locale].replace("{error}", json?.message),
+                                ephemeral: true,
+                            });
+                            return;
+                        }
+
+                        if (json.reviews.length == 0) {
+                            interaction.reply({
+                                content: l10n.noReviews[locale].replace("{setName}", setName),
+                                ephemeral: true,
+                            });
+                            return;
                         }
 
                         const revlist = [];
                         for (let i = 0; i < json.reviews.length; i++) {
                             const rev = json.reviews[i];
 
-                            const embed = new Discord.EmbedBuilder()
-                                .setColor(config.standard_color)
+                            const embed = new EmbedBuilder()
+                                .setColor(config.colors.default)
                                 .setTitle(rev.title)
                                 .setAuthor({ name: rev.author })
                                 .setTimestamp(new Date(rev.datePosted).getTime());
@@ -702,23 +744,23 @@ export default async (client, interaction) => {
                             embed.addFields([
                                 {
                                     name: "​",
-                                    value: "**Bewertungen**:",
+                                    value: `**${l10n.ratings[locale]}**:`,
                                     inline: false,
                                 },
                                 {
-                                    name: "Generell:",
+                                    name: `**${l10n.overall[locale]}**:`,
                                     value: `${
                                         fullstar.repeat(Math.round(rev.rating.overall)) + emptystar.repeat(5 - Math.round(rev.rating.overall))
                                     }`,
                                     inline: false,
                                 },
                                 {
-                                    name: "Teile:",
+                                    name: `${l10n.pieces[locale]}:`,
                                     value: `${fullstar.repeat(Math.round(rev.rating.parts)) + emptystar.repeat(5 - Math.round(rev.rating.parts))}`,
                                     inline: true,
                                 },
                                 {
-                                    name: "Bauerlebnis:",
+                                    name: `${l10n.buildingExperience[locale]}:`,
                                     value: `${
                                         fullstar.repeat(Math.round(rev.rating.buildingExperience)) +
                                         emptystar.repeat(5 - Math.round(rev.rating.buildingExperience))
@@ -726,14 +768,14 @@ export default async (client, interaction) => {
                                     inline: true,
                                 },
                                 {
-                                    name: "Spielerlebnis:",
+                                    name: `${l10n.playingExperience[locale]}:`,
                                     value: `${
                                         fullstar.repeat(Math.round(rev.rating.playability)) + emptystar.repeat(5 - Math.round(rev.rating.playability))
                                     }`,
                                     inline: true,
                                 },
                                 {
-                                    name: "Preiswertigkeit:",
+                                    name: `${l10n.valueForMoney[locale]}:`,
                                     value: `${
                                         fullstar.repeat(Math.round(rev.rating.valueForMoney)) +
                                         emptystar.repeat(5 - Math.round(rev.rating.valueForMoney))
@@ -745,7 +787,7 @@ export default async (client, interaction) => {
                             revlist.push(embed);
                         }
 
-                        paginationEmbed(interaction, revlist, buttonList, 120000);
+                        paginationEmbed(interaction, revlist, buttonList, 300000);
                     });
             });
 
@@ -753,21 +795,24 @@ export default async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "instructions") {
-        if (cooldown(interaction) == true) return;
-
         fetch(
             `https://brickset.com/api/v3.asmx/getInstructions2?apikey=${config.keys.brickset}&setNumber=${interaction.options._hoistedOptions[0].value}`
         )
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    interaction.reply("Es gab einen Fehler beim Abrufen der Daten.");
-                    console.log(json.status, json.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
 
                 if (json.instructions.length == 0) {
-                    interaction.reply("Es wurde keine Anleitung gefunden.");
+                    interaction.reply({
+                        content: l10n.noInstruction[locale],
+                        ephemeral: true,
+                    });
                     return;
                 }
 
@@ -775,14 +820,14 @@ export default async (client, interaction) => {
                 for (let i = 0; i < json.instructions.length; i++) {
                     const inst = json.instructions[i];
 
-                    const embed = new Discord.EmbedBuilder()
-                        .setColor(config.standard_color)
-                        .setTitle(`Anleitung ${i + 1}`)
+                    const embed = new EmbedBuilder()
+                        .setColor(config.colors.default)
+                        .setTitle(`${l10n.instruction[locale]} ${i + 1}`)
                         .setDescription(inst.description)
                         .addFields([
                             {
                                 name: "​",
-                                value: `[Zu diesser Anleitung](${encodeURI(inst.URL)})`,
+                                value: `[${l10n.toInstruction[locale]}](${encodeURI(inst.URL)})`,
                                 inline: false,
                             },
                         ])
@@ -797,37 +842,54 @@ export default async (client, interaction) => {
     }
 
     if (interaction.options._subcommand == "images") {
-        if (cooldown(interaction) == true) return;
-
         fetch(
             `https://brickset.com/api/v3.asmx/getSets?apikey=${config.keys.brickset}&userHash=${userhash}&params={"query":"${interaction.options._hoistedOptions[0].value}"}`
         )
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {
-                    interaction.reply("Es gab einen Fehler:" + json.message);
+                    interaction.reply({
+                        content: l10n.error[locale].replace("{error}", json?.message),
+                        ephemeral: true,
+                    });
                     return;
                 }
-                if (json.sets.length == 0) return interaction.reply("Es wurde kein Set gefunden.");
-                if (json.sets.length > 1) return interaction.reply("Es kommen mehrere Sets in Frage. Bitte gib eine konkrete Setnummer an.");
-                const setname = json.sets[0].name;
+
+                if (json.sets.length == 0)
+                    return interaction.reply({
+                        content: l10n.noSet[locale],
+                        ephemeral: true,
+                    });
+                // if (json.sets.length > 1) return interaction.reply("Es kommen mehrere Sets in Frage. Bitte gib eine konkrete Setnummer an.");
+                // TODO: Auswahlmenü für die Sets
+
+                const setName = json.sets[0].name;
 
                 fetch(`https://brickset.com/api/v3.asmx/getAdditionalImages?apikey=${config.keys.brickset}&setID=${json.sets[0].setID}`)
                     .then(async (response) => response.json())
                     .then((json) => {
                         if (json.status == "error") {
-                            interaction.reply("Es gab einen Fehler:" + json.message);
+                            interaction.reply({
+                                content: l10n.error[locale].replace("{error}", json?.message),
+                                ephemeral: true,
+                            });
+                            return;
                         }
 
-                        if (json.additionalImages.length == 0) return interaction.reply("Es wurden keine Bilder für `" + setname + "` gefunden.");
+                        if (json.additionalImages.length == 0)
+                            return interaction.reply({
+                                content: l10n.noImages[locale].replace("{setName}", setName),
+                                ephemeral: true,
+                            });
+
                         const imglist = [];
                         for (let i = 0; i < json.additionalImages.length; i++) {
                             const img = json.additionalImages[i];
 
-                            const embed = new Discord.EmbedBuilder()
-                                .setColor(config.standard_color)
+                            const embed = new EmbedBuilder()
+                                .setColor(config.colors.default)
                                 .setTimestamp()
-                                .setTitle(`${setname} - Bild ${i + 1}`);
+                                .setTitle(`${setName} - ${l10n.image[locale]} ${i + 1}`);
                             if (img.imageURL) {
                                 embed.setImage(img.imageURL);
                             } else if (img.thumbnailURL) {

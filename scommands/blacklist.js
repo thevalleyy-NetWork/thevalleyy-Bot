@@ -3,9 +3,11 @@ import strings from "../localization.json" with {type: "json"};
 const localization = strings.slashCommands.blacklist;
 
 export default {
+    adminOnly: true,
     data: new SlashCommandBuilder()
         .setName("blacklist")
         .setDescription(localization.description.en)
+        .setContexts([0, 1])
         .setDescriptionLocalizations({
             "de": localization.description.de,
         }) //TODO: admin only

@@ -36,24 +36,6 @@
                 "en": "The user whose avatar you want to see"
             }
         },
-        "ban": {
-            "description": {
-                "de": "Bannt einen User",
-                "en": "Bans a user"
-            },
-            "user": {
-                "de": "Der User, den du bannen möchtest",
-                "en": "The user you want to ban"
-            },
-            "reason": {
-                "de": "Der Grund für den Ban",
-                "en": "The reason for the ban"
-            },
-            "dmdays": {
-                "de": "Nachrichten des Nutzers löschen? (7 Tage)",
-                "en": "Delete user's messages? (7 days)"
-            }
-        },
         "bettereval": {
             "description": {
                 "de": "Führt Shell-Befehle aus",
@@ -112,16 +94,6 @@
                 "en": "Closes a ticket"
             }
         },
-        "db": {
-            "description": {
-                "de": "Führt eine Datenbankabfrage aus",
-                "en": "Executes a database query"
-            },
-            "query": {
-                "de": "Die Abfrage, die du ausführen möchtest",
-                "en": "The query you want to execute"
-            }
-        },
         "dm": {
             "description": {
                 "de": "Sendet eine Nachricht an einen User",
@@ -149,6 +121,10 @@
                 "amount": {
                     "de": "Die Anzahl der Fehlermeldungen, die du sehen möchtest",
                     "en": "The number of error messages you want to see"
+                },
+                "id": {
+                    "de": "Die ID der Fehlermeldung, die du sehen möchtest",
+                    "en": "The ID of the error message you want to see"
                 }
             },
             "insert": {
@@ -327,6 +303,10 @@
                 "amount": {
                     "de": "Die Anzahl der Logeinträge, die du sehen möchtest",
                     "en": "The number of log entries you want to see"
+                },
+                "id": {
+                    "de": "Die ID des Logeintrags, den du sehen möchtest",
+                    "en": "The ID of the log entry you want to see"
                 }
             },
             "insert": {
@@ -479,25 +459,21 @@
                         "de": "Umarmung",
                         "en": "Hug"
                     },
-                    "Cry": {
-                        "de": "Weinen",
-                        "en": "Cry"
-                    },
                     "Smug": {
                         "de": "Angeberisch",
                         "en": "Smug"
                     },
                     "Slap": {
-                        "de": "Ohrfeigen",
+                        "de": "Hauen",
                         "en": "Slap"
                     },
                     "Pat": {
                         "de": "Streicheln",
                         "en": "Pat"
                     },
-                    "Laugh": {
-                        "de": "Lachen",
-                        "en": "Laugh"
+                    "Waifu": {
+                        "de": "Waifu",
+                        "en": "Waifu"
                     },
                     "Feed": {
                         "de": "Füttern",
@@ -677,6 +653,10 @@
                 "de": "Zeigt die ersten n Stellen von Pi",
                 "en": "Shows the first n digits of Pi"
             },
+            "start": {
+                "de": "Die Startstelle",
+                "en": "The starting position"
+            },
             "digits": {
                 "de": "Die Anzahl der Stellen, die du sehen möchtest",
                 "en": "The number of digits you want to see"
@@ -722,6 +702,10 @@
             "description": {
                 "de": "Rasus! 😳",
                 "en": "Rasus! 😳"
+            },
+            "user": {
+                "de": "Der User, den du rasusen möchtest",
+                "en": "The user to rasus"
             }
         },
         "restart": {
@@ -816,20 +800,20 @@
                 },
                 "choices": {
                     "Playing": {
-                        "de": "Spielt",
+                        "de": "Spielt xxx",
                         "en": "Playing"
                     },
                     "Listening": {
-                        "de": "Hört",
-                        "en": "Listening"
+                        "de": "Hört xxx zu",
+                        "en": "Listening to xxx"
                     },
                     "Watching": {
-                        "de": "Schaut",
+                        "de": "Schaut xxx",
                         "en": "Watching"
                     },
                     "Competing": {
-                        "de": "Nimmt teil an",
-                        "en": "Competing"
+                        "de": "Tritt an in xxx",
+                        "en": "Competing in xxx"
                     }
                 }
             }
@@ -848,6 +832,10 @@
             "text": {
                 "de": "Der Text, den der Bot senden soll",
                 "en": "The text the bot should send"
+            },
+            "channel": {
+                "de": "Der Kanal, in dem der Bot den Text senden soll",
+                "en": "The channel in which the bot should send the text"
             }
         },
         "tp": {
@@ -878,6 +866,1511 @@
             "user": {
                 "de": "Der User, über den du Informationen sehen möchtest",
                 "en": "The user you want to see information about"
+            }
+        }
+    },
+    "content": {
+        "add": {
+            "nan": {
+                "de": "Das Ergebnis ist keine Zahl!",
+                "en": "The result is not a number!"
+            },
+            "sum": {
+                "de": "Die Summe ist: `{sum}`",
+                "en": "The sum is: `{sum}`"
+            }
+        },
+        "adminbewerbung": {
+            "embed": {
+                "title": {
+                    "de": "Adminbewerbung",
+                    "en": "Admin application"
+                },
+                "description": {
+                    "de": "Bitte sende [hier]({link}) deine Bewerbung ein und wir werden sie schnellstmöglich bearbeiten.",
+                    "en": "Please submit your application [here]({link}) and we will process it as soon as possible."
+                }
+            }
+        },
+        "allsky": {
+            "embed": {
+                "title": {
+                    "de": "Allsky",
+                    "en": "Allsky"
+                },
+                "fields": {
+                    "location": {
+                        "name": {
+                            "de": "Standort:",
+                            "en": "Location:"
+                        },
+                        "value": {
+                            "de": "Sonneberg, Thüringen",
+                            "en": "Sonneberg, Thuringia"
+                        }
+                    },
+                    "source": {
+                        "name": {
+                            "de": "Bilder von:",
+                            "en": "Images from:"
+                        },
+                        "value": {
+                            "de": "[AllSky7.net](https://allsky7.net/)",
+                            "en": "[AllSky7.net](https://allsky7.net/)"
+                        }
+                    }
+                }
+            },
+            "preventOthers": {
+                "de": "Nur `{user}` kann diesen Button verwenden!",
+                "en": "Only `{user}` can use this button!"
+            },
+            "editEmbed": {
+                "title": {
+                    "de": "Allsky X={x} Y={y}",
+                    "en": "Allsky X={x} Y={y}"
+                }
+            }
+        },
+        "avatar": {
+            "error": {
+                "de": "Es gab einen Fehler beim Abrufen des Avatars.",
+                "en": "There was an error while fetching the avatar."
+            }
+        },
+        "bettereval": {
+            "exitCode": {
+                "de": "Beendet mit Code",
+                "en": "Exited with code"
+            }
+        },
+        "blacklist": {
+            "noEntries": {
+                "de": "Es sind keine Nutzer auf der Blacklist.",
+                "en": "There are no users on the blacklist."
+            },
+            "embed": {
+                "title": {
+                    "de": "Blacklist",
+                    "en": "Blacklist"
+                }
+            },
+            "error": {
+                "de": "Es ist ein Fehler aufgetreten.",
+                "en": "An error occurred."
+            },
+            "removed": {
+                "de": "{user} wurde durch {executor} von der Blacklist entfernt.",
+                "en": "{user} was removed from the blacklist by {executor}."
+            },
+            "replyRemoved": {
+                "de": "{user} wurde von der Blacklist entfernt.",
+                "en": "{user} was removed from the blacklist."
+            },
+            "added": {
+                "de": "{user} wurde durch {executor} zur Blacklist hinzugefügt.",
+                "en": "{user} was added to the blacklist by {executor}."
+            },
+            "replyAdded": {
+                "de": "{user} wurde zur Blacklist hinzugefügt.",
+                "en": "{user} was added to the blacklist."
+            },
+            "notAllowed": {
+                "de": "{user} kann nicht zur Blacklist hinzugefügt werden.",
+                "en": "{user} cannot be added to the blacklist."
+            }
+        },
+        "caesar": {},
+        "close": {},
+        "clear": {
+            "wrongAmount": {
+                "de": "Bitte gib eine Zahl von 1 - 100 an.",
+                "en": "Please specify a number from 1 - 100."
+            },
+            "modLog": {
+                "singular": {
+                    "de": "{user} hat {amount} Nachricht in {channel} gelöscht.",
+                    "en": "{user} deleted {amount} message in {channel}."
+                },
+                "plural": {
+                    "de": "{user} hat {amount} Nachrichten in {channel} gelöscht.",
+                    "en": "{user} deleted {amount} messages in {channel}."
+                }
+            },
+            "error": {
+                "singular": {
+                    "de": "Die Nachricht konnte nicht gelöscht werden.",
+                    "en": "The message could not be deleted."
+                },
+                "plural": {
+                    "de": "Die Nachrichten konnten nicht gelöscht werden.",
+                    "en": "The messages could not be deleted."
+                }
+            },
+            "done": {
+                "singular": {
+                    "de": "{amount} Nachricht wurde gelöscht.",
+                    "en": "{amount} message was deleted."
+                },
+                "plural": {
+                    "de": "{amount} Nachrichten wurden gelöscht.",
+                    "en": "{amount} messages were deleted."
+                }
+            }
+        },
+        "dm": {
+            "notAvailable": {
+                "de": "{user} ist nicht auf diesem Server!",
+                "en": "{user} is not on this server!"
+            },
+            "notAllowed": {
+                "de": "DMs an {user} sind nicht erlaubt.",
+                "en": "DMs to {user} are not allowed."
+            },
+            "success": {
+                "de": "Nachricht an {user} gesendet.",
+                "en": "Message sent to {user}."
+            },
+            "modLog": {
+                "de": "{executor} hat eine Nachricht an {user} gesendet.",
+                "en": "{executor} sent a message to {user}."
+            },
+            "error": {
+                "de": "Die Nachricht konnte nicht an {user} gesendet werden.",
+                "en": "The message could not be sent to {user}."
+            }
+        },
+        "error": {
+            "illegalNumber": {
+                "de": "Die Anzahl muss zwischen {min} und {max} liegen!",
+                "en": "The amount must be between {min} and {max}!"
+            },
+            "noError": {
+                "de": "Es gibt keine Fehlermeldung mit der ID `{id}`.",
+                "en": "There is no error message with the ID `{id}`."
+            },
+            "noErrors": {
+                "de": "Es gibt noch keine Fehlermeldungen. Yay!",
+                "en": "There are no error messages yet. Yay!"
+            },
+            "error": {
+                "de": "Fehler",
+                "en": "Error"
+            },
+            "id": {
+                "de": "ID",
+                "en": "ID"
+            },
+            "origin": {
+                "de": "Ursprung",
+                "en": "Origin"
+            },
+            "timestamp": {
+                "de": "Zeitstempel",
+                "en": "Timestamp"
+            },
+            "errorWhileFetching": {
+                "de": "Es gab einen Fehler beim Abrufen der Fehlermeldungen.",
+                "en": "There was an error while fetching the error messages."
+            },
+            "insert": {
+                "de": "Fehlermeldung hinzugefügt.",
+                "en": "Error message added."
+            }
+        },
+        "eval": {
+            "tokenInRequest": {
+                "de": "<a:NEE:877248754632249424>",
+                "en": "<a:NEE:877248754632249424>"
+            },
+            "tokenInOutput": {
+                "de": "<a:NEE:877248754632249424>",
+                "en": "<a:NEE:877248754632249424>"
+            },
+            "embed": {
+                "title": {
+                    "de": "Eval",
+                    "en": "Eval"
+                }
+            }
+        },
+        "games": {
+            "soon": {
+                "de": "Soon:tm:",
+                "en": "Soon:tm:"
+            }
+        },
+        "hackerman": {
+            "done": {
+                "de": "Fertig!",
+                "en": "Done!"
+            }
+        },
+        "help": {
+            "baseEmbed": {
+                "title": {
+                    "de": "Hilfemenü",
+                    "en": "Help menu"
+                },
+                "fields": {
+                    "about": {
+                        "name": {
+                            "de": "Über mich",
+                            "en": "About me"
+                        },
+                        "value": {
+                            "de": "Hey! <:Okayge:840151989995438120> \nFür Hilfe zu den Commands kannst du gerne </help command:1320738378156867642> verwenden. \nUm Fehler zu melden, kannst du mir eine DM schreiben. \nFür mehr Infos zu mir kann ich dir </ping:1320738378286895123> empfehlen. \nViel Spaß!",
+                            "en": "Hey! <:Okayge:840151989995438120> \nFor help with the commands, feel free to use </help command:1320738378156867642>. \nTo report bugs, you can DM me. \nFor more information about me, use </ping:1320738378286895123>. \nHave fun!"
+                        }
+                    },
+                    "supporters": {
+                        "name": {
+                            "de": "​",
+                            "en": "​"
+                        },
+                        "value": {
+                            "de": "**Mitgeholfen bei der Programmierung und Umsetzung dieses Bots haben:**",
+                            "en": "**Helped with the programming and implementation of this bot:**"
+                        }
+                    },
+                    "tomato": {
+                        "name": {
+                            "de": "🍅 TomatoCake",
+                            "en": "🍅 TomatoCake"
+                        },
+                        "value": {
+                            "de": "Danke für die Unterstützung <:PeppoHuck:845379741019668481>. Hab dich lieb <3",
+                            "en": "Thanks for the support <:PeppoHuck:845379741019668481>. Love you <3"
+                        }
+                    },
+                    "chaoshosting": {
+                        "name": {
+                            "de": "🖥️ Chaoshosting",
+                            "en": "🖥️ Chaoshosting"
+                        },
+                        "value": {
+                            "de": "Danke für die Bereitstellung des Servers",
+                            "en": "Thanks for providing the server"
+                        }
+                    },
+                    "everybody": {
+                        "name": {
+                            "de": "👥 Alle anderen",
+                            "en": "👥 Everyone else"
+                        },
+                        "value": {
+                            "de": "Danke an alle anderen, die mir bei der Entwicklung dieses Bots geholfen haben. \nIch hoffe, dass ihr euch auch so viel Spaß mit diesem Bot habt, wie ich ihn habe.",
+                            "en": "Thanks to everyone else who helped me develop this bot. \nI hope you have as much fun with this bot as I do."
+                        }
+                    }
+                }
+            },
+            "commands": {
+                "notFound": {
+                    "de": "Dieser Befehl wurde nicht gefunden.",
+                    "en": "This command was not found."
+                },
+                "description": {
+                    "de": "Beschreibung",
+                    "en": "Description"
+                },
+                "none": {
+                    "de": "Keine",
+                    "en": "None"
+                },
+                "permissions": {
+                    "de": "Berechtigungen",
+                    "en": "Permissions"
+                },
+                "time": {
+                    "hour": {
+                        "plural": {
+                            "de": "Stunden",
+                            "en": "hours"
+                        },
+                        "singular": {
+                            "de": "eine Stunde",
+                            "en": "an hour"
+                        }
+                    },
+                    "minute": {
+                        "plural": {
+                            "de": "Minuten",
+                            "en": "minutes"
+                        },
+                        "singular": {
+                            "de": "eine Minute",
+                            "en": "a minute"
+                        }
+                    },
+                    "second": {
+                        "plural": {
+                            "de": "Sekunden",
+                            "en": "seconds"
+                        },
+                        "singular": {
+                            "de": "eine Sekunde",
+                            "en": "a second"
+                        }
+                    }
+                },
+                "cooldown": {
+                    "de": "Cooldown",
+                    "en": "Cooldown"
+                },
+                "DMPermission": {
+                    "de": "DM-Berechtigung",
+                    "en": "DM permission"
+                },
+                "yes": {
+                    "de": "<:checkmarkEmbed:1005146896278503597>",
+                    "en": "<:checkmarkEmbed:1005146896278503597>"
+                },
+                "yesEmote": {
+                    "de": "✅",
+                    "en": "✅"
+                },
+                "noEmote": {
+                    "de": "❌",
+                    "en": "❌"
+                },
+                "no": {
+                    "de": "<:crossEmbed:1005146898451140749>",
+                    "en": "<:crossEmbed:1005146898451140749>"
+                },
+                "filesizeCode": {
+                    "de": "Dateigröße (Code)",
+                    "en": "File size (code)"
+                },
+                "notAvailable": {
+                    "de": "n/a",
+                    "en": "n/a"
+                },
+                "bytes": {
+                    "de": "Bytes",
+                    "en": "bytes"
+                },
+                "filesizeBuilder": {
+                    "de": "Dateigröße (Builder)",
+                    "en": "File size (builder)"
+                },
+                "type": {
+                    "de": "Typ",
+                    "en": "Type"
+                },
+                "optionTypes": {
+                    "1": {
+                        "de": "Subcommand",
+                        "en": "Subcommand"
+                    },
+                    "2": {
+                        "de": "SubcommandGroup",
+                        "en": "SubcommandGroup"
+                    },
+                    "3": {
+                        "de": "Zeichenfolge",
+                        "en": "String"
+                    },
+                    "4": {
+                        "de": "Ganze Zahl",
+                        "en": "Integer"
+                    },
+                    "5": {
+                        "de": "Boolean",
+                        "en": "Boolean"
+                    },
+                    "6": {
+                        "de": "Benutzer",
+                        "en": "User"
+                    },
+                    "7": {
+                        "de": "Kanal",
+                        "en": "Channel"
+                    },
+                    "8": {
+                        "de": "Rolle",
+                        "en": "Role"
+                    },
+                    "9": {
+                        "de": "Rolle oder Benutzer",
+                        "en": "Role or User"
+                    },
+                    "10": {
+                        "de": "Zahl",
+                        "en": "Number"
+                    },
+                    "11": {
+                        "de": "Anhang",
+                        "en": "Attachment"
+                    }
+                },
+                "required": {
+                    "de": "Erforderlich",
+                    "en": "Required"
+                },
+                "choices": {
+                    "de": "Auswahlmöglichkeiten",
+                    "en": "Choices"
+                },
+                "autocomplete": {
+                    "de": "Autocomplete",
+                    "en": "Autocomplete"
+                },
+                "arguments": {
+                    "singular": {
+                        "de": "Argument",
+                        "en": "Argument"
+                    },
+                    "plural": {
+                        "de": "Argumente",
+                        "en": "Arguments"
+                    }
+                }
+            }
+        },
+        "lego": {
+            "notAvailable": {
+                "de": "Der Lego Befehl ist wegen einem fehlerhaften API-Key gerade nicht verfügbar.",
+                "en": "The Lego command is currently not available due to an invalid API key."
+            },
+            "error": {
+                "de": "Es gab einen Fehler: {error}",
+                "en": "There was an error: {error}"
+            },
+            "noSet": {
+                "de": "Es wurde kein passendes Set gefunden.",
+                "en": "No matching set found."
+            },
+            "setNumber": {
+                "de": "Setnummer",
+                "en": "Set number"
+            },
+            "released": {
+                "de": "Erschienen",
+                "en": "Released"
+            },
+            "yes": {
+                "de": "Ja",
+                "en": "Yes"
+            },
+            "no": {
+                "de": "Nein",
+                "en": "No"
+            },
+            "planned": {
+                "de": "geplant",
+                "en": "planned"
+            },
+            "available": {
+                "de": "Verfügbar",
+                "en": "Available"
+            },
+            "pieceCount": {
+                "de": "Teileanzahl",
+                "en": "Piece count"
+            },
+            "miniFigures": {
+                "de": "Minifiguren",
+                "en": "Minifigures"
+            },
+            "price": {
+                "de": "Preis (DE)",
+                "en": "Price (DE)"
+            },
+            "ageRecommendation": {
+                "de": "Altersempfehlung",
+                "en": "Age recommendation"
+            },
+            "dimensions": {
+                "de": "Maße",
+                "en": "Dimensions"
+            },
+            "barcode": {
+                "singular": {
+                    "de": "Barcode",
+                    "en": "Barcode"
+                },
+                "plural": {
+                    "de": "Barcodes",
+                    "en": "Barcodes"
+                }
+            },
+            "rating": {
+                "de": "Bewertung",
+                "en": "Rating"
+            },
+            "updated": {
+                "de": "Zuletzt aktualisiert",
+                "en": "Last updated"
+            },
+            "theme": {
+                "de": "Theme",
+                "en": "Theme"
+            },
+            "link": {
+                "de": "[Zu {name} auf Brickset.com]({url})",
+                "en": "[To {name} on Brickset.com]({url})"
+            },
+            "api": {
+                "author": {
+                    "de": "Brickset-API",
+                    "en": "Brickset API"
+                },
+                "description": {
+                    "singular": {
+                        "de": "Anfragen des letzten bekannten Tages",
+                        "en": "Queries of the last known day"
+                    },
+                    "plural": {
+                        "de": "Anfragen der letzten {n} bekannten Tage",
+                        "en": "Queries of the last {n} bekannten days"
+                    }
+                },
+                "request": {
+                    "singular": {
+                        "de": "Anfrage",
+                        "en": "Request"
+                    },
+                    "plural": {
+                        "de": "Anfragen",
+                        "en": "Requests"
+                    }
+                },
+                "toBrickset": {
+                    "de": "Zu Brickset",
+                    "en": "To Brickset"
+                }
+            },
+            "setsToTheme": {
+                "de": "Sets zum Theme",
+                "en": "Sets to the theme"
+            },
+            "subThemes": {
+                "de": "Unterthemen",
+                "en": "Subthemes"
+            },
+            "firstSet": {
+                "de": "Erstes Set",
+                "en": "First set"
+            },
+            "lastSet": {
+                "de": "Letztes Set",
+                "en": "Last set"
+            },
+            "setsPerYear": {
+                "de": "⌀ Sets pro Jahr",
+                "en": "⌀ Sets per year"
+            },
+            "allSets": {
+                "de": "Alle {theme}-Sets",
+                "en": "All {theme} sets"
+            },
+            "noTheme": {
+                "de": "Es wurde kein Theme gefunden. Mit </lego theme:1320738378156867644> bekommst du alle Themes angezeigt.",
+                "en": "No theme found. Use </lego theme:1320738378156867644> to see all themes."
+            },
+            "allThemes": {
+                "de": "Alle {n} Themes",
+                "en": "All {n} themes"
+            },
+            "moreAboutTheme": {
+                "de": "Du möchtest mehr über ein einzelnes Theme wissen?\nMit </lego theme:1320738378156867644> `thema` bekommst du mehr Informationen.",
+                "en": "You want to know more about a single theme?\nUse </lego theme:1320738378156867644> `theme` to get more information."
+            },
+            "noSubTheme": {
+                "de": "Es wurde kein Theme gefunden, zu dem Unterthemen angezeigt werden können.\nMit </lego theme:1320738378156867644> bekommst du alle Themes angezeigt.",
+                "en": "No theme found to display subthemes for.\nUse </lego theme:1320738378156867644> to see all themes."
+            },
+            "noSubThemeFound": {
+                "de": "Zu dem Theme `{theme}` gibt es keine Unterthemen. \nFür mehr Informationen nutze </lego theme:1320738378156867644> `{theme}`.",
+                "en": "There are no subthemes for the theme `{theme}`. \nFor more information use </lego theme:1320738378156867644> `{theme}."
+            },
+            "mainTheme": {
+                "de": "Oberthema",
+                "en": "Main theme"
+            },
+            "setsWithoutSubtheme": {
+                "de": "Sets ohne Unterthema",
+                "en": "Sets without subtheme"
+            },
+            "setsWithSubtheme": {
+                "de": "Sets mit Unterthema",
+                "en": "Sets with subtheme"
+            },
+            "firstPublished": {
+                "de": "Erstveröffentlichung",
+                "en": "First published"
+            },
+            "lastPublished": {
+                "de": "Letztveröffentlichung",
+                "en": "Last published"
+            },
+            "subtopicName": {
+                "de": "Name des Unterthemas",
+                "en": "Name of the subtheme"
+            },
+            "amountOfSets": {
+                "de": "Anzahl der Sets",
+                "en": "Amount of sets"
+            },
+            "noThemeFound": {
+                "de": "Es wurde kein Theme gefunden, zu dem Infos angezeigt werden können. \nMit </lego theme:1320738378156867644> bekommst du alle Themes angezeigt.",
+                "en": "No theme found to display information for. \nUse </lego theme:1320738378156867644> to see all themes."
+            },
+            "quickFacts": {
+                "de": "Kurzer Überblick",
+                "en": "Quick facts"
+            },
+            "sets": {
+                "de": "Sets",
+                "en": "Sets"
+            },
+            "year": {
+                "de": "Jahr",
+                "en": "Year"
+            },
+            "ratings": {
+                "de": "Bewertungen",
+                "en": "Ratings"
+            },
+            "overall": {
+                "de": "Generell",
+                "en": "In general"
+            },
+            "pieces": {
+                "de": "Teile",
+                "en": "Pieces"
+            },
+            "buildingExperience": {
+                "de": "Bauerlebnis",
+                "en": "Building experience"
+            },
+            "playingExperience": {
+                "de": "Spielerlebnis",
+                "en": "Playing experience"
+            },
+            "valueForMoney": {
+                "de": "Preis-Leistungs-Verhältnis",
+                "en": "Value for money"
+            },
+            "noReviews": {
+                "de": "Für das Set `{setName}` gibt es keine Bewertungen.",
+                "en": "There are no reviews for the set `{setName}`."
+            },
+            "noInstruction": {
+                "de": "Es wurde keine Anleitung gefunden.",
+                "en": "No instructions found."
+            },
+            "instruction": {
+                "de": "Anleitung",
+                "en": "Instruction"
+            },
+            "toInstruction": {
+                "de": "Zu dieser Anleitung",
+                "en": "To this instruction"
+            },
+            "noImages": {
+                "de": "Es wurden keine Bilder für {setName} gefunden.",
+                "en": "No images found for {setName}."
+            },
+            "image": {
+                "de": "Bild",
+                "en": "Image"
+            }
+        },
+        "log": {
+            "illegalNumber": {
+                "de": "Die Anzahl muss zwischen {min} und {max} liegen!",
+                "en": "The amount must be between {min} and {max}!"
+            },
+            "noLog": {
+                "de": "Es gibt keinen Logeintrag mit der ID `{id}`.",
+                "en": "There is no log entry with the ID `{id}`."
+            },
+            "noLogs": {
+                "de": "Es gibt noch keine Logeinträge.",
+                "en": "There are no log entries yet."
+            },
+            "log": {
+                "de": "Log",
+                "en": "Log"
+            },
+            "id": {
+                "de": "ID",
+                "en": "ID"
+            },
+            "origin": {
+                "de": "Ursprung",
+                "en": "Origin"
+            },
+            "modlog": {
+                "de": "Modlog",
+                "en": "Modlog"
+            },
+            "timestamp": {
+                "de": "Zeitstempel",
+                "en": "Timestamp"
+            },
+            "yes": {
+                "de": "<:checkmarkEmbed:1005146896278503597> ",
+                "en": "<:checkmarkEmbed:1005146896278503597> "
+            },
+            "no": {
+                "de": "<:crossEmbed:1005146898451140749>",
+                "en": "<:crossEmbed:1005146898451140749>"
+            },
+            "errorWhileFetching": {
+                "de": "Es gab einen Fehler beim Abrufen der Logeinträge.",
+                "en": "There was an error while fetching the log entries."
+            },
+            "insert": {
+                "de": "Logeintrag hinzugefügt.",
+                "en": "Log entry added."
+            }
+        },
+        "lyrics": {
+            "searching": {
+                "de": "Suche nach: `{song}`...",
+                "en": "Searching for: `{song}`..."
+            },
+            "error": {
+                "de": "Es gab einen Fehler...",
+                "en": "There was an error..."
+            }
+        },
+        "maintenance": {
+            "alreadyInMaintenance": {
+                "de": "Der Bot ist bereits im Wartungsmodus.",
+                "en": "The bot is already in maintenance mode."
+            },
+            "notInMaintenance": {
+                "de": "Der Bot ist nicht im Wartungsmodus.",
+                "en": "The bot is not in maintenance mode."
+            },
+            "botIs": {
+                "de": "Der Bot ist nun im",
+                "en": "The bot is now in"
+            },
+            "maintenance": {
+                "de": "Wartungsmodus",
+                "en": "maintenance mode"
+            },
+            "normal": {
+                "de": "Normalmodus",
+                "en": "normal mode"
+            }
+        },
+        "mc": {
+            "notReachable": {
+                "de": "Der Server ist nicht erreichbar.",
+                "en": "The server is not reachable."
+            },
+            "players": {
+                "de": "Spieler",
+                "en": "Players"
+            },
+            "version": {
+                "de": "Version",
+                "en": "Version"
+            },
+            "ping": {
+                "de": "Ping",
+                "en": "Ping"
+            },
+            "playerRecord": {
+                "de": "Spielerrekord",
+                "en": "Player record"
+            },
+            "reached": {
+                "de": "Erreicht",
+                "en": "Reached"
+            },
+            "lastPing": {
+                "de": "Letzter Ping",
+                "en": "Last ping"
+            },
+            "onNameMC": {
+                "de": "auf NameMC",
+                "en": "on NameMC"
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Abrufen der Informationen.",
+                "en": "There was an error while fetching the information."
+            }
+        },
+        "mute": {
+            "notOnThisServer": {
+                "de": "Dieser Benutzer ist nicht auf diesem Server!",
+                "en": "This user is not on this server!"
+            },
+            "owner": {
+                "de": "<:FeelsSusMan:870034696396996630>",
+                "en": "<:FeelsSusMan:870034696396996630>"
+            },
+            "selfMute": {
+                "de": "Du kannst dich nicht selbst muten!",
+                "en": "You cannot mute yourself!"
+            },
+            "alreadyMuted": {
+                "de": "{user} ist bereits gemuted.",
+                "en": "{user} is already muted."
+            },
+            "muteString": {
+                "de": "Mute von {executor}, Grund: {reason}",
+                "en": "Mute by {executor}, reason: {reason}"
+            },
+            "muted": {
+                "de": "{user} wurde gemutet.",
+                "en": "{user} was muted."
+            },
+            "muteLogPerm": {
+                "de": "{user} wurde von {executor} wegen {reason} permanent gemutet.",
+                "en": "{user} was muted permanently by {executor} for {reason}."
+            },
+            "muteLog": {
+                "de": "{user} wurde von {executor} wegen {reason} für {duration} Minuten gemutet.",
+                "en": "{user} was muted by {executor} for {duration} minutes for {reason}."
+            },
+            "muteMessage": {
+                "de": "Du wurdest von {executor} auf {guild} gemutet. \nDauer: {duration} \nGrund: {reason}",
+                "en": "You were muted by {executor} on {guild}. \nDuration: {duration} \nReason: {reason}"
+            },
+            "timeoutMessage": {
+                "de": "Du wurdest von {executor} auf {guild} gemutet. \nUnmute: {duration} \nGrund: {reason}",
+                "en": "You were muted by {executor} on {guild}. \nUnmute: {duration} \nReason: {reason}"
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Muten.",
+                "en": "There was an error while muting."
+            },
+            "noMuteRole": {
+                "de": "Konfigurierte Mute-Rolle nicht gefunden.",
+                "en": "Configured mute role not found."
+            }
+        },
+        "neko": {
+            "nekoChannelOnly": {
+                "de": "Dieser Befehl kann nur in {channel} verwendet werden.",
+                "en": "This command can only be used in {channel}."
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Abrufen des Bildes.",
+                "en": "There was an error while fetching the image."
+            }
+        },
+        "niceone": {
+            "notOnThisServer": {
+                "de": "Dieser Benutzer ist nicht auf diesem Server!",
+                "en": "This user is not on this server!"
+            },
+            "noNiceOneRole": {
+                "de": "Konfigurierte NiceOne-Rolle nicht gefunden.",
+                "en": "Configured NiceOne role not found."
+            },
+            "owner": {
+                "de": "<:3Head:786252274204016670>",
+                "en": "<:3Head:786252274204016670>"
+            },
+            "selfNiceOne": {
+                "de": "Du kannst dich nicht selbst loben!",
+                "en": "You cannot praise yourself!"
+            },
+            "removed": {
+                "de": "{user} wurde durch {executor} NiceOne entzogen.",
+                "en": "{user} was removed NiceOne by {executor}."
+            },
+            "added": {
+                "de": "{user} wurde durch {executor} NiceOne gegeben.",
+                "en": "{user} was given NiceOne by {executor}."
+            },
+            "error": {
+                "de": "Es gab einen Fehler.",
+                "en": "There was an error."
+            }
+        },
+        "packages": {
+            "packages": {
+                "de": "Pakete",
+                "en": "Packages"
+            },
+            "startFile": {
+                "de": "Startdatei",
+                "en": "Start file"
+            },
+            "description": {
+                "de": "Beschreibung",
+                "en": "Description"
+            }
+        },
+        "photo": {
+            "noImages": {
+                "de": "Es wurden keine Bilder gefunden.",
+                "en": "No images found."
+            },
+            "imageSearch": {
+                "de": "Photosuche",
+                "en": "Image search"
+            },
+            "copyrightString": {
+                "de": "{photo} von {author} auf {source}",
+                "en": "{photo} by {author} on {source}"
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Abrufen des Bildes.",
+                "en": "There was an error while fetching the image."
+            }
+        },
+        "pi": {
+            "error": {
+                "de": "Es gab einen Fehler beim Abrufen von Pi.",
+                "en": "There was an error while fetching Pi."
+            },
+            "digits": {
+                "plural": {
+                    "de": "Stellen",
+                    "en": "digits"
+                },
+                "singular": {
+                    "de": "Stelle",
+                    "en": "digit"
+                }
+            },
+            "pi": {
+                "de": "Pi",
+                "en": "Pi"
+            },
+            "start": {
+                "de": "Startstelle",
+                "en": "Start digit"
+            },
+            "base": {
+                "de": "Basis",
+                "en": "Base"
+            },
+            "tooLarge": {
+                "de": "Die Anzahl der Stellen darf nicht größer als {max} sein.",
+                "en": "The number of digits must not be greater than {max}."
+            }
+        },
+        "ping": {
+            "uptime": {
+                "days": {
+                    "singular": {
+                        "de": "Tag",
+                        "en": "day"
+                    },
+                    "plural": {
+                        "de": "Tage",
+                        "en": "days"
+                    }
+                },
+                "hours": {
+                    "singular": {
+                        "de": "Stunde",
+                        "en": "hour"
+                    },
+                    "plural": {
+                        "de": "Stunden",
+                        "en": "hours"
+                    }
+                },
+                "minutes": {
+                    "singular": {
+                        "de": "Minute",
+                        "en": "minute"
+                    },
+                    "plural": {
+                        "de": "Minuten",
+                        "en": "minutes"
+                    }
+                },
+                "seconds": {
+                    "singular": {
+                        "de": "Sekunde",
+                        "en": "second"
+                    },
+                    "plural": {
+                        "de": "Sekunden",
+                        "en": "seconds"
+                    }
+                },
+                "and": {
+                    "de": "und",
+                    "en": "and"
+                }
+            },
+            "botInfo": {
+                "de": "Bot-Info",
+                "en": "Bot info"
+            },
+            "bot": {
+                "de": "Bot",
+                "en": "Bot"
+            },
+            "api": {
+                "de": "API",
+                "en": "API"
+            },
+            "tps": {
+                "de": "TPS",
+                "en": "TPS"
+            },
+            "uptimeWord": {
+                "de": "Betriebszeit",
+                "en": "Uptime"
+            }
+        },
+        "qr": {
+            "error": {
+                "de": "Es gab einen Fehler beim Verarbeiten des QR-Codes.",
+                "en": "There was an error while processing the QR code."
+            },
+            "generated": {
+                "de": "QR-Code für {text}",
+                "en": "QR code for {text}"
+            },
+            "fileType": {
+                "de": "Das Bild muss im PNG, JPEG, JPG oder GIF Format sein.",
+                "en": "The image must be in PNG, JPEG, JPG or GIF format."
+            },
+            "noScan": {
+                "de": "Der QR-Code konnte nicht gescannt werden!",
+                "en": "The QR code could not be scanned!"
+            },
+            "qrCode": {
+                "de": "QR-Code",
+                "en": "QR code"
+            },
+            "type": {
+                "de": "Typ",
+                "en": "Type"
+            },
+            "content": {
+                "de": "Inhalt",
+                "en": "Content"
+            }
+        },
+        "rasus": {},
+        "restart": {},
+        "rotateText": {},
+        "server": {
+            "notAvailable": {
+                "de": "Der Server ist nicht momentan nicht verfügbar.",
+                "en": "The server is currently not available."
+            },
+            "name": {
+                "de": "Name",
+                "en": "Name"
+            },
+            "id": {
+                "de": "ID",
+                "en": "ID"
+            },
+            "created": {
+                "de": "Erstellt",
+                "en": "Created"
+            },
+            "owner": {
+                "de": "Besitzer",
+                "en": "Owner"
+            },
+            "description": {
+                "de": "Beschreibung",
+                "en": "Description"
+            },
+            "members": {
+                "de": "Mitglieder",
+                "en": "Members"
+            },
+            "maxMembers": {
+                "de": "Maximale Mitglieder",
+                "en": "Maximum members"
+            },
+            "invites": {
+                "de": "Aktive Einladungen",
+                "en": "Active invites"
+            },
+            "events": {
+                "de": "Events",
+                "en": "Events"
+            },
+            "locale": {
+                "de": "Sprache",
+                "en": "Locale"
+            },
+            "channels": {
+                "de": "Kanäle",
+                "en": "Channels"
+            },
+            "emojis": {
+                "de": "Emojis",
+                "en": "Emojis"
+            },
+            "stickers": {
+                "de": "Sticker",
+                "en": "Stickers"
+            },
+            "bans": {
+                "de": "Bans",
+                "en": "Bans"
+            },
+            "boosts": {
+                "de": "Boosts",
+                "en": "Boosts"
+            },
+            "shardPing": {
+                "de": "Shard-Ping",
+                "en": "Shard ping"
+            },
+            "partnered": {
+                "de": "Discord-Partner?",
+                "en": "Discord partner?"
+            },
+            "verified": {
+                "de": "Verifiziert",
+                "en": "Verified"
+            },
+            "vanityURL": {
+                "de": "Vanity-Code",
+                "en": "Vanity code"
+            },
+            "roles": {
+                "de": "Rollen",
+                "en": "Roles"
+            },
+            "features": {
+                "de": "Features",
+                "en": "Features"
+            },
+            "none": {
+                "de": "Keine",
+                "en": "None"
+            }
+        },
+        "serverlist": {},
+        "skin": {
+            "skinOf": {
+                "de": "Skin von {user}",
+                "en": "Skin of {user}"
+            },
+            "face2d": {
+                "de": "Gesicht (2D)",
+                "en": "Face (2D)"
+            },
+            "upperbody2d": {
+                "de": "Oberkörper (2D)",
+                "en": "Upper body (2D)"
+            },
+            "body2d": {
+                "de": "Körper (2D)",
+                "en": "Body (2D)"
+            },
+            "head3d": {
+                "de": "Kopf (3D)",
+                "en": "Head (3D)"
+            },
+            "upperbody3d": {
+                "de": "Oberkörper (3D)",
+                "en": "Upper body (3D)"
+            },
+            "body3d": {
+                "de": "Körper (3D)",
+                "en": "Body (3D)"
+            },
+            "links": {
+                "de": "Infos & Links",
+                "en": "Info & links"
+            },
+            "skinAPI": {
+                "de": "Skin-API",
+                "en": "Skin API"
+            },
+            "nameAPI": {
+                "de": "Name-API",
+                "en": "Name API"
+            },
+            "namemc": {
+                "de": "NameMC",
+                "en": "NameMC"
+            },
+            "mcprofile": {
+                "de": "MCProfile",
+                "en": "MCProfile"
+            },
+            "skin": {
+                "de": "Skin",
+                "en": "Skin"
+            },
+            "cape": {
+                "de": "Umhang",
+                "en": "Cape"
+            },
+            "uuid": {
+                "de": "UUID",
+                "en": "UUID"
+            },
+            "name": {
+                "de": "Name",
+                "en": "Name"
+            },
+            "created": {
+                "de": "Erstellt",
+                "en": "Created"
+            },
+            "rawdata": {
+                "de": "Rohdaten",
+                "en": "Raw data"
+            },
+            "value": {
+                "de": "Wert",
+                "en": "Value"
+            },
+            "signature": {
+                "de": "Signatur",
+                "en": "Signature"
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Abfragen der API: {error}",
+                "en": "There was an error while querying the API: {error}"
+            }
+        },
+        "spotify": {
+            "notOnServer": {
+                "de": "Der Benutzer ist nicht auf diesem Server.",
+                "en": "The user is not on this server."
+            },
+            "notListening": {
+                "de": "{user} hört gerade nichts auf Spotify.",
+                "en": "{user} is not listening to anything on Spotify."
+            },
+            "listening": {
+                "de": "{user} hört gerade auf Spotify",
+                "en": "{user} is currently listening on Spotify"
+            },
+            "title": {
+                "de": "Titel",
+                "en": "Title"
+            },
+            "album": {
+                "de": "Album",
+                "en": "Album"
+            },
+            "duration": {
+                "de": "Dauer",
+                "en": "Duration"
+            },
+            "artist": {
+                "singular": {
+                    "de": "Interpret",
+                    "en": "Artist"
+                },
+                "plural": {
+                    "de": "Interpreten",
+                    "en": "Artists"
+                }
+            },
+            "link": {
+                "de": "Link",
+                "en": "Link"
+            },
+            "openInSpotify": {
+                "de": "{song} in Spotify öffnen",
+                "en": "Open {song} in Spotify"
+            },
+            "lyrics": {
+                "de": "Songtext",
+                "en": "Lyrics"
+            }
+        },
+        "status": {
+            "streamingRestriction": {
+                "de": "Um `streaming` verwenden zu können, muss ein Text angegeben werden, und es darf keine Aktivität ausgewählt werden.",
+                "en": "To use `streaming`, a text must be specified, and no activity must be selected."
+            },
+            "invisibilityRestriction": {
+                "de": "Um `invisible` verwenden zu können, darf kein Text angegeben werden, und es darf keine Aktivität ausgewählt werden.",
+                "en": "To use `invisible`, no text must be specified, and no activity must be selected."
+            },
+            "changed": {
+                "de": "Status wurde geändert!",
+                "en": "Changed status!"
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Ändern des Status.",
+                "en": "There was an error while changing the status."
+            }
+        },
+        "test": {},
+        "text": {
+            "noChannel": {
+                "de": "Dieser Kanal existiert nicht!",
+                "en": "This channel does not exist!"
+            },
+            "noPermission": {
+                "de": "Du darfst in diesem Kanal nicht schreiben!",
+                "en": "You are not allowed to write in this channel!"
+            }
+        },
+        "tp": {
+            "title": {
+                "de": "Texturen für Minecraft. Von thevalleyy",
+                "en": "Textures for Minecraft. By thevalleyy"
+            },
+            "caution": {
+                "de": "⚠ Achtung",
+                "en": "⚠ Caution"
+            },
+            "notUpToDate": {
+                "de": "Dieses Pack ist nichtmehr aktuell. Vielleicht überarbeite ich es mal irgendwann.",
+                "en": "This pack is no longer up to date. Maybe I'll revise it someday."
+            },
+            "version": {
+                "de": "Version",
+                "en": "Version"
+            },
+            "versionString": {
+                "de": "Minecraft Java 1.17 | Version der TexturePacks: v3",
+                "en": "Minecraft Java 1.17 | Version of the texture packs: v3"
+            },
+            "download": {
+                "de": "Download",
+                "en": "Download"
+            }
+        },
+        "unmute": {
+            "notOnThisServer": {
+                "de": "Dieser Benutzer ist nicht auf diesem Server!",
+                "en": "This user is not on this server!"
+            },
+            "noMuteRole": {
+                "de": "Konfigurierte Mute-Rolle nicht gefunden.",
+                "en": "Configured mute role not found."
+            },
+            "owner": {
+                "de": "<:FeelsSusMan:870034696396996630>",
+                "en": "<:FeelsSusMan:870034696396996630>"
+            },
+            "selfMute": {
+                "de": "Du kannst dich nicht selbst entmuten!",
+                "en": "You cannot unmute yourself!"
+            },
+            "notMuted": {
+                "de": "{user} ist nicht gemutet.",
+                "en": "{user} is not muted."
+            },
+            "unmuteString": {
+                "de": "Entmute von {executor}, Grund: {reason}",
+                "en": "Unmute by {executor}, reason: {reason}"
+            },
+            "unmuted": {
+                "de": "{user} wurde entmutet.",
+                "en": "{user} was unmuted."
+            },
+            "unmuteLog": {
+                "de": "{user} wurde von {executor} wegen {reason} entmutet.",
+                "en": "{user} was unmuted by {executor} for {reason}."
+            },
+            "unmuteMessage": {
+                "de": "Du wurdest von {executor} auf {guild} entmutet. \nGrund: {reason}",
+                "en": "You were unmuted by {executor} on {guild}. \nReason: {reason}"
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Entmuten.",
+                "en": "There was an error while unmuting."
+            }
+        },
+        "user": {
+            "notOnThisServer": {
+                "de": "Dieser Benutzer ist nicht auf diesem Server!",
+                "en": "This user is not on this server!"
+            },
+            "mention": {
+                "de": "Erwähnung",
+                "en": "Mention"
+            },
+            "tag": {
+                "de": "Tag",
+                "en": "Tag"
+            },
+            "id": {
+                "de": "ID",
+                "en": "ID"
+            },
+            "nickname": {
+                "de": "Nickname",
+                "en": "Nickname"
+            },
+            "created": {
+                "de": "Erstellt",
+                "en": "Created"
+            },
+            "joined": {
+                "de": "Beigetreten",
+                "en": "Joined"
+            },
+            "bot": {
+                "de": "Bot?",
+                "en": "Bot?"
+            },
+            "banable": {
+                "de": "Bannbar?",
+                "en": "Banable?"
+            },
+            "kickable": {
+                "de": "Kickbar?",
+                "en": "Kickable?"
+            },
+            "manageable": {
+                "de": "Verwaltbar?",
+                "en": "Manageable?"
+            },
+            "moderatable": {
+                "de": "Moderierbar?",
+                "en": "Moderatable?"
+            },
+            "rulesAccepted": {
+                "de": "Regeln akzeptiert?",
+                "en": "Rules accepted?"
+            },
+            "avatar": {
+                "de": "Profilbild",
+                "en": "Avatar"
+            },
+            "click": {
+                "de": "Klick",
+                "en": "Click"
+            },
+            "badges": {
+                "de": "Abzeichen",
+                "en": "Badges"
+            },
+            "none": {
+                "de": "Keine",
+                "en": "None"
+            },
+            "hexColor": {
+                "de": "Hex-Farbe",
+                "en": "Hex color"
+            },
+            "banner": {
+                "de": "Banner",
+                "en": "Banner"
+            },
+            "boostingSince": {
+                "de": "Boostet seit",
+                "en": "Boosting since"
+            },
+            "timeout": {
+                "de": "Timeout läuft ab",
+                "en": "Timeout expires"
+            },
+            "roles": {
+                "de": "Rollen",
+                "en": "Roles"
+            },
+            "permissions": {
+                "de": "Berechtigungen",
+                "en": "Permissions"
             }
         }
     }

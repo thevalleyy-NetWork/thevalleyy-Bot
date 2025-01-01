@@ -1,16 +1,13 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.serverlist;
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-
-    if (interaction.user.id != config.owner) {
-        interaction.reply({
-            content: "Du hast keine Berechtigung, diesen Befehl auszuführen.",
-            ephemeral: true,
-        });
-        return;
-    }
 
     var text = "```json\n{\n";
     client.guilds.cache.forEach((guild) => {

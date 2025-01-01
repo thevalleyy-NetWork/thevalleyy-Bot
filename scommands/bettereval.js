@@ -3,6 +3,7 @@ import strings from "../localization.json" with {type: "json"};
 const localization = strings.slashCommands.bettereval;
 
 export default {
+    adminOnly: true,
     data: new SlashCommandBuilder()
         .setName("bettereval")
         .setContexts([0, 1])

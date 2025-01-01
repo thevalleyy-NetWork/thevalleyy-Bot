@@ -1,31 +1,34 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
-const { ActivityType } = require("discord.js");
+import { ActivityType } from "discord.js";
 
-export default async (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.status;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-
-    if (interaction.user.id != config.owner) {
-        interaction.reply({
-            content: "Du hast keine Berechtigung, diesen Befehl auszuführen.",
-            ephemeral: true,
-        });
-        return;
-    }
 
     const presence = interaction.options.getString("presence");
     const text = interaction.options.getString("text");
     var activity = interaction.options.getString("activity");
 
     if ((!text || activity) && presence == "streaming")
-        return interaction.reply(
-            "Um `streaming` verwenden zu können, muss ein Text angegeben werden, und es darf keine Aktivität ausgewählt werden."
-        );
+        return interaction.reply({
+            content: l10n.streamingRestriction[locale],
+            ephemeral: true,
+        }
+    );
+
     if ((text || activity) && presence == "invisible")
-        return interaction.reply(
-            "Um `invisible` verwenden zu können, darf kein Text angegeben werden, und es darf keine Aktivität ausgewählt werden."
-        );
-    await interaction.reply("Status wird geändert...");
+        return interaction.reply({
+            content: l10n.invisibilityRestriction[locale],
+            ephemeral: true,
+        }
+    );
 
     try {
         if (presence == "invisible") {
@@ -35,7 +38,7 @@ export default async (client, interaction) => {
                 activities: [
                     {
                         name: text.substring(0, 200),
-                        type: 1,
+                        type: ActivityType.Streaming,
                         url: "https://twitch.tv/thevalleyy",
                     },
                 ],
@@ -99,9 +102,15 @@ export default async (client, interaction) => {
         }
     } catch (error) {
         client.error(error, "status.js");
-        interaction.editReply("Es ist ein Fehler aufgetreten");
+        interaction.reply({
+            content: l10n.error[locale],
+            ephemeral: true,
+        });
         return;
     }
-    client.log(`${interaction.user.tag} hat den Status zu ${presence} geändert.`, "status.js");
-    interaction.editReply("Status wurde geändert.");
+    client.log(`${interaction.user.tag} changed presence to ${presence}`, "status.js");
+    interaction.reply({
+        content: l10n.changed[locale],
+        ephemeral: true,
+    });
 };

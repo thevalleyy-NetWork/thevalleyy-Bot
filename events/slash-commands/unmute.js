@@ -1,44 +1,61 @@
-const config = require("../../config.json");
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.unmute;
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-    if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
-        return interaction.reply({
-            content: "Dieser Benutzer ist nicht auf diesem Server!",
-            ephemeral: true,
-        });
 
     const muteUser = interaction.options.get("user");
     const reason = interaction.options.getString("reason").substring(0, 255);
-    const muteRole = interaction.guild.roles.cache.find((role) => role.name === "Muted Chat").id;
 
-    if (muteUser.id == config.owner || muteUser.id == client.user.id) return interaction.reply("<:FeelsSusMan:870034696396996630>");
-    if (muteUser.id == interaction.user.id) return interaction.reply("Sure, ~~Jan~~ " + interaction.user.username);
+    if (!interaction.guild.members.cache.get(muteUser.user.id))
+        return interaction.reply({
+            content: l10n.notOnThisServer[locale],
+            ephemeral: true,
+        });
+
+        const muteRole = interaction.guild.roles.cache.get(config.roles.mutechat)?.id;
+    if (!muteRole) return interaction.reply({ content: l10n.noMuteRole[locale], ephemeral: true });
+
+    if (muteUser.id == config.owner || muteUser.id == client.user.id) return interaction.reply({ content: l10n.owner[locale], ephemeral: true });
+    if (muteUser.id == interaction.user.id) return interaction.reply({ content: l10n.selfMute[locale], ephemeral: true });
     if (!muteUser.member.roles.cache.has(muteRole) && Date.now() >= muteUser.member.communicationDisabledUntilTimestamp)
-        return interaction.reply("`" + muteUser.user.tag + "` ist nicht gemuted.");
+        return interaction.reply({
+            content: l10n.notMuted[locale].replace("{user}", "`" + muteUser.user.tag + "`"),
+            ephemeral: true,
+        });
 
     try {
-        muteUser.member.timeout(null, `Unmute von: ${interaction.user.tag}, Grund: ${reason}`);
+        // TODO: update in enmap
 
-        // db(`UPDATE discord set muted = 0 WHERE dcid = ${muteUser.user.id}`);
-        muteUser.member.roles.remove(muteRole, `Unmute von: ${interaction.user.tag}, Grund: ${reason}`);
-        interaction.reply("`" + muteUser.user.tag + "` kann nun wieder schreiben.");
-        client.modLog(`${muteUser.user.tag} wurde von ${interaction.user.tag} wegen ${reason} entmuted.`, "unmute.js");
+        muteUser.member.timeout(null, l10n.unmuteString[locale].replace("{executor}", interaction.user.tag).replace("{reason}", reason));
+        muteUser.member.roles.remove(muteRole, l10n.unmuteString[locale].replace("{executor}", interaction.user.tag).replace("{reason}", reason));
+
+        interaction.reply({
+            content: l10n.unmuted[locale].replace("{user}", muteUser.user.tag),
+            ephemeral: true,
+        });
+
+        client.modLog(l10n.unmuteLog[locale].replace("{user}", muteUser.user.tag).replace("{executor}", interaction.user.tag).replace("{reason}", reason), "unmute.js");
+
         muteUser.user
-            .send(
-                "Du hast von `" +
-                    interaction.user.tag +
-                    "` auf dem Server `" +
-                    interaction.guild.name +
-                    "` wieder Schreibrechte erhalten.\nGrund: `" +
-                    reason +
-                    "`"
+            .send( // TODO: test if this works
+                l10n.unmuteMessage[locale]
+                    .replace("{executor}", "`" + interaction.user.tag + "`")
+                    .replace("{guild}", "`" + interaction.guild.name + "`")
+                    .replace("{reason}", "`" + reason + "`")
             )
-            .catch((error) => {
-                client.log(error, "unmute.js");
-            });
+            .catch((error) => {});
     } catch (error) {
         client.error(error, "unmute.js");
-        interaction.reply("Es gab einen Fehler.");
+        interaction.reply({
+            content: l10n.error[locale],
+            ephemeral: true,
+        });
     }
 };

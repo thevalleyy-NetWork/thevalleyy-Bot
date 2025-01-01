@@ -36,15 +36,15 @@ export default async (client) => {
             const max = response.players.max;
             const most = newData.mostPlayers;
 
-            return { wartungen, time, online, max, most };
+            return { wartungen: wartungen, time: time, online: online, max: max, most: most };
         } catch (error) {
-            client.error(error, "mcping.js");
-            return null;
+            return null; // this error occurs, when the server is offline
         }
     }
 
-    async function setTopic({ wartungen, time, online, max, most }) {
-        if (!time) return;
+    async function setTopic(ping) {
+        if (!ping) return;
+        const { wartungen, time, online, max, most } = ping;
 
         const ipString = `${config.minecraft.ip}${config.minecraft.port == 25565 ? "" : `:${config.minecraft.port}`}`;
 

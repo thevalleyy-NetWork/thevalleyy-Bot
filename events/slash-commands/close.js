@@ -1,7 +1,17 @@
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.close;
+
 const Discord = require("discord.js");
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
+
+    return interaction.reply("Dieser Befehl ist aktuell deaktiviert."); //TODO: fix this
 
     const iconurl = interaction.guild.iconURL();
     const suprole = interaction.guild.roles.cache.find((role) => role.name === "Supporter");

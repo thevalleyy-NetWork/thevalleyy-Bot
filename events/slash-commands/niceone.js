@@ -1,35 +1,46 @@
-const config = require("../../config.json");
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.niceone;
 
-export default (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-    if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
+
+    const user = interaction.options.get("user");
+
+    if (!interaction.guild.members.cache.get(user.user.id))
         return interaction.reply({
-            content: "Dieser Benutzer ist nicht auf diesem Server!",
+            content: l10n.notOnThisServer[locale],
             ephemeral: true,
         });
 
-    const user = interaction.options.get("user");
-    const role = interaction.guild.roles.cache.find((role) => role.name === "Nice One").id;
+    const role = interaction.guild.roles.cache.get(config.roles.niceone).id;
+    if (!role) return interaction.reply({ content: l10n.noNiceOneRole[locale], ephemeral: true });
 
-    if (user.user.id == config.owner || user.user.id == client.user.id) return interaction.reply("<:3Head:786252274204016670>");
-    if (user.user.id == interaction.user.id) return interaction.reply("Versuchs mal mit `/ban @" + interaction.user.username + "`");
-
+    if (user.user.id == config.owner || user.user.id == client.user.id) return interaction.reply({ content: l10n.owner[locale], ephemeral: true });
+    if (user.user.id == interaction.user.id) return interaction.reply({ content: l10n.selfNiceOne[locale], ephemeral: true });
+    
     try {
         if (user.member.roles.cache.has(role)) {
             user.member.roles.remove(role);
-            // db(`UPDATE discord set niceone = 0 WHERE dcid = ${user.user.id}`);
+            // TODO: enmap
+            // TODO: reason für niceone
+            // TODO: message an user
 
-            interaction.reply("`" + user.user.tag + "` wurde `Nice One` entzogen.");
-            client.modLog(`${user.user.tag} wurde von ${interaction.user.tag} Nice One entzogen.`, "niceone.js");
+            interaction.reply({ content: l10n.removed[locale].replace("{user}", "`" + user.user.tag + "`").replace("{executor}", "`" + interaction.user.tag + "`"), ephemeral: true });
+            client.modLog(l10n.removed[locale].replace("{user}", user.user.tag).replace("{executor}", interaction.user.tag), "niceone.js");
         } else {
             user.member.roles.add(role);
-            // db(`UPDATE discord set niceone = 1 WHERE dcid = ${user.user.id}`);
 
-            interaction.reply("`" + user.user.tag + "` hat `Nice One` bekommen.");
-            client.modLog(`${user.user.tag} hat von ${interaction.user.tag} Nice One erhalten.`, "niceone.js");
+            interaction.reply({ content: l10n.added[locale].replace("{user}", "`" + user.user.tag + "`").replace("{executor}", "`" + interaction.user.tag + "`"), ephemeral: true });
+            client.modLog(l10n.added[locale].replace("{user}", user.user.tag).replace("{executor}", interaction.user.tag), "niceone.js");
         }
     } catch (error) {
         client.error(error, "niceone.js");
-        interaction.reply("Ein Fehler ist aufgetreten.");
+        interaction.reply({ content: l10n.error[locale], ephemeral: true });
     }
 };

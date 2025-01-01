@@ -7,7 +7,6 @@ export default {
         .setName("add")
         .setContexts([0])
         .setDescription(localization.description.en)
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.BanMembers)
         .setDescriptionLocalizations({
             "de": localization.description.de,
         })

@@ -1,29 +1,34 @@
-const Discord = require("discord.js");
-const config = require("../../config.json");
+import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 
-export default async (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.qr;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-
-    const fetch = (await import("node-fetch")).default;
 
     try {
         if (interaction.options._subcommand === "generate") {
-            client.log("Generating QR Code", "qr.js");
             const data = encodeURI(interaction.options._hoistedOptions[0].value);
             const url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data}`;
 
-            const attachment = new Discord.AttachmentBuilder().setFile(url).setName("qr.png");
+            const attachment = new AttachmentBuilder().setFile(url).setName("qr.png");
             interaction.reply({
-                content: `QR-Code für \`${interaction.options._hoistedOptions[0].value.substring(0, 1000)}\``,
+                content: `${l10n.generated[locale].replace("{text}", `\`${interaction.options._hoistedOptions[0].value.substring(0, 1000)}\``)}`,
                 files: [attachment],
                 ephemeral: true,
             });
             return;
         }
 
-        if (interaction.options._subcommand === "scan") {
+        if (interaction.options._subcommand === "scan") { //TODO: this is sadly not working
             await interaction.deferReply();
-            client.log("Scanning QR-Code", "qr.js");
+            client.log("Scanning QR code", "qr.js");
 
             if (
                 interaction.options._hoistedOptions[0].attachment.contentType == "image/png" ||
@@ -31,31 +36,33 @@ export default async (client, interaction) => {
                 interaction.options._hoistedOptions[0].attachment.contentType == "image/jpg" ||
                 interaction.options._hoistedOptions[0].attachment.contentType == "image/gif"
             ) {
-                const url = `https://api.qrserver.com/v1/read-qr-code/?fileurl=${interaction.options._hoistedOptions[0].attachment.proxyURL.replace(
-                    "https://",
-                    "http://"
-                )}`;
+                // post request to qrserver.com
+                const url = `https://api.qrserver.com/v1/read-qr-code/?fileurl=${encodeURIComponent(interaction.options._hoistedOptions[0].attachment.proxyURL)}`;
 
                 const response = await fetch(url);
-                const json = await response.json();
+                var json = await response.json();
 
-                if (json[0].symbol[0].error)
-                    return interaction.editReply({
-                        content: "Der QR-Code konnte nicht gescannt werden!\nFehler: `" + json[0].symbol[0].error + "`",
+                if (json[0].symbol[0].error) {
+                    client.error(json[0].symbol[0].error, "qr.js");
+                    interaction.editReply({
+                        content: l10n.noScan[locale],
                         ephemeral: true,
                     });
-                const embed = new Discord.EmbedBuilder()
-                    .setTitle("QR-Code")
-                    .setColor(config.standard_color)
+                    return
+                }
+                    
+                const embed = new EmbedBuilder()
+                    .setTitle(l10n.qrCode[locale])
+                    .setColor(config.colors.default)
                     .setFooter({
                         text: interaction.guild.name,
                         iconURL: interaction.guild.iconURL(),
                     })
                     .setTimestamp()
                     .addFields([
-                        { name: "Typ", value: json[0].type, inline: true },
+                        { name: l10n.type[locale], value: json[0].type, inline: true },
                         {
-                            name: "Daten",
+                            name: l10n.content[locale],
                             value: json[0].symbol[0].data,
                             inline: true,
                         },
@@ -66,18 +73,17 @@ export default async (client, interaction) => {
                 return;
             } else {
                 interaction.editReply({
-                    content: "Das Bild muss im PNG, JPEG, JPG oder GIF Format sein.",
+                    content: l10n.fileType[locale],
                     ephemeral: true,
                 });
                 return;
             }
         }
     } catch (error) {
-        client.error(error, "qr.js");
+        client.error(json[0].symbol[0].error, "qr.js");
         interaction.editReply({
-            content: "Der QR-Code konnte nicht gescannt werden!\nFehler: `" + json[0].symbol[0].error + "`",
+            content: l10n.error[locale],
             ephemeral: true,
-        });
-        console.log(error);
+        });    
     }
 };

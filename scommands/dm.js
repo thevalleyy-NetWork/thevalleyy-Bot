@@ -3,11 +3,12 @@ import strings from "../localization.json" with {type: "json"};
 const localization = strings.slashCommands.dm;
 
 export default {
+    adminOnly: true,
     cooldown: 5,
     data: new SlashCommandBuilder()
         .setName("dm")
         .setDescription(localization.description.en)
-        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers) // TODO: admin only
+        .setContexts([0, 1])
         .setDescriptionLocalizations({
             "de": localization.description.de,
         })

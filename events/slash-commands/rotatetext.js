@@ -1,81 +1,23 @@
-export default (client, interaction) => {
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.rotateText;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
     const text = interaction.options.getString("text");
 
-    // const rotatedText = text.replace(/[a-z]/gi, (c) => {
-    //     return String.fromCharCode(
-    //         c.charCodeAt(0) + (c.toLowerCase() <= "m" ? 13 : -13)
-    //     );
-    // });
+    const charMap = {
+        "a": "ɐ", "b": "q", "c": "ɔ", "d": "p", "e": "ǝ", "f": "ɟ", "g": "ƃ", "h": "ɥ", "i": "ᴉ", "j": "ɾ", "k": "ʞ", "l": "ן", "m": "ɯ", "n": "u", "p": "d", "q": "b", "r": "ɹ", "t": "ʇ", "u": "n", "v": "ʌ", "w": "ʍ", "y": "ʎ",
+        "A": "∀", "B": "𐐒", "C": "Ɔ", "D": "ᗡ", "E": "Ǝ", "F": "Ⅎ", "G": "פ", "J": "ſ", "K": "ʞ", "L": "˥", "M": "W", "P": "Ԁ", "T": "┴", "U": "∩", "V": "Λ", "W": "M", "Y": "⅄",
+        "1": "Ɩ", "2": "ᄅ", "3": "Ɛ", "4": "ㄣ", "5": "ϛ", "6": "9", "7": "ㄥ", "8": "8", "9": "6", "0": "0",
+        "!": "¡", "?": "¿", ".": "˙", ",": "'", "'": ",", '"': ",,", "(": ")", ")": "(", "[": "]", "]": "[", "{": "}", "}": "{", "<": ">", ">": "<", "&": "⅋", "_": "‾"
+    };
 
-    const rotatedText = text
-        .replaceAll("a", "ɐ")
-        .replaceAll("b", "q")
-        .replaceAll("c", "ɔ")
-        .replaceAll("d", "p")
-        .replaceAll("e", "ǝ")
-        .replaceAll("f", "ɟ")
-        .replaceAll("g", "ƃ")
-        .replaceAll("h", "ɥ")
-        .replaceAll("i", "ᴉ")
-        .replaceAll("j", "ɾ")
-        .replaceAll("k", "ʞ")
-        .replaceAll("l", "ן")
-        .replaceAll("m", "ɯ")
-        .replaceAll("n", "u")
-        .replaceAll("p", "d")
-        .replaceAll("q", "b")
-        .replaceAll("r", "ɹ")
-        .replaceAll("t", "ʇ")
-        .replaceAll("u", "n")
-        .replaceAll("v", "ʌ")
-        .replaceAll("w", "ʍ")
-        .replaceAll("y", "ʎ")
-        .replaceAll("A", "∀")
-        .replaceAll("B", "𐐒")
-        .replaceAll("C", "Ɔ")
-        .replaceAll("D", "ᗡ")
-        .replaceAll("E", "Ǝ")
-        .replaceAll("F", "Ⅎ")
-        .replaceAll("G", "פ")
-        .replaceAll("J", "ſ")
-        .replaceAll("K", "ʞ")
-        .replaceAll("L", "˥")
-        .replaceAll("M", "W")
-        .replaceAll("P", "Ԁ")
-        .replaceAll("T", "┴")
-        .replaceAll("U", "∩")
-        .replaceAll("V", "Λ")
-        .replaceAll("W", "M")
-        .replaceAll("Y", "⅄")
-        .replaceAll("1", "Ɩ")
-        .replaceAll("2", "ᄅ")
-        .replaceAll("3", "Ɛ")
-        .replaceAll("4", "ㄣ")
-        .replaceAll("5", "ϛ")
-        .replaceAll("6", "9")
-        .replaceAll("7", "ㄥ")
-        .replaceAll("8", "8")
-        .replaceAll("9", "6")
-        .replaceAll("0", "0")
-        .replaceAll("!", "¡")
-        .replaceAll("?", "¿")
-        .replaceAll(".", "˙")
-        .replaceAll(",", "'")
-        .replaceAll("'", ",")
-        .replaceAll('"', ",,")
-        .replaceAll("(", ")")
-        .replaceAll(")", "(")
-        .replaceAll("[", "]")
-        .replaceAll("]", "[")
-        .replaceAll("{", "}")
-        .replaceAll("}", "{")
-        .replaceAll("<", ">")
-        .replaceAll(">", "<")
-        .replaceAll("&", "⅋")
-        .replaceAll("_", "‾");
+    const rotatedText = text.split("").map(char => charMap[char] || char).reverse().join("");
 
-    const flipped = rotatedText.split("").reverse().join("");
-
-    interaction.reply(flipped.substring(0, 2000));
+    interaction.reply(rotatedText.substring(0, 2000));
 };

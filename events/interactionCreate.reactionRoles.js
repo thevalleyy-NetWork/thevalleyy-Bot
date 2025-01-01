@@ -1,6 +1,11 @@
 import config from "../config.json" with { type: "json" };
 
-export default async (client, interaction) => {
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default async (client, interaction, locale) => {
     if (!interaction.isButton()) return;
     if (interaction.guild.id != config.guild) return;
     if (!interaction.customId.startsWith("REACTIONROLE")) return;

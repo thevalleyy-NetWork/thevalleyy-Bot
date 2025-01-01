@@ -1,23 +1,31 @@
-const Discord = require("discord.js");
+import { EmbedBuilder } from "discord.js";
 
-export default (client, interaction) => {
+import config from "../../config.json" with { type: "json" };
+import localization from "../../localization.json" with { type: "json" };
+const l10n = localization.content.tp;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").CommandInteraction} interaction
+ * @param {string} locale
+ */
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
-    const embed = new Discord.EmbedBuilder()
-        .setTitle("Abgerufen von: " + interaction.user.username)
-        .setDescription("Texturen für Minecraft. Von thevalleyy")
+    const embed = new EmbedBuilder()
+        .setTitle(l10n.title[locale])
         .addFields([
             {
-                name: "ACHTUNG",
-                value: "**Dieses Pack ist nichtmehr aktuell. Ich arbeite daran, es zu aktualisieren.**",
+                name: l10n.caution[locale],
+                value: `**${l10n.notUpToDate[locale]}**`,
             },
             {
-                name: "Version:",
-                value: "Minecraft Java 1.17 | Version der TexturePacks: Beta_0.3",
+                name: `${l10n.version[locale]}`,	
+                value: l10n.versionString[locale],
             },
             {
-                name: "Download",
-                value: "https://drive.google.com/file/d/1qmDFRpdOqF4HecllwdYI2kWZ--1FU46w/view?usp=sharing",
+                name: `${l10n.download[locale]}:`,
+                value: "[Google-Drive](https://drive.google.com/file/d/1qmDFRpdOqF4HecllwdYI2kWZ--1FU46w/view?usp=sharing)",
             },
         ])
         .setThumbnail(interaction.user.displayAvatarURL())
@@ -26,7 +34,6 @@ export default (client, interaction) => {
             iconURL: interaction.guild.iconURL(),
         })
         .setTimestamp()
-        .setAuthor({ name: "Infos zum TexturePack von thevalleyy" })
-        .setColor("#11dd9d");
+        .setColor(config.colors.default);
     interaction.reply({ embeds: [embed] });
 };

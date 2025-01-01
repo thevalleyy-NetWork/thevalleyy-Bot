@@ -24,6 +24,8 @@ const cooldownSet = new Set();
 
 // database
 const users = new Enmap({ name: "users", autoFetch: true, fetchAll: false });
+const logs = new Enmap({ name: "logs", autoFetch: true, fetchAll: false });
+const errors = new Enmap({ name: "errors", autoFetch: true, fetchAll: false });
 
 // client
 const client = new Client({
@@ -174,7 +176,15 @@ client.on("ready", async () => {
 // slash command handler
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
-        if (await client.blacklist.includes(interaction.user.id)) return;
+        if (await client.blacklist.includes(interaction.user.id) && interaction.user.id != config.owner) {
+            if (!interaction.isAutocomplete()) {
+                interaction.reply({
+                    content: "Du wurdest von der Benutzung von Slash-Commands ausgeschlossen.",
+                    ephemeral: true, //TODO: full translation
+                });
+            }
+            return;
+        }
 
         // maintenance mode
         const maintenance = await JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8")); // TODO: import it and see if it still works
@@ -182,6 +192,18 @@ client.on("interactionCreate", async (interaction) => {
             if (!interaction.isAutocomplete()) {
                 interaction.reply({
                     content: "🛑 Der Bot ist aktuell gesperrt. \n Grund: `" + maintenance.reason + "`",
+                    ephemeral: true,
+                });
+            }
+            return;
+        }
+
+        // admin only
+        const adminOnly = client.cmds[interaction.commandName + ".js"]?.adminOnly ? client.cmds[interaction.commandName + ".js"].adminOnly : false;
+        if (adminOnly && interaction.user.id != config.owner) {
+            if (!interaction.isAutocomplete()) {
+                interaction.reply({
+                    content: "🔒 Dieser Command ist nur für Administratoren verfügbar.",
                     ephemeral: true,
                 });
             }
@@ -242,7 +264,7 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.guild) interaction.guild.members.fetch();
 
         const eventFile = await import(`./events/slash-commands/${interaction.commandName}.js`);
-        eventFile.default(client, interaction);
+        eventFile.default(client, interaction, interaction.locale == "de" ? "de" : "en");
 
         if (interaction.isAutocomplete()) return;
 
@@ -340,35 +362,77 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 // custom log override
-client.modLog = async function (message, file = "custom") {
+client.modLog = async function (message = "not provided", file = "custom") {
     const time = Date.now();
+    const ID = client.log(message, file, time, true);
     const embed = new EmbedBuilder()
-        .setTitle("Mod-Log")
-        .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
-        .setFooter({ text: "origin: " + file + " | " + gettime(true, time) })
-        .setColor(config.colors.info);
+            .setTitle("Mod-Log")
+            .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
+            .addFields([
+                {
+                    name: "ID",
+                    value: `\`${ID}\``,
+                    inline: true,
+                },
+                {
+                    name: "Query",
+                    value: `</log list:1320738378156867645> \`${ID}\``,
+                    inline: true,
+                },
+                {
+                    name: "Origin",
+                    value: `\`${file}\``,
+                    inline: true,
+                }
+            ])
+            .setFooter({
+                text: gettime(true, time),
+            })
+            .setColor(config.colors.error);
 
-    // log to modlog database, get id and add to embed
-    // client.log(message, file, time, 1); should return the id
-
-    client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] });
+        client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] });
 };
 
-client.log = async function (message, file = "custom", time = Date.now(), modlog = 0) {
-    //TODO log to database, return id
+client.log = function (message = "not provided", file = "custom", time = Date.now(), modlog = false) {
+    try {
+        const ID = logs.autonum;
+        logs.set(ID, { timestamp: time, message: message, origin: file, modlog: modlog });
+        return ID;
+    } catch (e) {
+        console.log(message, file);
+        client.error(e, "main.js");
+    }
 };
 
 // custom error override
-client.error = async function (message = "not provided", file = "custom") {
+client.error = function (message = "not provided", file = "custom") {
     try {
         const time = Date.now();
-        //TODO: log to database, get id and add to embed
+        const ID = errors.autonum;
+        errors.set(ID, { timestamp: time, message: message, origin: file });
 
         const embed = new EmbedBuilder()
             .setTitle("Error")
             .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
+            .addFields([
+                {
+                    name: "ID",
+                    value: `\`${ID}\``,
+                    inline: true,
+                },
+                {
+                    name: "Query",
+                    value: `</error list:1320738378156867638> \`${ID}\``,
+                    inline: true,
+                },
+                {
+                    name: "Origin",
+                    value: `\`${file}\``,
+                    inline: true,
+                }
+            ])
             .setFooter({
-                text: "origin: " + file + " | " + gettime(true, time),
+                text: gettime(true, time),
             })
             .setColor(config.colors.error);
 
@@ -380,8 +444,11 @@ client.error = async function (message = "not provided", file = "custom") {
     }
 };
 
-// database
-client.db = users;
+// databases
+client.db = {};
+client.db.users = users;
+client.db.logs = logs;
+client.db.errors = errors;
 
 // login
 client.login(config.token);

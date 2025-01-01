@@ -1,6 +1,5 @@
-const config = require("../config.json");
-
-const { ActionRowBuilder, Message, EmbedBuilder, ButtonBuilder } = require("discord.js");
+import config from "../config.json" with { type: "json" };
+import { ActionRowBuilder, Message, EmbedBuilder, ButtonBuilder } from "discord.js";
 
 /**
  * Creates a pagination embed
