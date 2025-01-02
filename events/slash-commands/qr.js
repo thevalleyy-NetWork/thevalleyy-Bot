@@ -19,7 +19,7 @@ export default async (client, interaction, locale) => {
 
             const attachment = new AttachmentBuilder().setFile(url).setName("qr.png");
             interaction.reply({
-                content: `${l10n.generated[locale].replace("{text}", `\`${interaction.options._hoistedOptions[0].value.substring(0, 1000)}\``)}`,
+                content: `${l10n.generated[locale].replace("{text}", interaction.options._hoistedOptions[0].value.substring(0, 1000))}`,
                 files: [attachment],
                 ephemeral: true,
             });

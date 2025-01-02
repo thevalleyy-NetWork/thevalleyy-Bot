@@ -12,7 +12,7 @@ export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
     if (!interaction.guild.members.cache.get(interaction.options.get("user").user.id))
         return interaction.reply({
-            content: l10n.notAvailable[locale].replace("{user}", `\`${interaction.options.get("user").user.tag}\``),
+            content: l10n.notAvailable[locale].replace("{user}", interaction.options.get("user").user.tag),
             ephemeral: true,
         });
 
@@ -21,7 +21,7 @@ export default async (client, interaction, locale) => {
 
     if (user.user.id == config.owner || user.user.id == client.user.id) {
         interaction.reply({
-            content: l10n.notAllowed[locale].replace("{user}", `\`${user.user.tag}\``),
+            content: l10n.notAllowed[locale].replace("{user}", user.user.tag),
             ephemeral: true,
         });
         return;
@@ -29,9 +29,9 @@ export default async (client, interaction, locale) => {
 
     try {
         await user.user.send(text.substring(0, 2000));
-        interaction.reply({ content: l10n.success[locale].replace("{user}", `\`${user.user.tag}\``), ephemeral: true });
-        client.modLog(l10n.modLog[locale].replace("{executor}", interaction.user.tag).replace("{user}", user.user.tag), "dm.js");
+        interaction.reply({ content: l10n.success[locale].replace("{user}", user.user.tag), ephemeral: true });
+        client.log(l10n.log[locale].replace("{executor}", interaction.user.tag).replace("{user}", user.user.tag), "dm.js");
     } catch (error) {
-        interaction.reply({ content: l10n.error[locale].replace("{user}", `\`${user.user.tag}\``), ephemeral: true });
+        interaction.reply({ content: l10n.error[locale].replace("{user}", user.user.tag), ephemeral: true });
     }
 };

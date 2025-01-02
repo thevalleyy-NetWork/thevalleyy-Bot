@@ -23,7 +23,7 @@ export default async (client, interaction, locale) => {
 
     try {
         client.log(`Evaluating code: ${evalcode} (${interaction.user.tag})`, "eval.js");
-        const result = await eval(evalcode); //TODO: await eval
+        const result = await eval(evalcode);
         let output = result;
 
         if (result instanceof Promise) {

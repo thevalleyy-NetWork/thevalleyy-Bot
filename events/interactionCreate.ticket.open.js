@@ -1,3 +1,9 @@
+import { EmbedBuilder } from "discord.js";
+import config from "../config.json" with { type: "json"}
+
+import localization from "../localization.json" with { type: "json" };
+const l10n = localization.events.interactionCreate.ticket.open;
+
 function time() {
     var date = new Date();
 
@@ -34,39 +40,35 @@ function time() {
     return datetime;
 }
 
-import { EmbedBuilder } from "discord.js";
-import config from "../config.json" with { type: "json"}
-
 /**
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").CommandInteraction} interaction
- * @param {string} locale
  */
-export default (client, interaction, locale) => {
+export default (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.customId !== "TICKET_create") return;
 
-    // user wants to open a ticket
+    const locale = interaction.locale == "de" ? "de" : "en";
+
     const server = interaction.guild;
-    const ticketName = "🎫-" + interaction.user.username.toLowerCase();
+    const ticketName = config.ticketprefix + interaction.user.tag.toLowerCase();
 
     try {
-        const firstTicket = server.channels.cache.find((c) => c.name.toLowerCase() === ticketName);
+        const firstTicket = server.channels.cache.get(config.channels.ticketcategory).children.cache.find((c) => c.topic.includes(interaction.user.id));
         if (firstTicket)
             return interaction.reply({
-                content: "Du hast bereits ein offenes Ticket, <#" + firstTicket.id + ">",
+                content: l10n.alreadyOpen[locale].replace("{channel}", "<#" + firstTicket.id + ">"),
                 ephemeral: true,
             });
 
-        const suprole = interaction.guild.roles.cache.find((role) => role.name === "Supporter"); //TODO: change to config
-        const modrole = interaction.guild.roles.cache.find((role) => role.name === "Moderator");
-
-        // ticket can be created
-        const category = server.channels.cache.find((c) => c.name === "Tickets");
+        const suprole = interaction.guild.roles.cache.get(config.roles.supporter);
+        const modrole = interaction.guild.roles.cache.get(config.roles.moderator);
+        
+        const category = server.channels.cache.get(config.channels.ticketcategory);
         server.channels
             .create({
                 name: ticketName,
-                topic: "Created at: " + time() + " by " + interaction.user.tag + " (" + interaction.user.id + ")",
+                topic: l10n.topic[locale].replace("{user}", "<@" + interaction.user.id + ">").replace("{time}", time()),
                 position: 0,
                 parent: category,
             })
@@ -83,6 +85,7 @@ export default (client, interaction, locale) => {
 
                 channel.permissionOverwrites.edit(server.id, {
                     ViewChannel: false,
+                    SendMessages: false,
                 });
 
                 channel.permissionOverwrites.edit(modrole.id, {
@@ -109,19 +112,13 @@ export default (client, interaction, locale) => {
                 });
 
                 interaction.reply({
-                    content: "Dein Ticket wurde in <#" + channel.id + "> erstellt!",
+                    content: l10n.createString[locale].replace("{channel}", "<#" + channel.id + ">"),
                     ephemeral: true,
                 });
 
                 const embed = new EmbedBuilder()
-                    .setTitle("Heyho, " + interaction.user.username + ", \nHerzlich Willkommen im Support")
-                    .setDescription(
-                        "Hier helfen dir die <@&" +
-                            suprole +
-                            "> und \n<@&" +
-                            modrole +
-                            ">en bei deinen Anliegen. \nDa wir aber keine Maschinen sind, kann es \nmanchmal ein bisschen dauern, bis du eine \nRückmeldung bekommst."
-                    )
+                    .setTitle(l10n.title[locale].replace("{user}", interaction.user.tag))
+                    .setDescription(l10n.description[locale].replace("{suprole}", "<@&" + suprole + ">").replace("{modrole}", "<@&" + modrole + ">"))
                     .setColor(config.colors.purple)
                     .setFooter({
                         text: interaction.guild.name,
@@ -129,13 +126,13 @@ export default (client, interaction, locale) => {
                     })
                     .setThumbnail("https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png")
                     .setAuthor({
-                        name: "Support-Ticket",
+                        name: l10n.ticket[locale],
                         iconURL: interaction.user.avatarURL(),
                     })
                     .addFields([
                         {
-                            name: "Bitte halte dich an die Regeln und akzeptiere Entscheidungen des Teams.",
-                            value: `**Mit \`\`/close\`\` kannst du das Ticket schließen.**`,
+                            name: l10n.rules[locale],
+                            value: l10n.close[locale],
                         },
                     ]);
 
@@ -144,12 +141,12 @@ export default (client, interaction, locale) => {
                 });
 
                 const embedLog = new EmbedBuilder()
-                    .setTitle("Ein Ticket wurde erstellt")
+                    .setTitle(l10n.created[locale])
                     .setThumbnail("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnlLhEcHAO0tT48khBLEl8P70JHpAHJumUgg&usqp=CAU%27")
                     .addFields([
                         {
                             name: interaction.user.tag,
-                            value: " in <#" + channel.id + ">",
+                            value: "in <#" + channel.id + ">",
                         },
                     ])
                     .setFooter({
@@ -159,6 +156,11 @@ export default (client, interaction, locale) => {
                     .setTimestamp()
                     .setColor(config.colors.info);
                 client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embedLog] });
+                client.channels.cache.get(config.channels.modlogchannel).send({ content: "<@&" + modrole + "> & <@&" + suprole + ">" }).then((message) => {
+                    message.delete();
+                });
+            
+                client.log(interaction.user.tag + " opened a ticket", "ticket.open.js");
             });
     } catch (err) {
         client.error(err, "ticket.open.js");

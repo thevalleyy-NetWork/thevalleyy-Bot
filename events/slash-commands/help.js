@@ -32,7 +32,7 @@ export default async (client, interaction, locale) => {
             .addFields([
                 {
                     name: l10n.baseEmbed.fields.about.name[locale],
-                    value: l10n.baseEmbed.fields.about.value[locale],
+                    value: l10n.baseEmbed.fields.about.value[locale].replace("{user}", interaction.user.tag),
                     inline: true,
                 },
                 {

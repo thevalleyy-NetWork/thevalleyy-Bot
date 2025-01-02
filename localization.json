@@ -964,28 +964,27 @@
                 "en": "{user} was removed from the blacklist by {executor}."
             },
             "replyRemoved": {
-                "de": "{user} wurde von der Blacklist entfernt.",
-                "en": "{user} was removed from the blacklist."
+                "de": "`{user}` wurde von der Blacklist entfernt.",
+                "en": "`{user}` was removed from the blacklist."
             },
             "added": {
                 "de": "{user} wurde durch {executor} zur Blacklist hinzugefügt.",
                 "en": "{user} was added to the blacklist by {executor}."
             },
             "replyAdded": {
-                "de": "{user} wurde zur Blacklist hinzugefügt.",
-                "en": "{user} was added to the blacklist."
+                "de": "`{user}` wurde zur Blacklist hinzugefügt.",
+                "en": "`{user}` was added to the blacklist."
             },
             "notAllowed": {
-                "de": "{user} kann nicht zur Blacklist hinzugefügt werden.",
-                "en": "{user} cannot be added to the blacklist."
+                "de": "`{user}` kann nicht zur Blacklist hinzugefügt werden.",
+                "en": "`{user}` cannot be added to the blacklist."
             }
         },
         "caesar": {},
-        "close": {},
         "clear": {
             "wrongAmount": {
-                "de": "Bitte gib eine Zahl von 1 - 100 an.",
-                "en": "Please specify a number from 1 - 100."
+                "de": "Bitte gib eine Zahl von `1` - `100` an.",
+                "en": "Please specify a number from `1` - `100`."
             },
             "modLog": {
                 "singular": {
@@ -1009,41 +1008,79 @@
             },
             "done": {
                 "singular": {
-                    "de": "{amount} Nachricht wurde gelöscht.",
-                    "en": "{amount} message was deleted."
+                    "de": "`{amount}` Nachricht wurde gelöscht.",
+                    "en": "`{amount}` message was deleted."
                 },
                 "plural": {
-                    "de": "{amount} Nachrichten wurden gelöscht.",
-                    "en": "{amount} messages were deleted."
+                    "de": "`{amount}` Nachrichten wurden gelöscht.",
+                    "en": "`{amount}` messages were deleted."
                 }
+            }
+        },
+        "close": {
+            "noTicket": {
+                "de": "Dieser Kanal ist kein geöffnetes Ticket.",
+                "en": "This channel is not an open ticket."
+            },
+            "selfClose": {
+                "de": "Du kannst nur dein eigenes Ticket schließen.",
+                "en": "You can only close your own ticket."
+            },
+            "title": {
+                "de": "Wie soll nun weiter verfahren werden?",
+                "en": "How should we proceed now?"
+            },
+            "ticketArchive": {
+                "de": "Ticket archivieren?",
+                "en": "Archive ticket?"
+            },
+            "or": {
+                "de": "oder",
+                "en": "or"
+            },
+            "yes": {
+                "de": "<:checkmarkEmbed:1005146896278503597> - Ja",
+                "en": "<:checkmarkEmbed:1005146896278503597> - Yes"
+            },
+            "no": {
+                "de": "<:crossEmbed:1005146898451140749> - Nein",
+                "en": "<:crossEmbed:1005146898451140749> - No"
+            },
+            "modLog": {
+                "de": "{user} hat das Ticket {channel} geschlossen.",
+                "en": "{user} closed the ticket {channel}."
+            },
+            "error": {
+                "de": "Es gab einen Fehler beim Schließen des Tickets.",
+                "en": "There was an error while closing the ticket."
             }
         },
         "dm": {
             "notAvailable": {
-                "de": "{user} ist nicht auf diesem Server!",
-                "en": "{user} is not on this server!"
+                "de": "`{user}` ist nicht auf diesem Server!",
+                "en": "`{user}` is not on this server!"
             },
             "notAllowed": {
-                "de": "DMs an {user} sind nicht erlaubt.",
-                "en": "DMs to {user} are not allowed."
+                "de": "DMs an `{user}` sind nicht erlaubt.",
+                "en": "DMs to `{user}` are not allowed."
             },
             "success": {
-                "de": "Nachricht an {user} gesendet.",
-                "en": "Message sent to {user}."
+                "de": "Nachricht an `{user}` gesendet.",
+                "en": "Message sent to `{user}`."
             },
-            "modLog": {
+            "log": {
                 "de": "{executor} hat eine Nachricht an {user} gesendet.",
                 "en": "{executor} sent a message to {user}."
             },
             "error": {
-                "de": "Die Nachricht konnte nicht an {user} gesendet werden.",
-                "en": "The message could not be sent to {user}."
+                "de": "Die Nachricht konnte nicht an `{user}` gesendet werden.",
+                "en": "The message could not be sent to `{user}`."
             }
         },
         "error": {
             "illegalNumber": {
-                "de": "Die Anzahl muss zwischen {min} und {max} liegen!",
-                "en": "The amount must be between {min} and {max}!"
+                "de": "Die Anzahl muss zwischen `{min}` und `{max}` liegen!",
+                "en": "The amount must be between `{min}` and `{max}`!"
             },
             "noError": {
                 "de": "Es gibt keine Fehlermeldung mit der ID `{id}`.",
@@ -1119,8 +1156,8 @@
                             "en": "About me"
                         },
                         "value": {
-                            "de": "Hey! <:Okayge:840151989995438120> \nFür Hilfe zu den Commands kannst du gerne </help command:1320738378156867642> verwenden. \nUm Fehler zu melden, kannst du mir eine DM schreiben. \nFür mehr Infos zu mir kann ich dir </ping:1320738378286895123> empfehlen. \nViel Spaß!",
-                            "en": "Hey! <:Okayge:840151989995438120> \nFor help with the commands, feel free to use </help command:1320738378156867642>. \nTo report bugs, you can DM me. \nFor more information about me, use </ping:1320738378286895123>. \nHave fun!"
+                            "de": "Hey {user}! <:Okayge:840151989995438120> \nFür Hilfe zu den Commands kannst du gerne </help command:1320738378156867642> verwenden. Um Fehler zu melden, kannst du mir eine DM schreiben. Für mehr Infos zu mir kann ich dir </ping:1320738378286895123> empfehlen. \nViel Spaß!",
+                            "en": "Hey {user}! <:Okayge:840151989995438120> \nFor help with the commands, feel free to use </help command:1320738378156867642>. To report bugs, you can DM me. For more information about me, use </ping:1320738378286895123>. \nHave fun!"
                         }
                     },
                     "supporters": {
@@ -1159,8 +1196,8 @@
                             "en": "👥 Everyone else"
                         },
                         "value": {
-                            "de": "Danke an alle anderen, die mir bei der Entwicklung dieses Bots geholfen haben. \nIch hoffe, dass ihr euch auch so viel Spaß mit diesem Bot habt, wie ich ihn habe.",
-                            "en": "Thanks to everyone else who helped me develop this bot. \nI hope you have as much fun with this bot as I do."
+                            "de": "Danke an alle anderen, die mir bei der Entwicklung dieses Bots geholfen haben.",
+                            "en": "Thanks to everyone else who helped me develop this bot."
                         }
                     }
                 }
@@ -1570,8 +1607,8 @@
                 "en": "To this instruction"
             },
             "noImages": {
-                "de": "Es wurden keine Bilder für {setName} gefunden.",
-                "en": "No images found for {setName}."
+                "de": "Es wurden keine Bilder für `{setName}` gefunden.",
+                "en": "No images found for `{setName}`."
             },
             "image": {
                 "de": "Bild",
@@ -1580,8 +1617,8 @@
         },
         "log": {
             "illegalNumber": {
-                "de": "Die Anzahl muss zwischen {min} und {max} liegen!",
-                "en": "The amount must be between {min} and {max}!"
+                "de": "Die Anzahl muss zwischen `{min}` und `{max}` liegen!",
+                "en": "The amount must be between `{min}` and `{max}`!"
             },
             "noLog": {
                 "de": "Es gibt keinen Logeintrag mit der ID `{id}`.",
@@ -1712,16 +1749,16 @@
                 "en": "You cannot mute yourself!"
             },
             "alreadyMuted": {
-                "de": "{user} ist bereits gemuted.",
-                "en": "{user} is already muted."
+                "de": "`{user}` ist bereits gemuted.",
+                "en": "`{user}` is already muted."
             },
             "muteString": {
                 "de": "Mute von {executor}, Grund: {reason}",
                 "en": "Mute by {executor}, reason: {reason}"
             },
             "muted": {
-                "de": "{user} wurde gemutet.",
-                "en": "{user} was muted."
+                "de": "`{user}` wurde gemutet.",
+                "en": "`{user}` was muted."
             },
             "muteLogPerm": {
                 "de": "{user} wurde von {executor} wegen {reason} permanent gemutet.",
@@ -1732,12 +1769,12 @@
                 "en": "{user} was muted by {executor} for {duration} minutes for {reason}."
             },
             "muteMessage": {
-                "de": "Du wurdest von {executor} auf {guild} gemutet. \nDauer: {duration} \nGrund: {reason}",
-                "en": "You were muted by {executor} on {guild}. \nDuration: {duration} \nReason: {reason}"
+                "de": "Du wurdest von `{executor}` auf `{guild}` gemutet. \nDauer: `{duration}` \nGrund: `{reason}`",
+                "en": "You were muted by `{executor}` on `{guild}`. \nDuration: `{duration}` \nReason: `{reason}`"
             },
             "timeoutMessage": {
-                "de": "Du wurdest von {executor} auf {guild} gemutet. \nUnmute: {duration} \nGrund: {reason}",
-                "en": "You were muted by {executor} on {guild}. \nUnmute: {duration} \nReason: {reason}"
+                "de": "Du wurdest von `{executor}` auf `{guild}` gemutet. \nUnmute: `{duration}` \nGrund: `{reason}`",
+                "en": "You were muted by `{executor}` on `{guild}`. \nUnmute: `{duration}` \nReason: `{reason}`"
             },
             "error": {
                 "de": "Es gab einen Fehler beim Muten.",
@@ -1790,7 +1827,7 @@
         },
         "packages": {
             "packages": {
-                "de": "Pakete",
+                "de": "Packages",
                 "en": "Packages"
             },
             "startFile": {
@@ -1848,8 +1885,8 @@
                 "en": "Base"
             },
             "tooLarge": {
-                "de": "Die Anzahl der Stellen darf nicht größer als {max} sein.",
-                "en": "The number of digits must not be greater than {max}."
+                "de": "Die Anzahl der Stellen darf nicht größer als `{max}` sein.",
+                "en": "The number of digits must not be greater than `{max}`."
             }
         },
         "ping": {
@@ -1926,8 +1963,8 @@
                 "en": "There was an error while processing the QR code."
             },
             "generated": {
-                "de": "QR-Code für {text}",
-                "en": "QR code for {text}"
+                "de": "QR-Code für `{text}`",
+                "en": "QR code for `{text}`"
             },
             "fileType": {
                 "de": "Das Bild muss im PNG, JPEG, JPG oder GIF Format sein.",
@@ -2140,8 +2177,8 @@
                 "en": "The user is not on this server."
             },
             "notListening": {
-                "de": "{user} hört gerade nichts auf Spotify.",
-                "en": "{user} is not listening to anything on Spotify."
+                "de": "`{user}` hört gerade nichts auf Spotify.",
+                "en": "`{user}` is not listening to anything on Spotify."
             },
             "listening": {
                 "de": "{user} hört gerade auf Spotify",
@@ -2255,24 +2292,24 @@
                 "en": "You cannot unmute yourself!"
             },
             "notMuted": {
-                "de": "{user} ist nicht gemutet.",
-                "en": "{user} is not muted."
+                "de": "`{user}` ist nicht gemutet.",
+                "en": "`{user}` is not muted."
             },
             "unmuteString": {
                 "de": "Entmute von {executor}, Grund: {reason}",
                 "en": "Unmute by {executor}, reason: {reason}"
             },
             "unmuted": {
-                "de": "{user} wurde entmutet.",
-                "en": "{user} was unmuted."
+                "de": "`{user}` wurde entmutet.",
+                "en": "`{user}` was unmuted."
             },
             "unmuteLog": {
                 "de": "{user} wurde von {executor} wegen {reason} entmutet.",
                 "en": "{user} was unmuted by {executor} for {reason}."
             },
             "unmuteMessage": {
-                "de": "Du wurdest von {executor} auf {guild} entmutet. \nGrund: {reason}",
-                "en": "You were unmuted by {executor} on {guild}. \nReason: {reason}"
+                "de": "Du wurdest von `{executor}` auf `{guild}` entmutet. \nGrund: `{reason}`",
+                "en": "You were unmuted by `{executor}` on `{guild}`. \nReason: `{reason}`"
             },
             "error": {
                 "de": "Es gab einen Fehler beim Entmuten.",
@@ -2371,6 +2408,388 @@
             "permissions": {
                 "de": "Berechtigungen",
                 "en": "Permissions"
+            }
+        }
+    },
+    "events": {
+        "guildMemberAdd": {
+            "memberCount": {
+                "members": {
+                    "singular": {
+                        "de": "Mitglied",
+                        "en": "member"
+                    },
+                    "plural": {
+                        "de": "Mitglieder",
+                        "en": "members"
+                    }
+                },
+                "error": {
+                    "de": "Konfigurierter Mitglieder-Channel nicht gefunden.",
+                    "en": "Configured member channel not found."
+                },
+                "reason": {
+                    "de": "Aktualisiere Mitglieder-Channel",
+                    "en": "Update member channel"
+                }
+            },
+            "welcome": {
+                "message": {
+                    "de": "Herzlich Willkommen, {member}, auf dem **{guild}**! \nLies dir noch das {rules} durch, dann kannst du loslegen!",
+                    "en": "Welcome, {member}, to **{guild}**! \nRead the {rules} and then you can get started!"
+                },
+                "reaction": {
+                    "de": "a:PeepoHey:844822512495755264",
+                    "en": "a:PeepoHey:844822512495755264"
+                }
+            }
+        },
+        "guildMemberUpdate": {
+            "nickname": {
+                "changed": {
+                    "de": "Nickname geändert",
+                    "en": "Nickname changed"
+                },
+                "user": {
+                    "de": "Benutzer",
+                    "en": "User"
+                },
+                "before": {
+                    "de": "Vorher",
+                    "en": "Before"
+                },
+                "now": {
+                    "de": "Jetzt",
+                    "en": "Now"
+                },
+                "executor": {
+                    "de": "Geändert von",
+                    "en": "Changed by"
+                }
+            },
+            "rulesAccepted": {
+                "roleNotFound": {
+                    "de": "Konfigurierte NiceOne/Mitglied Rolle nicht gefunden.",
+                    "en": "Configured NiceOne/member role not found."
+                },
+                "message": {
+                    "de": "Serverregeln akzeptiert von {member}, NiceOne erhalten: {niceone}",
+                    "en": "Server rules accepted by {member}, received NiceOne: {niceone}"
+                }
+            }
+        },
+        "interactionCreate": {
+            "isButton": {},
+            "reactionRoles": {
+                "error": {
+                    "de": "Die konfigurierten Reaktionsrollen konnten nicht gefunden werden.",
+                    "en": "The configured reaction roles could not be found."
+                },
+                "alreadyHas": {
+                    "de": "Du hast die Rolle {role} bereits.",
+                    "en": "You already have the role {role}."
+                },
+                "alreadyRemoved": {
+                    "de": "Du hast die Rolle {role} bereits entfernt.",
+                    "en": "You already removed the role {role}."
+                },
+                "added": {
+                    "de": "Rolle {role} zu {member} hinzugefügt.",
+                    "en": "Role {role} added to {member}."
+                },
+                "removed": {
+                    "de": "Rolle {role} von {member} entfernt.",
+                    "en": "Role {role} removed from {member}."
+                },
+                "addedString": {
+                    "de": "Rolle {role} hinzugefügt.",
+                    "en": "Role {role} added."
+                },
+                "removedString": {
+                    "de": "Rolle {role} entfernt.",
+                    "en": "Role {role} removed."
+                }
+            },
+            "requestLyrics": {
+                "searching": {
+                    "de": "Suche nach: `{song}`...",
+                    "en": "Searching for: `{song}`..."
+                },
+                "error": {
+                    "de": "Es gab einen Fehler...",
+                    "en": "There was an error..."
+                }
+            },
+            "ticket": {
+                "open": {
+                    "alreadyOpen": {
+                        "de": "Du hast bereits ein offenes Ticket in {channel}.",
+                        "en": "You already have an open ticket in {channel}."
+                    },
+                    "createString": {
+                        "de": "Ticket erstellt in {channel}.",
+                        "en": "Ticket created in {channel}."
+                    },
+                    "topic": {
+                        "de": "Erstellt am {time} von {user}",
+                        "en": "Created at {time} by {user}"
+                    },
+                    "title": {
+                        "de": "Hey {user}, \nHerzlich Willkommen im Support!",
+                        "en": "Hey {user}, \nWelcome to the support!"
+                    },
+                    "description": {
+                        "de": "Hier helfen dir die {suprole} und {modrole} bei deinem Anliegen gerne weiter. Da wir aber nicht immer online sind, bitten wir dich um etwas Geduld.",
+                        "en": "Here the {suprole} and {modrole} will be happy to help you with your request. Since we are not always online, we ask for your patience."
+                    },
+                    "ticket": {
+                        "de": "Support-Ticket",
+                        "en": "Support ticket"
+                    },
+                    "rules": {
+                        "de": "Bitte halte dich an die Regeln und akzeptiere die Entscheidungen des Teams",
+                        "en": "Please follow the rules and accept the decisions of the team"
+                    },
+                    "close": {
+                        "de": "Mit </close:1320738378051752015> kannst du das Ticket schließen",
+                        "en": "You can close the ticket using </close:1320738378051752015>"
+                    },
+                    "created": {
+                        "de": "Ein Ticket wurde erstellt",
+                        "en": "A ticket has been created"
+                    }
+                },
+                "delete": {
+                    "notClosed": {
+                        "de": "Dieser Kanal ist kein geschlossenes Ticket.",
+                        "en": "This channel is not a closed ticket."
+                    },
+                    "noPermission": {
+                        "de": "Nur {modrole} und {suprole} dürfen Tickets löschen.",
+                        "en": "Only {modrole} and {suprole} are allowed to delete tickets."
+                    },
+                    "error": {
+                        "de": "Es gab einen Fehler beim Löschen des Tickets.",
+                        "en": "There was an error while deleting the ticket."
+                    }
+                },
+                "archive": {
+                    "notClosed": {
+                        "de": "Dieser Kanal ist kein geschlossenes Ticket.",
+                        "en": "This channel is not a closed ticket."
+                    },
+                    "success": {
+                        "de": "Das Ticket wurde durch `{executor}` archiviert.",
+                        "en": "The ticket was archived by `{executor}`."
+                    },
+                    "noPermission": {
+                        "de": "Nur {modrole} und {suprole} dürfen Tickets löschen.",
+                        "en": "Only {modrole} and {suprole} are allowed to delete tickets."
+                    },
+                    "error": {
+                        "de": "Es gab einen Fehler beim Archivieren des Tickets.",
+                        "en": "There was an error while archiving the ticket."
+                    }
+                }
+            }
+        },
+        "messageCreate": {
+            "dm": {
+                "reaction": {
+                    "de": "<:checkmarkEmbed:1005146896278503597>",
+                    "en": "<:checkmarkEmbed:1005146896278503597>"
+                }
+            },
+            "prefixping": {
+                "reply": {
+                    "de": "Hallo `{user}`, ich nutze **Slash-Commands**! <:POGGIES:786251968841515049>\nFür Hilfe nutze </help about:1320738378156867642>. Viel Spaß!",
+                    "en": "Hello `{user}`, I use **Slash-Commands**! <:POGGIES:786251968841515049>\nFor help use </help about:1320738378156867642>. Have fun!"
+                }
+            }
+        },
+        "ready": {
+            "buildStructure": {},
+            "mcping": {
+                "newRecord": {
+                    "de": "Neuer Spielerrekord!",
+                    "en": "New player record!"
+                },
+                "description": {
+                    "de": "**{players}** Spieler online!\nVorheriger Rekord: {oldRecord} Spieler",
+                    "en": "**{players}** players online!\nPrevious record: {oldRecord} players"
+                },
+                "maintenance": {
+                    "de": "Wartungen",
+                    "en": "Maintenance"
+                },
+                "lastPinged": {
+                    "de": "Letzter Ping",
+                    "en": "Last ping"
+                }
+            },
+            "startup": {
+                "maintenance": {
+                    "de": "🛑 Wartungsmodus",
+                    "en": "🛑 Maintenance mode"
+                },
+                "with": {
+                    "de": "mit",
+                    "en": "with"
+                }
+            }
+        },
+        "voiceStateUpdate": {
+            "channel": {
+                "joined": {
+                    "de": "Kanal betreten",
+                    "en": "Joined channel"
+                },
+                "left": {
+                    "de": "Kanal verlassen",
+                    "en": "Left channel"
+                },
+                "switched": {
+                    "de": "Kanal gewechselt",
+                    "en": "Switched channel"
+                },
+                "member": {
+                    "de": "Mitglied",
+                    "en": "Member"
+                },
+                "before": {
+                    "de": "Vorher",
+                    "en": "Before"
+                },
+                "now": {
+                    "de": "Jetzt",
+                    "en": "Now"
+                },
+                "sessionID": {
+                    "de": "Session-ID",
+                    "en": "Session ID"
+                },
+                "noChannel": {
+                    "de": "Kein Kanal",
+                    "en": "No channel"
+                }
+            }
+        }
+    },
+    "main": {
+        "blacklist": {
+            "de": "Du wurdest von der Benutztung von Slash-Commands ausgeschlossen.",
+            "en": "You have been banned from using slash commands."
+        },
+        "maintenance": {
+            "de": "🛑 Der Bot ist aktuell gesperrt. \nGrund: `{reason}`",
+            "en": "🛑 The bot is currently locked. \nReason: `{reason}`"
+        },
+        "adminOnly": {
+            "de": "🔒 Dieser Befehl kann nur von Administratoren verwendet werden.",
+            "en": "🔒 This command can only be used by administrators."
+        },
+        "time": {
+            "hours": {
+                "singular": {
+                    "de": "eine Stunde",
+                    "en": "one hour"
+                },
+                "plural": {
+                    "de": "Stunden",
+                    "en": "hours"
+                }
+            },
+            "minutes": {
+                "singular": {
+                    "de": "eine Minute",
+                    "en": "one minute"
+                },
+                "plural": {
+                    "de": "Minuten",
+                    "en": "minutes"
+                }
+            },
+            "seconds": {
+                "singular": {
+                    "de": "eine Sekunde",
+                    "en": "one second"
+                },
+                "plural": {
+                    "de": "Sekunden",
+                    "en": "seconds"
+                }
+            }
+        },
+        "cooldown": {
+            "de": "⏳ `{command}` hat einen Cooldown von `{time}`",
+            "en": "⏳ `{command}` has a cooldown of `{time}`"
+        },
+        "slashCommandLog": {
+            "title": {
+                "de": "Slash-Command",
+                "en": "Slash command"
+            },
+            "command": {
+                "de": "Befehl",
+                "en": "Command"
+            },
+            "channel": {
+                "de": "Kanal",
+                "en": "Channel"
+            },
+            "timestamp": {
+                "de": "Zeitstempel",
+                "en": "Timestamp"
+            },
+            "guildID": {
+                "de": "Guild-ID",
+                "en": "Guild ID"
+            },
+            "guildName": {
+                "de": "Guild-Name",
+                "en": "Guild name"
+            },
+            "link": {
+                "de": "Link",
+                "en": "Link"
+            },
+            "linkStringGuild": {
+                "de": "[Link zu {user}'s Interaktion]({link})",
+                "en": "[Link to {user}'s interaction]({link})"
+            },
+            "userID": {
+                "de": "User-ID",
+                "en": "User ID"
+            },
+            "userName": {
+                "de": "Benutzername",
+                "en": "Username"
+            },
+            "linkStringUser": {
+                "de": "[Link zu {user}'s Discord-Account]({link})",
+                "en": "[Link to {user}'s Discord account]({link})"
+            },
+            "arguments": {
+                "de": "Argumente",
+                "en": "Arguments"
+            }
+        },
+        "errorWhileLoggingError": {
+            "de": "Beim Loggen eines Fehlers ist ein weiterer Fehler aufgetreten.",
+            "en": "Trying to log an error resulted in another one."
+        },
+        "uncaughtException": {
+            "title": {
+                "de": "Uncaught exception!",
+                "en": "Uncaught exception!"
+            },
+            "exactTime": {
+                "de": "Exakte Zeit",
+                "en": "Exact time"
+            },
+            "error": {
+                "de": "Fehler",
+                "en": "Error"
             }
         }
     }

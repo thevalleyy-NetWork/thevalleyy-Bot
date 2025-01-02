@@ -1,30 +1,34 @@
 import { ChannelType, EmbedBuilder } from "discord.js";
 import config from "../config.json" with { type: "json" };
 
+import localization from "../localization.json" with { type: "json" };
+const l10n = localization.events.messageCreate.dm;
+const locale = config.locale;
+
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").Message} message
+ */
 export default async (client, message) => {
     if (message.channel.type !== ChannelType.DM) return;
     if (message.author.id == config.owner) return;
     if (message.author.bot) return;
 
-    try { //TODO: test this
+    try {
         message.client.users.fetch(config.owner, false).then((user) => {
             const embed = new EmbedBuilder()
-                .setTitle("Direct Message <:hm:907936051300012072>")
-                .setThumbnail(message.author.avatarURL())
-                .addFields([
-                    {
-                        name: "`" + message.author.tag + "`:",
-                        value: message.content.substring(0, 1000),
-                    },
-                ])
-                .setFooter({
-                    text: "Meine DMs, " + message.author.username + "s ID: " + message.author.id,
+                .setAuthor({
+                    name: message.author.tag,
+                    iconURL: message.author.avatarURL(),
+                    url: `https://discord.com/users/${message.author.id}`,
                 })
+                .setThumbnail(message.author.avatarURL())
+                .setDescription(message.content.substring(0, 4096))
                 .setTimestamp()
-                .setColor(config.colors.magenta);
+                .setColor(config.colors.purple)
 
             user.send({ embeds: [embed] });
-            message.react("<:checkmarkEmbed:1005146896278503597> ");
+            message.react(l10n.reaction[locale]);
         });
     } catch (error) {
         client.error(error, "dm.js");

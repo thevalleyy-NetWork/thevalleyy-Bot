@@ -1,8 +1,6 @@
 import localization from "../../localization.json" with { type: "json" };
 const l10n = localization.content.bettereval;
 
-import config from "../../config.json" with { type: "json" }; //TODO: ban und kick loggen
-
 /**
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").CommandInteraction} interaction

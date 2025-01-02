@@ -64,7 +64,7 @@ export default (client, interaction, locale) => {
             });
 
             collector.on("collect", async (i) => {
-                if (i.message.interaction.id !== msg.id) return 
+                if (i.message.interactionMetadata.id !== msg.id) return
                 if (!i.customId.startsWith(idStart)) return;
                 if (i.user.id !== interaction.user.id && i.user.id != config.owner) {
                     i.reply({

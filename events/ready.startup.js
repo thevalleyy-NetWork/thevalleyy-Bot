@@ -1,10 +1,17 @@
 import { ActivityType} from "discord.js";
-import config from "./../config.json" with { type: "json" };
-import packageJson from "./../package.json" with { type: "json" };
 import fs from "fs";
 
+import config from "./../config.json" with { type: "json" };
+import packageJson from "./../package.json" with { type: "json" };
 const pck = packageJson.dependencies;
 
+import localization from "../localization.json" with { type: "json" };
+const l10n = localization.events.ready.startup;
+const locale = config.locale;
+
+/**
+ * @param {import("discord.js").Client} client
+ */
 export default async (client) => {
     const loadBlacklist = () => {
         const blacklistModule = JSON.parse(fs.readFileSync('./data/blacklist.json', 'utf8'));
@@ -23,7 +30,7 @@ export default async (client) => {
             client.user.setPresence({
                 activities: [
                     {
-                        name: "🛑 Wartungsmodus",
+                        name: l10n.maintenance[locale],
                         type: ActivityType.Playing,
                     },
                 ],
@@ -35,7 +42,7 @@ export default async (client) => {
             const votd = Object.values(pck)[randompck].toString().replace("^", "");
 
             client.user.setPresence({
-                activities: [{ name: `mit ${potd} v${votd}` }],
+                activities: [{ name: `${l10n.with[locale]} ${potd} v${votd}` }],
             });
         }
     }

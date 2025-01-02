@@ -1,4 +1,4 @@
-import updateMembers from "./guildMemberAdd.memberCount.js"; // TODO: test this
+import updateMembers from "./guildMemberAdd.memberCount.js";
 
 export default async (client, member) => {
     try {

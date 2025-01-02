@@ -7,7 +7,7 @@ const l10n = localization.content.mute;
  * @param {import("discord.js").CommandInteraction} interaction
  * @param {string} locale
  */
-export default (client, interaction, locale) => { // TODO: test if this works
+export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
     const muteUser = interaction.options.get("user");
@@ -49,10 +49,10 @@ export default (client, interaction, locale) => { // TODO: test if this works
             muteUser.user
                 .send(
                     l10n.muteMessage[locale]
-                        .replace("{executor}", "`" + interaction.user.tag + "`")
-                        .replace("{guild}", "`" + interaction.guild.name + "`")
-                        .replace("{duration}", "`Permanent`")
-                        .replace("{reason}", "`" + reason + "`")
+                        .replace("{executor}", interaction.user.tag)
+                        .replace("{guild}", interaction.guild.name)
+                        .replace("{duration}", "Permanent")
+                        .replace("{reason}", reason)
                 )
                 .catch((error) => {}); // Ignore errors -> user has DMs disabled
         } else {
@@ -61,7 +61,7 @@ export default (client, interaction, locale) => { // TODO: test if this works
                 l10n.muteString[locale].replace("{executor}", interaction.user.tag).replace("{reason}", reason)
             );
             interaction.reply({
-                content: l10n.muted[locale].replace("{user}", "`" + muteUser.user.tag + "`"),
+                content: l10n.muted[locale].replace("{user}", muteUser.user.tag),
                 ephemeral: true,
             });
 
@@ -77,10 +77,10 @@ export default (client, interaction, locale) => { // TODO: test if this works
             muteUser.user
                 .send(
                     l10n.timeoutMessage[locale]
-                        .replace("{executor}", "`" + interaction.user.tag + "`")
-                        .replace("{guild}", "`" + interaction.guild.name + "`")
-                        .replace("{duration}", "`" + `<t:${Math.round(Date.now() / 1000) + +duration * 60}:R>` + " minutes`")
-                        .replace("{reason}", "`" + reason + "`")
+                        .replace("{executor}", interaction.user.tag)
+                        .replace("{guild}", interaction.guild.name)
+                        .replace("{duration}", `<t:${Math.round(Date.now() / 1000) + +duration * 60}:R> minutes`)
+                        .replace("{reason}", reason)
                 )
                 .catch((error) => {});
         }

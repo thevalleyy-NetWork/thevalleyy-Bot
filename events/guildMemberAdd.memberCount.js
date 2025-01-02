@@ -1,13 +1,24 @@
 import config from "../config.json" with { type: "json" };
 
-export default async (client, member) => {
-    // TODO: test this
-    if (member.guild.id != config.guild) return;
+import localization from "../localization.json" with { type: "json" };
+const l10n = localization.events.guildMemberAdd.memberCount;
 
-    const updateMembers = async (guild = member.guild) => {
-        const memberCount = await guild.members.cache.filter((member) => !member.user.bot).size;
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").GuildMember} member
+ */
+export default async (client, member) => {
+    if (member.guild.id != config.guild) return;
+    const locale = member.guild.preferredLocale == "de" ? "de" : "en";
+
+    const updateMembers = (guild = member.guild) => {
+        const memberCount = guild.members.cache.filter((member) => !member.user.bot).size;
         const channel = guild.channels.cache.get(config.channels.memberchannel);
-        channel.setName(`Mitglieder: ${memberCount.toLocaleString()}`, "updating membercount");
+
+        if (!channel) return client.error(l10n.error[locale], "memberCount.js");
+
+        if (memberCount == 1) return channel.setName(`${l10n.members.singular[locale]}: ${memberCount.toLocaleString()}`, l10n.reason[locale]);
+        channel.setName(`${l10n.members.plural[locale]}: ${memberCount.toLocaleString()}`, l10n.reason[locale]);
     };
 
     try {

@@ -1,119 +1,60 @@
 import config from "../config.json" with { type: "json" };
 
+import localization from "../localization.json" with { type: "json" };
+const l10n = localization.events.interactionCreate.reactionRoles;
 /**
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").CommandInteraction} interaction
- * @param {string} locale
  */
-export default async (client, interaction, locale) => {
+export default async (client, interaction) => {
     if (!interaction.isButton()) return;
     if (interaction.guild.id != config.guild) return;
     if (!interaction.customId.startsWith("REACTIONROLE")) return;
 
+    const locale = interaction.locale == "de" ? "de" : "en";
+
     try {
-        const botRole = interaction.message.guild.roles.cache.find((role) => role.name === "BotNews").id; // TODO: change to config
-        const newsRole = interaction.message.guild.roles.cache.find((role) => role.name === "News").id;
-        const mcRole = interaction.message.guild.roles.cache.find((role) => role.name === "Minecraft").id;
-
-        const user = await interaction.message.guild.members.fetch(interaction.user.id);
-
-        // TODO: shorten the code to one if statement
-        // TODO: reply empheral to user
-        // TODO: edit the embed to show the new guild icon
-        if (interaction.customId === "REACTIONROLE_add.news") {
-            user.roles.add(newsRole);
-            client.channels.cache
-                .get(config.channels.modlogchannel)
-                .send(
-                    "<@" +
-                        interaction.user.id +
-                        "> hat nun die News Rolle bekommen. \n Seine ID: `" +
-                        interaction.user.id +
-                        "`, `" +
-                        interaction.user.createdAt.toLocaleString() +
-                        "`"
-                );
-            interaction.deferUpdate();
+        var list = {
+            "news": interaction.message.guild.roles.cache.get(config.roles.reactionroles.news).id,
+            "botnews": interaction.message.guild.roles.cache.get(config.roles.reactionroles.botnews).id,
+            "minecraft": interaction.message.guild.roles.cache.get(config.roles.reactionroles.minecraft).id,
         }
+    } catch (error) {
+        // the roles are not set up correctly
+        client.error(l10n.error[locale], "reactionRoles.js");
+    }
 
-        if (interaction.customId === "REACTIONROLE_add.botNews") {
-            user.roles.add(botRole);
-            client.channels.cache
-                .get(config.channels.modlogchannel)
-                .send(
-                    "<@" +
-                        interaction.user.id +
-                        "> hat nun die BotNews Rolle bekommen. \n Seine ID: `" +
-                        interaction.user.id +
-                        "`, `" +
-                        interaction.user.createdAt.toLocaleString() +
-                        "`"
-                );
-            interaction.deferUpdate();
-        }
+    try {
+        const member = interaction.member; // interaction.message.guild.members.fetch(interaction.user.id);
+        const action = interaction.customId.split("_")[1].split(".")[0]; // add or remove
+        const role = list[interaction.customId.split("_")[1].split(".")[1]] // "news", "botNews", "minecraft"
+        
+        if (action === "add") {
+            if (member.roles.cache.has(role)) return interaction.reply({
+                content: l10n.alreadyHas[locale].replace("{role}", `<@&${role}>`),
+                ephemeral: true
+            })
 
-        if (interaction.customId === "REACTIONROLE_add.minecraft") {
-            user.roles.add(mcRole);
-            client.channels.cache
-                .get(config.channels.modlogchannel)
-                .send(
-                    "<@" +
-                        interaction.user.id +
-                        "> hat nun die Minecraft Rolle bekommen. \n Seine ID: `" +
-                        interaction.user.id +
-                        "`, `" +
-                        interaction.user.createdAt.toLocaleString() +
-                        "`"
-                );
-            interaction.deferUpdate();
-        }
+            member.roles.add(role)
 
-        if (interaction.customId === "REACTIONROLE_remove.news") {
-            user.roles.remove(newsRole);
-            client.channels.cache
-                .get(config.channels.modlogchannel)
-                .send(
-                    "<@" +
-                        interaction.user.id +
-                        "> wurde nun die News Rolle entzogen. \n Seine ID: `" +
-                        interaction.user.id +
-                        "`, `" +
-                        interaction.user.createdAt.toLocaleString() +
-                        "`"
-                );
-            interaction.deferUpdate();
-        }
+            client.log(l10n.added[locale].replace("{role}", interaction.customId.split("_")[1].split(".")[1]).replace("{member}", member.user.tag), "reactionRoles.js")
+            interaction.reply({
+                content: l10n.addedString[locale].replace("{role}", `<@&${role}>`),
+                ephemeral: true
+            })
+        } else {
+            if (!member.roles.cache.has(role)) return interaction.reply({
+                content: l10n.alreadyRemoved[locale].replace("{role}", `<@&${role}>`),
+                ephemeral: true
+            })
 
-        if (interaction.customId === "REACTIONROLE_remove.botNews") {
-            user.roles.remove(botRole);
-            client.channels.cache
-                .get(config.channels.modlogchannel)
-                .send(
-                    "<@" +
-                        interaction.user.id +
-                        "> wurde nun die BotNews Rolle entzogen. \n Seine ID: `" +
-                        interaction.user.id +
-                        "`, `" +
-                        interaction.user.createdAt.toLocaleString() +
-                        "`"
-                );
-            interaction.deferUpdate();
-        }
+            member.roles.remove(role)
 
-        if (interaction.customId === "REACTIONROLE_remove.minecraft") {
-            user.roles.remove(mcRole);
-            client.channels.cache
-                .get(config.channels.modlogchannel)
-                .send(
-                    "<@" +
-                        interaction.user.id +
-                        "> wurde nun die Minecraft Rolle entzogen. \n Seine ID: `" +
-                        interaction.user.id +
-                        "`, `" +
-                        interaction.user.createdAt.toLocaleString() +
-                        "`"
-                );
-            interaction.deferUpdate();
+            client.log(l10n.removed[locale].replace("{role}", interaction.customId.split("_")[1].split(".")[1]).replace("{member}", member.user.tag), "reactionRoles.js")
+            interaction.reply({
+                content: l10n.removedString[locale].replace("{role}", `<@&${role}>`),
+                ephemeral: true
+            })
         }
     } catch (error) {
         client.error(error, "reactionRoles.js");

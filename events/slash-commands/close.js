@@ -1,7 +1,8 @@
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder } from "discord.js";
+
+import config from "../../config.json" with { type: "json" };
 import localization from "../../localization.json" with { type: "json" };
 const l10n = localization.content.close;
-
-const Discord = require("discord.js");
 
 /**
  * @param {import("discord.js").Client} client
@@ -11,71 +12,79 @@ const Discord = require("discord.js");
 export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
-    return interaction.reply("Dieser Befehl ist aktuell deaktiviert."); //TODO: fix this
-
     const iconurl = interaction.guild.iconURL();
-    const suprole = interaction.guild.roles.cache.find((role) => role.name === "Supporter");
-    const modrole = interaction.guild.roles.cache.find((role) => role.name === "Moderator");
-    const ticketId = interaction.channel.topic.replace("(", "").replace(")", "").split(" ").slice(9).join(" ");
+    const suprole = interaction.guild.roles.cache.get(config.roles.supporter);
+    const modrole = interaction.guild.roles.cache.get(config.roles.moderator);
 
-    if (!interaction.channel.name.startsWith("🎫-")) return interaction.reply("Dieser Kanal ist kein geöffnetes Ticket.");
-    if (ticketId == interaction.user.id || interaction.member.roles.cache.has(suprole.id) || interaction.member.roles.cache.has(modrole.id)) {
-        const category = interaction.guild.channels.cache.find((c) => c.name === "Tickets");
+    const creatorID = interaction.channel.topic.split("<@")[1].split(">")[0]
 
-        try {
-            interaction.channel.permissionOverwrites.edit(ticketId, {
-                ViewChannel: false,
-            });
+    if (!interaction.channel.name.startsWith("🎫-")) return interaction.reply({
+        content: l10n.noTicket[locale],
+        ephemeral: true,
+    });
 
-            interaction.channel.permissionOverwrites.edit(interaction.guild.id, {
-                ViewChannel: false,
-            });
+    if (creatorID !== interaction.user.id && !interaction.member.roles.cache.has(suprole.id) && !interaction.member.roles.cache.has(modrole.id)) return interaction.reply({
+        content: l10n.selfClose[locale],
+        ephemeral: true,
+    });
 
-            interaction.channel.setName(interaction.channel.name.replace("🎫", "🔒"));
-            interaction.channel.setPosition(category.children.cache.size - 1);
+    
+    const category = interaction.guild.channels.cache.get(config.channels.ticketcategory);
+    try {
+        interaction.channel.permissionOverwrites.edit(creatorID, {
+            ViewChannel: false,
+            SendMessages: false,
+        });
 
-            const embed = new Discord.EmbedBuilder()
-                .setTitle("Wie soll nun verfahren werden?")
-                .setDescription("Ticket archivieren?")
-                .setColor("#8319e6")
-                .setFooter({ text: interaction.guild.name, iconURL: iconurl })
-                .setThumbnail("https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png")
-                .setAuthor({
-                    name: interaction.user.username,
-                    iconURL: interaction.user.avatarURL(),
-                })
-                .addFields([
-                    {
-                        name: "Ticket archivieren?",
-                        value: "<@&631521181752885268> oder <@&726146482314674197>",
-                        inline: true,
-                    },
-                    {
-                        name: "<:checkmarkEmbed:1005146896278503597> - Ja  |  <:crossEmbed:1005146898451140749> - Nein",
-                        value: "Drücke einen der Buttons",
-                        inline: true,
-                    },
-                ]);
+        interaction.channel.permissionOverwrites.edit(interaction.guild.id, {
+            ViewChannel: false,
+            SendMessages: false,
+        });
 
-            const buttonArchive = new Discord.ButtonBuilder()
-                .setCustomId("TICKET_archive")
-                .setEmoji("<:checkmarkButton:1005146895045373992> ")
-                .setStyle("Secondary");
+        interaction.channel.setName(interaction.channel.name.replace("🎫", "🔒"));
+        interaction.channel.setPosition(category.children.cache.size - 1);
 
-            const buttonDelete = new Discord.ButtonBuilder()
-                .setCustomId("TICKET_delete")
-                .setEmoji("<:crossButton:1005146897373216908>")
-                .setStyle("Secondary");
+        const embed = new EmbedBuilder()
+            .setTitle(l10n.title[locale])
+            .setColor(config.colors.purple)
+            .setFooter({ text: interaction.guild.name, iconURL: iconurl })
+            .setThumbnail("https://cdn.pixabay.com/photo/2013/07/12/15/34/ticket-150090_960_720.png")
+            .setAuthor({
+                name: interaction.user.username,
+                iconURL: interaction.user.avatarURL(),
+            })
+            .addFields([
+                {
+                    name: l10n.ticketArchive[locale],
+                    value: `<@&${suprole.id}> ${l10n.or[locale]} <@&${modrole.id}>`,
+                    inline: true,
+                },
+                {
+                    name: `${l10n.yes[locale]}  |  ${l10n.no[locale]}`,
+                    value: "ㅤ",
+                    inline: true,
+                },
+            ]);
+    
+            const buttonArchive = new ButtonBuilder()
+        .setCustomId("TICKET_archive")
+            .setEmoji("<:checkmarkButton:1005146895045373992> ")
+            .setStyle("Secondary");
+    
+            const buttonDelete = new ButtonBuilder()
+        .setCustomId("TICKET_delete")
+            .setEmoji("<:crossButton:1005146897373216908>")
+            .setStyle("Secondary");
+    
+            const ticketButtons = new ActionRowBuilder().addComponents(buttonArchive, buttonDelete);
 
-            const ticketButtons = new Discord.ActionRowBuilder().addComponents(buttonArchive, buttonDelete);
-
-            interaction.reply({ embeds: [embed], components: [ticketButtons] });
-            client.modLog(`${interaction.user.tag} hat das Ticket <#${interaction.channel}> geschlossen.`, "close.js");
-        } catch (err) {
-            client.error(err, "close.js");
-            interaction.reply("Ein Fehler ist aufgetreten.");
-        }
-    } else {
-        return interaction.reply("Du kannst nur dein eigenes Ticket schließen.");
+        interaction.reply({ embeds: [embed], components: [ticketButtons] });
+        client.modLog(l10n.modLog[locale].replace("{user}", interaction.user.tag).replace("{channel}", interaction.channel.name), "close.js");
+    } catch (err) {
+        client.error(err, "close.js");
+        interaction.reply({
+            content: l10n.error[locale],
+            ephemeral: true,
+        })
     }
 };

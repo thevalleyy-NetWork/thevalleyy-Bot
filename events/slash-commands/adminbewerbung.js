@@ -13,7 +13,7 @@ export default (client, interaction, locale) => {
 
     const embed = new EmbedBuilder()
         .setTitle(l10n.embed.title[locale])
-        .setColor(config.colors.default)
+        .setColor(config.colors.purple)
 
     embed.setDescription(l10n.embed.description[locale].replace("{link}", config.links.adminbewerbung));
 

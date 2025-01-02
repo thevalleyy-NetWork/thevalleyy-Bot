@@ -1,3 +1,9 @@
+import localization from "../localization.json" with { type: "json" };
+const l10n = localization.events.ready.buildStructure;
+
+/**
+ * @param {import("discord.js").Client} client
+ */
 export default (client) => {
     const { cmds } = client;
     let array = [];

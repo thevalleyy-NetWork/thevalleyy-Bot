@@ -51,7 +51,7 @@ export default async (client, interaction, locale) => {
 
     if (!result) {
         return interaction.reply({
-            content: l10n.notListening[locale].replace("{user}", "`" + user.username + "`"),
+            content: l10n.notListening[locale].replace("{user}", user.username),
         });
     }
 

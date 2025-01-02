@@ -26,7 +26,7 @@ export default (client, interaction, locale) => {
     if (muteUser.id == interaction.user.id) return interaction.reply({ content: l10n.selfMute[locale], ephemeral: true });
     if (!muteUser.member.roles.cache.has(muteRole) && Date.now() >= muteUser.member.communicationDisabledUntilTimestamp)
         return interaction.reply({
-            content: l10n.notMuted[locale].replace("{user}", "`" + muteUser.user.tag + "`"),
+            content: l10n.notMuted[locale].replace("{user}", muteUser.user.tag),
             ephemeral: true,
         });
 
@@ -46,9 +46,9 @@ export default (client, interaction, locale) => {
         muteUser.user
             .send( // TODO: test if this works
                 l10n.unmuteMessage[locale]
-                    .replace("{executor}", "`" + interaction.user.tag + "`")
-                    .replace("{guild}", "`" + interaction.guild.name + "`")
-                    .replace("{reason}", "`" + reason + "`")
+                    .replace("{executor}", interaction.user.tag)
+                    .replace("{guild}", interaction.guild.name)
+                    .replace("{reason}", reason)
             )
             .catch((error) => {});
     } catch (error) {

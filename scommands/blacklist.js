@@ -10,7 +10,7 @@ export default {
         .setContexts([0, 1])
         .setDescriptionLocalizations({
             "de": localization.description.de,
-        }) //TODO: admin only
+        })
         .addUserOption((option) =>
             option.setName("user").setDescription(localization.user.en).setDescriptionLocalizations({
                 "de": localization.user.de,

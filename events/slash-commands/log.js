@@ -14,7 +14,7 @@ const l10n = localization.content.log
  * @param {import("discord.js").CommandInteraction} interaction
  * @param {string} locale
  */
-export default async (client, interaction, locale) => { // TODO: search logs, only modlogs, serach by origin
+export default async (client, interaction, locale) => { // TODO: search logs, only modlogs, serach by origin, serach by date
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.options._subcommand == "list") {

@@ -5,9 +5,7 @@
     "main": "main.js",
     "type": "module",
     "private": true,
-    "scripts": {
-        "start": "npm i && node ."
-    },
+    "scripts": {},
     "author": "thevalleyy",
     "license": "ISC",
     "dependencies": {

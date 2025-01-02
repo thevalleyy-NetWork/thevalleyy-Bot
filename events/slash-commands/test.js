@@ -1,3 +1,5 @@
+import { EmbedBuilder, ButtonBuilder, ActionRowBuilder } from "discord.js";
+
 import config from "../../config.json" with { type: "json" };
 import localization from "../../localization.json" with { type: "json" };
 const l10n = localization.content.test;
@@ -7,13 +9,20 @@ const l10n = localization.content.test;
  * @param {import("discord.js").CommandInteraction} interaction
  * @param {string} locale
  */
-export default (client, interaction, locale) => {
+export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
-    interaction.reply("test");
-    // const members = message.guild.members.cache
-    // members.forEach(async member => {
-    //     await db(`INSERT INTO discord (dcid, dctag, joindate, oldestjoindate) VALUES (${member.id}, '${await encodeURI(member.user.tag.replaceAll("'", " "))}', ${Date.now()}, ${Date.now()})`)
-    //     console.log(`Registering: ${member.user.tag}`)
-    // });
-};
+    const embed = new EmbedBuilder()
+        .setTitle("Ticket erstellen")
+        .setColor("#7289da")
+        .setDescription("Drücke auf \🎫, um ein neues Ticket zu erstelllen.")
+        .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() });
+
+    const button = new ButtonBuilder().setCustomId("TICKET_create").setEmoji("\🎫").setStyle("Primary");
+
+    const row = new ActionRowBuilder().addComponents(button);
+
+    const channel = await interaction.guild.channels.fetch("843054827910201384");
+    const message = await channel.messages.fetch("843060299288412190");
+    await message.edit({ embeds: [embed], components: [row] });
+}
