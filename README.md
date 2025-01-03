@@ -1,3 +1,9 @@
+[![wakatime](https://wakatime.com/badge/user/578854e6-3cc8-43e1-9bf4-3f5a8987960e/project/6d52e518-27b2-4632-857d-36fee6462aa6.svg)](https://wakatime.com)
+[![Last Commit](https://img.shields.io/github/last-commit/thevalleyy-NetWork/thevalleyy-Bot/master?style=plastic)](https://github.com/thevalleyy-NetWork/thevalleyy-Bot/commits/master)
+[![Version](https://img.shields.io/github/package-json/v/thevalleyy-NetWork/thevalleyy-Bot?style=plastic)](https://github.com/thevalleyy-NetWork/thevalleyy-Bot/blob/master/package.json#L3)
+[![Size](https://img.shields.io/github/languages/code-size/thevalleyy-NetWork/thevalleyy-Bot?style=plastic)](https://www.youtube.com/watch?v=DgJS2tQPGKQ)
+![spaghetti-code](https://3ds.eiphax.tech/img/spaghetti.svg)
+
 # thevalleyy-Bot
 
 A Discord bot, written in JS, powered by NodeJS.
@@ -145,9 +151,3 @@ For support, feel free to join my [discord server](https://discord.gg/DkEnwxNqeX
 -   [🧠 TomatoCake](https://github.com/DEVTomatoCake)
 -   [📚 Discord.JS](https://discord.js.org/#/)
 -   [🗨 StackOverflow](https://stackoverflow.com)
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
-![spaghetti-code](https://3ds.eiphax.tech/img/spaghetti.svg)
