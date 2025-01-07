@@ -12,7 +12,7 @@ A Discord bot, written in JS, powered by NodeJS.
 
 -   Free and open source
 -   Complete localization in English and German
--   100% customisable
+-   100% customizable
 -   Slash command handling
 -   Event listening
 -   Error and log database
