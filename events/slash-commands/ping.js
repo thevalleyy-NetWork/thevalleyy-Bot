@@ -51,10 +51,12 @@ export default (client, interaction, locale) => {
                 { name: `${l10n.tps[locale]}:`, value: `\`${tps}\``, inline: true },
                 { name: `${l10n.uptimeWord[locale]}:`, value: `${uptime}`, inline: true },
             ])
-
-            .setFooter({ text: interaction.guild.name, iconURL: iconurl })
             .setTimestamp()
             .setColor(config.colors.default);
+
+        if (iconurl) pingEmbed.setFooter({ text: interaction.guild.name, iconURL: iconurl });
+        else pingEmbed.setFooter({ text: interaction.user.tag, iconURL: interaction.user.avatarURL() });
+
         interaction.editReply({ embeds: [pingEmbed] });
     });
 };

@@ -23,7 +23,7 @@ const buttonList = [button1, button2];
 export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
-    const fetch = (await import("node-fetch")).default;
+    const fetch = (await import("node-fetch")).default; // TODO: is this neccessary or can we use default fetch();
     const userhash = client.brickset.userkey.hash;
 
     if (client.brickset.userkey.status != "success")
