@@ -459,7 +459,7 @@ client.login(config.token)
 
 // uncaught error handling
 process.on('uncaughtException', function(error, source) {
-    const localeGuild =  client.guilds.cache.get(config.guild).preferredLocale == "de" ? "de" : "en";
+    const localeGuild =  client.guilds.cache.get(config.guild)?.preferredLocale == "de" ? "de" : "en";
 
     const time = gettime();
     const embed = new EmbedBuilder()
