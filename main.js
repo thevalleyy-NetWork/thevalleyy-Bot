@@ -35,6 +35,7 @@ const cooldownSet = new Set();
 const users = new Enmap({ name: "users", autoFetch: true, fetchAll: false });
 const logs = new Enmap({ name: "logs", autoFetch: true, fetchAll: false });
 const errors = new Enmap({ name: "errors", autoFetch: true, fetchAll: false });
+const snow = new Enmap({ name: "snow", autoFetch: true, fetchAll: false });
 
 // client
 const client = new Client({
@@ -515,7 +516,7 @@ client.error = function (message = "not provided", file = "custom") {
         const embed = new EmbedBuilder()
             .setTitle("Error")
             .setDescription(
-                `\`\`\`${message.toString().substring(0, 2022)}\`\`\``
+                `\`\`\`${message?.toString().substring(0, 2022)}\`\`\``
             )
             .addFields([
                 {
@@ -556,6 +557,7 @@ client.db = {};
 client.db.users = users;
 client.db.logs = logs;
 client.db.errors = errors;
+client.db.snow = snow;
 
 // login
 client.login(config.token);

@@ -1,4 +1,4 @@
-import { ActivityType} from "discord.js";
+import { ActivityType } from "discord.js";
 import fs from "fs";
 
 import config from "./../config.json" with { type: "json" };
@@ -14,18 +14,22 @@ const locale = config.locale;
  */
 export default async (client) => {
     const loadBlacklist = () => {
-        const blacklistModule = JSON.parse(fs.readFileSync('./data/blacklist.json', 'utf8'));
+        const blacklistModule = JSON.parse(
+            fs.readFileSync("./data/blacklist.json", "utf8")
+        );
         client.blacklist = blacklistModule;
     };
 
     loadBlacklist();
-    fs.watchFile('./data/blacklist.json', (curr, prev) => {
+    fs.watchFile("./data/blacklist.json", (curr, prev) => {
         loadBlacklist();
     });
 
     // startup presence (now random)
     function setRandompckStatus() {
-        const { maintenance } = JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8"));
+        const { maintenance } = JSON.parse(
+            fs.readFileSync("./data/maintenance.json", "utf8")
+        );
         if (maintenance == true) {
             client.user.setPresence({
                 activities: [
@@ -37,9 +41,13 @@ export default async (client) => {
                 status: "dnd",
             });
         } else {
-            const randompck = [Math.floor(Math.random() * Object.keys(pck).length)];
+            const randompck = [
+                Math.floor(Math.random() * Object.keys(pck).length),
+            ];
             const potd = Object.keys(pck)[randompck].toString();
-            const votd = Object.values(pck)[randompck].toString().replace("^", "");
+            const votd = Object.values(pck)
+                [randompck].toString()
+                .replace("^", "");
 
             client.user.setPresence({
                 activities: [{ name: `${l10n.with[locale]} ${potd} v${votd}` }],
@@ -53,7 +61,10 @@ export default async (client) => {
 
     // request brickset api key & userhash
     try {
-        fetch("https://brickset.com/api/v3.asmx/checkKey?apikey=" + config.keys.brickset)
+        fetch(
+            "https://brickset.com/api/v3.asmx/checkKey?apikey=" +
+                config.keys.brickset
+        )
             .then(async (response) => response.json())
             .then((apijson) => {
                 // request userhash
@@ -72,22 +83,33 @@ export default async (client) => {
                         client.brickset = json;
 
                         if (client.brickset.userkey.status == "error") {
-                            client.error("Invalid brickset api key & userhash, disabling /lego command\n" + "ready.startup.js");
+                            client.error(
+                                "Invalid brickset api key & userhash, disabling /lego command\n" +
+                                    "ready.startup.js"
+                            );
                         }
                     });
             });
     } catch (e) {
-        client.error("Error during api key validation request (brickset)\n" + e, "ready.startup.js");
+        client.error(
+            "Error during api key validation request (brickset)\n" + e,
+            "ready.startup.js"
+        );
     }
 
     // repair the sometimes broken stats json
     try {
-        await import("./../data/stats.json", { with: { type: 'json' } });
+        await import("./../data/stats.json", { with: { type: "json" } });
     } catch {
         let jsonRecover = { discord: { buttonKlicks: 0 } };
 
-        fs.writeFile("./data/stats.json", JSON.stringify(jsonRecover, null, 4), (err) => {
-            client.error(err, "startup.js");
-        });
+        try {
+            fs.writeFileSync(
+                "./data/stats.json",
+                JSON.stringify(jsonRecover, null, 4)
+            );
+        } catch (err) {
+            client.error(err, "ready.startup.js (stats.json)");
+        }
     }
 };

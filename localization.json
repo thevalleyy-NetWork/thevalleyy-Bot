@@ -2524,6 +2524,22 @@
                     "en": "There was an error..."
                 }
             },
+            "snow": {
+                "add": {
+                    "alreadyAdded": {
+                        "de": "Der heutige Tag wurde bereits als Schneetag hinzugefügt.",
+                        "en": "Today's date has already been added as a snow day."
+                    },
+                    "success": {
+                        "de": "❄️❄️❄️",
+                        "en": "❄️❄️❄️"
+                    },
+                    "error": {
+                        "de": "Es gab einen Fehler beim Hinzufügen des Schneetags.",
+                        "en": "There was an error while adding the snow day."
+                    }
+                }
+            },
             "ticket": {
                 "open": {
                     "alreadyOpen": {
