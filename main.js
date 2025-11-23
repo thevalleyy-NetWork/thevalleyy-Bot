@@ -1,5 +1,12 @@
 // packages
-import { Partials, GatewayIntentBits, Client, Routes, EmbedBuilder, AttachmentBuilder } from "discord.js";
+import {
+    Partials,
+    GatewayIntentBits,
+    Client,
+    Routes,
+    EmbedBuilder,
+    AttachmentBuilder,
+} from "discord.js";
 import { REST } from "@discordjs/rest";
 import Enmap from "enmap";
 
@@ -40,7 +47,7 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildExpressions,
         GatewayIntentBits.GuildIntegrations,
         GatewayIntentBits.GuildWebhooks,
         GatewayIntentBits.GuildInvites,
@@ -82,17 +89,29 @@ async function slashCommands() {
     async function refresh() {
         try {
             log(
-                "Refreshing: " + commandFiles.filter((file) => file.toLowerCase().endsWith(".js")).length + " Slash-Commands\n",
+                "Refreshing: " +
+                    commandFiles.filter((file) =>
+                        file.toLowerCase().endsWith(".js")
+                    ).length +
+                    " Slash-Commands\n",
                 "cyan",
                 "reset",
                 true
             );
 
-            const data = await rest.put(Routes.applicationCommands(client.user.id), {
-                body: commands,
-            });
+            const data = await rest.put(
+                Routes.applicationCommands(client.user.id),
+                {
+                    body: commands,
+                }
+            );
 
-            log(`Loaded: ${data.length} Slash-Commands`, "blue", "reset", false);
+            log(
+                `Loaded: ${data.length} Slash-Commands`,
+                "blue",
+                "reset",
+                false
+            );
         } catch (error) {
             client.error(error, "main.js");
         }
@@ -141,9 +160,12 @@ function events() {
             client.on(event, async (...args) => {
                 try {
                     if (event == "messageCreate") var user = args[0].author;
-                    else if (event == "interactionCreate") var user = args[0].user;
-                    else if (event == "voiceStateUpdate") var user = args[0].member.user;
-                    else if (event.startsWith("guildMember")) var user = args[0].user;
+                    else if (event == "interactionCreate")
+                        var user = args[0].user;
+                    else if (event == "voiceStateUpdate")
+                        var user = args[0].member.user;
+                    else if (event.startsWith("guildMember"))
+                        var user = args[0].user;
 
                     if (user.bot) return;
                     if (await client.blacklist.includes(user.id)) return;
@@ -158,7 +180,12 @@ function events() {
             });
         });
 
-        log(`\nLoaded: ${files.filter((file) => file.toLowerCase().endsWith(".js")).length} Events`, "blue", "reset", false);
+        log(
+            `\nLoaded: ${files.filter((file) => file.toLowerCase().endsWith(".js")).length} Events`,
+            "blue",
+            "reset",
+            false
+        );
     });
 }
 
@@ -170,7 +197,7 @@ client.on("ready", async () => {
     await slashCommands();
 
     log("\nGrouping: Events", "yellow", "reset", false);
-    await events()
+    await events();
 });
 
 // slash command handler
@@ -178,22 +205,33 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
         const locale = interaction.locale == "de" ? "de" : "en";
 
-        if (await client.blacklist.includes(interaction.user.id) && interaction.user.id != config.owner) {
+        if (
+            (await client.blacklist.includes(interaction.user.id)) &&
+            interaction.user.id != config.owner
+        ) {
             if (!interaction.isAutocomplete()) {
                 interaction.reply({
                     content: l10n.blacklist[locale],
-                    ephemeral: true, 
+                    ephemeral: true,
                 });
             }
             return;
         }
 
         // maintenance mode
-        const maintenance = await JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8")); // TODO: import it and see if it still works
-        if (maintenance.maintenance == true && interaction.user.id != config.owner) {
+        const maintenance = await JSON.parse(
+            fs.readFileSync("./data/maintenance.json", "utf8")
+        ); // TODO: import it and see if it still works
+        if (
+            maintenance.maintenance == true &&
+            interaction.user.id != config.owner
+        ) {
             if (!interaction.isAutocomplete()) {
                 interaction.reply({
-                    content: l10n.maintenance[locale].replace("{reason}", maintenance.reason),
+                    content: l10n.maintenance[locale].replace(
+                        "{reason}",
+                        maintenance.reason
+                    ),
                     ephemeral: true,
                 });
             }
@@ -201,7 +239,10 @@ client.on("interactionCreate", async (interaction) => {
         }
 
         // admin only
-        const adminOnly = client.cmds[interaction.commandName + ".js"]?.adminOnly ? client.cmds[interaction.commandName + ".js"].adminOnly : false;
+        const adminOnly = client.cmds[interaction.commandName + ".js"]
+            ?.adminOnly
+            ? client.cmds[interaction.commandName + ".js"].adminOnly
+            : false;
         if (adminOnly && interaction.user.id != config.owner) {
             if (!interaction.isAutocomplete()) {
                 interaction.reply({
@@ -213,13 +254,22 @@ client.on("interactionCreate", async (interaction) => {
         }
 
         // cooldown
-        if (interaction.user.id != config.owner && (interaction.isChatInputCommand() || interaction.isCommand())) {
-            const cooldown = client.cmds[interaction.commandName + ".js"].cooldown
+        if (
+            interaction.user.id != config.owner &&
+            (interaction.isChatInputCommand() || interaction.isCommand())
+        ) {
+            const cooldown = client.cmds[interaction.commandName + ".js"]
+                .cooldown
                 ? client.cmds[interaction.commandName + ".js"].cooldown
                 : config.cooldown_standard;
 
             // do the magic
-            if (cooldownSet.has(interaction.user.id + interaction.commandName) || cooldownSet.has(interaction.user.id)) {
+            if (
+                cooldownSet.has(
+                    interaction.user.id + interaction.commandName
+                ) ||
+                cooldownSet.has(interaction.user.id)
+            ) {
                 const d = Number(cooldown);
                 var h = Math.floor(d / 3600);
                 var m = Math.floor((d % 3600) / 60);
@@ -231,11 +281,11 @@ client.on("interactionCreate", async (interaction) => {
                             ? +m > 0
                                 ? `${l10n.time.hours.singular[locale]}, `
                                 : +h == 1
-                                ? `${l10n.time.hours.singular[locale]}`
-                                : `${h} ${l10n.time.hours.plural[locale]}`
+                                  ? `${l10n.time.hours.singular[locale]}`
+                                  : `${h} ${l10n.time.hours.plural[locale]}`
                             : +m > 0
-                            ? `${h} ${l10n.time.hours.plural[locale]}, `
-                            : `${h} ${l10n.time.hours.plural[locale]}`
+                              ? `${h} ${l10n.time.hours.plural[locale]}, `
+                              : `${h} ${l10n.time.hours.plural[locale]}`
                         : ``;
                 var mDisplay =
                     +m > 0
@@ -243,38 +293,58 @@ client.on("interactionCreate", async (interaction) => {
                             ? +s > 0
                                 ? `${l10n.time.minutes.singular[locale]}, `
                                 : +m == 1
-                                ? `${l10n.time.minutes.singular[locale]}`
-                                : `${m} ${l10n.time.minutes.plural[locale]}`
+                                  ? `${l10n.time.minutes.singular[locale]}`
+                                  : `${m} ${l10n.time.minutes.plural[locale]}`
                             : +s > 0
-                            ? `${m} ${l10n.time.minutes.plural[locale]}, `
-                            : `${m} ${l10n.time.minutes.plural[locale]}`
+                              ? `${m} ${l10n.time.minutes.plural[locale]}, `
+                              : `${m} ${l10n.time.minutes.plural[locale]}`
                         : ``;
-                var sDisplay = +s > 0 ? (+s == 1 ? l10n.time.seconds.singular[locale] : `${s} ${l10n.time.seconds.plural[locale]}`) : ``;
+                var sDisplay =
+                    +s > 0
+                        ? +s == 1
+                            ? l10n.time.seconds.singular[locale]
+                            : `${s} ${l10n.time.seconds.plural[locale]}`
+                        : ``;
 
                 return interaction.reply({
-                    content: l10n.cooldown[locale].replace("{command}", interaction.commandName).replace("{time}", hDisplay + mDisplay + sDisplay),
+                    content: l10n.cooldown[locale]
+                        .replace("{command}", interaction.commandName)
+                        .replace("{time}", hDisplay + mDisplay + sDisplay),
                     ephemeral: true,
                 });
             }
 
             cooldownSet.add(interaction.user.id + interaction.commandName);
             setTimeout(() => {
-                cooldownSet.delete(interaction.user.id + interaction.commandName);
+                cooldownSet.delete(
+                    interaction.user.id + interaction.commandName
+                );
             }, cooldown * 1000);
         }
 
-        if (interaction.guild) interaction.guild.members.fetch();
+        if (interaction.guild)
+            // don't fetch the whole guild here, since this will cause rate limiting issues
+            interaction.guild.members.fetch(interaction.user.id, {
+                force: true,
+            });
 
-        const eventFile = await import(`./events/slash-commands/${interaction.commandName}.js`);
+        const eventFile = await import(
+            `./events/slash-commands/${interaction.commandName}.js`
+        );
         eventFile.default(client, interaction, locale);
 
-        if (interaction.isAutocomplete()) return; 
-        const localeGuild =  client.guilds.cache.get(config.guild).preferredLocale == "de" ? "de" : "en";
+        if (interaction.isAutocomplete()) return;
+        const localeGuild =
+            client.guilds.cache.get(config.guild).preferredLocale == "de"
+                ? "de"
+                : "en";
 
         const executed = new EmbedBuilder()
             .setTitle(l10n.slashCommandLog.title[localeGuild])
             .setThumbnail(interaction.user.avatarURL())
-            .setDescription(`\`${interaction.user.tag}\`, <@${interaction.user.id}>`)
+            .setDescription(
+                `\`${interaction.user.tag}\`, <@${interaction.user.id}>`
+            )
             .addFields([
                 {
                     name: l10n.slashCommandLog.command[localeGuild] + ":",
@@ -309,7 +379,12 @@ client.on("interactionCreate", async (interaction) => {
                     },
                     {
                         name: l10n.slashCommandLog.link[localeGuild] + ":",
-                        value: l10n.slashCommandLog.linkStringGuild[localeGuild].replace("{user}", interaction.user.tag).replace("{link}", `https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id}`),
+                        value: l10n.slashCommandLog.linkStringGuild[localeGuild]
+                            .replace("{user}", interaction.user.tag)
+                            .replace(
+                                "{link}",
+                                `https://discord.com/channels/${interaction.guild.id}/${interaction.channel.id}/${interaction.id}`
+                            ),
                         inline: true,
                     },
                 ])
@@ -332,7 +407,12 @@ client.on("interactionCreate", async (interaction) => {
                     },
                     {
                         name: l10n.slashCommandLog.link[localeGuild] + ":",
-                        value: l10n.slashCommandLog.linkStringUser[localeGuild].replace("{user}", interaction.user.tag).replace("{link}", `https://canary.discord.com/users/${interaction.user.id}`),
+                        value: l10n.slashCommandLog.linkStringUser[localeGuild]
+                            .replace("{user}", interaction.user.tag)
+                            .replace(
+                                "{link}",
+                                `https://canary.discord.com/users/${interaction.user.id}`
+                            ),
                         inline: true,
                     },
                 ])
@@ -360,7 +440,9 @@ client.on("interactionCreate", async (interaction) => {
             ]);
         }
 
-        client.channels.cache.get(config.channels.cmdlogchannel).send({ embeds: [executed] });
+        client.channels.cache
+            .get(config.channels.cmdlogchannel)
+            .send({ embeds: [executed] });
     }
 });
 
@@ -369,37 +451,49 @@ client.modLog = async function (message = "not provided", file = "custom") {
     const time = Date.now();
     const ID = client.log(message, file, time, true);
     const embed = new EmbedBuilder()
-            .setTitle("Mod-Log")
-            .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
-            .addFields([
-                {
-                    name: "ID",
-                    value: `\`${ID}\``,
-                    inline: true,
-                },
-                {
-                    name: "Query",
-                    value: `</log list:1320738378156867645> \`${ID}\``,
-                    inline: true,
-                },
-                {
-                    name: "Origin",
-                    value: `\`${file}\``,
-                    inline: true,
-                }
-            ])
-            .setFooter({
-                text: gettime(true, time),
-            })
-            .setColor(config.colors.error);
+        .setTitle("Mod-Log")
+        .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
+        .addFields([
+            {
+                name: "ID",
+                value: `\`${ID}\``,
+                inline: true,
+            },
+            {
+                name: "Query",
+                value: `</log list:1320738378156867645> \`${ID}\``,
+                inline: true,
+            },
+            {
+                name: "Origin",
+                value: `\`${file}\``,
+                inline: true,
+            },
+        ])
+        .setFooter({
+            text: gettime(true, time),
+        })
+        .setColor(config.colors.error);
 
-        client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] });
+    client.channels.cache
+        .get(config.channels.modlogchannel)
+        .send({ embeds: [embed] });
 };
 
-client.log = function (message = "not provided", file = "custom", time = Date.now(), modlog = false) {
+client.log = function (
+    message = "not provided",
+    file = "custom",
+    time = Date.now(),
+    modlog = false
+) {
     try {
         const ID = logs.autonum;
-        logs.set(ID, { timestamp: time, message: message, origin: file, modlog: modlog });
+        logs.set(ID, {
+            timestamp: time,
+            message: message,
+            origin: file,
+            modlog: modlog,
+        });
         return ID;
     } catch (e) {
         console.log(message, file);
@@ -409,7 +503,10 @@ client.log = function (message = "not provided", file = "custom", time = Date.no
 
 // custom error override
 client.error = function (message = "not provided", file = "custom") {
-    const localeGuild =  client.guilds.cache.get(config.guild).preferredLocale == "de" ? "de" : "en";
+    const localeGuild =
+        client.guilds.cache.get(config.guild).preferredLocale == "de"
+            ? "de"
+            : "en";
     try {
         const time = Date.now();
         const ID = errors.autonum;
@@ -417,7 +514,9 @@ client.error = function (message = "not provided", file = "custom") {
 
         const embed = new EmbedBuilder()
             .setTitle("Error")
-            .setDescription(`\`\`\`${message.toString().substring(0, 2022)}\`\`\``)
+            .setDescription(
+                `\`\`\`${message.toString().substring(0, 2022)}\`\`\``
+            )
             .addFields([
                 {
                     name: "ID",
@@ -433,18 +532,22 @@ client.error = function (message = "not provided", file = "custom") {
                     name: "Origin",
                     value: `\`${file}\``,
                     inline: true,
-                }
+                },
             ])
             .setFooter({
                 text: gettime(true, time),
             })
             .setColor(config.colors.error);
 
-        client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] });
+        client.channels.cache
+            .get(config.channels.modlogchannel)
+            .send({ embeds: [embed] });
     } catch (e) {
         client.channels.cache
             .get(config.channels.modlogchannel)
-            .send(`${l10n.errorWhileLoggingError[localeGuild]}\n${e}\nMessage: ${message}\nOrigin: ${file}`);
+            .send(
+                `${l10n.errorWhileLoggingError[localeGuild]}\n${e}\nMessage: ${message}\nOrigin: ${file}`
+            );
     }
 };
 
@@ -455,34 +558,34 @@ client.db.logs = logs;
 client.db.errors = errors;
 
 // login
-client.login(config.token)
+client.login(config.token);
 
 // uncaught error handling
-process.on('uncaughtException', function(error, source) {
-    const localeGuild =  client.guilds.cache.get(config.guild)?.preferredLocale == "de" ? "de" : "en";
+// process.on('uncaughtException', function(error, source) {
+//     const localeGuild =  client.guilds.cache.get(config.guild)?.preferredLocale == "de" ? "de" : "en";
 
-    const time = gettime();
-    const embed = new EmbedBuilder()
-        .setTitle(l10n.uncaughtException.title[localeGuild])
-        .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
-        .setFooter({
-            text: `${source}`,
-            iconURL: client.user.avatarURL({ format: 'png' })
-        })
-        .setTimestamp()
-        .setColor(config.colors.error)
-        .addFields([
-            { name: l10n.uncaughtException.exactTime[localeGuild] + ":", value: `\`${time}\``, inline: true },
-        ])
-    if (error.toString().length < 1000) {
-        embed.addFields([
-            { name: l10n.uncaughtException.error[localeGuild] + ":", value: `\`${error}\``, inline: false}
-        ])
-    }
-    client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] })
+//     const time = gettime();
+//     const embed = new EmbedBuilder()
+//         .setTitle(l10n.uncaughtException.title[localeGuild])
+//         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
+//         .setFooter({
+//             text: `${source}`,
+//             iconURL: client.user.avatarURL({ format: 'png' })
+//         })
+//         .setTimestamp()
+//         .setColor(config.colors.error)
+//         .addFields([
+//             { name: l10n.uncaughtException.exactTime[localeGuild] + ":", value: `\`${time}\``, inline: true },
+//         ])
+//     if (error.toString().length < 1000) {
+//         embed.addFields([
+//             { name: l10n.uncaughtException.error[localeGuild] + ":", value: `\`${error}\``, inline: false}
+//         ])
+//     }
+//     client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] })
 
-    if (error.toString().length > 1000) {
-        const attachment = new AttachmentBuilder(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
-        client.channels.cache.get(config.channels.modlogchannel).send({ files: [attachment.setName('error.log')] })
-    }
-})    
+//     if (error.toString().length > 1000) {
+//         const attachment = new AttachmentBuilder(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
+//         client.channels.cache.get(config.channels.modlogchannel).send({ files: [attachment.setName('error.log')] })
+//     }
+// })

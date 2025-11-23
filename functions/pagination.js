@@ -1,5 +1,11 @@
 import config from "../config.json" with { type: "json" };
-import { ActionRowBuilder, Message, EmbedBuilder, ButtonBuilder } from "discord.js";
+import {
+    ActionRowBuilder,
+    Message,
+    EmbedBuilder,
+    ButtonBuilder,
+    MessageFlagsBitField,
+} from "discord.js";
 
 /**
  * Creates a pagination embed
@@ -8,11 +14,19 @@ import { ActionRowBuilder, Message, EmbedBuilder, ButtonBuilder } from "discord.
  * @param {ButtonBuilder[]} buttonList
  * @param {number} timeout
  */
-const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000) => {
-    if (!interaction || !interaction.channel) throw new Error("Channel is inaccessible.");
+const paginationEmbed = async (
+    interaction,
+    pages,
+    buttonList,
+    timeout = 120000,
+    ephemeral = false
+) => {
+    if (!interaction || !interaction.channel)
+        throw new Error("Channel is inaccessible.");
     if (!pages) throw new Error("Pages are not given.");
     if (!buttonList) throw new Error("Buttons are not given.");
-    if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK") throw new Error("Link buttons are not supported.");
+    if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK")
+        throw new Error("Link buttons are not supported.");
     if (buttonList.length !== 2) throw new Error("Need two buttons.");
 
     let page = 0;
@@ -20,6 +34,7 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
     if (pages.length === 1)
         return await interaction.reply({
             embeds: [pages[0].setFooter({ text: `Seite 1 / 1` })],
+            flags: ephemeral ? [MessageFlagsBitField.Flags.Ephemeral] : [],
         });
 
     const row = new ActionRowBuilder().addComponents(buttonList);
@@ -31,9 +46,12 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
             }),
         ],
         components: [row],
+        flags: ephemeral ? [MessageFlagsBitField.Flags.Ephemeral] : [],
     });
 
-    const filter = (i) => i.custom_id === buttonList[0].custom_id || i.custom_id === buttonList[1].custom_id;
+    const filter = (i) =>
+        i.custom_id === buttonList[0].custom_id ||
+        i.custom_id === buttonList[1].custom_id;
 
     const collector = await curPage.createMessageComponentCollector({
         filter,
@@ -41,7 +59,8 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
     });
 
     collector.on("collect", async (i) => {
-        if (interaction.user.id !== i.user.id && i.user.id !== config.owner) return i.deferUpdate();
+        if (interaction.user.id !== i.user.id && i.user.id !== config.owner)
+            return i.deferUpdate();
 
         switch (i.customId) {
             case buttonList[0].data.custom_id:
@@ -61,6 +80,7 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
                 }),
             ],
             components: [row],
+            flags: ephemeral ? [MessageFlagsBitField.Flags.Ephemeral] : [],
         });
         collector.resetTimer();
     });
@@ -71,7 +91,10 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
             .then((reply) => {
                 if (!reply) return console.log("Reply not found");
 
-                const disabledRow = new ActionRowBuilder().addComponents(buttonList[0].setDisabled(true), buttonList[1].setDisabled(true));
+                const disabledRow = new ActionRowBuilder().addComponents(
+                    buttonList[0].setDisabled(true),
+                    buttonList[1].setDisabled(true)
+                );
                 interaction.editReply({
                     embeds: [
                         pages[page].setFooter({
@@ -79,6 +102,9 @@ const paginationEmbed = async (interaction, pages, buttonList, timeout = 120000)
                         }),
                     ],
                     components: [disabledRow],
+                    flags: ephemeral
+                        ? [MessageFlagsBitField.Flags.Ephemeral]
+                        : [],
                 });
             })
             .catch((err) => console.log(err));

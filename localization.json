@@ -150,6 +150,10 @@
             "code": {
                 "de": "Der Code, den du ausführen möchtest",
                 "en": "The code you want to execute"
+            },
+            "ephemeral": {
+                "de": "Soll die Antwort nur für dich sichtbar sein?",
+                "en": "Should the response be visible only to you?"
             }
         },
         "games": {
