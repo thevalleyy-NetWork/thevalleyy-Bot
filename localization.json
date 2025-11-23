@@ -2531,12 +2531,30 @@
                         "en": "Today's date has already been added as a snow day."
                     },
                     "success": {
-                        "de": "❄️❄️❄️",
-                        "en": "❄️❄️❄️"
+                        "de": "❄️ Hinzugefügt! Neue Anzahl: {amount} ❄️",
+                        "en": "❄️ Added! New amount: {amount} ❄️"
                     },
                     "error": {
                         "de": "Es gab einen Fehler beim Hinzufügen des Schneetags.",
                         "en": "There was an error while adding the snow day."
+                    }
+                },
+                "list": {
+                    "noEntries": {
+                        "de": "Es wurden noch keine Schneetage hinzugefügt.",
+                        "en": "No snow days have been added yet."
+                    }, 
+                    "embedTitle": {
+                        "de": "Schneetage ❄️",
+                        "en": "Snow days ❄️"
+                    },
+                    "embedFooter": {
+                        "de": "Insgesamt {amount} Schneetag(e)",
+                        "en": "Total {amount} snow day(s)"
+                    },
+                    "error": {
+                        "de": "Es gab einen Fehler beim Abrufen der Schneetage.",
+                        "en": "There was an error while fetching the snow days."
                     }
                 }
             },

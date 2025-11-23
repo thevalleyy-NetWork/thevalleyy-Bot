@@ -563,31 +563,51 @@ client.db.snow = snow;
 client.login(config.token);
 
 // uncaught error handling
-// process.on('uncaughtException', function(error, source) {
-//     const localeGuild =  client.guilds.cache.get(config.guild)?.preferredLocale == "de" ? "de" : "en";
+process.on("uncaughtException", function (error, source) {
+    const localeGuild =
+        client.guilds.cache.get(config.guild)?.preferredLocale == "de"
+            ? "de"
+            : "en";
 
-//     const time = gettime();
-//     const embed = new EmbedBuilder()
-//         .setTitle(l10n.uncaughtException.title[localeGuild])
-//         .setThumbnail('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif')
-//         .setFooter({
-//             text: `${source}`,
-//             iconURL: client.user.avatarURL({ format: 'png' })
-//         })
-//         .setTimestamp()
-//         .setColor(config.colors.error)
-//         .addFields([
-//             { name: l10n.uncaughtException.exactTime[localeGuild] + ":", value: `\`${time}\``, inline: true },
-//         ])
-//     if (error.toString().length < 1000) {
-//         embed.addFields([
-//             { name: l10n.uncaughtException.error[localeGuild] + ":", value: `\`${error}\``, inline: false}
-//         ])
-//     }
-//     client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embed] })
+    const time = gettime();
+    const embed = new EmbedBuilder()
+        .setTitle(l10n.uncaughtException.title[localeGuild])
+        .setThumbnail(
+            "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ab0c1e57515093.59d8c6eb16d19.gif"
+        )
+        .setFooter({
+            text: `${source}`,
+            iconURL: client.user.avatarURL({ format: "png" }),
+        })
+        .setTimestamp()
+        .setColor(config.colors.error)
+        .addFields([
+            {
+                name: l10n.uncaughtException.exactTime[localeGuild] + ":",
+                value: `\`${time}\``,
+                inline: true,
+            },
+        ]);
+    if (error.toString().length < 1000) {
+        embed.addFields([
+            {
+                name: l10n.uncaughtException.error[localeGuild] + ":",
+                value: `\`${error}\``,
+                inline: false,
+            },
+        ]);
+    }
+    client.channels.cache
+        .get(config.channels.modlogchannel)
+        .send({ embeds: [embed] });
 
-//     if (error.toString().length > 1000) {
-//         const attachment = new AttachmentBuilder(Buffer.from(`Source:\n${source}\n\n${error}`, 'utf-8'), 'error.log')
-//         client.channels.cache.get(config.channels.modlogchannel).send({ files: [attachment.setName('error.log')] })
-//     }
-// })
+    if (error.toString().length > 1000) {
+        const attachment = new AttachmentBuilder(
+            Buffer.from(`Source:\n${source}\n\n${error}`, "utf-8"),
+            "error.log"
+        );
+        client.channels.cache
+            .get(config.channels.modlogchannel)
+            .send({ files: [attachment.setName("error.log")] });
+    }
+});
