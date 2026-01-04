@@ -17,6 +17,7 @@ import gettime from "./functions/gettime.js";
 
 // files
 import config from "./config.json" with { type: "json" };
+import maintenance from "./data/maintenance.json" with { type: "json" };
 import pck from "./package.json" with { type: "json" };
 import localization from "./localization.json" with { type: "json" };
 const l10n = localization.main;
@@ -167,6 +168,17 @@ client.on("clientReady", async () => {
 
     log("\nGrouping: Events", "yellow", "reset", false);
     await events();
+
+    // auto update maintenance file
+    fs.watch("./data/maintenance.json", (eventType, filename) => {
+        if (filename && eventType === "change") {
+            import("./data/maintenance.json" + "?update=" + Date.now(), { with: { type: "json" } }).then((module) => {
+                maintenance.maintenance = module.default.maintenance;
+                maintenance.reason = module.default.reason;
+                log(`Updated: maintenance.json (maintenance: ${maintenance.maintenance})`, "green", "reset", true);
+            });
+        }
+    });
 });
 
 // slash command handler
@@ -185,7 +197,6 @@ client.on("interactionCreate", async (interaction) => {
         }
 
         // maintenance mode
-        const maintenance = await JSON.parse(fs.readFileSync("./data/maintenance.json", "utf8")); // TODO: import it and see if it still works
         if (maintenance.maintenance == true && interaction.user.id != config.owner) {
             if (!interaction.isAutocomplete()) {
                 interaction.reply({
@@ -469,6 +480,9 @@ client.login(config.token);
 
 // uncaught error handling
 process.on("uncaughtException", function (error, source) {
+    // throw the error anyway if maintenance is enabled
+    if (maintenance.maintenance) throw error;
+
     const localeGuild = client.guilds.cache.get(config.guild)?.preferredLocale == "de" ? "de" : "en";
 
     const time = gettime();
