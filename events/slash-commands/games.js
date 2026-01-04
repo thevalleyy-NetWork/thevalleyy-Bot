@@ -8,5 +8,5 @@ const l10n = localization.content.games;
  */
 export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
-    interaction.reply({content: l10n.soon[locale], ephemeral: true});
+    interaction.reply({ content: l10n.soon[locale], ephemeral: true });
 };

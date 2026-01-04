@@ -8,13 +8,13 @@ const l10n = localization.events.interactionCreate.ticket.delete;
  */
 export default (client, interaction) => {
     if (!interaction.isButton()) return;
-    if (interaction.customId !== "TICKET_delete") return 
+    if (interaction.customId !== "TICKET_delete") return;
 
     const locale = interaction.locale == "de" ? "de" : "en";
 
     try {
         if (!interaction.channel.name.startsWith("🔒-")) return interaction.reply({ content: l10n.notClosed[locale], ephemeral: true });
-        
+
         const modrole = interaction.guild.roles.cache.get(config.roles.moderator);
         const suprole = interaction.guild.roles.cache.get(config.roles.supporter);
 

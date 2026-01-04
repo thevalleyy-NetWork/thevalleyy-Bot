@@ -15,10 +15,7 @@ export default async (client, interaction) => {
     jsonModule.default.discord.buttonKlicks += 1;
 
     try {
-        fs.writeFileSync(
-            "./data/stats.json",
-            JSON.stringify(jsonModule.default, null, 4)
-        );
+        fs.writeFileSync("./data/stats.json", JSON.stringify(jsonModule.default, null, 4));
     } catch (err) {
         client.error(err, "isButton.js");
     }

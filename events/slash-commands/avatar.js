@@ -1,5 +1,5 @@
 import localization from "../../localization.json" with { type: "json" };
-const l10n = localization.content.avatar
+const l10n = localization.content.avatar;
 
 /**
  * @param {import("discord.js").Client} client

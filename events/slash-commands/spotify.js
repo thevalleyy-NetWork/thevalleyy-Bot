@@ -42,7 +42,7 @@ export default async (client, interaction, locale) => {
     await client.users.fetch(user.id, false);
 
     let result;
-    const acts = await member.presence.activities 
+    const acts = await member.presence.activities;
     await acts.forEach((Activity) => {
         if (Activity.name.toLowerCase() === "spotify") {
             result = Activity;
@@ -64,71 +64,64 @@ export default async (client, interaction, locale) => {
     const currentSeconds = Date.now().toString().slice(0, -3) - result.createdTimestamp.toString().slice(0, -3);
     const values = progressbar.filledBar(lenghtInSeconds, currentSeconds, 38, "-", "=");
 
-
     const embed = new EmbedBuilder()
-            .setColor(config.colors.default)
-            .setTitle(l10n.listening[locale].replace("{user}", user.username) + ":")
-            .addFields([
-                {
-                    name: `${l10n.title[locale]}:`,
-                    value: `\`${result.details}\``,
-                    inline: true,
-                },
-                {
-                    name: `${l10n.album[locale]}:`,
-                    value: `\`${result.assets.largeText}\``,
-                    inline: true,
-                },
-                {
-                    name: `${l10n.duration[locale]}:`,
-                    value: `\`${await getDuration(
-                        new Date(result.timestamps.start.toString()).getTime(),
-                        new Date(result.timestamps.end.toString()).getTime()
-                    )}\``,
-                    inline: true,
-                },
-            ]);
+        .setColor(config.colors.default)
+        .setTitle(l10n.listening[locale].replace("{user}", user.username) + ":")
+        .addFields([
+            {
+                name: `${l10n.title[locale]}:`,
+                value: `\`${result.details}\``,
+                inline: true,
+            },
+            {
+                name: `${l10n.album[locale]}:`,
+                value: `\`${result.assets.largeText}\``,
+                inline: true,
+            },
+            {
+                name: `${l10n.duration[locale]}:`,
+                value: `\`${await getDuration(new Date(result.timestamps.start.toString()).getTime(), new Date(result.timestamps.end.toString()).getTime())}\``,
+                inline: true,
+            },
+        ]);
 
-        if (result.state.includes(";")) {
-            // artist or artists
-            embed.addFields([
-                {
-                    name: `${l10n.artist.plural[locale]}:`,
-                    value: `\`${result.state.replaceAll(";", ",")}\``,
-                    inline: true,
-                },
-            ]);
-        } else {
-            embed.addFields([
-                {
-                    name: `${l10n.artist.singular[locale]}:`,
-                    value: `\`${result.state.replaceAll(";", ",")}\``,
-                    inline: true,
-                },
-            ]);
-        }
-        embed
-            .addFields([
-                {
-                    name: `${l10n.link[locale]}:`,
-                    value: `${l10n.openInSpotify[locale].replace("{song}", `[${result.details}](https://open.spotify.com/track/${result.syncId})`)}`,
-                    inline: false,
-                },
-            ])
-            .addFields([{ name: `\`${values[0]}\``, value: `​`, inline: true }])
-            .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
-            .setTimestamp()
-            .setFooter({
-                text: interaction.guild.name,
-                iconURL: interaction.guild.iconURL(),
-            });
+    if (result.state.includes(";")) {
+        // artist or artists
+        embed.addFields([
+            {
+                name: `${l10n.artist.plural[locale]}:`,
+                value: `\`${result.state.replaceAll(";", ",")}\``,
+                inline: true,
+            },
+        ]);
+    } else {
+        embed.addFields([
+            {
+                name: `${l10n.artist.singular[locale]}:`,
+                value: `\`${result.state.replaceAll(";", ",")}\``,
+                inline: true,
+            },
+        ]);
+    }
+    embed
+        .addFields([
+            {
+                name: `${l10n.link[locale]}:`,
+                value: `${l10n.openInSpotify[locale].replace("{song}", `[${result.details}](https://open.spotify.com/track/${result.syncId})`)}`,
+                inline: false,
+            },
+        ])
+        .addFields([{ name: `\`${values[0]}\``, value: `​`, inline: true }])
+        .setThumbnail(`https://i.scdn.co/image/${result.assets.largeImage.slice(8)}`)
+        .setTimestamp()
+        .setFooter({
+            text: interaction.guild.name,
+            iconURL: interaction.guild.iconURL(),
+        });
 
-        const lyricsButton = new ButtonBuilder().setCustomId("SPOTIFY_lyrics").setLabel(l10n.lyrics[locale]).setStyle("Primary");
-        const button = new ActionRowBuilder().addComponents(lyricsButton);
+    const lyricsButton = new ButtonBuilder().setCustomId("SPOTIFY_lyrics").setLabel(l10n.lyrics[locale]).setStyle("Primary");
+    const button = new ActionRowBuilder().addComponents(lyricsButton);
 
-        // send the embed
-        interaction.reply({ embeds: [embed], components: [button] });
-
-
-
+    // send the embed
+    interaction.reply({ embeds: [embed], components: [button] });
 };

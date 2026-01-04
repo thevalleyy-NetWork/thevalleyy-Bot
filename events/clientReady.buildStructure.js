@@ -1,5 +1,5 @@
 import localization from "../localization.json" with { type: "json" };
-const l10n = localization.events.ready.buildStructure;
+const l10n = localization.events.clientReady.buildStructure;
 
 /**
  * @param {import("discord.js").Client} client

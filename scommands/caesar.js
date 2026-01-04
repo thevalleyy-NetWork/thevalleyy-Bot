@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import strings from "../localization.json" with {type: "json"};
+import strings from "../localization.json" with { type: "json" };
 const localization = strings.slashCommands.caesar;
 
 export default {
@@ -8,28 +8,28 @@ export default {
         .setName("caesar")
         .setContexts([0])
         .setDescription(localization.description.en)
-        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname) 
+        .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "de": localization.description.de,
+            de: localization.description.de,
         })
         .addStringOption((option) =>
             option.setName("text").setDescription(localization.text.en).setRequired(true).setDescriptionLocalizations({
-                "de": localization.text.de,
+                de: localization.text.de,
             })
         )
         .addNumberOption((option) =>
             option.setName("key").setDescription(localization.key.en).setDescriptionLocalizations({
-                "de": localization.key.de,
+                de: localization.key.de,
             })
         )
         .addBooleanOption((option) =>
             option.setName("decrypt").setDescription(localization.decrypt.en).setDescriptionLocalizations({
-                "de": localization.decrypt.de,
+                de: localization.decrypt.de,
             })
         )
         .addBooleanOption((option) =>
             option.setName("specialchars").setDescription(localization.specialchars.en).setDescriptionLocalizations({
-                "de": localization.specialchars.de,
+                de: localization.specialchars.de,
             })
         ),
 };

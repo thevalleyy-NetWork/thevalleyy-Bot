@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import strings from "../localization.json" with {type: "json"};
+import strings from "../localization.json" with { type: "json" };
 const localization = strings.slashCommands.help;
 
 export default {
@@ -9,21 +9,21 @@ export default {
         .setContexts([0, 1])
         .setDescription(localization.description.en)
         .setDescriptionLocalizations({
-            "de": localization.description.de,
+            de: localization.description.de,
         })
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("command")
                 .setDescription(localization.command.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.command.description.de,
+                    de: localization.command.description.de,
                 })
                 .addStringOption((option) =>
                     option
                         .setName("command")
                         .setDescription(localization.command.command.en)
                         .setDescriptionLocalizations({
-                            "de": localization.command.command.de,
+                            de: localization.command.command.de,
                         })
                         .setAutocomplete(true)
                         .setRequired(true)
@@ -31,7 +31,7 @@ export default {
         )
         .addSubcommand((subcommand) =>
             subcommand.setName("about").setDescription(localization.about.description.en).setDescriptionLocalizations({
-                "de": localization.about.description.de,
+                de: localization.about.description.de,
             })
         ),
 };

@@ -26,49 +26,49 @@ export default async (client, interaction, locale) => {
                 const embed0 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.face2d[locale])
                     .setImage("https://visage.surgeplay.com/face/" + json.uuid);
 
                 const embed1 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.upperbody2d[locale])
                     .setImage("https://visage.surgeplay.com/front/" + json.uuid);
 
                 const embed2 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.body2d[locale])
                     .setImage("https://visage.surgeplay.com/frontfull/" + json.uuid);
 
                 const embed3 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.head3d[locale])
                     .setImage("https://visage.surgeplay.com/head/" + json.uuid);
 
                 const embed4 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.upperbody3d[locale])
                     .setImage("https://visage.surgeplay.com/bust/" + json.uuid);
 
                 const embed5 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.body3d[locale])
                     .setImage("https://visage.surgeplay.com/full/" + json.uuid);
 
                 const embed6 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.links[locale])
                     .setThumbnail("https://visage.surgeplay.com/head/" + json.uuid)
                     .addFields([
@@ -133,7 +133,7 @@ export default async (client, interaction, locale) => {
                 const embed7 = new EmbedBuilder()
                     .setColor(config.colors.default)
                     .setTimestamp()
-                    .setTitle(l10n.skinOf[locale].replace("{user}" ,json.username))
+                    .setTitle(l10n.skinOf[locale].replace("{user}", json.username))
                     .setDescription(l10n.rawdata[locale])
                     .setThumbnail("https://visage.surgeplay.com/head/" + json.uuid)
                     .addFields([
@@ -160,7 +160,7 @@ export default async (client, interaction, locale) => {
             interaction.reply({
                 content: l10n.error[locale].replace("{error}", `\n${error}\n\n${response.statusText} (Code: ${response.status})`),
                 ephemeral: true,
-            })
+            });
         }
     });
 };

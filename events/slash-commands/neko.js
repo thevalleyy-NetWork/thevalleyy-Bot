@@ -17,7 +17,32 @@ export default async (client, interaction, locale) => {
         });
 
     if (!interaction.options.getString("type")) {
-        const types = ['smug', 'woof', 'gasm', '8ball', 'goose', 'cuddle', 'avatar', 'slap', 'v3', 'pat', 'gecg', 'feed', 'fox_girl', 'lizard', 'neko', 'hug', 'meow', 'kiss', 'wallpaper', 'tickle', 'spank', 'waifu', 'lewd', 'ngif'];
+        const types = [
+            "smug",
+            "woof",
+            "gasm",
+            "8ball",
+            "goose",
+            "cuddle",
+            "avatar",
+            "slap",
+            "v3",
+            "pat",
+            "gecg",
+            "feed",
+            "fox_girl",
+            "lizard",
+            "neko",
+            "hug",
+            "meow",
+            "kiss",
+            "wallpaper",
+            "tickle",
+            "spank",
+            "waifu",
+            "lewd",
+            "ngif",
+        ];
         var type = types[Math.floor(Math.random() * types.length)];
     } else {
         var type = interaction.options.getString("type");
@@ -26,15 +51,16 @@ export default async (client, interaction, locale) => {
     try {
         const { url } = await fetch("https://nekos.life/api/v2/img/" + type).then((response) => response.json());
         if (url) interaction.reply(url);
-        else interaction.reply({
-            content: l10n.error[locale],
-            ephemeral: true,
-        })
+        else
+            interaction.reply({
+                content: l10n.error[locale],
+                ephemeral: true,
+            });
     } catch (error) {
         client.error(error, "neko.js");
         interaction.reply({
             content: l10n.error[locale],
             ephemeral: true,
-        })
+        });
     }
 };

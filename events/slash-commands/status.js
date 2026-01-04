@@ -20,15 +20,13 @@ export default async (client, interaction, locale) => {
         return interaction.reply({
             content: l10n.streamingRestriction[locale],
             ephemeral: true,
-        }
-    );
+        });
 
     if ((text || activity) && presence == "invisible")
         return interaction.reply({
             content: l10n.invisibilityRestriction[locale],
             ephemeral: true,
-        }
-    );
+        });
 
     try {
         if (presence == "invisible") {

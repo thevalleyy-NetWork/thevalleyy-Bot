@@ -23,7 +23,7 @@ export default async (client, interaction, locale) => {
         await interaction.deferReply();
         const response = await util.status(ip, parseInt(port)).catch((error) => {
             interaction.followUp(l10n.notReachable[locale]);
-        })
+        });
 
         if (!response) return;
 
@@ -87,9 +87,7 @@ export default async (client, interaction, locale) => {
 
         await interaction.followUp({ embeds: [embed] });
     } catch (error) {
-        interaction.followUp(
-            l10n.error[locale],
-        );
+        interaction.followUp(l10n.error[locale]);
         client.error(error, "mc.js");
     }
 };

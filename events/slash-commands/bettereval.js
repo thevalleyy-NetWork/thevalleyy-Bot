@@ -28,7 +28,7 @@ export default async (client, interaction, locale) => {
             interaction.editReply("```xl\n" + text.substring(0, 1990).trim() + (text.length > 1989 ? "\n..." : "") + "\n" + "```").catch(() => {});
         else m.edit("```xl\n" + text.substring(0, 1990).trim() + (text.length > 1989 ? "\n..." : "") + "\n" + "```").catch(() => {});
         if (text.length > 2000) tooLong = true;
-        // if (text.length > 2000) kill.push(true); 
+        // if (text.length > 2000) kill.push(true);
     };
 
     const { spawn } = await import("child_process");

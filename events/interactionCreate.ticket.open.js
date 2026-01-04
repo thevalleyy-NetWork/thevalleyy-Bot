@@ -1,5 +1,5 @@
 import { EmbedBuilder } from "discord.js";
-import config from "../config.json" with { type: "json"}
+import config from "../config.json" with { type: "json" };
 
 import localization from "../localization.json" with { type: "json" };
 const l10n = localization.events.interactionCreate.ticket.open;
@@ -63,7 +63,7 @@ export default (client, interaction) => {
 
         const suprole = interaction.guild.roles.cache.get(config.roles.supporter);
         const modrole = interaction.guild.roles.cache.get(config.roles.moderator);
-        
+
         const category = server.channels.cache.get(config.channels.ticketcategory);
         server.channels
             .create({
@@ -156,10 +156,13 @@ export default (client, interaction) => {
                     .setTimestamp()
                     .setColor(config.colors.info);
                 client.channels.cache.get(config.channels.modlogchannel).send({ embeds: [embedLog] });
-                client.channels.cache.get(config.channels.modlogchannel).send({ content: "<@&" + modrole + "> & <@&" + suprole + ">" }).then((message) => {
-                    message.delete();
-                });
-            
+                client.channels.cache
+                    .get(config.channels.modlogchannel)
+                    .send({ content: "<@&" + modrole + "> & <@&" + suprole + ">" })
+                    .then((message) => {
+                        message.delete();
+                    });
+
                 client.log(interaction.user.tag + " opened a ticket", "ticket.open.js");
             });
     } catch (err) {

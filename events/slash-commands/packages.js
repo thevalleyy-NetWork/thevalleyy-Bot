@@ -3,7 +3,7 @@ import { EmbedBuilder } from "discord.js";
 import config from "../../config.json" with { type: "json" };
 import pck from "../../package.json" with { type: "json" };
 import localization from "../../localization.json" with { type: "json" };
-const l10n = localization.content.packages
+const l10n = localization.content.packages;
 
 /**
  * @param {import("discord.js").Client} client

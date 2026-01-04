@@ -55,7 +55,6 @@ export default async (client, interaction, locale) => {
                     value: l10n.baseEmbed.fields.everybody.value[locale],
                     inline: true,
                 },
-                
             ]);
         interaction.reply({ embeds: [embed] });
         return;
@@ -71,7 +70,9 @@ export default async (client, interaction, locale) => {
         embed.addFields([
             {
                 name: l10n.commands.description[locale],
-                value: cmdjson.data.description ? `\`\`\`${cmdjson.data.description_localizations[locale] ? cmdjson.data.description_localizations[locale] : cmdjson.data.description}\`\`\`` : `\`\`\`${l10n.commands.none[locale]}\`\`\``,
+                value: cmdjson.data.description
+                    ? `\`\`\`${cmdjson.data.description_localizations[locale] ? cmdjson.data.description_localizations[locale] : cmdjson.data.description}\`\`\``
+                    : `\`\`\`${l10n.commands.none[locale]}\`\`\``,
                 inline: true,
             },
         ]);
@@ -86,7 +87,6 @@ export default async (client, interaction, locale) => {
             ]);
         }
 
-
         const d = Number(cmdjson.cooldown ? cmdjson.cooldown : config.cooldown_standard);
         var h = Math.floor(d / 3600);
         var m = Math.floor((d % 3600) / 60);
@@ -98,11 +98,11 @@ export default async (client, interaction, locale) => {
                     ? +m > 0
                         ? `${l10n.commands.time.hour.singular[locale]}, `
                         : +h == 1
-                        ? `${l10n.commands.time.hour.singular[locale]}`
-                        : `${h} ${l10n.commands.time.hour.plural[locale]}`
+                          ? `${l10n.commands.time.hour.singular[locale]}`
+                          : `${h} ${l10n.commands.time.hour.plural[locale]}`
                     : +m > 0
-                    ? `${h} ${l10n.commands.time.hour.plural[locale]}, `
-                    : `${h} ${l10n.commands.time.hour.plural[locale]}`
+                      ? `${h} ${l10n.commands.time.hour.plural[locale]}, `
+                      : `${h} ${l10n.commands.time.hour.plural[locale]}`
                 : ``;
         var mDisplay =
             +m > 0
@@ -110,11 +110,11 @@ export default async (client, interaction, locale) => {
                     ? +s > 0
                         ? `${l10n.commands.time.minute.singular[locale]}, `
                         : +m == 1
-                        ? `${l10n.commands.time.minute.singular[locale]}`
-                        : `${m} ${l10n.commands.time.minute.plural[locale]}`
+                          ? `${l10n.commands.time.minute.singular[locale]}`
+                          : `${m} ${l10n.commands.time.minute.plural[locale]}`
                     : +s > 0
-                    ? `${m} ${l10n.commands.time.minute.plural[locale]}, `
-                    : `${m} ${l10n.commands.time.minute.plural[locale]}`
+                      ? `${m} ${l10n.commands.time.minute.plural[locale]}, `
+                      : `${m} ${l10n.commands.time.minute.plural[locale]}`
                 : ``;
         var sDisplay = +s > 0 ? (+s == 1 ? `${l10n.commands.time.second.singular[locale]}` : `${s} ${l10n.commands.time.second.plural[locale]}`) : ``;
 
@@ -197,8 +197,8 @@ export default async (client, interaction, locale) => {
                                         `\n\t\t${l10n.commands.description[locale]}: ${subOption.description_localizations[locale] ? subOption.description_localizations[locale] : subOption.description} ` +
                                         `\n\t\t${l10n.commands.type[locale]}: ${subOption.type
                                             .toString()
-                                            .replace("11",l10n.commands.optionTypes[11][locale])
-                                            .replace("10",l10n.commands.optionTypes[10][locale])
+                                            .replace("11", l10n.commands.optionTypes[11][locale])
+                                            .replace("10", l10n.commands.optionTypes[10][locale])
                                             .replace("9", l10n.commands.optionTypes[9][locale])
                                             .replace("8", l10n.commands.optionTypes[8][locale])
                                             .replace("7", l10n.commands.optionTypes[7][locale])
@@ -226,8 +226,8 @@ export default async (client, interaction, locale) => {
                                 `\n\t${l10n.commands.description[locale]}: ${option.description_localizations[locale] ? option.description_localizations[locale] : option.description} ` +
                                 `\n\t${l10n.commands.type[locale]}: ${option.type
                                     .toString()
-                                    .replace("11",l10n.commands.optionTypes[11][locale])
-                                    .replace("10",l10n.commands.optionTypes[10][locale])
+                                    .replace("11", l10n.commands.optionTypes[11][locale])
+                                    .replace("10", l10n.commands.optionTypes[10][locale])
                                     .replace("9", l10n.commands.optionTypes[9][locale])
                                     .replace("8", l10n.commands.optionTypes[8][locale])
                                     .replace("7", l10n.commands.optionTypes[7][locale])
@@ -244,15 +244,10 @@ export default async (client, interaction, locale) => {
                     }
 
                     embed.setDescription(
-                        
-                            `${cmdjson.data.options.length > 1 ? `**${l10n.commands.arguments.plural[locale]}**:` : `**${l10n.commands.arguments.singular[locale]}**:`} \n\`\`\`${options}\`\`\``
-                            
-                        
+                        `${cmdjson.data.options.length > 1 ? `**${l10n.commands.arguments.plural[locale]}**:` : `**${l10n.commands.arguments.singular[locale]}**:`} \n\`\`\`${options}\`\`\``
                     );
                 } else {
-                    embed.setDescription(
-                        `**${l10n.commands.arguments.plural[locale]}**: \n\`\`\`${l10n.commands.none[locale]}\`\`\``
-                    );
+                    embed.setDescription(`**${l10n.commands.arguments.plural[locale]}**: \n\`\`\`${l10n.commands.none[locale]}\`\`\``);
                 }
 
                 embed

@@ -28,12 +28,12 @@ export default async (client, interaction) => {
     await message.edit({ embeds: [message.embeds[0]], components: [row] });
 
     try {
-        const waitEmbed = new EmbedBuilder().setColor(config.colors.info).setDescription(l10n.searching[locale].replace("{song}", args))
+        const waitEmbed = new EmbedBuilder().setColor(config.colors.info).setDescription(l10n.searching[locale].replace("{song}", args));
         await interaction.reply({ embeds: [waitEmbed] });
 
-        const { title, author, lyrics, thumbnail, links, error } = await fetch(
-            `https://some-random-api.com/lyrics?title=${encodeURIComponent(args)}`
-        ).then((response) => response.json());
+        const { title, author, lyrics, thumbnail, links, error } = await fetch(`https://some-random-api.com/lyrics?title=${encodeURIComponent(args)}`).then(
+            (response) => response.json()
+        );
 
         if (error) {
             const errorEmbed = new EmbedBuilder()

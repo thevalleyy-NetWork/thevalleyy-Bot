@@ -33,10 +33,7 @@ export default async (client, interaction) => {
         snow.set(id, currentValues);
 
         interaction.reply({
-            content: l10n.success[locale].replace(
-                "{amount}",
-                currentValues.length
-            ),
+            content: l10n.success[locale].replace("{amount}", currentValues.length),
             ephemeral: true,
         });
     } catch (err) {

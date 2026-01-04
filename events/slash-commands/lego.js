@@ -323,10 +323,7 @@ export default async (client, interaction, locale) => {
                     // search for specific theme
                     const foundarr = [];
                     json.themes.forEach((theme) => {
-                        if (
-                            theme.theme.toLowerCase().replaceAll(" ", "") ==
-                            interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")
-                        ) {
+                        if (theme.theme.toLowerCase().replaceAll(" ", "") == interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")) {
                             foundarr.push("yes");
                             const embed = new EmbedBuilder()
                                 .setColor(config.colors.default)
@@ -428,10 +425,7 @@ export default async (client, interaction, locale) => {
                 // is the given theme valid?
                 const foundarr = [];
                 json_.themes.forEach((theme) => {
-                    if (
-                        theme.theme.toLowerCase().replaceAll(" ", "") ==
-                        interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")
-                    ) {
+                    if (theme.theme.toLowerCase().replaceAll(" ", "") == interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")) {
                         foundarr.push(theme);
                     }
                 });
@@ -577,10 +571,7 @@ export default async (client, interaction, locale) => {
                 // is the given theme valid?
                 const foundarr = [];
                 json_.themes.forEach((theme) => {
-                    if (
-                        theme.theme.toLowerCase().replaceAll(" ", "") ==
-                        interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")
-                    ) {
+                    if (theme.theme.toLowerCase().replaceAll(" ", "") == interaction.options._hoistedOptions[0].value.toLowerCase().replaceAll(" ", "")) {
                         foundarr.push(theme);
                     }
                 });
@@ -749,9 +740,7 @@ export default async (client, interaction, locale) => {
                                 },
                                 {
                                     name: `**${l10n.overall[locale]}**:`,
-                                    value: `${
-                                        fullstar.repeat(Math.round(rev.rating.overall)) + emptystar.repeat(5 - Math.round(rev.rating.overall))
-                                    }`,
+                                    value: `${fullstar.repeat(Math.round(rev.rating.overall)) + emptystar.repeat(5 - Math.round(rev.rating.overall))}`,
                                     inline: false,
                                 },
                                 {
@@ -769,16 +758,13 @@ export default async (client, interaction, locale) => {
                                 },
                                 {
                                     name: `${l10n.playingExperience[locale]}:`,
-                                    value: `${
-                                        fullstar.repeat(Math.round(rev.rating.playability)) + emptystar.repeat(5 - Math.round(rev.rating.playability))
-                                    }`,
+                                    value: `${fullstar.repeat(Math.round(rev.rating.playability)) + emptystar.repeat(5 - Math.round(rev.rating.playability))}`,
                                     inline: true,
                                 },
                                 {
                                     name: `${l10n.valueForMoney[locale]}:`,
                                     value: `${
-                                        fullstar.repeat(Math.round(rev.rating.valueForMoney)) +
-                                        emptystar.repeat(5 - Math.round(rev.rating.valueForMoney))
+                                        fullstar.repeat(Math.round(rev.rating.valueForMoney)) + emptystar.repeat(5 - Math.round(rev.rating.valueForMoney))
                                     }`,
                                     inline: true,
                                 },
@@ -795,9 +781,7 @@ export default async (client, interaction, locale) => {
     }
 
     if (interaction.options._subcommand == "instructions") {
-        fetch(
-            `https://brickset.com/api/v3.asmx/getInstructions2?apikey=${config.keys.brickset}&setNumber=${interaction.options._hoistedOptions[0].value}`
-        )
+        fetch(`https://brickset.com/api/v3.asmx/getInstructions2?apikey=${config.keys.brickset}&setNumber=${interaction.options._hoistedOptions[0].value}`)
             .then(async (response) => response.json())
             .then((json) => {
                 if (json.status == "error") {

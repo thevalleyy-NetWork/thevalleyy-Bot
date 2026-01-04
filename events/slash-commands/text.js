@@ -17,7 +17,11 @@ export default (client, interaction, locale) => {
     if (!channel) return interaction.reply({ content: l10n.noChannel[locale], ephemeral: true });
 
     // has the user permission to send messages in the channel?
-    if (!channel.permissionsFor(interaction.member).has(PermissionsBitField.Flags.ViewChannel || !channel.permissionsFor(interaction.member).has(PermissionsBitField.Flags.SendMessages))) {
+    if (
+        !channel
+            .permissionsFor(interaction.member)
+            .has(PermissionsBitField.Flags.ViewChannel || !channel.permissionsFor(interaction.member).has(PermissionsBitField.Flags.SendMessages))
+    ) {
         return interaction.reply({ content: l10n.noPermission[locale], ephemeral: true });
     }
 

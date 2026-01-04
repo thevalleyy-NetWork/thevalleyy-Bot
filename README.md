@@ -6,16 +6,16 @@
 
 # thevalleyy-Bot
 
-A Discord bot, written in JS, powered by NodeJS.
+A discord bot, written in JS, powered by NodeJS.
 
 ## Features
 
--   Free and open source
--   Complete localization in English and German
--   100% customizable
--   Slash command handling
--   Event listening
--   Error and log database
+- Free and open source
+- Complete localization in English and German
+- 100% customizable
+- Slash command handling
+- Event listening
+- Error and log database
 
 ## Tech Stack
 
@@ -140,14 +140,14 @@ For support, feel free to join my [discord server](https://discord.gg/DkEnwxNqeX
 
 ## Known Bugs
 
--   none. Feel free to create an [issue](https://github.com/thevalleyy-NetWork/thevalleyy-Bot/issues/new).
+- none. Feel free to create an [issue](https://github.com/thevalleyy-NetWork/thevalleyy-Bot/issues/new).
 
 ## Authors
 
--   [thevalleyy](https://www.github.com/thevalleyy)
+- [thevalleyy](https://www.github.com/thevalleyy)
 
 ## Acknowledgements
 
--   [🧠 TomatoCake](https://github.com/DEVTomatoCake)
--   [📚 Discord.JS](https://discord.js.org/#/)
--   [🗨 StackOverflow](https://stackoverflow.com)
+- [🧠 TomatoCake](https://github.com/DEVTomatoCake)
+- [📚 Discord.JS](https://discord.js.org/#/)
+- [🗨 StackOverflow](https://stackoverflow.com)

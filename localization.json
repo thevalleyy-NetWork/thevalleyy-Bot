@@ -2543,7 +2543,7 @@
                     "noEntries": {
                         "de": "Es wurden noch keine Schneetage hinzugefügt.",
                         "en": "No snow days have been added yet."
-                    }, 
+                    },
                     "embedTitle": {
                         "de": "Schneetage ❄️",
                         "en": "Snow days ❄️"
@@ -2645,7 +2645,7 @@
                 }
             }
         },
-        "ready": {
+        "clientReady": {
             "buildStructure": {},
             "mcping": {
                 "newRecord": {

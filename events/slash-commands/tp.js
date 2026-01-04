@@ -20,7 +20,7 @@ export default (client, interaction, locale) => {
                 value: `**${l10n.notUpToDate[locale]}**`,
             },
             {
-                name: `${l10n.version[locale]}`,	
+                name: `${l10n.version[locale]}`,
                 value: l10n.versionString[locale],
             },
             {

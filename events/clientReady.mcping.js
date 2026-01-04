@@ -2,16 +2,16 @@ import { EmbedBuilder } from "discord.js";
 import util from "minecraft-server-util";
 import fs from "fs";
 
-import config from "./../config.json" with { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 import localization from "../localization.json" with { type: "json" };
-const l10n = localization.events.ready.mcping;
+const l10n = localization.events.clientReady.mcping;
 
 /**
  * @param {import("discord.js").Client} client
  */
 export default async (client) => {
-    const locale = await client.channels.cache.get(config.channels.minecraftchannel)?.guild.preferredLocale == "de" ? "de" : "en";
+    const locale = (await client.channels.cache.get(config.channels.minecraftchannel)?.guild.preferredLocale) == "de" ? "de" : "en";
 
     async function ping() {
         try {
@@ -33,7 +33,7 @@ export default async (client) => {
                     .setTitle(l10n.newRecord[locale])
                     .setThumbnail("https://eu.mc-api.net/v3/server/favicon/" + config.minecraft.ip + ":" + config.minecraft.port)
                     .setDescription(l10n.description[locale].replace("{players}", response.players.online).replace("{oldRecord}", json.mostPlayers))
-                    .setFooter({text: `${config.minecraft.ip}${config.minecraft.port == 25565 ? "" : `:${config.minecraft.port}`}`});
+                    .setFooter({ text: `${config.minecraft.ip}${config.minecraft.port == 25565 ? "" : `:${config.minecraft.port}`}` });
 
                 await client.channels.cache.get(config.channels.minecraftchannel).send({ embeds: [embed] });
             }

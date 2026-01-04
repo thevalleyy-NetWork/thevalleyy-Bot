@@ -64,7 +64,7 @@ export default (client, interaction, locale) => {
             });
 
             collector.on("collect", async (i) => {
-                if (i.message.interactionMetadata.id !== msg.id) return
+                if (i.message.interactionMetadata.id !== msg.id) return;
                 if (!i.customId.startsWith(idStart)) return;
                 if (i.user.id !== interaction.user.id && i.user.id != config.owner) {
                     i.reply({
@@ -119,7 +119,7 @@ export default (client, interaction, locale) => {
                     "https://archive.allsky.tv/AMS52/LATEST/010317.jpg",
                     "https://archive.allsky.tv/AMS52/LATEST/010318.jpg",
                     "https://archive.allsky.tv/AMS52/LATEST/010319.jpg",
-                    "https://archive.allsky.tv/AMS52/LATEST/010320.jpg"
+                    "https://archive.allsky.tv/AMS52/LATEST/010320.jpg",
                 ];
 
                 if (y == 1) embed.setImage(images[5]);

@@ -19,7 +19,7 @@ export default (client, interaction, locale) => {
             ephemeral: true,
         });
 
-        const muteRole = interaction.guild.roles.cache.get(config.roles.mutechat)?.id;
+    const muteRole = interaction.guild.roles.cache.get(config.roles.mutechat)?.id;
     if (!muteRole) return interaction.reply({ content: l10n.noMuteRole[locale], ephemeral: true });
 
     if (muteUser.id == config.owner || muteUser.id == client.user.id) return interaction.reply({ content: l10n.owner[locale], ephemeral: true });
@@ -41,14 +41,15 @@ export default (client, interaction, locale) => {
             ephemeral: true,
         });
 
-        client.modLog(l10n.unmuteLog[locale].replace("{user}", muteUser.user.tag).replace("{executor}", interaction.user.tag).replace("{reason}", reason), "unmute.js");
+        client.modLog(
+            l10n.unmuteLog[locale].replace("{user}", muteUser.user.tag).replace("{executor}", interaction.user.tag).replace("{reason}", reason),
+            "unmute.js"
+        );
 
         muteUser.user
-            .send( // TODO: test if this works
-                l10n.unmuteMessage[locale]
-                    .replace("{executor}", interaction.user.tag)
-                    .replace("{guild}", interaction.guild.name)
-                    .replace("{reason}", reason)
+            .send(
+                // TODO: test if this works
+                l10n.unmuteMessage[locale].replace("{executor}", interaction.user.tag).replace("{guild}", interaction.guild.name).replace("{reason}", reason)
             )
             .catch((error) => {});
     } catch (error) {

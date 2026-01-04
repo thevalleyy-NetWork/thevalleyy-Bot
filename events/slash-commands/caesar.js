@@ -11,7 +11,7 @@ export default (client, interaction, locale) => {
 
     const text = interaction.options.getString("text");
     let key;
-    interaction.options.getNumber("key") == null ? (key = 2) : (key = interaction.options.getNumber("key")); 
+    interaction.options.getNumber("key") == null ? (key = 2) : (key = interaction.options.getNumber("key"));
     const decrypt = interaction.options.getBoolean("decrypt");
     const specialchars = interaction.options.getBoolean("specialchars");
 
@@ -29,7 +29,7 @@ export default (client, interaction, locale) => {
             if (!specialchars) {
                 if (char >= 97 && char <= 122) {
                     // kleinbuchstaben
-                    char += key % 26; 
+                    char += key % 26;
                     if (char > 122) char -= 26;
                 } else if (char >= 65 && char <= 90) {
                     // großbuchstaben

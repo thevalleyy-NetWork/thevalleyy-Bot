@@ -1,7 +1,7 @@
-import { EmbedBuilder } from "discord.js"
+import { EmbedBuilder } from "discord.js";
 import config from "../../config.json" with { type: "json" };
 import localization from "../../localization.json" with { type: "json" };
-const l10n = localization.content.adminbewerbung
+const l10n = localization.content.adminbewerbung;
 
 /**
  * @param {import("discord.js").Client} client
@@ -11,9 +11,7 @@ const l10n = localization.content.adminbewerbung
 export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
-    const embed = new EmbedBuilder()
-        .setTitle(l10n.embed.title[locale])
-        .setColor(config.colors.purple)
+    const embed = new EmbedBuilder().setTitle(l10n.embed.title[locale]).setColor(config.colors.purple);
 
     embed.setDescription(l10n.embed.description[locale].replace("{link}", config.links.adminbewerbung));
 

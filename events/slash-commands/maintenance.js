@@ -18,12 +18,12 @@ export default (client, interaction, locale) => {
     const boolean = interaction.options.getBoolean("maintenance");
     const reason = interaction.options.getString("reason");
 
-    if (boolean  && maintenance.maintenance )
+    if (boolean && maintenance.maintenance)
         return interaction.reply({
             content: l10n.alreadyInMaintenance[locale],
             ephemeral: true,
         });
-    if (!boolean && !maintenance.maintenance )
+    if (!boolean && !maintenance.maintenance)
         return interaction.reply({
             content: l10n.notInMaintenance[locale],
             ephemeral: true,

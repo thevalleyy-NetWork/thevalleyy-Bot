@@ -16,19 +16,20 @@ export default (client, interaction, locale) => {
     const suprole = interaction.guild.roles.cache.get(config.roles.supporter);
     const modrole = interaction.guild.roles.cache.get(config.roles.moderator);
 
-    const creatorID = interaction.channel.topic.split("<@")[1].split(">")[0]
+    const creatorID = interaction.channel.topic.split("<@")[1].split(">")[0];
 
-    if (!interaction.channel.name.startsWith("🎫-")) return interaction.reply({
-        content: l10n.noTicket[locale],
-        ephemeral: true,
-    });
+    if (!interaction.channel.name.startsWith("🎫-"))
+        return interaction.reply({
+            content: l10n.noTicket[locale],
+            ephemeral: true,
+        });
 
-    if (creatorID !== interaction.user.id && !interaction.member.roles.cache.has(suprole.id) && !interaction.member.roles.cache.has(modrole.id)) return interaction.reply({
-        content: l10n.selfClose[locale],
-        ephemeral: true,
-    });
+    if (creatorID !== interaction.user.id && !interaction.member.roles.cache.has(suprole.id) && !interaction.member.roles.cache.has(modrole.id))
+        return interaction.reply({
+            content: l10n.selfClose[locale],
+            ephemeral: true,
+        });
 
-    
     const category = interaction.guild.channels.cache.get(config.channels.ticketcategory);
     try {
         interaction.channel.permissionOverwrites.edit(creatorID, {
@@ -65,18 +66,12 @@ export default (client, interaction, locale) => {
                     inline: true,
                 },
             ]);
-    
-            const buttonArchive = new ButtonBuilder()
-        .setCustomId("TICKET_archive")
-            .setEmoji("<:checkmarkButton:1005146895045373992> ")
-            .setStyle("Secondary");
-    
-            const buttonDelete = new ButtonBuilder()
-        .setCustomId("TICKET_delete")
-            .setEmoji("<:crossButton:1005146897373216908>")
-            .setStyle("Secondary");
-    
-            const ticketButtons = new ActionRowBuilder().addComponents(buttonArchive, buttonDelete);
+
+        const buttonArchive = new ButtonBuilder().setCustomId("TICKET_archive").setEmoji("<:checkmarkButton:1005146895045373992> ").setStyle("Secondary");
+
+        const buttonDelete = new ButtonBuilder().setCustomId("TICKET_delete").setEmoji("<:crossButton:1005146897373216908>").setStyle("Secondary");
+
+        const ticketButtons = new ActionRowBuilder().addComponents(buttonArchive, buttonDelete);
 
         interaction.reply({ embeds: [embed], components: [ticketButtons] });
         client.modLog(l10n.modLog[locale].replace("{user}", interaction.user.tag).replace("{channel}", interaction.channel.name), "close.js");
@@ -85,6 +80,6 @@ export default (client, interaction, locale) => {
         interaction.reply({
             content: l10n.error[locale],
             ephemeral: true,
-        })
+        });
     }
 };

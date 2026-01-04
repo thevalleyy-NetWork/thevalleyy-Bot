@@ -12,21 +12,13 @@ export default {
             de: localization.description.de,
         })
         .addStringOption((option) =>
-            option
-                .setName("code")
-                .setDescription(localization.code.en)
-                .setRequired(true)
-                .setDescriptionLocalizations({
-                    de: localization.code.de,
-                })
+            option.setName("code").setDescription(localization.code.en).setRequired(true).setDescriptionLocalizations({
+                de: localization.code.de,
+            })
         )
         .addBooleanOption((option) =>
-            option
-                .setName("ephemeral")
-                .setDescription(localization.ephemeral.en)
-                .setRequired(false)
-                .setDescriptionLocalizations({
-                    de: localization.ephemeral.de,
-                })
+            option.setName("ephemeral").setDescription(localization.ephemeral.en).setRequired(false).setDescriptionLocalizations({
+                de: localization.ephemeral.de,
+            })
         ),
 };

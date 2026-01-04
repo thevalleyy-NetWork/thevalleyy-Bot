@@ -24,9 +24,9 @@ export default async (client, message) => {
                 })
                 .setThumbnail(message.author.avatarURL())
                 .setDescription(message.content.substring(0, 4096))
-                .setFooter({text: message.author.id})
+                .setFooter({ text: message.author.id })
                 .setTimestamp()
-                .setColor(config.colors.purple)
+                .setColor(config.colors.purple);
 
             user.send({ embeds: [embed] });
             message.react(l10n.reaction[locale]);

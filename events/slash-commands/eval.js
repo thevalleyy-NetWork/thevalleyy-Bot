@@ -27,10 +27,7 @@ export default async (client, interaction, locale) => {
     }
 
     try {
-        client.log(
-            `Evaluating code: ${evalcode} (${interaction.user.tag})`,
-            "eval.js"
-        );
+        client.log(`Evaluating code: ${evalcode} (${interaction.user.tag})`, "eval.js");
 
         const result = await eval(evalcode);
         let output = result;
@@ -48,14 +45,8 @@ export default async (client, interaction, locale) => {
             return;
         }
 
-        const button1 = new ButtonBuilder()
-            .setCustomId("previousbtn")
-            .setLabel("◀️")
-            .setStyle("Secondary");
-        const button2 = new ButtonBuilder()
-            .setCustomId("nextbtn")
-            .setLabel("▶️")
-            .setStyle("Secondary");
+        const button1 = new ButtonBuilder().setCustomId("previousbtn").setLabel("◀️").setStyle("Secondary");
+        const button2 = new ButtonBuilder().setCustomId("nextbtn").setLabel("▶️").setStyle("Secondary");
 
         const buttonList = [button1, button2];
 
@@ -63,9 +54,7 @@ export default async (client, interaction, locale) => {
         for (let i = 0; i < output.length; i += 4000) {
             const page = new EmbedBuilder()
                 .setTitle(l10n.embed.title[locale])
-                .setDescription(
-                    "```js\n" + output.substring(i, i + 4000) + "```"
-                )
+                .setDescription("```js\n" + output.substring(i, i + 4000) + "```")
                 .setColor(config.colors.default)
                 .setTimestamp();
             pages.push(page);
@@ -76,9 +65,7 @@ export default async (client, interaction, locale) => {
     } catch (error) {
         const embed = new EmbedBuilder()
             .setTitle(l10n.embed.title[locale])
-            .setDescription(
-                "```js\n" + error.toString().substring(0, 4000) + "```"
-            )
+            .setDescription("```js\n" + error.toString().substring(0, 4000) + "```")
             .setColor(config.colors.error)
             .setTimestamp();
         interaction.reply({
@@ -88,9 +75,7 @@ export default async (client, interaction, locale) => {
     }
 
     function includesToken() {
-        const embed = new EmbedBuilder()
-            .setTitle(l10n.tokenInOutput[locale])
-            .setColor(config.colors.error);
+        const embed = new EmbedBuilder().setTitle(l10n.tokenInOutput[locale]).setColor(config.colors.error);
         interaction.reply({
             embeds: [embed],
             flags: ephemeral ? MessageFlagsBitField.Flags.Ephemeral : [],

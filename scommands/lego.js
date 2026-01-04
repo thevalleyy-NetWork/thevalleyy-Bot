@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import strings from "../localization.json" with {type: "json"};
+import strings from "../localization.json" with { type: "json" };
 const localization = strings.slashCommands.lego;
 
 export default {
@@ -10,7 +10,7 @@ export default {
         .setDescription(localization.description.en)
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "de": localization.description.de,
+            de: localization.description.de,
         })
 
         .addSubcommand((subcommand) =>
@@ -18,16 +18,12 @@ export default {
                 .setName("set")
                 .setDescription(localization.set.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.set.description.de,
+                    de: localization.set.description.de,
                 })
                 .addStringOption((option) =>
-                    option
-                        .setName("query")
-                        .setRequired(true)
-                        .setDescription(localization.set.query.en)
-                        .setDescriptionLocalizations({
-                            "de": localization.set.query.de,
-                        })
+                    option.setName("query").setRequired(true).setDescription(localization.set.query.en).setDescriptionLocalizations({
+                        de: localization.set.query.de,
+                    })
                 )
         )
 
@@ -36,11 +32,11 @@ export default {
                 .setName("theme")
                 .setDescription(localization.theme.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.theme.description.de,
+                    de: localization.theme.description.de,
                 })
                 .addStringOption((option) =>
                     option.setName("theme").setDescription(localization.theme.theme.en).setDescriptionLocalizations({
-                        "de": localization.theme.theme.de,
+                        de: localization.theme.theme.de,
                     })
                 )
         )
@@ -50,16 +46,12 @@ export default {
                 .setName("subtheme")
                 .setDescription(localization.subtheme.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.subtheme.description.de,
+                    de: localization.subtheme.description.de,
                 })
                 .addStringOption((option) =>
-                    option
-                        .setName("theme")
-                        .setRequired(true)
-                        .setDescription(localization.subtheme.theme.en)
-                        .setDescriptionLocalizations({
-                            "de": localization.subtheme.theme.de,
-                        })
+                    option.setName("theme").setRequired(true).setDescription(localization.subtheme.theme.en).setDescriptionLocalizations({
+                        de: localization.subtheme.theme.de,
+                    })
                 )
         )
 
@@ -68,11 +60,11 @@ export default {
                 .setName("instructions")
                 .setDescription(localization.instructions.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.instructions.description.de,
+                    de: localization.instructions.description.de,
                 })
                 .addStringOption((option) =>
                     option.setName("setnumber").setRequired(true).setDescription(localization.instructions.setnumber.en).setDescriptionLocalizations({
-                        "de": localization.instructions.setnumber.de,
+                        de: localization.instructions.setnumber.de,
                     })
                 )
         )
@@ -82,11 +74,11 @@ export default {
                 .setName("images")
                 .setDescription(localization.images.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.images.description.de,
+                    de: localization.images.description.de,
                 })
                 .addStringOption((option) =>
                     option.setName("setnumber").setRequired(true).setDescription(localization.images.setnumber.en).setDescriptionLocalizations({
-                        "de": localization.images.setnumber.de,
+                        de: localization.images.setnumber.de,
                     })
                 )
         )
@@ -96,17 +88,13 @@ export default {
                 .setName("year")
                 .setDescription(localization.year.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.year.description.de,
+                    de: localization.year.description.de,
                 })
 
                 .addStringOption((option) =>
-                    option
-                        .setName("theme")
-                        .setRequired(true)
-                        .setDescription(localization.year.theme.en)
-                        .setDescriptionLocalizations({
-                            "de": localization.year.theme.de,
-                        })
+                    option.setName("theme").setRequired(true).setDescription(localization.year.theme.en).setDescriptionLocalizations({
+                        de: localization.year.theme.de,
+                    })
                 )
         )
 
@@ -115,18 +103,18 @@ export default {
                 .setName("review")
                 .setDescription(localization.review.description.en)
                 .setDescriptionLocalizations({
-                    "de": localization.review.description.de,
+                    de: localization.review.description.de,
                 })
                 .addStringOption((option) =>
                     option.setName("setnumber").setRequired(true).setDescription(localization.review.setnumber.en).setDescriptionLocalizations({
-                        "de": localization.review.setnumber.de,
+                        de: localization.review.setnumber.de,
                     })
                 )
         )
 
         .addSubcommand((subcommand) =>
             subcommand.setName("api").setDescription(localization.api.description.en).setDescriptionLocalizations({
-                "de": localization.api.description.de,
+                de: localization.api.description.de,
             })
         ),
 };

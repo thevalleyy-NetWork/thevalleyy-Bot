@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import strings from "../localization.json" with {type: "json"};
+import strings from "../localization.json" with { type: "json" };
 const localization = strings.slashCommands.lyrics;
 
 export default {
@@ -10,12 +10,12 @@ export default {
         .setDescription(localization.description.en)
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "de": localization.description.de,
+            de: localization.description.de,
         })
 
         .addStringOption((option) =>
             option.setName("song").setDescription(localization.song.en).setRequired(true).setDescriptionLocalizations({
-                "de": localization.song.de,
+                de: localization.song.de,
             })
         ),
 };

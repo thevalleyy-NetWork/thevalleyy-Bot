@@ -19,12 +19,12 @@ export default async (client, oldMember, newMember) => {
             const mitglied = newMember.guild.roles.cache.get(config.roles.member).id;
 
             if (!niceone || !mitglied) return client.error(l10n.roleNotFound[locale], "rulesAccepted.js");
-            
+
             newMember.roles.add(mitglied);
             newMember.roles.add(niceone);
 
             //TODO: testfor niceone in db
-            
+
             client.channels.cache
                 .get(config.channels.modlogchannel)
                 .send(l10n.message[locale].replace("{member}", "<@" + newMember.user.id + ">").replace("{niceone}", "✅"));

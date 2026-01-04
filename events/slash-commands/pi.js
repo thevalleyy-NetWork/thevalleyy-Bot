@@ -2,7 +2,7 @@ import { EmbedBuilder } from "discord.js";
 
 import config from "../../config.json" with { type: "json" };
 import localization from "../../localization.json" with { type: "json" };
-const l10n = localization.content.pi
+const l10n = localization.content.pi;
 
 /**
  * @param {import("discord.js").Client} client
@@ -32,28 +32,30 @@ export default async (client, interaction, locale) => {
         }
     }
 
-        fetch(`https://api.pi.delivery/v1/pi?start=${start}&numberOfDigits=${digits}&radix=${base}`).then(async (response) => {
-            const res = await parse(response);
-            if (res.error) interaction.editReply(l10n.error[locale] + "\n```" + res.error + "```"); 
+    fetch(`https://api.pi.delivery/v1/pi?start=${start}&numberOfDigits=${digits}&radix=${base}`).then(async (response) => {
+        const res = await parse(response);
+        if (res.error) interaction.editReply(l10n.error[locale] + "\n```" + res.error + "```");
 
-            if (!res.content) return interaction.editReply(l10n.error[locale]);
-            if (res.content) {
-
+        if (!res.content) return interaction.editReply(l10n.error[locale]);
+        if (res.content) {
             const embed = new EmbedBuilder()
                 .setColor(config.colors.default)
                 .setTitle(l10n.pi[locale])
                 .setDescription("```" + res.content + "```")
                 .addFields(
-                    { name: res.content.length > 1 ? l10n.digits.plural[locale] : l10n.digits.singular[locale], value: `\`\`${res.content.length}\`\``, inline: true},
-                    { name: l10n.start[locale], value: `\`\`${start}\`\``, inline: true},
-                    { name: l10n.base[locale], value: `\`\`${base}\`\``, inline: true},
+                    {
+                        name: res.content.length > 1 ? l10n.digits.plural[locale] : l10n.digits.singular[locale],
+                        value: `\`\`${res.content.length}\`\``,
+                        inline: true,
+                    },
+                    { name: l10n.start[locale], value: `\`\`${start}\`\``, inline: true },
+                    { name: l10n.base[locale], value: `\`\`${base}\`\``, inline: true }
                 )
                 .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-                .setTimestamp()
+                .setTimestamp();
 
-                interaction.editReply({ embeds: [embed] });
-            }
-        });
-        return;
-
+            interaction.editReply({ embeds: [embed] });
+        }
+    });
+    return;
 };

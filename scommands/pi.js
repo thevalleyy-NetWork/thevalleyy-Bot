@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import strings from "../localization.json" with {type: "json"};
+import strings from "../localization.json" with { type: "json" };
 const localization = strings.slashCommands.pi;
 
 export default {
@@ -9,21 +9,21 @@ export default {
         .setDescription(localization.description.en)
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "de": localization.description.de,
+            de: localization.description.de,
         })
         .addNumberOption((option) =>
             option.setName("digits").setDescription(localization.digits.en).setDescriptionLocalizations({
-                "de": localization.digits.de,
+                de: localization.digits.de,
             })
         )
         .addNumberOption((option) =>
             option.setName("start").setDescription(localization.start.en).setDescriptionLocalizations({
-                "de": localization.start.de,
+                de: localization.start.de,
             })
         )
         .addBooleanOption((option) =>
             option.setName("hexadecimal").setDescription(localization.hexadecimal.en).setDescriptionLocalizations({
-                "de": localization.hexadecimal.de,
+                de: localization.hexadecimal.de,
             })
         ),
 };

@@ -56,10 +56,7 @@ export default (client, interaction, locale) => {
                 )
                 .catch((error) => {}); // Ignore errors -> user has DMs disabled
         } else {
-            muteUser.member.timeout(
-                +duration * 60000,
-                l10n.muteString[locale].replace("{executor}", interaction.user.tag).replace("{reason}", reason)
-            );
+            muteUser.member.timeout(+duration * 60000, l10n.muteString[locale].replace("{executor}", interaction.user.tag).replace("{reason}", reason));
             interaction.reply({
                 content: l10n.muted[locale].replace("{user}", muteUser.user.tag),
                 ephemeral: true,

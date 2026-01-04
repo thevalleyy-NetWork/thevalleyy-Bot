@@ -40,7 +40,7 @@ export default (client, interaction, locale) => {
                 per_page: 80,
             })
             .then((result) => {
-                if (result.photos.length == 0) return interaction.reply({content: l10n.noImages[locale], ephemeral: true});
+                if (result.photos.length == 0) return interaction.reply({ content: l10n.noImages[locale], ephemeral: true });
                 for (let i = 0; i < result.photos.length; i++) {
                     const photo = result.photos[i];
                     const embed = new EmbedBuilder()
@@ -65,6 +65,6 @@ export default (client, interaction, locale) => {
             });
     } catch (error) {
         client.error(error, "photo.js");
-        interaction.reply({content: l10n.error[locale], ephemeral: true});
+        interaction.reply({ content: l10n.error[locale], ephemeral: true });
     }
 };

@@ -26,7 +26,8 @@ export default async (client, interaction, locale) => {
             return;
         }
 
-        if (interaction.options._subcommand === "scan") { //TODO: this is sadly not working
+        if (interaction.options._subcommand === "scan") {
+            //TODO: this is sadly not working
             await interaction.deferReply();
             client.log("Scanning QR code", "qr.js");
 
@@ -48,9 +49,9 @@ export default async (client, interaction, locale) => {
                         content: l10n.noScan[locale],
                         ephemeral: true,
                     });
-                    return
+                    return;
                 }
-                    
+
                 const embed = new EmbedBuilder()
                     .setTitle(l10n.qrCode[locale])
                     .setColor(config.colors.default)
@@ -84,6 +85,6 @@ export default async (client, interaction, locale) => {
         interaction.editReply({
             content: l10n.error[locale],
             ephemeral: true,
-        });    
+        });
     }
 };

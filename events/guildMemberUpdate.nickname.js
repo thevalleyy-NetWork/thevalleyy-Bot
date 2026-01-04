@@ -24,8 +24,8 @@ export default async (client, oldMember, newMember) => {
     const executor = latest.executor;
     if (!latest) return;
 
-    const oldname = oldMember.displayName
-    const newname = newMember.displayName
+    const oldname = oldMember.displayName;
+    const newname = newMember.displayName;
 
     const embed = new EmbedBuilder()
         .setTitle(l10n.changed[locale])
@@ -33,7 +33,7 @@ export default async (client, oldMember, newMember) => {
             {
                 name: l10n.user[locale],
                 value: `\`${newMember.user.tag}\`, <@!${newMember.user.id}>`,
-                inline: false
+                inline: false,
             },
             { name: `${l10n.before[locale]}:`, value: `\`${oldname}\``, inline: true },
             { name: `${l10n.now[locale]}:`, value: `\`${newname}\``, inline: true },

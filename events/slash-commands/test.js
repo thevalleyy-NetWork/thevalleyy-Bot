@@ -25,4 +25,4 @@ export default async (client, interaction, locale) => {
     const channel = await interaction.guild.channels.fetch("843054827910201384");
     const message = await channel.messages.fetch("843060299288412190");
     await message.edit({ embeds: [embed], components: [row] });
-}
+};

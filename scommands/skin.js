@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import strings from "../localization.json" with {type: "json"};
+import strings from "../localization.json" with { type: "json" };
 const localization = strings.slashCommands.skin;
 
 export default {
@@ -10,11 +10,11 @@ export default {
         .setDescription(localization.description.en)
         .setDefaultMemberPermissions(PermissionFlagsBits.ChangeNickname)
         .setDescriptionLocalizations({
-            "de": localization.description.de,
+            de: localization.description.de,
         })
         .addStringOption((option) =>
             option.setName("player").setDescription(localization.player.en).setRequired(true).setDescriptionLocalizations({
-                "de": localization.player.de,
+                de: localization.player.de,
             })
         ),
 };

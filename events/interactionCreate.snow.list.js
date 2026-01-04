@@ -34,10 +34,7 @@ export default async (client, interaction) => {
             .setTitle(l10n.embedTitle[locale])
             .setDescription(`\`\`\` * ${formattedDates}\`\`\``)
             .setFooter({
-                text: l10n.embedFooter[locale].replace(
-                    "{amount}",
-                    currentValues.length
-                ),
+                text: l10n.embedFooter[locale].replace("{amount}", currentValues.length),
             })
             .setColor(config.colors.default);
 

@@ -15,7 +15,6 @@ export default async (client, interaction, locale) => {
     const user = interaction.options.get("user")?.user ?? interaction.user;
     const member = interaction.options.get("user")?.member ?? interaction.member;
 
-    
     if (!interaction.guild.members.cache.get(user.id)) {
         return interaction.reply({
             content: l10n.notOnThisServer[locale],

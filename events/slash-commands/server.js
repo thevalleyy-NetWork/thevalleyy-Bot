@@ -92,7 +92,7 @@ export default async (client, interaction, locale) => {
                 inline: true,
             },
             {
-                name:  l10n.bans[locale],
+                name: l10n.bans[locale],
                 value: "`" + guild.bans.cache.size + "`",
                 inline: true,
             },

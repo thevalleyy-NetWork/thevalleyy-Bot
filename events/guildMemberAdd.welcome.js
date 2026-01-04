@@ -12,7 +12,7 @@ export default async (client, member) => {
     const locale = member.guild.preferredLocale == "de" ? "de" : "en";
 
     const chatMuteRole = config.roles.mutechat;
-    const voiceMuteRole = config.roles.mutetalk
+    const voiceMuteRole = config.roles.mutetalk;
 
     try {
         // TODO: change to json db
@@ -22,7 +22,10 @@ export default async (client, member) => {
         // has he the nice one role?
         // also log joins and leaves
 
-        const message = l10n.message[locale].replace("{member}", `<@${member.id}>`).replace("{guild}", member.guild.name).replace("{rules}", `<#${config.channels.ruleschannel}>`);
+        const message = l10n.message[locale]
+            .replace("{member}", `<@${member.id}>`)
+            .replace("{guild}", member.guild.name)
+            .replace("{rules}", `<#${config.channels.ruleschannel}>`);
         const channel = member.guild.channels.cache.get(config.channels.welcomechannel);
         channel.send(message).then((message) => {
             setTimeout(() => message.react(l10n.reaction[locale]), 50);

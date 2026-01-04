@@ -18,15 +18,9 @@ export default async (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.options._subcommand == "list") {
-        const button0 = new ButtonBuilder()
-            .setCustomId("previousbtn")
-            .setLabel("◀️")
-            .setStyle("Secondary");
+        const button0 = new ButtonBuilder().setCustomId("previousbtn").setLabel("◀️").setStyle("Secondary");
 
-        const button1 = new ButtonBuilder()
-            .setCustomId("nextbtn")
-            .setLabel("▶️")
-            .setStyle("Secondary");
+        const button1 = new ButtonBuilder().setCustomId("nextbtn").setLabel("▶️").setStyle("Secondary");
 
         const buttonList = [button0, button1];
 
@@ -47,7 +41,7 @@ export default async (client, interaction, locale) => {
             if (id) {
                 const error = errors.get(id.toString());
                 if (error) {
-                    errArray[0] = [id, error]
+                    errArray[0] = [id, error];
                 }
             } else {
                 for (let i = 0; i < amount; i++) {
@@ -60,31 +54,27 @@ export default async (client, interaction, locale) => {
                 // errArray = errors.entries().slice(amount * -1);
             }
 
-
             if (errArray.length == 0) {
                 // no specific error found
-                if (id) return interaction.reply(
-                    {
+                if (id)
+                    return interaction.reply({
                         content: l10n.noError[locale].replace("{id}", id),
                         ephemeral: true,
-                    }
-                );
+                    });
 
                 // no errors found
-                return interaction.reply(
-                    {
-                        content: l10n.noErrors[locale],
-                        ephemeral: true,
-                    }
-                )
+                return interaction.reply({
+                    content: l10n.noErrors[locale],
+                    ephemeral: true,
+                });
             }
 
             // proceed if there are errors
             const pages = [];
             for (let i = 0; i < errArray.length; i++) {
-                const id = errArray[i][0]
+                const id = errArray[i][0];
                 const error = errArray[i][1];
-                
+
                 const embed = new EmbedBuilder()
                     .setColor(config.colors.error)
                     .setTitle(`${l10n.error[locale]} #${id}`)
@@ -102,10 +92,7 @@ export default async (client, interaction, locale) => {
                         },
                         {
                             name: l10n.timestamp[locale],
-                            value: `\`\`\`\n${getTime(
-                                true,
-                                error.timestamp
-                            )}\`\`\` (<t:${Math.round(error.timestamp / 1000)}:R>)`,
+                            value: `\`\`\`\n${getTime(true, error.timestamp)}\`\`\` (<t:${Math.round(error.timestamp / 1000)}:R>)`,
                         },
                     ]);
                 pages.push(embed);
@@ -128,5 +115,5 @@ export default async (client, interaction, locale) => {
     const origin = interaction.options.getString("origin");
 
     client.error(message, origin ? origin : "custom");
-    interaction.reply({content: l10n.insert[locale], ephemeral: true });
+    interaction.reply({ content: l10n.insert[locale], ephemeral: true });
 };
