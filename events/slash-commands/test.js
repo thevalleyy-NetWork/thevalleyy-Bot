@@ -26,5 +26,5 @@ export default async (client, interaction, locale) => {
     // const message = await channel.messages.fetch("843060299288412190");
     // await message.edit({ embeds: [embed], components: [row] });
 
-    await interaction.reply({ content: ":)", ephemeral: true });
+    await interaction.reply({ content: "```json\n" + JSON.stringify(client.db.snow.entries()) + "\n```", ephemeral: true });
 };

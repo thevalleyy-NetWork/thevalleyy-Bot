@@ -89,7 +89,7 @@ export default async (client, interaction, locale) => {
                         },
                         {
                             name: "​",
-                            value: `• [${l10n.mcprofile[locale]}](https://mcprofile.net/profile/${json.uuid})`,
+                            value: `• [${l10n.laby[locale]}](https://laby.net/@${json.username})`,
                             inline: true,
                         },
                         {
