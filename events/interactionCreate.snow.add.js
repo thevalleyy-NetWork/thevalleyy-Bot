@@ -1,4 +1,5 @@
 import Enmap from "enmap";
+
 import localization from "../localization.json" with { type: "json" };
 
 const l10n = localization.events.interactionCreate.snow.add;
@@ -6,7 +7,7 @@ const snow = new Enmap({ name: "snow", autoFetch: true, fetchAll: false });
 
 /**
  * @param {import("discord.js").Client} client
- * @param {import("discord.js").CommandInteraction} interaction
+ * @param {import("discord.js").ButtonInteraction} interaction
  */
 export default async (client, interaction) => {
     if (!interaction.isButton()) return;

@@ -2527,8 +2527,8 @@
             "snow": {
                 "add": {
                     "alreadyAdded": {
-                        "de": "Der heutige Tag wurde bereits als Schneetag hinzugefügt.",
-                        "en": "Today's date has already been added as a snow day."
+                        "de": "Der heutige Tag wurde bereits als Schneetag hinzugefügt. \nMit 🗓️ kannst du vergangene Schneetage nachtragen.",
+                        "en": "Today's date has already been added as a snow day. \nWith 🗓️ you can add past snow days."
                     },
                     "success": {
                         "de": "❄️ Hinzugefügt! Neue Anzahl: {amount} ❄️",
