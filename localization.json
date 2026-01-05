@@ -2574,7 +2574,8 @@
                         "de": "Es gab einen Fehler beim Nachtragen der Schneetage.",
                         "en": "There was an error while adding the snow days."
                     }
-                }
+                },
+                "update": {}
             },
             "ticket": {
                 "open": {

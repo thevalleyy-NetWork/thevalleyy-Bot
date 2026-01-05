@@ -27,7 +27,7 @@ export default async (client, interaction) => {
 
             const dateToCheck = new Date(Date.now() - i * 86400000).toISOString().substring(0, 10);
             arr[0] = dateToCheck;
-            arr[1] = snow.get(id).includes(dateToCheck);
+            arr[1] = snow.get(id)?.includes(dateToCheck);
 
             if (arr[1]) noDays = false;
             days.push(arr);

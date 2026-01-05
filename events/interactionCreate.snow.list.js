@@ -10,10 +10,11 @@ const snow = new Enmap({ name: "snow", autoFetch: true, fetchAll: false });
 /**
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").ButtonInteraction} interaction
+ * @param {Boolean} intern
  */
-export default async (client, interaction) => {
-    if (!interaction.isButton()) return;
-    if (interaction.customId !== "SNOW_list") return;
+export default async (client, interaction, intern = false) => {
+    if (!interaction.isButton() && !intern) return;
+    if (interaction.customId !== "SNOW_list" && !intern) return;
 
     const locale = interaction.locale == "de" ? "de" : "en";
     const id = interaction.user.id;
@@ -42,10 +43,17 @@ export default async (client, interaction) => {
             })
             .setColor(config.colors.default);
 
-        interaction.reply({
-            embeds: [embed],
-            ephemeral: true,
-        });
+        if (interaction.replied) {
+            interaction.followUp({
+                embeds: [embed],
+                ephemeral: true,
+            });
+        } else {
+            interaction.reply({
+                embeds: [embed],
+                ephemeral: true,
+            });
+        }
     } catch (err) {
         interaction.reply({ content: l10n.error[locale], ephemeral: true });
         client.error(err, "snow.list.js");
