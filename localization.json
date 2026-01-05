@@ -2575,7 +2575,20 @@
                         "en": "There was an error while adding the snow days."
                     }
                 },
-                "update": {}
+                "update": {
+                    "waitedTooLong": {
+                        "de": "Du kannst nur die letzten {n} Tage nachtragen.",
+                        "en": "You can only add the last {n} days."
+                    },
+                    "success": {
+                        "de": "☃️ Schneetage aktualisiert. \nNeu hinzugefügt: {added} \nTage entfernt: {removed}",
+                        "en": "☃️ Snow days updated. \nNewly added: {added} \nDays removed: {removed}"
+                    },
+                    "error": {
+                        "de": "Es gab einen Fehler beim Nachtragen der Schneetage.",
+                        "en": "There was an error while adding the snow days."
+                    }
+                }
             },
             "ticket": {
                 "open": {

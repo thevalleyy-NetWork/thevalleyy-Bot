@@ -32,7 +32,7 @@ export default async (client, interaction, locale) => {
     const embed = new EmbedBuilder()
         .setTitle("☃️ Schnee-Counter 🌲")
         .setColor("#fffafa")
-        .setDescription("Es hat geschneit? \nDrücke auf ❄️, um den Schneetag zu speichern. \nMit 🗓️ kannst du Schneetage nachtragen :)")
+        .setDescription("Es hat geschneit? \nDrücke auf ❄️, um den Schneetag zu speichern. \nMit 🗓️ kannst du Schneetage nachträglich ändern :)")
         .setFooter({
             text: interaction.guild.name,
             iconURL: interaction.guild.iconURL(),
