@@ -28,7 +28,11 @@ export default async (client, interaction) => {
             return;
         }
 
-        const formattedDates = currentValues.join("\n * ");
+        const formattedDates = currentValues
+            .map((iso) => {
+                return new Date(iso).toLocaleDateString(locale === "de" ? "de-DE" : "en-US");
+            })
+            .join("\n * ");
 
         const embed = new EmbedBuilder()
             .setTitle(l10n.embedTitle[locale])

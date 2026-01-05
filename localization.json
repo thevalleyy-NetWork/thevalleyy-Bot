@@ -2556,6 +2556,24 @@
                         "de": "Es gab einen Fehler beim Abrufen der Schneetage.",
                         "en": "There was an error while fetching the snow days."
                     }
+                },
+                "missed": {
+                    "noneSelected": {
+                        "de": "Keine Schneetage ausgewählt",
+                        "en": "No snow days selected"
+                    },
+                    "removeUnselected": {
+                        "de": "Abgewählte Tage löschen",
+                        "en": "Remove unselected days"
+                    },
+                    "explanation": {
+                        "de": "Hier kannst du die letzten {n} Tage nachtragen. Wenn ein Tag schon ausgewählt ist, dann wurde er bereits gezählt. Durch Abwählen können diese Tage gelöscht werden.",
+                        "en": "Here you can add the last {n} days. If a day is already selected, it has already been counted. By deselecting, these days can be deleted."
+                    },
+                    "error": {
+                        "de": "Es gab einen Fehler beim Nachtragen der Schneetage.",
+                        "en": "There was an error while adding the snow days."
+                    }
                 }
             },
             "ticket": {

@@ -3,7 +3,7 @@ import { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilde
 
 import localization from "../localization.json" with { type: "json" };
 
-const l10n = localization.events.interactionCreate.snow.add;
+const l10n = localization.events.interactionCreate.snow.missed;
 const snow = new Enmap({ name: "snow", autoFetch: true, fetchAll: false });
 
 /**
@@ -33,18 +33,16 @@ export default async (client, interaction) => {
             days.push(arr);
         }
 
-        console.log(days);
-
         // build the select menu with the data
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId("SNOW_update")
-            .setPlaceholder(noDays ? "Keine Schneetage ausgewählt" : "Abgewählte Tage löschen")
+            .setPlaceholder(noDays ? l10n.noneSelected[locale] : l10n.removeUnselected[locale])
             .setMinValues(0)
             .setMaxValues(days.length)
             .addOptions(
                 days.map((day) => {
                     return new StringSelectMenuOptionBuilder()
-                        .setLabel(new Date(day[0]).toLocaleDateString())
+                        .setLabel(new Date(day[0]).toLocaleDateString(locale === "de" ? "de-DE" : "en-US"))
                         .setValue(day[0])
                         .setEmoji("🌨️")
                         .setDefault(day[1]);
@@ -54,16 +52,12 @@ export default async (client, interaction) => {
         const row = new ActionRowBuilder().addComponents(selectMenu);
 
         interaction.reply({
-            content:
-                "Hier kannst du die letzten " +
-                n +
-                " Tage nachtragen. Wenn ein Tag schon ausgewählt ist, dann wurde er bereits gezählt. Durch Abwählen können Schneetage gelöscht werden.",
+            content: l10n.explanation[locale].replace("{n}", n),
             components: [row],
             ephemeral: true,
         });
     } catch (err) {
-        throw err;
         interaction.reply({ content: l10n.error[locale], ephemeral: true });
-        client.error(err, "snow.add.js");
+        client.error(err, "snow.missed.js");
     }
 };
