@@ -19,15 +19,16 @@ export default async (client, interaction, locale) => {
             .setDescription(l10n.searching[locale].replace("{song}", interaction.options.getString("song").substring(0, 150)));
 
         await interaction.reply({ embeds: [waitEmbed] });
-        const { title, author, lyrics, thumbnail, links, error } = await fetch(
-            `https://some-random-api.com/lyrics?title=${encodeURIComponent(interaction.options.getString("song"))}`,
-        ).then((response) => response.json());
+        const response = await fetch(
+            `https://some-random-api.com/lyrics?title=${encodeURIComponent(interaction.options.getString("song"))}&key=${config.keys.sra}`,
+        );
+        const data = await response.json();
 
-        if (error) {
+        if (data.error) {
             const errorEmbed = new EmbedBuilder()
                 .setColor(config.colors.error)
                 .setTitle(l10n.error[locale])
-                .setDescription("`" + error + "`")
+                .setDescription("`" + data.error + "`")
                 .setFooter({ text: interaction.guild.name, iconURL: iconurl })
                 .setTimestamp();
             interaction.editReply({ embeds: [errorEmbed] });
@@ -36,18 +37,18 @@ export default async (client, interaction, locale) => {
 
         const songEmbed = new EmbedBuilder()
             .setAuthor({
-                name: `${author} (${title})`,
-                iconURL: interaction.user.avatarURL(),
-                url: links.genius,
+                name: `${data.title} (${data.artist})`,
+                url: data.url,
             })
-            .setThumbnail(thumbnail.genius)
-            .setDescription(lyrics.substring(0, 4096))
+            .setDescription(data.lyrics.substring(0, 4096))
             .setColor(config.colors.info)
             .setFooter({
                 text: interaction.guild.name,
                 iconURL: iconurl,
             })
             .setTimestamp();
+
+        if (data.thumbnail) songEmbed.setThumbnail(data.thumbnail);
 
         await interaction.editReply({ embeds: [songEmbed] }).catch((err) => {
             client.error(err, "lyrics.js");
