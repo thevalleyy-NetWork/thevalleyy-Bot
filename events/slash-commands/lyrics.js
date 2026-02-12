@@ -18,9 +18,9 @@ export default async (client, interaction, locale) => {
             .setColor(config.colors.info)
             .setDescription(l10n.searching[locale].replace("{song}", interaction.options.getString("song").substring(0, 150)));
 
-        interaction.reply({ embeds: [waitEmbed] });
+        await interaction.reply({ embeds: [waitEmbed] });
         const { title, author, lyrics, thumbnail, links, error } = await fetch(
-            `https://some-random-api.com/lyrics?title=${encodeURIComponent(interaction.options.getString("song"))}`
+            `https://some-random-api.com/lyrics?title=${encodeURIComponent(interaction.options.getString("song"))}`,
         ).then((response) => response.json());
 
         if (error) {
