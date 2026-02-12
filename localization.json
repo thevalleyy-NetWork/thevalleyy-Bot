@@ -198,6 +198,18 @@
                 }
             }
         },
+        "horny": {
+            "description": {
+                "de": "Erstelle eine 😏-Lizenz",
+                "en-US": "Create a license to be horny",
+                "en-GB": "Create a licence to be horny"
+            },
+            "user": {
+                "de": "Der User, dem du die Lizenz geben möchtest",
+                "en-US": "User to give the license to",
+                "en-GB": "User to give the licence to"
+            }
+        },
         "kick": {
             "description": {
                 "de": "Kickt einen User",
@@ -1367,6 +1379,12 @@
                         "en": "Arguments"
                     }
                 }
+            }
+        },
+        "horny": {
+            "error": {
+                "de": "Es gab einen Fehler",
+                "en": "There was an error"
             }
         },
         "lego": {

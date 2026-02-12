@@ -10,6 +10,8 @@ const l10n = localization.content.restart;
 export default (client, interaction, locale) => {
     if (!interaction.isChatInputCommand()) return;
 
+    interaction.reply("✅", { ephemeral: true });
+
     (function main() {
         if (process.env.process_restarting) {
             delete process.env.process_restarting;

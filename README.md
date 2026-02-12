@@ -51,7 +51,8 @@ A discord bot, written in JS, powered by NodeJS.
         "brickset_username": "bickset api username",
         "brickset_password": "brickset api password",
         "nasa": "nasa api key",
-        "pexels": "pexels api key"
+        "pexels": "pexels api key",
+        "sra": "some-random-api key"
     },
     "roles": {
         "supporter": "discord role id (supporter)",
