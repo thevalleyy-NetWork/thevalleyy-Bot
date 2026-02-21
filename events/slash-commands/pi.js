@@ -17,8 +17,9 @@ export default async (client, interaction, locale) => {
     const base = interaction.options.getBoolean("hexadecimal") ? 16 : 10;
     const digits = interaction.options.getNumber("digits") || 16;
     const start = interaction.options.getNumber("start") || 0;
+    const maxDigits = 1000;
 
-    if (digits > 1000) return interaction.editReply(l10n.tooLarge[locale].replace("{max}", "1000"));
+    if (digits > maxDigits) return interaction.editReply(l10n.tooLarge[locale].replace("{max}", maxDigits.toString()));
 
     client.log(`Requesting ${digits} digits of pi (${interaction.user.tag})`, "pi.js");
 
@@ -49,7 +50,7 @@ export default async (client, interaction, locale) => {
                         inline: true,
                     },
                     { name: l10n.start[locale], value: `\`\`${start}\`\``, inline: true },
-                    { name: l10n.base[locale], value: `\`\`${base}\`\``, inline: true }
+                    { name: l10n.base[locale], value: `\`\`${base}\`\``, inline: true },
                 )
                 .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
                 .setTimestamp();
