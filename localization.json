@@ -1906,9 +1906,29 @@
                 "de": "Basis",
                 "en": "Base"
             },
-            "tooLarge": {
-                "de": "Die Anzahl der Stellen darf nicht größer als `{max}` sein.",
-                "en": "The number of digits must not be greater than `{max}`."
+            "outOfRange": {
+                "de": "Die Anzahl der Stellen darf nicht kleiner als `{min}` oder größer als `{max}` sein.",
+                "en": "The number of digits must not be less than `{min}` or greater than `{max}`."
+            },
+            "origin": {
+                "de": "Ursprung",
+                "en": "Origin"
+            },
+            "calculated": {
+                "de": "Berechnet",
+                "en": "Calculated"
+            },
+            "retrieved": {
+                "de": "Abgerufen",
+                "en": "Retrieved"
+            },
+            "time": {
+                "de": "Rechenzeit",
+                "en": "Calculation time"
+            },
+            "precisionWarning": {
+                "de": "Bei der Umwandlung zu Hexadezimal kommt es zu einem Präzisionsverlust ab ein paar Stellen. Das Ergebnis ist also nicht richtig, sondern nur eine Annäherung.",
+                "en": "When converting to hexadecimal, there is a loss of precision after a few digits. So the result is not correct, but only an approximation."
             }
         },
         "ping": {

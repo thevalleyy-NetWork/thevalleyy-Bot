@@ -14,16 +14,16 @@ export default {
         .addNumberOption((option) =>
             option.setName("digits").setDescription(localization.digits.en).setDescriptionLocalizations({
                 de: localization.digits.de,
-            })
+            }),
         )
         .addNumberOption((option) =>
             option.setName("start").setDescription(localization.start.en).setDescriptionLocalizations({
                 de: localization.start.de,
-            })
+            }),
         )
         .addBooleanOption((option) =>
             option.setName("hexadecimal").setDescription(localization.hexadecimal.en).setDescriptionLocalizations({
                 de: localization.hexadecimal.de,
-            })
+            }),
         ),
 };
