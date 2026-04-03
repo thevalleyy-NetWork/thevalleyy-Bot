@@ -9,9 +9,9 @@
     "author": "thevalleyy",
     "license": "MIT",
     "dependencies": {
-        "@discordjs/rest": "^2.6.0",
-        "bignumber.js": "^9.3.1",
-        "discord.js": "^14.25.1",
+        "@discordjs/rest": "^2.6.1",
+        "bignumber.js": "^10.0.2",
+        "discord.js": "^14.26.0",
         "enmap": "^6.1.6",
         "he": "^1.2.0",
         "minecraft-server-util": "^5.4.4",
