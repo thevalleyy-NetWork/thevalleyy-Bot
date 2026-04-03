@@ -2745,42 +2745,6 @@
                     "en": "with"
                 }
             }
-        },
-        "voiceStateUpdate": {
-            "channel": {
-                "joined": {
-                    "de": "Kanal betreten",
-                    "en": "Joined channel"
-                },
-                "left": {
-                    "de": "Kanal verlassen",
-                    "en": "Left channel"
-                },
-                "switched": {
-                    "de": "Kanal gewechselt",
-                    "en": "Switched channel"
-                },
-                "member": {
-                    "de": "Mitglied",
-                    "en": "Member"
-                },
-                "before": {
-                    "de": "Vorher",
-                    "en": "Before"
-                },
-                "now": {
-                    "de": "Jetzt",
-                    "en": "Now"
-                },
-                "sessionID": {
-                    "de": "Session-ID",
-                    "en": "Session ID"
-                },
-                "noChannel": {
-                    "de": "Kein Kanal",
-                    "en": "No channel"
-                }
-            }
         }
     },
     "main": {
