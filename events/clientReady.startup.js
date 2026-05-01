@@ -52,33 +52,33 @@ export default async (client) => {
     }, 1200000);
 
     // request brickset api key & userhash
-    try {
-        fetch("https://brickset.com/api/v3.asmx/checkKey?apikey=" + config.keys.brickset)
-            .then(async (response) => response.json())
-            .then((apijson) => {
-                // request userhash
-                fetch(
-                    `https://brickset.com/api/v3.asmx/login?apikey=${config.keys.brickset}&username=${config.keys.brickset_username}&password=${config.keys.brickset_password}`
-                )
-                    .then(async (response) => response.json())
-                    .then((userjson) => {
-                        userjson.hash;
+    // try {
+    //     fetch("https://brickset.com/api/v3.asmx/checkKey?apikey=" + config.keys.brickset)
+    //         .then(async (response) => response.json())
+    //         .then((apijson) => {
+    //             // request userhash
+    //             fetch(
+    //                 `https://brickset.com/api/v3.asmx/login?apikey=${config.keys.brickset}&username=${config.keys.brickset_username}&password=${config.keys.brickset_password}`
+    //             )
+    //                 .then(async (response) => response.json())
+    //                 .then((userjson) => {
+    //                     userjson.hash;
 
-                        const json = {
-                            apikey: apijson,
-                            userkey: userjson,
-                        };
+    //                     const json = {
+    //                         apikey: apijson,
+    //                         userkey: userjson,
+    //                     };
 
-                        client.brickset = json;
+    //                     client.brickset = json;
 
-                        if (client.brickset.userkey.status == "error") {
-                            client.error("Invalid brickset api key & userhash, disabling /lego command\n" + "ready.startup.js");
-                        }
-                    });
-            });
-    } catch (e) {
-        client.error("Error during api key validation request (brickset)\n" + e, "ready.startup.js");
-    }
+    //                     if (client.brickset.userkey.status == "error") {
+    //                         client.error("Invalid brickset api key & userhash, disabling /lego command\n" + "ready.startup.js");
+    //                     }
+    //                 });
+    //         });
+    // } catch (e) {
+    //     client.error("Error during api key validation request (brickset)\n" + e, "ready.startup.js");
+    // }
 
     // repair the sometimes broken stats json
     try {
