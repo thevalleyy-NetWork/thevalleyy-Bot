@@ -94,8 +94,8 @@ export default async (client) => {
     }
 
     // "backup" snow-db to cmd-log channel (note: this is a temporary measure)
-    const message = "```json\n" + JSON.stringify(client.db.snow.entries()) + "\n```".substring(0, 2040);
-    client.channels.fetch(config.channels.cmdlogchannel).then((c) => {
-        c.send(message);
-    });
+    // const message = "```json\n" + JSON.stringify(client.db.snow.entries()) + "\n```".substring(0, 2040);
+    // client.channels.fetch(config.channels.cmdlogchannel).then((c) => {
+    //     c.send(message);
+    // });
 };

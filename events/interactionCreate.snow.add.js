@@ -16,6 +16,11 @@ export default async (client, interaction) => {
     const locale = interaction.locale == "de" ? "de" : "en";
     const id = interaction.user.id;
 
+    return interaction.reply({
+        content: l10n.noWinter[locale],
+        ephemeral: true,
+    });
+
     try {
         const date = new Date().toISOString().substring(0, 10);
 

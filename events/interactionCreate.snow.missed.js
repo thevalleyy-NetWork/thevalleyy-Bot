@@ -17,6 +17,11 @@ export default async (client, interaction) => {
     const locale = interaction.locale == "de" ? "de" : "en";
     const id = interaction.user.id;
 
+    return interaction.reply({
+        content: l10n.noWinter[locale],
+        ephemeral: true,
+    });
+
     try {
         const days = [];
         const n = 4; // n is the max amount of past days that users can add (starting with today). n=2 means that users can add today and yesterday.
@@ -46,7 +51,7 @@ export default async (client, interaction) => {
                         .setValue(day[0])
                         .setEmoji("🌨️")
                         .setDefault(day[1]);
-                })
+                }),
             );
 
         const row = new ActionRowBuilder().addComponents(selectMenu);

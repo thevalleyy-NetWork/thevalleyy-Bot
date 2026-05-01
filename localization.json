@@ -2575,6 +2575,10 @@
                     "error": {
                         "de": "Es gab einen Fehler beim Hinzufügen des Schneetags.",
                         "en": "There was an error while adding the snow day."
+                    },
+                    "noWinter": {
+                        "de": "Der Winter ist vorüber! 🌻 Sobald es wieder kälter wird, können Schneetage hinzugefügt werden.",
+                        "en": "Winter is over! 🌻 Once it gets colder again, snow days can be added."
                     }
                 },
                 "list": {
@@ -2611,6 +2615,10 @@
                     "error": {
                         "de": "Es gab einen Fehler beim Nachtragen der Schneetage.",
                         "en": "There was an error while adding the snow days."
+                    },
+                    "noWinter": {
+                        "de": "Der Winter ist vorüber! 🌻 Sobald es wieder kälter wird, können Schneetage hinzugefügt werden.",
+                        "en": "Winter is over! 🌻 Once it gets colder again, snow days can be added."
                     }
                 },
                 "update": {
