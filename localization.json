@@ -56,6 +56,16 @@
                 "en": "The user you want to add to the blacklist"
             }
         },
+        "brawlstars": {
+            "description": {
+                "de": "Zeigt Informationen zu einem Brawl Stars Spieler",
+                "en": "Shows information about a Brawl Stars player"
+            },
+            "id": {
+                "de": "Die Spieler-ID",
+                "en": "The player ID"
+            }
+        },
         "caesar": {
             "description": {
                 "de": "Verschlüsselt / Entschlüsselt eine Nachricht mit dem Caesar-Verschlüsselungsverfahren",
@@ -994,6 +1004,16 @@
             "notAllowed": {
                 "de": "`{user}` kann nicht zur Blacklist hinzugefügt werden.",
                 "en": "`{user}` cannot be added to the blacklist."
+            }
+        },
+        "brawlstars": {
+            "error": {
+                "de": "Es gab einen Fehler beim Abrufen der Informationen.",
+                "en": "There was an error while fetching the information."
+            },
+            "notFound": {
+                "de": "Der Spieler mit der ID `{id}` wurde nicht gefunden.",
+                "en": "The player with the ID `{id}` was not found."
             }
         },
         "caesar": {},
