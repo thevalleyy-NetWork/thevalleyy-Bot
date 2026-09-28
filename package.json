@@ -9,15 +9,15 @@
     "author": "thevalleyy",
     "license": "MIT",
     "dependencies": {
-        "@discordjs/rest": "^2.6.1",
-        "bignumber.js": "^11.1.1",
-        "discord.js": "^14.26.4",
+        "@discordjs/rest": "^2.6.3",
+        "bignumber.js": "^11.1.5",
+        "discord.js": "^14.27.0",
         "enmap": "^6.1.6",
         "he": "^1.2.0",
         "minecraft-server-util": "^5.4.4",
         "node-fetch": "^3.3.2",
         "pexels": "^1.4.0",
-        "prettier": "^3.8.3",
+        "prettier": "^3.9.9",
         "string-progressbar": "^1.0.4"
     }
 }
